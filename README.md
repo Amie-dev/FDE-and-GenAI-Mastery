@@ -495,7 +495,7 @@ RECORD → tick Appendix D and write down the number you measured
 ## 🗂️ Repository Structure
 
 ```text
-FDE-&-GEN-AI/
+FDE-and-GenAI-Mastery/
 ├── README.md                     # ← you are here (orientation, navigation, verification)
 ├── roadmap.md                    # ⭐ THE MASTER MAP
 │   ├── Design rules · How to use · 31 lectures at a glance · Phase graph
@@ -505,8 +505,13 @@ FDE-&-GEN-AI/
 │
 ├── Lecture 01 - Introduction to FDE and AI History/
 │   ├── README.md                 # objectives · phase · level · source mapping · checklist
+│   ├── index.md                  # chapter index (filled by prompt.md → Block 6)
+│   ├── prompt.md                 # generation prompt — git-ignored
+│   ├── .gitignore                # ignores prompt.md
 │   ├── notes/                    # your own chapter notes
-│   └── code/                     # your rebuild of the lecture's codebase
+│   ├── code/                     # your rebuilt codebase (Basic Code · Production Code)
+│   └── Assignment/
+│       └── task.md               # the lecture assignment (filled by prompt.md → Block 5)
 ├── Lecture 02 - LLM Foundations/
 ├── Lecture 03 - Attention and Decoding/
 ├── …
@@ -515,6 +520,8 @@ FDE-&-GEN-AI/
 Forward-Deployed-Engineer/        # source repository 1  (19 lectures · 152 chapter notes)
 gen-ai-cohort/                    # source repository 2  (16 days · 83 note files)
 ```
+
+> 🛠️ **Every lecture ships a `prompt.md`** — the generation prompt for that lecture. Open it, change only the **chapter number** in Block 1, and run the blocks in order: chapters → complete notes → basic code → production code → assignment → index. `prompt.md` is **git-ignored** (it is your personal working file), and the generated output lands in `notes/`, `code/`, `index.md` and `Assignment/task.md`.
 
 > 📌 The two source repositories sit **beside** this folder — they are the *inputs*, never edited here. All 31 lecture folders are your **workspaces**.
 

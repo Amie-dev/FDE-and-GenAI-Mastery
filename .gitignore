@@ -1,0 +1,190 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+#  FDE-and-GenAI-Mastery — root .gitignore
+# ═══════════════════════════════════════════════════════════════════════════════
+#  COMMITTED     : README.md · roadmap.md · Lecture NN/README.md · index.md
+#                  Lecture NN/notes/**  ·  Lecture NN/code/** (source only)
+#                  Lecture NN/Assignment/task.md
+#  NOT COMMITTED : prompt.md (personal working file) · dependencies · builds
+#                  · secrets · local data · OS & editor noise
+# ═══════════════════════════════════════════════════════════════════════════════
+
+
+# ── 1 · Personal working files ────────────────────────────────────────────────
+# The per-lecture generation prompt is a personal tool, not shared curriculum
+# content. Every lecture folder also carries its own .gitignore for this —
+# this entry is the repo-wide backstop.
+prompt.md
+prompt.local.md
+!prompt.template.md
+*.private.md
+*.local.md
+scratch/
+scratchpad/
+
+
+# ── 2 · Node.js dependencies ──────────────────────────────────────────────────
+node_modules/
+jspm_packages/
+.pnpm-store/
+.npm/
+.yarn/
+.bun/
+# NOTE: package.json AND package-lock.json stay committed on purpose
+#       (lockfiles make every lecture's codebase reproducible)
+
+
+# ── 3 · Build output & bundler caches ─────────────────────────────────────────
+dist/
+build/
+out/
+.next/
+.nuxt/
+.output/
+.turbo/
+.vite/
+.parcel-cache/
+.rollup.cache/
+.webpack/
+*.tsbuildinfo
+*.js.map
+
+
+# ── 4 · Environment files & secrets ───────────────────────────────────────────
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+*.pem
+*.key
+*.p12
+*.pfx
+service-account*.json
+credentials.json
+gcloud-key.json
+
+
+# ── 5 · Logs, PIDs & runtime artefacts ────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+pids/
+*.pid
+*.seed
+*.pid.lock
+.npmrc.local
+
+
+# ── 6 · Test output & coverage ────────────────────────────────────────────────
+coverage/
+.nyc_output/
+*.lcov
+test-results/
+playwright-report/
+blob-report/
+junit.xml
+eval-output/
+eval-results/
+# NOTE: golden datasets and eval fixtures are curriculum content — keep tracked
+
+
+# ── 7 · Linter / formatter / tooling caches ───────────────────────────────────
+.eslintcache
+.stylelintcache
+.prettiercache
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+
+
+# ── 8 · Local data, uploads & vector-store volumes ────────────────────────────
+# Ingestion demos (RAG · NotebookLM · GraphRAG · multimodal) write here at runtime.
+# NOTE: patterns containing an internal "/" are anchored to this file's directory,
+#       so nested paths need an explicit "**/" prefix.
+uploads/
+**/data/local/
+**/data/private/
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+qdrant_storage/
+chroma/
+chroma_db/
+milvus_data/
+neo4j_data/
+neo4j_logs/
+redis_data/
+postgres_data/
+volumes/
+tavily.local.json
+pinecone.local.json
+
+
+# ── 9 · Docker / infra local overrides ────────────────────────────────────────
+docker-compose.override.yml
+docker-compose.*.local.yml
+*.dockerlocal
+
+
+# ── 10 · Generated media & archives ───────────────────────────────────────────
+# Audio overviews and rendered artefacts produced by the platform lectures
+*.mp3
+*.wav
+*.mp4
+*.zip
+*.tar.gz
+# …but re-include hand-written assets that ship with a lecture, at any depth
+!**/assets/**
+!**/public/**
+!**/references/**
+
+
+# ── 11 · Python (Claude Skills scripts · notebooks) ───────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+*.egg-info/
+
+
+# ── 12 · OS noise ─────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+Thumbs.db
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+
+# ── 13 · Editors & IDEs ───────────────────────────────────────────────────────
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*~
+# ignore editor folders at ANY depth; re-include shareable example configs
+**/.vscode/*
+!**/.vscode/settings.json.example
+!**/.vscode/extensions.json
+!**/.vscode/launch.json.example
+
+
+# ── 14 · Keep the curriculum itself tracked (safety net) ──────────────────────
+!README.md
+!roadmap.md
+!index.md
+!task.md
+!SKILL.md
+!.gitkeep
