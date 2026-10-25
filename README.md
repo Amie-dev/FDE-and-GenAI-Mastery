@@ -23,7 +23,7 @@
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Aminul-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/aminul-dev/)
 [![Twitter](https://img.shields.io/badge/Twitter-@AminulIsla65775-000000?style=for-the-badge&logo=x)](https://x.com/AminulIsla65775)
 
-**[📖 Start the Curriculum](#-curriculum-navigation)** · **[🗺️ Learning Path](#-learning-path)** · **[🚀 Quick Start](#-quick-start)** · **[📑 Master Roadmap](./roadmap.md)** · **[✅ Verification](#-verification-appendices)**
+**[📖 Start the Curriculum](#-curriculum-navigation)** · **[🗺️ Learning Path](#-learning-path)** · **[🚀 Quick Start](#-quick-start)** · **[📑 Master Roadmap](./roadmap.md)** · **[📚 Chapter Index](./index.md)** · **[✅ Verification](#-verification-appendices)**
 
 </div>
 
@@ -37,6 +37,7 @@
 | 📊 | **[Repository at a Glance](#-repository-at-a-glance)** | Hard numbers: lectures, phases, topics, files, coverage |
 | 🗺️ | **[Learning Path](#-learning-path)** | The ten-phase route, from foundations to security |
 | 📚 | **[Curriculum Navigation](#-curriculum-navigation)** | All 31 lectures with folder links, level and phase |
+| 📑 | **[Chapter Index](./index.md)** | Every written lecture's chapters — number, title, one-line summary and a link to each `notes/` file |
 | 📖 | **[Phase Highlights](#-phase-highlights)** | Collapsible deep-dive per phase, with topic chips |
 | 🔀 | **[Where This Came From](#-where-this-came-from)** | The two source repositories and how they were merged |
 | ✅ | **[Verification Appendices](#-verification-appendices)** | The six artefacts that prove completeness |
@@ -497,6 +498,7 @@ RECORD → tick Appendix D and write down the number you measured
 ```text
 FDE-and-GenAI-Mastery/
 ├── README.md                     # ← you are here (orientation, navigation, verification)
+├── index.md                      # 📚 chapter index — every written lecture's chapters + notes links
 ├── roadmap.md                    # ⭐ THE MASTER MAP
 │   ├── Design rules · How to use · 31 lectures at a glance · Phase graph
 │   ├── Detailed breakdown        # 31 lecture cards: Goal · Topics · Build · Source · Gate
@@ -549,6 +551,7 @@ Every lecture in this repository follows the same four-part contract, so you can
 | ✅ | Master roadmap with per-lecture **Goal · Topics · Build · Source · Gate** |
 | ✅ | **6 verification appendices** (de-duplication · coverage · stack · tracker · sequence · ledger) |
 | ✅ | **35/35** source lectures/days and **235** source note files mapped — **0 duplicates** |
+| ✅ | **Lecture 01 notes written** — 8 chapters + consolidated notes, [chapter index](./index.md) and [assignment](./Lecture%2001%20-%20Introduction%20to%20FDE%20and%20AI%20History/Assignment/task.md) · *(1 of 31 lectures)* |
 | 🔜 | Your own chapter notes landing in each `notes/` folder as you progress |
 | 🔜 | Your rebuilt codebases landing in each `code/` folder as you progress |
 | 🔜 | The **capstone** system, with a metrics table and an incident/limitations statement |
