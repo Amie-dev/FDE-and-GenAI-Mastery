@@ -1295,7 +1295,7 @@ Copy this table into a scratch file (or tick it in your fork) as you go.
 | 04 | APIs, Multi-SDK & Token Economics | ✅ | ✅ | ☐ |
 | 05 | Prompt Engineering | ✅ | ✅ | ☐ |
 | 06 | Chatbots, Context & Hallucination | ✅ | ✅ | ☐ |
-| 07 | AI Streaming | ☐ | ☐ | ☐ |
+| 07 | AI Streaming | ✅ | ✅ | ☐ |
 | 08 | Tool Calling | ☐ | ☐ | ☐ |
 | 09 | Agents, Sandboxing & HITL | ☐ | ☐ | ☐ |
 | 10 | Structured Outputs | ☐ | ☐ | ☐ |

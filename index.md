@@ -20,7 +20,8 @@
 | 📚 | **[Lecture 04](#-lecture-04--llm-apis-and-multi-sdk)** | 9 chapters + consolidated notes |
 | 📚 | **[Lecture 05](#-lecture-05--prompt-engineering)** | 9 chapters + consolidated notes |
 | 📚 | **[Lecture 06](#-lecture-06--chatbots-and-context)** | 8 chapters + consolidated notes |
-| 🔜 | Lectures 07–31 | Notes not written yet — see the **[README curriculum navigation](./README.md#-curriculum-navigation)** |
+| 📚 | **[Lecture 07](#-lecture-07--ai-streaming)** | 9 chapters + consolidated notes |
+| 🔜 | Lectures 08–31 | Notes not written yet — see the **[README curriculum navigation](./README.md#-curriculum-navigation)** |
 
 ---
 
@@ -292,6 +293,55 @@ flowchart LR
     IDX --> CODE["Lecture 06 code/<br/>Basic Code + guide"]
     IDX --> ASG["Lecture 06 Assignment/task.md"]
     IDX --> RM["roadmap.md<br/>topics, build task, gate"]
+```
+
+---
+
+## 🟩 Lecture 07 — AI Streaming
+
+**Phase 2 · The Application Layer · 🟡 Intermediate · 9 chapters + 1 consolidated document**
+**Folder:** **[📂 Lecture 07 - AI Streaming](./Lecture%2007%20-%20AI%20Streaming/)** · **[📄 Roadmap: Phase 2](./roadmap.md#-phase-2--the-application-layer-talking-to-models)**
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **How LLMs Generate Text — the Root Cause of Streaming** | Generation is an **irreducibly sequential next-token loop** — tokenize → forward pass → logits → softmax → sample → append. The two phases that govern latency (**prefill** sets TTFT, **decode** sets TPS), the **KV-cache tax** on every turn, the same loop under two delivery shapes, what the training objective does *not* guarantee, and where streaming physically comes from | [📄 Chapter 01](./Lecture%2007%20-%20AI%20Streaming/notes/01_How_LLMs_Generate_Text.md) |
+| **02** | **Generation vs Delivery: Non-Streaming & Streaming Responses** | **Two independent processes** — you cannot make the model faster, but you can stop hiding its output. The buffered and streaming lifecycles side by side; the wire-level comparison; the endpoint decision framework; the **hybrid pattern**; the delivery-path taxonomy; and why streaming changes **failure semantics** (a `500` becomes impossible after the first byte) | [📄 Chapter 02](./Lecture%2007%20-%20AI%20Streaming/notes/02_Generation_vs_Delivery_Non_Streaming_and_Streaming_Responses.md) |
+| **03** | **Latency Anatomy: TTFT, ITL & Perceived Performance** | **TTFT governs perceived responsiveness; total time governs completion.** The full latency decomposition; **TTFT · ITL · TPOT · TPS** and the **reading-speed threshold** above which more TPS buys nothing; every prompt token as a **TTFT tax**; the numbers you must log; and the **client − server TTFT gap** as the one diagnostic that separates *your* stack from the model | [📄 Chapter 03](./Lecture%2007%20-%20AI%20Streaming/notes/03_Latency_Anatomy_TTFT_ITL_and_Perceived_Performance.md) |
+| **04** | **Token, Provider Chunk, Network Chunk & Byte** | **Four granularities with unstable boundaries** — tokens coalesced into deltas, deltas fragmented into network chunks, chunks split mid-character. The **UTF-8 multi-byte split** and why a per-chunk `TextDecoder` corrupts text; the only safe UI contract (**blind accumulation** + accumulate-before-split + retain-the-tail); and the **fragmentation torture test** | [📄 Chapter 04](./Lecture%2007%20-%20AI%20Streaming/notes/04_Token_Chunk_Network_and_Byte_Granularity.md) |
+| **05** | **HTTP Streaming Mechanics: Chunked, SSE & WebSockets** | Streaming is **still HTTP** — the same response with a progressive body and no `Content-Length`. Chunked transfer encoding; the exact **SSE wire grammar** and the headers that matter; **heartbeats** as comment frames; SSE vs WebSockets; raw text vs `text/event-stream`; and the **infrastructure that silently breaks streaming** (proxies, buffering, compression, idle timeouts) | [📄 Chapter 05](./Lecture%2007%20-%20AI%20Streaming/notes/05_HTTP_Streaming_Mechanics_Chunked_Encoding_SSE_and_WebSockets.md) |
+| **06** | **End-to-End Architecture & the 7 Pipeline Invariants** | **Two streams must both stay streamed** — one from the model to your service, one from your service to the user. The full pipeline and who owns each hop; the **seven verifiable invariants** (any single buffering hop silently converts the system back into a buffered one); the both-streams sequence diagram; **backpressure** and flow control; **cancellation propagation**; and naïve vs production pipelines | [📄 Chapter 06](./Lecture%2007%20-%20AI%20Streaming/notes/06_End_to_End_Streaming_Architecture_and_Pipeline_Invariants.md) |
+| **07** | **Backend: `call` vs `stream`, `Flux` & Stream Pumps** | **The return type *is* the architecture** — `String` buffers, a stream type forwards. `Flux`/`AsyncIterable` as a **conveyor belt**, not a box; why the streaming service stays deliberately tiny; the four operators that matter (**observer, not terminator**); **stream pumps, delta coalescing and backend backpressure**; error handling **before vs after the first byte**; and multi-user isolation | [📄 Chapter 07](./Lecture%2007%20-%20AI%20Streaming/notes/07_Backend_Streaming_Call_vs_Stream_Flux_and_Stream_Pumps.md) |
+| **08** | **Frontend: `fetch`, `ReadableStream` & `TextDecoder`** | **One `await response.text()` erases everything the backend built.** `await fetch()` resolves on **headers**, not on completion; `response.body.getReader()`; why a chunk is bytes and not a string; the complete `sendMessage()` flow; **one growing bubble** instead of one per chunk; auto-scroll; rich content while it is still arriving; the **Stop button** and abort semantics; performance, framework patterns and **accessibility** | [📄 Chapter 08](./Lecture%2007%20-%20AI%20Streaming/notes/08_Frontend_Streaming_Fetch_ReadableStream_TextDecoder.md) |
+| **09** | **History, Persistence & Production Hardening** | **Never store chunks as messages** — one exchange is one assistant turn. The **dual-write pattern** (stream out, buffer in); why the buffer must live on the request and not the service; **interrupted turns belong in history**; token accounting *during* a stream; persistence engineering (atomic, idempotent, ordered); the production **hardening checklist**; the metrics that catch regressions; cost, security and privacy; the testing strategy; and the **anti-pattern catalogue** | [📄 Chapter 09](./Lecture%2007%20-%20AI%20Streaming/notes/09_History_Persistence_and_Production_Hardening.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all nine chapters — executive summary, one **master diagram** plus a concept mindmap, a **cheat sheet**, **5 decision tables**, the **7 pipeline invariants**, a condensed **hardening checklist**, **20 misconceptions**, a glossary and **35 self-check questions**, with links back into the chapters for detail:
+
+👉 **[Lecture_07_Complete_Notes.md](./Lecture%2007%20-%20AI%20Streaming/notes/Lecture_07_Complete_Notes.md)**
+
+### 🧩 This lecture's other artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2007%20-%20AI%20Streaming/README.md) | ✅ |
+| Chapter index for the lecture (reading order) | [📑 index.md](./Lecture%2007%20-%20AI%20Streaming/index.md) | ✅ |
+| **Basic Code** — Express + TypeScript **streaming microservice + browser client**: 15 TypeScript files + 1 client, **9 endpoints** (`/api/health` · `/api/chat` · `/api/chat/stream` · `/api/chat/events` · `/api/conversation/:id` · `/api/metrics` · `/api/codec/decode` · `/api/codec/frames` · `/api/codec/torture`), **three transports** (buffered · raw `text/plain` · SSE), a **coalescing stream pump** with real backpressure, one generation loop with two consumers, the **four granularities** with a streaming `TextDecoder` and a leftover-buffer frame parser, the **fragmentation torture test** (10 cases, CI-shaped), **dual-write history** with interrupted turns kept, cancellation that propagates upstream, TTFT/ITL/TPS/`charsPerFrame` metrics with the **client−server TTFT gap** on screen, and **graceful shutdown** — runnable with **no API key** (OFFLINE mode) | [📂 code/Basic Code](./Lecture%2007%20-%20AI%20Streaming/code/Basic%20Code/) | ✅ |
+| Chapter-wise implementation guide (14 chapters, 00 → 13: the full file, then a block-by-block explanation) | [📘 implementations guide](./Lecture%2007%20-%20AI%20Streaming/code/Basic%20Code/implementations%20guide/) | ✅ |
+| **Production Code** — a hardened streaming service (a real broker, multi-instance fan-out, resumable streams, compression that does not break streaming) | [📂 code/](./Lecture%2007%20-%20AI%20Streaming/code/) | 🔜 to build |
+| Assignment — 9 chapter-wise question sets (**87 questions**), **27 runnable checks**, 8 in-chapter extensions, the **streaming-microservice capstone** with a **chaos hunt**, a **UTF-8 torture test wired into CI** and a **benchmark script**, plus the completion gate | [📝 Assignment/task.md](./Lecture%2007%20-%20AI%20Streaming/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L7["Lecture 07 notes<br/>9 chapters"]
+    L7 --> CN["Lecture_07_Complete_Notes.md"]
+    IDX --> CODE["Lecture 07 code/<br/>Basic Code + 14-chapter guide"]
+    IDX --> ASG["Lecture 07 Assignment/task.md"]
+    IDX --> RM["roadmap.md<br/>topics, build task, gate"]
+    CODE --> TR["3 transports<br/>buffered · raw · SSE"]
+    CODE --> PUMP["stream pump<br/>coalescing + backpressure"]
+    CODE --> CD["codec<br/>4 granularities + torture test"]
+    CODE --> DW["dual write<br/>one turn per exchange"]
 ```
 
 ---
