@@ -131,7 +131,9 @@ export function contextReach(n: number) {
     causalVisiblePairs: causal,
     bidirectionalVisiblePairs: bidirectional,
     ratio: round(bidirectional / causal, 4),
-    note: "A causal mask hides about half of the N x N score matrix - that is the price of being able to generate.",
+    note:
+      "A causal mask keeps only the lower triangle: n(n+1)/2 of the n^2 pairs, which approaches half as n grows. " +
+      "That hidden mass is the price of being able to generate.",
   };
 }
 

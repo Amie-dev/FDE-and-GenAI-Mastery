@@ -332,13 +332,20 @@ export function lectureTrace() {
  * length d_k have a dot product whose variance grows with d_k. Dividing by
  * sqrt(d_k) puts the variance back at ~1, which is what keeps the softmax from
  * saturating (a saturated softmax is a near-one-hot row whose gradient is ~0).
+ *
+ * The components are drawn with UNIT variance, so the claim can be checked
+ * literally: Var(Q . K) ~= d_k and Var(Q . K / sqrt(d_k)) ~= 1. (Uniform [-1, 1]
+ * components would have variance 1/3, which is why they are multiplied by
+ * sqrt(3) below - otherwise the measurement would come out at d_k/9 and the
+ * arithmetic would look wrong for a reason that has nothing to do with attention.)
  */
 export function scalingEffect(dK: number, samples = 200, seed = 7) {
   const next = rng(seed);
+  const unitVariance = () => (next() * 2 - 1) * Math.sqrt(3); // Var = 1
   const raw: number[] = [];
   for (let i = 0; i < samples; i++) {
-    const a = Array.from({ length: dK }, () => next() * 2 - 1);
-    const b = Array.from({ length: dK }, () => next() * 2 - 1);
+    const a = Array.from({ length: dK }, unitVariance);
+    const b = Array.from({ length: dK }, unitVariance);
     raw.push(dot(a, b));
   }
 
@@ -352,8 +359,11 @@ export function scalingEffect(dK: number, samples = 200, seed = 7) {
     divisor: round(divisor),
     rawVariance: round(variance),
     scaledVariance: round(variance / dK),
+    expectedRawVariance: dK,
+    expectedScaledVariance: 1,
     claim: "Var(Q . K) ~= d_k, so Var(Q . K / sqrt(d_k)) ~= 1",
-    measured: `raw ${round(variance)} -> scaled ${round(variance / dK)}`,
+    measured: `raw ${round(variance)} (expected ${dK}) -> scaled ${round(variance / dK)} (expected 1)`,
+    linearInDK: Math.abs(variance - dK) / dK < 0.35,
     gradientNote:
       "A softmax whose inputs have variance d_k is nearly one-hot, and its gradient is nearly zero. " +
       "The scaling is a training-stability fix, not a normalisation trick.",

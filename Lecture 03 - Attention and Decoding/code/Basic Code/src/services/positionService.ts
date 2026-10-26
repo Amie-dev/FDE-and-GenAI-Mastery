@@ -36,17 +36,25 @@ export function addPosition(embeddings: Matrix, positional: Matrix): Matrix {
 /**
  * §09.2 - the linear-offset property, measured instead of asserted:
  * P_pos . P_(pos+k) = sum_i cos(w_i k), which depends only on k.
- * If every number in the array is the same, the property holds.
+ *
+ * The check uses a TOLERANCE, not exact equality: each sinusoidal component is
+ * rounded to 6 decimals, so two dot products that are mathematically identical
+ * can differ in the last digit. `spread` is returned so the size of that gap is
+ * visible rather than hidden behind a boolean.
  */
 export function linearOffsetProperty(dModel: number, k: number, positions: number[]) {
   const shifted = positions.map((position) => position + k);
   const encoded = sinusoidal([...positions, ...shifted], dModel);
   const values = positions.map((_, i) => round(dot(encoded[i], encoded[positions.length + i]), 6));
+  const spread = round(Math.max(...values) - Math.min(...values), 6);
   return {
     k,
     values,
-    dependsOnlyOnOffset: new Set(values).size === 1,
-    note: "the same rotation works at every position, which is how an absolute encoding delivers relative distance",
+    spread,
+    dependsOnlyOnOffset: spread < 1e-4,
+    note:
+      "the same rotation works at every position, which is how an absolute encoding delivers relative distance. " +
+      "The values agree to ~1e-6; the residual gap is the 6-decimal rounding in the encoder, not the property failing.",
   };
 }
 
@@ -107,12 +115,13 @@ export function alibiBias(n: number, nHeads: number): Matrix {
 }
 
 /** §09.6 - the geometry of masks. One mechanism, two axes: positions and vocabulary. */
-export function maskGeometry(n: number, kind: MaskKind, window = 3) {
-  const mask = maskMatrix(n, kind, { window });
+export function maskGeometry(n: number, kind: MaskKind, window = 3, padCount = 1) {
+  const mask = maskMatrix(n, kind, { window, padCount });
   const allowed = mask.flat().reduce((sum, value) => sum + value, 0);
   return {
     kind,
     window: kind === "sliding" ? window : null,
+    padCount: kind === "padding" ? padCount : null,
     mask,
     allowedPairs: allowed,
     totalPairs: n * n,

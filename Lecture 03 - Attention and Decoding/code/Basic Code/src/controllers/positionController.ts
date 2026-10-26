@@ -41,7 +41,9 @@ export const encode = asyncHandler((req: Request, res: Response) => {
     },
     alibi: {
       slopes: position.alibiSlopes(shape.nHeads),
-      biasHeadZero: position.alibiBias(tokens.length, shape.nHeads),
+      biasHeadZero: position
+        .alibiBias(tokens.length, shape.nHeads)
+        .map((row) => row.map((value) => (value === -Infinity ? "-Infinity" : value))),
       note: "score_ij = Q_i . K_j / sqrt(d_k) - m_h (i - j): a distance penalty instead of a position vector.",
     },
     schemes: position.schemes(),
