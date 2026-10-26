@@ -32,8 +32,8 @@ self-check questions.
 | `notes/01…09_*.md` | ✅ 9 chapters |
 | `notes/Lecture_07_Complete_Notes.md` | ✅ consolidated revision layer |
 | `index.md` | ✅ chapter index with reading paths |
-| `code/` (Basic + Production) | 🔜 not started |
-| `Assignment/task.md` | 🔜 not written |
+| `code/` (Basic + Production) | 🟡 Basic Code ✅ · Production 🔜 |
+| `Assignment/task.md` | ✅ written (9 chapter parts · 27 checks · capstone · gate) |
 | The gate | ☐ render a stream with correct UTF-8 handling and cancel it mid-flight without leaking the connection |
 
 ## 📁 Layout
