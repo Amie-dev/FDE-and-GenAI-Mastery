@@ -83,19 +83,40 @@ export const decodeStreaming = (chunks: Uint8Array[]): string => {
   return text + decoder.decode(); // ⬅ flush whatever the decoder still holds
 };
 
-/** Chapter 05 §05.3.1 — a real SSE body: `data:` lines, frames terminated by a blank line. */
+/**
+ * Chapter 05 §05.3.1 — a real SSE body: `data:` lines, frames terminated by a blank line.
+ *
+ * Deltas are cut on CHARACTER boundaries, because the server always writes whole
+ * characters. The byte-level damage happens later, in the network — which is what
+ * `fragment()` simulates.
+ */
 export const toSseBody = (payload: string, deltaSize = 12): string => {
-  const deltas = fragment(new TextEncoder().encode(payload), deltaSize).map((bytes) =>
-    new TextDecoder().decode(bytes),
-  );
+  const chars = [...payload];
+  const deltas: string[] = [];
+  for (let index = 0; index < chars.length; index += deltaSize) {
+    deltas.push(chars.slice(index, index + deltaSize).join(''));
+  }
   return `${deltas.map((text) => `data: ${text}\n\n`).join('')}data: [DONE]\n\n`;
 };
 
-/** Chapter 05 §05.3.1 — what a `data:` frame carries, or null if it is not text. */
+/**
+ * Chapter 05 §05.3.1 — what a `data:` frame carries, or null if it is not text.
+ *
+ * The one subtlety worth memorising: SSE removes **exactly one** space after the
+ * colon. Using `trimStart()` here would silently delete a payload that *starts*
+ * with a space — a bug this lab's own torture test caught (see the guide).
+ */
 const frameText = (frame: string): string | null => {
   const lines = frame.split('\n').filter((line) => line.startsWith('data:'));
   if (lines.length === 0) return null; // a comment frame (`: keep-alive`) — ignore it
-  const payload = lines.map((line) => line.slice(5).trimStart()).join('\n');
+
+  const payload = lines
+    .map((line) => {
+      const value = line.slice(5);
+      return value.startsWith(' ') ? value.slice(1) : value;
+    })
+    .join('\n');
+
   return payload === '[DONE]' ? null : payload; // the sentinel is NOT text
 };
 

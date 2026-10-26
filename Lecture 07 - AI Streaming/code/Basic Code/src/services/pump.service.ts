@@ -34,10 +34,17 @@ export interface PumpResult {
  * Chapter 07 §07.6 — never ignore the backpressure signal.
  * Ignoring it grows the response buffer, clumps delivery, and lets one slow
  * client pin memory on the server.
+ *
+ * Chapter 06 §06.6 — but a "wait for drain" that only listens for `drain` LEAKS
+ * when the client disappears: the socket is gone, `drain` never fires, and the
+ * stream never cleans up. So we race `drain` against `close`. (This lab's own
+ * cancellation test caught exactly that — see the guide.)
  */
 export const writeWithBackpressure = async (res: Response, text: string): Promise<void> => {
+  if (res.writableEnded || res.destroyed) return; // the client is already gone
+
   const ok = res.write(text);
-  if (!ok) await once(res, 'drain');
+  if (!ok) await Promise.race([once(res, 'drain'), once(res, 'close')]);
 };
 
 /**
