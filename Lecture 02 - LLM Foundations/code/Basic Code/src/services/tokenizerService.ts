@@ -17,10 +17,18 @@ const WORD_PIECES: string[] = [
   "▁Aminul", "▁automatic", "▁Automatic", "▁programming", "▁love", "▁straw",
   "▁low", "▁bug", "▁python", "▁truncates", "▁because", "▁it", "▁works",
   "▁word", "▁order", "▁matters",
+  // ...plus the words the demo prompts use, so the token counts look realistic.
+  "▁You", "▁are", "▁a", "▁support", "▁agent", "▁Answer", "▁only", "▁from",
+  "▁policy", "▁below", "▁allowed", "▁within", "▁days", "▁for", "▁damaged",
+  "▁items", "▁delivery", "▁My", "▁arrived", "▁ago", "▁Can", "▁get", "▁refund",
+  "▁fine", "▁hi", "▁how", "▁help", "▁late", "▁user", "▁assistant",
 ];
 
 /** Continuation pieces - the "rare words decompose" half (§04.4). */
-const SUBWORD_PIECES: string[] = ["▁", "ally", "ically", "est", "er", "ing", "auto", "matic", "program", "ming", "berry"];
+const SUBWORD_PIECES: string[] = [
+  "▁", "ally", "ically", "est", "er", "ing", "auto", "matic", "program", "ming", "berry",
+  "▁.", "▁,", "▁!", "▁?", // " ." is one token, exactly as a real vocabulary has it
+];
 
 /** The last resort: every single character. This is what keeps OOV out. */
 const CHARS: string[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?'\"-_:;()[]/".split("");
@@ -49,35 +57,45 @@ export function normalize(text: RawText): RawText {
   return text.normalize("NFKC").replace(/\s+/g, " ").trim();
 }
 
+/** One step of the walk: the piece, and the span of the original text it covers. */
+type Piece = { token: TokenStr; start: number; end: number };
+
 /**
  * Stage 2 - tokenize. Greedy longest match, exactly like WordPiece encoding
- * (§04.4): try the longest piece that fits, fall back to one character.
+ * (§04.4): take the longest piece that fits, else one character, else <UNK>.
  */
-export function tokenize(text: RawText): TokenStr[] {
+function walk(text: RawText): Piece[] {
   const normalised = normalize(text);
   if (normalised.length === 0) return [];
 
   // Every space becomes "▁", so whitespace belongs to the token (§02.8, invariant 4).
   const marked = `▁${normalised.replace(/ /g, "▁")}`;
-  const tokens: TokenStr[] = [];
+  const pieces: Piece[] = [];
   let cursor = 0;
 
   while (cursor < marked.length) {
-    const piece = longestMatch(marked.slice(cursor));
-    tokens.push(piece);
-    cursor += piece.length;
+    const { token, consumed } = longestMatch(marked.slice(cursor));
+    // walk() works on "▁" + text, so marked index i is original index i - 1.
+    // The leading "▁" of the first token is virtual, which is why that span starts at 0.
+    pieces.push({ token, start: Math.max(0, cursor - 1), end: cursor + consumed - 1 });
+    cursor += consumed; // consumed counts INPUT characters, never the length of "<UNK>"
   }
 
-  return tokens;
+  return pieces;
 }
 
-/** The longest vocabulary entry that fits here, or a single character, or <UNK>. */
-function longestMatch(rest: string): TokenStr {
+/** The longest vocabulary entry that fits here, or one character, or <UNK>. */
+function longestMatch(rest: string): { token: TokenStr; consumed: number } {
   for (let length = Math.min(MAX_PIECE_LENGTH, rest.length); length > 0; length--) {
     const candidate = rest.slice(0, length);
-    if (ID_BY_PIECE.has(candidate)) return candidate;
+    if (ID_BY_PIECE.has(candidate)) return { token: candidate, consumed: length };
   }
-  return SPECIAL.UNK; // only reachable for characters outside the vocabulary
+  return { token: SPECIAL.UNK, consumed: 1 }; // one unknown character -> one <UNK>
+}
+
+/** Stage 2 as a plain list of token strings. */
+export function tokenize(text: RawText): TokenStr[] {
+  return walk(text).map((piece) => piece.token);
 }
 
 /** Stage 3 - the vocabulary lookup: token strings become integer ids. */
@@ -87,21 +105,13 @@ export function toIds(tokens: TokenStr[]): TokenId[] {
 
 /** The forward pipeline of §02.6, with the offsets that §03.10 asks for. */
 export function encode(text: RawText): Encoded {
-  const tokens = tokenize(text);
-  const ids: TokenId[] = [];
-  const offsets: [number, number][] = [];
-  let cursor = 0;
-
-  for (const token of tokens) {
-    // tokenize() works on "▁" + text, so marked index i is original index i - 1.
-    // The first "▁" is virtual, which is why the span starts at 0 there.
-    const start = Math.max(0, cursor - 1);
-    offsets.push([start, cursor + token.length - 1]);
-    cursor += token.length;
-    ids.push(idOf(token));
-  }
-
-  return { tokens, ids, offsets, specialTokensMask: tokens.map(() => false) };
+  const pieces = walk(text);
+  return {
+    tokens: pieces.map((piece) => piece.token),
+    ids: pieces.map((piece) => idOf(piece.token)),
+    offsets: pieces.map((piece) => [piece.start, piece.end] as [number, number]),
+    specialTokensMask: pieces.map(() => false),
+  };
 }
 
 /**

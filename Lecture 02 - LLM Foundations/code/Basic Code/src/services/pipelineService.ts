@@ -19,6 +19,7 @@ import { SPECIAL, VOCAB_SIZE, decode, encode, idOf, pieceOf, tokenize, toIds } f
 /** The entire training corpus of our stand-in model. */
 export const DEMO_CORPUS: string[] = [
   "the capital of india is delhi .",
+  "the capital of india is delhi .", // twice, so the distribution comes out PEAKED (§01.6)
   "the capital of france is paris .",
   "the cat sat on the mat .",
   "hello i am aminul .",

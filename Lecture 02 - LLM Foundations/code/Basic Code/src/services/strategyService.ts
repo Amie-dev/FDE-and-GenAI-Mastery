@@ -14,6 +14,7 @@ import { normalize, tokenize } from "./tokenizerService";
 const KNOWN_WORDS = new Set([
   "i", "love", "programming", "the", "cat", "sat", "on", "mat", "capital", "of",
   "india", "is", "delhi", "a", "bug", "because", "it", "works", "hello", "am",
+  ",", ".", "!", "?", // punctuation is a token, not a word: it should not be reported as OOV
 ]);
 
 const PUNCTUATION = /([.,!?;:'"()[\]])/g;

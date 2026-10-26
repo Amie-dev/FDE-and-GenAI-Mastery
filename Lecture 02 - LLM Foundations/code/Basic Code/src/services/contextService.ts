@@ -14,7 +14,11 @@ export type Budget = { window: number; outputReserve: number };
 
 export type FittedPart = PromptPart & { truncated: boolean; dropped: boolean; reason: string | null };
 
-/** Priority order from §08.3. Note where "user" sits: the question never goes first. */
+/**
+ * Priority order from §08.3, highest first: instructions and tool schemas are kept
+ * before the conversation, and history is the first thing to go. The user's own
+ * message still outranks retrieved context - drop a document before the question.
+ */
 const PRIORITY: PromptPart["name"][] = ["system", "tools", "user", "context", "history"];
 
 export type FitResult = {
