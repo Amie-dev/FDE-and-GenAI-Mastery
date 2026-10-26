@@ -47,7 +47,7 @@
 | Lecture workspace / checklist | [📄 README.md](./README.md) | ✅ |
 | Generation prompt (git-ignored) | [📄 prompt.md](./prompt.md) | ✅ |
 | Chapter notes | [📂 notes/](./notes/) | ✅ |
-| Basic Code | [📂 code/](./code/) | 🔜 to build |
+| Basic Code | [📂 code/Basic Code/](./code/Basic%20Code/) · [📖 implementation guide](./code/Basic%20Code/implementations%20guide/00_Overview_and_File_Structure.md) | ✅ |
 | Production Code | [📂 code/](./code/) | 🔜 to build |
 | Lecture assignment | [📝 Assignment/task.md](./Assignment/task.md) | 🔜 to build |
 | Roadmap — Lecture 06 topics, build & gate | [🗺️ ../roadmap.md](../roadmap.md) | ✅ |
