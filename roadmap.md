@@ -1291,7 +1291,7 @@ Copy this table into a scratch file (or tick it in your fork) as you go.
 | :---: | :--- | :---: | :---: | :---: |
 | 01 | FDE Introduction & AI History | ✅ | ☐ | ☐ |
 | 02 | LLM Foundations | ✅ | ✅ | ☐ |
-| 03 | Attention & Decoding | ☐ | ☐ | ☐ |
+| 03 | Attention & Decoding | ✅ | ✅ | ☐ |
 | 04 | APIs, Multi-SDK & Token Economics | ☐ | ☐ | ☐ |
 | 05 | Prompt Engineering | ☐ | ☐ | ☐ |
 | 06 | Chatbots, Context & Hallucination | ☐ | ☐ | ☐ |
