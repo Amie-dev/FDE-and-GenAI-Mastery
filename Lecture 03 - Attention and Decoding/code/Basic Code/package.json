@@ -1,0 +1,23 @@
+{
+  "name": "lecture-03-attention-and-decoding-basic-code",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Basic Express + TypeScript code for Lecture 03 (Attention and Decoding): Q/K/V, scaled dot-product attention by hand, multi-head attention, the transformer block, logits, softmax and decoding strategies.",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.2"
+  }
+}
