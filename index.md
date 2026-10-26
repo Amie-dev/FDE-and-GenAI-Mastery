@@ -17,7 +17,8 @@
 | 📚 | **[Lecture 01](#-lecture-01--introduction-to-fde-and-ai-history)** | 8 chapters + consolidated notes |
 | 📚 | **[Lecture 02](#-lecture-02--llm-foundations)** | 8 chapters + consolidated notes |
 | 📚 | **[Lecture 03](#-lecture-03--attention-and-decoding)** | 9 chapters + consolidated notes |
-| 🔜 | Lectures 04–31 | Notes not written yet — see the **[README curriculum navigation](./README.md#-curriculum-navigation)** |
+| 📚 | **[Lecture 04](#-lecture-04--llm-apis-and-multi-sdk)** | 9 chapters + consolidated notes |
+| 🔜 | Lectures 05–31 | Notes not written yet — see the **[README curriculum navigation](./README.md#-curriculum-navigation)** |
 
 ---
 
@@ -128,27 +129,6 @@ flowchart LR
 | **08** | **Decoding Strategies & Sampling Controls** | The model **proposes**, the decoder **selects**; greedy, beam and sampling; **temperature** (dividing the logits — it changes the gaps, never the ranking); top-k, top-p (nucleus) and min-p; penalties, stop conditions and length limits; the **fixed order of operations**; determinism and seeds; why ChatGPT streams; and parameter recipes per task | [📄 Chapter 08](./Lecture%2003%20-%20Attention%20and%20Decoding/notes/08_Decoding_Strategies_and_Sampling_Controls.md) |
 | **09** | **Position, Masking & Attention Geometry** | Why self-attention is permutation invariant; sinusoidal encodings and the **linear-offset property**; the four positional schemes compared; **RoPE** (rotation instead of addition) and context extension; **ALiBi** (a distance penalty, no positional vector); the geometry of masks — one mechanism, **two axes**; and the runtime consequences: "lost in the middle", chunk order, advertised vs usable context | [📄 Chapter 09](./Lecture%2003%20-%20Attention%20and%20Decoding/notes/09_Position_Masking_and_Attention_Geometry.md) |
 
-## ➕ Adding the next lecture
-
-When a lecture's notes are written, append a section above using the same shape — **do not restructure
-the existing ones**:
-
-```markdown
-## 🟦 Lecture NN — <Title>
-
-**Phase N · <Level> · X chapters**
-**Folder:** **[📂 Lecture NN - <Title>](./Lecture%20NN%20-%20<Title>/)**
-
-| # | Chapter | One-line summary | Notes |
-| :---: | :--- | :--- | :--- |
-| **01** | **<Chapter title>** | <one line> | [📄 Chapter 01](./Lecture%20NN%20-%20<Title>/notes/01_<file>.md) |
-```
-
-Then tick the lecture in **[roadmap.md → Appendix D](./roadmap.md#-appendix-d--progress-tracker)**
-(`Notes written` · `Code built` · `Gate passed`).
-
-
-
 ### 📄 Consolidated notes
 
 A single document combining all nine chapters — executive summary, cheat sheet (formulas, shapes, the
@@ -180,3 +160,66 @@ flowchart LR
 
 ---
 
+## 🟩 Lecture 04 — LLM APIs and Multi-SDK
+
+**Phase 2 · The Application Layer · 🟢 Beginner · 9 chapters + 1 consolidated document**
+**Folder:** **[📂 Lecture 04 - LLM APIs and Multi-SDK](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/)** · **[📄 Roadmap: Phase 2](./roadmap.md#-phase-2--the-application-layer-talking-to-models)**
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **GenAI Applications vs Raw LLMs — the Engine vs Car Model** | Why typing into a web chat is not "talking to a neural network"; the **engine vs car** analogy (the model is the capability, your application is the vehicle); raw LLM vs tool-augmented application in two scenarios; the knowledge-cutoff problem; the **cardinal rule** — *the LLM only knows what reaches the LLM* — with its responsibility matrix; web UI vs API; what this means for an FDE | [📄 Chapter 01](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/notes/01_GenAI_Applications_vs_Raw_LLMs_The_Engine_vs_Car_Model.md) |
+| **02** | **The LLM API Protocol — HTTP, the Four Components & Postman** | It is just an HTTPS `POST` with a JSON body; the **four invariant components** at transport level (endpoint · authentication · model · input) and at payload level (`model` · `messages` · `params` · optional `tools`); the request lifecycle; the **Postman/curl prototype rule** — prove the wire before writing service code; the status-code taxonomy (400 · 401 · 404 · 413 · 429 · 5xx); the enterprise support-ticket triage case study | [📄 Chapter 02](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/notes/02_The_LLM_API_Protocol_HTTP_Components_and_Postman.md) |
+| **03** | **Message Roles & Prompt Hygiene** | Statelessness — there is no memory, only re-sending (and re-paying); the five roles and their **privilege hierarchy**; chat templates and control tokens; system instructions vs user prompts; the **concatenation anti-pattern** → prompt injection and goal hijacking; reconstructing multi-turn history and the truncation rules; the pre-ship hygiene checklist; role support across providers | [📄 Chapter 03](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/notes/03_Message_Roles_and_Prompt_Hygiene.md) |
+| **04** | **Token Economics — Prefill vs Decode, Metadata & Cost** | The response envelope (content vs metadata); **prefill vs decode** and why the output half is the expensive one; the cost formula with three worked examples; **TTFT and ITL** latency; context-window saturation vs the bill; turning metadata into telemetry; the 10-page incident-report case study; unit economics and the decisions it unlocks | [📄 Chapter 04](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/notes/04_Token_Economics_Prefill_Decode_Metadata_and_Cost.md) |
+| **05** | **Token Counting & Context Budgeting with Tokenizers** | BPE in four steps; the tokenizer/vocabulary comparison and the **multilingual token tax**; `tiktoken` in practice; the character heuristics and which way their error is dangerous; the **budgeting algorithm** (reserve output, then system, then user, then history oldest-first) and the three truncation strategies; a worked 128k budget; reconciling the local estimate against the provider's `usage` | [📄 Chapter 05](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/notes/05_Token_Counting_and_Context_Budgeting_with_Tokenizers.md) |
+| **06** | **Rate Limits, Quotas, Throttling & Retry/Backoff** | The two ceilings — **RPM vs TPM** — and why RPM alone is a trap; the wider quota landscape; reading a `429` correctly (`Retry-After` and the rate-limit headers); **exponential backoff with jitter** and which failures are actually retryable; client-side protections; idempotency; the **degradation ladder**; the metrics that predict an outage before it happens | [📄 Chapter 06](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/notes/06_Rate_Limits_Quotas_Throttling_and_Retry_Backoff.md) |
+| **07** | **Multi-SDK Integration — OpenAI · Gemini · Groq · Mistral · Claude · Ollama** | What an SDK is — and is not; the four access layers and what each one costs you; the provider-by-provider **naming trap** (`messages` vs `contents`, `assistant` vs `model`, `max_tokens` vs `maxOutputTokens`); response shapes compared; the **adapter pattern** — one interface, many providers; OpenAI-compatible base URLs; **Ollama** local vs hosted; routing, fallback and cost control; testing across providers | [📄 Chapter 07](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/notes/07_Multi_SDK_Integration_OpenAI_Gemini_Groq_Mistral_Anthropic_Ollama.md) |
+| **08** | **Building the Service — Express, TypeScript, Config, Singletons & Telemetry** | Why the backend owns the AI call; the project layout and the ESM + TypeScript toolchain; the layered architecture and what each layer must *not* know; **Zod-validated configuration** and fail-fast boot; client singletons and connection pooling; request validation before you spend; the service layer; routes, health checks and **error mapping**; telemetry and structured logging; secrets hygiene and the key-rotation runbook | [📄 Chapter 08](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/notes/08_Building_the_Service_Express_TypeScript_Config_Singletons_and_Telemetry.md) |
+| **09** | **AI Slop & Model Collapse** | Two terms side by side — one is your output *today*, the other is the model *over time*; AI slop's economic engine and its in-product symptoms; **model collapse** as a recursive training loop, and what specifically degrades; the honest caveats; the four mitigation families (human review · high-quality data · guardrails · continuous evaluation); the anti-slop checklist for your own pipeline | [📄 Chapter 09](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/notes/09_AI_Slop_and_Model_Collapse.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all nine chapters — executive summary, a ten-part cheat sheet (request shape, transport components, roles, cost and latency formulas, prefill vs decode, token estimates, status codes, provider call signatures, environment variables, the telemetry record), **six decision tables**, **25 misconceptions**, a ~35-term glossary and **20 self-check questions**, with links back into the chapters for detail:
+
+👉 **[Lecture_04_Complete_Notes.md](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/notes/Lecture_04_Complete_Notes.md)**
+
+### 🧩 This lecture's other artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/README.md) | ✅ |
+| Chapter index for the lecture (reading order) | [📑 index.md](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/index.md) | 🔜 to write |
+| **Basic Code** — Express + TypeScript service that calls a **real** provider: 12 files, 3 endpoints (`/api/health` · `/api/chat` · `/api/tokens/count`), one `Provider` interface across 5 providers, Zod-validated config, a context-budget guard, retry with backoff + jitter, and a cost / slop / telemetry ledger on every call | [📂 code/Basic Code](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/code/Basic%20Code/) | ✅ |
+| Chapter-wise implementation guide (10 chapters, 00 → 09: the full file, then a block-by-block explanation) | [📘 implementations guide](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/code/Basic%20Code/implementations%20guide/) | ✅ |
+| **Production Code** — a defended serving layer (client-side throttling, per-caller cost ceilings, conformance tests, structured logging) | [📂 code/](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/code/) | 🔜 to build |
+| Assignment — 9 chapter-wise question sets, 6 code extensions, the Support Ticket Summarizer + three-provider conformance capstone, and the completion gate | [📝 Assignment/task.md](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L4["Lecture 04 notes<br/>9 chapters"]
+    L4 --> CN["Lecture_04_Complete_Notes.md"]
+    IDX --> CODE["Lecture 04 code/<br/>Basic Code + guide"]
+    IDX --> ASG["Lecture 04 Assignment/task.md"]
+    IDX --> RM["roadmap.md<br/>topics, build task, gate"]
+```
+
+---
+
+## ➕ Adding the next lecture
+
+When a lecture's notes are written, append a section above using the same shape — **do not restructure
+the existing ones**:
+
+```markdown
+## 🟦 Lecture NN — <Title>
+
+**Phase N · <Level> · X chapters**
+**Folder:** **[📂 Lecture NN - <Title>](./Lecture%20NN%20-%20<Title>/)** 
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **<Chapter title>** | <one line> | [📄 Chapter 01](./Lecture%20NN%20-%20<Title>/notes/01_<file>.md) |
+```
+
+Then tick the lecture in **[roadmap.md → Appendix D](./roadmap.md#-appendix-d--progress-tracker)**
+(`Notes written` · `Code built` · `Gate passed`).

@@ -762,7 +762,7 @@ flowchart LR
     BLOCK --> LM["LM head<br/>chapter 07"]
     LM --> DIST["logits to distribution"]
     DIST --> DEC["decode: temperature, top-k, top-p, penalties<br/>chapter 08"]
-    DEC -->|\"append and repeat\"| BLOCK
+    DEC -->|"append and repeat"| BLOCK
 ```
 
 ### B1 — Basic Code: run it, then prove you understand it

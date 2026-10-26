@@ -551,9 +551,10 @@ Every lecture in this repository follows the same four-part contract, so you can
 | ✅ | Master roadmap with per-lecture **Goal · Topics · Build · Source · Gate** |
 | ✅ | **6 verification appendices** (de-duplication · coverage · stack · tracker · sequence · ledger) |
 | ✅ | **35/35** source lectures/days and **235** source note files mapped — **0 duplicates** |
-| ✅ | **Lectures 01–03 notes written** — 8 + 8 + 9 chapters with consolidated notes, a [chapter index](./index.md) and an assignment each · *(3 of 31 lectures)* |
+| ✅ | **Lectures 01–04 notes written** — 8 + 8 + 9 + 9 chapters with consolidated notes, a [chapter index](./index.md) and an assignment each · *(4 of 31 lectures)* |
 | ✅ | **Lecture 02 code built** — [Basic Code](./Lecture%2002%20-%20LLM%20Foundations/code/Basic%20Code/) with the real `tiktoken` tokenizer and a 10-chapter implementation guide |
 | ✅ | **Lecture 03 code built** — [Basic Code](./Lecture%2003%20-%20Attention%20and%20Decoding/code/Basic%20Code/) with 15 attention, block, logits, decoding and position endpoints and an 11-chapter implementation guide |
+| ✅ | **Lecture 04 code built** — [Basic Code](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/code/Basic%20Code/) calling a **real** provider: 3 endpoints, one `Provider` interface across 5 providers, a context-budget guard, retry with backoff + jitter, a cost/slop/telemetry ledger per call and a 10-chapter implementation guide |
 | 🔜 | Your own chapter notes landing in each `notes/` folder as you progress |
 | 🔜 | Your rebuilt codebases landing in each `code/` folder as you progress |
 | 🔜 | The **capstone** system, with a metrics table and an incident/limitations statement |
