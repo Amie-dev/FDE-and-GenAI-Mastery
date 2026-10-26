@@ -1,13 +1,14 @@
 import { config } from "../config/config";
 import type { Granularity } from "../types";
-import { normalize, tokenize } from "./tokenizerService";
+import { tokenize } from "./tokenizerService";
 
 /**
  * Chapter 03 - the three granularities, run on the same sentence.
  *
  *   word    : smallest sequence, enormous vocabulary, OOV destroys meaning (§03.2)
  *   char    : no OOV at all, but far more positions and O(N^2) attention (§03.3)
- *   subword : the equilibrium every modern LLM ships (§03.5)
+ *   subword : the equilibrium every modern LLM ships (§03.5) - and the only row here
+ *             that is measured with a real tokenizer instead of simulated
  */
 
 /** Words we pretend the word-level vocabulary contains. Anything else is OOV. */
@@ -21,7 +22,8 @@ const PUNCTUATION = /([.,!?;:'"()[\]])/g;
 
 /** Word level: split on spaces, then give punctuation its own token. */
 export function tokenizeWord(text: string): string[] {
-  return normalize(text)
+  return text
+    .trim()
     .split(" ")
     .flatMap((word) => word.replace(PUNCTUATION, " $1 ").split(" "))
     .filter((piece) => piece.length > 0);
@@ -29,12 +31,12 @@ export function tokenizeWord(text: string): string[] {
 
 /** Character level: every code point is a token, spaces included. */
 export function tokenizeChar(text: string): string[] {
-  return [...normalize(text)];
+  return [...text];
 }
 
-/** Subword: the vocabulary + greedy longest match from tokenizerService (§03.5). */
-export function tokenizeSubword(text: string): string[] {
-  return tokenize(text);
+/** Subword: the real BPE encoding, not an imitation (§03.5). */
+export function tokenizeSubword(text: string, input?: string): string[] {
+  return tokenize(text, input);
 }
 
 export type StrategyResult = {
@@ -49,7 +51,7 @@ export type StrategyResult = {
 };
 
 /** Run all three granularities and compare their sequence length and attention cost. */
-export function compare(text: string): { text: string; dModel: number; results: StrategyResult[]; note: string } {
+export function compare(text: string, input?: string) {
   const wordTokens = tokenizeWord(text);
   const oov = wordTokens.filter((token) => !KNOWN_WORDS.has(token.toLowerCase()));
 
@@ -69,7 +71,7 @@ export function compare(text: string): { text: string; dModel: number; results: 
       tokensWithUnk: wordTokens.map((token) => (oov.includes(token) ? "<UNK>" : token)),
     }),
     build("char", tokenizeChar(text)),
-    build("subword", tokenizeSubword(text)),
+    build("subword", tokenizeSubword(text, input)),
   ];
 
   const subwordOps = results[2].attentionOps;
@@ -78,9 +80,9 @@ export function compare(text: string): { text: string; dModel: number; results: 
   }
 
   return {
-    text: normalize(text),
+    text,
     dModel: config.dModel,
     results,
-    note: "Same text, three prices. Subword is the baseline every ratio is measured against.",
+    note: "Same text, three prices. The subword row is a real BPE encoding; word and char are simulated so the comparison is visible.",
   };
 }

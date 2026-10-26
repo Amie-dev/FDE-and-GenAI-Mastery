@@ -510,7 +510,7 @@ npm run build && npm start   # compiled JS in dist/
 
 | # | Requirement | Endpoint | From |
 | :---: | :--- | :--- | :--- |
-| B1.1 | Normalise → tokenize → ids, with **offsets** and a special-token mask; `decode` reverses it | `POST /api/tokenizer/encode` · `/decode` | [02.5–02.9](../notes/02_The_Text_Pipeline_and_Why_Token_IDs_Are_Labels.md) |
+| B1.1 | Normalise → tokenize → ids, with **offsets** and a special-token mask; `decode` reverses it, and `compare` runs two tokenizers on one text | `POST /api/tokenizer/encode` · `/decode` · `/compare` | [02.5–02.9](../notes/02_The_Text_Pipeline_and_Why_Token_IDs_Are_Labels.md) |
 | B1.2 | The same sentence through **three granularities**, with the $N^2$ attention multiplier | `POST /api/strategies/compare` | [03.6, 03.9](../notes/03_Tokenization_Strategies_Word_Character_Subword.md) |
 | B1.3 | **Train** BPE from a corpus (count → merge → repeat) and show the merge list in order | `POST /api/bpe/train` | [04.2, 04.10](../notes/04_BPE_WordPiece_SentencePiece_and_Vocabulary.md) |
 | B1.4 | **Encode** with a merge list, replaying it in learned order, with the end-of-word marker | `POST /api/bpe/encode` | [04.8, 04.10](../notes/04_BPE_WordPiece_SentencePiece_and_Vocabulary.md) |
@@ -648,6 +648,12 @@ The roadmap's build task for this lecture is:
 
 > **Build:** a script that calls a tokenizer and prints token ids, token boundaries and token counts for
 > the same sentence across **2 providers**.
+
+> **Already built, and yours to reuse.** `code/Basic Code` ships this comparison as
+> `POST /api/tokenizer/compare` — `{"text": "...", "models": ["gpt-4o", "cl100k_base"]}` — with an `exact`
+> flag per row and the first five pieces and ids. Part C is the **script, the table and the findings**:
+> either call that endpoint, or import `js-tiktoken` directly in `code/Production Code/cli/token-report.ts`.
+> The guide's chapter 03 walks through how the pieces are reconstructed from the byte tables.
 
 That is the deliverable. It is small on purpose — the value is in the **numbers**, and in the three
 findings that only come out when you compare providers on the same text.

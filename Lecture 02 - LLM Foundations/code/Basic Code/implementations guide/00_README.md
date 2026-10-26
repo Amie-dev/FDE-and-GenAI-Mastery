@@ -10,9 +10,10 @@
 
 The code in `../src` is deliberately small: **8 services, 8 thin controllers, 1 router, 2 middleware
 files, 1 config, 1 types file.** Nothing is hidden behind a framework, and there is no database, no
-external API and no LLM SDK — because this lecture is not about calling a model. It is about the layer
-*before* the model: turning text into tokens, counting them, turning them into vectors, injecting order,
-and staying inside a budget.
+external API and no LLM SDK. The one real dependency is the tokenizer itself — **`js-tiktoken`**, the
+JavaScript port of OpenAI's `tiktoken` — because this lecture is not about calling a model. It is about
+the layer *before* the model: turning text into tokens, counting them, turning them into vectors,
+injecting order, and staying inside a budget.
 
 This guide walks that code **chapter by chapter**. For every file you get:
 
@@ -42,14 +43,14 @@ chapter `N-1`, so the numbering of the notes and the numbering of the guide neve
 | Guide chapter | Lecture chapter | Notes | Code files introduced |
 | :---: | :---: | :--- | :--- |
 | [01](./01_Project_Structure_and_Setup.md) | — | — | `.env`, `package.json`, `tsconfig.json`, `config/config.ts`, `types/index.ts`, `middleware/*`, `app.ts`, `server.ts`, `routes/index.ts` |
-| [02](./02_Next_Token_Prediction_and_the_Generation_Loop.md) | 01 | [notes/01](../notes/01_What_an_LLM_Is_and_Next_Token_Prediction.md) | `services/pipelineService.ts`, `controllers/pipelineController.ts` |
-| [03](./03_Text_Pipeline_and_Token_IDs.md) | 02 | [notes/02](../notes/02_The_Text_Pipeline_and_Why_Token_IDs_Are_Labels.md) | `services/tokenizerService.ts`, `controllers/tokenizerController.ts` |
-| [04](./04_Tokenization_Strategies.md) | 03 | [notes/03](../notes/03_Tokenization_Strategies_Word_Character_Subword.md) | `services/strategyService.ts`, `controllers/strategyController.ts` |
-| [05](./05_BPE_and_the_Vocabulary.md) | 04 | [notes/04](../notes/04_BPE_WordPiece_SentencePiece_and_Vocabulary.md) | `services/bpeService.ts`, `controllers/bpeController.ts` |
-| [06](./06_Token_Counting_and_Cost.md) | 05 | [notes/05](../notes/05_Tokenizers_in_Practice_tiktoken_and_Model_Comparison.md) | `services/countService.ts`, `controllers/countController.ts` |
-| [07](./07_Embeddings_and_Similarity.md) | 06 | [notes/06](../notes/06_Embeddings_Dense_Vectors_and_Similarity.md) | `services/embeddingService.ts`, `controllers/embeddingController.ts` |
-| [08](./08_Positional_Encodings.md) | 07 | [notes/07](../notes/07_Positional_Encodings_and_Word_Order.md) | `services/positionalService.ts`, `controllers/positionalController.ts` |
-| [09](./09_Context_Window_and_the_Complete_Pipeline.md) | 08 | [notes/08](../notes/08_Context_Windows_Training_vs_Inference_and_the_Complete_Pipeline.md) | `services/contextService.ts`, `controllers/contextController.ts` |
+| [02](./02_Next_Token_Prediction_and_the_Generation_Loop.md) | 01 | [notes/01](../../../notes/01_What_an_LLM_Is_and_Next_Token_Prediction.md) | `services/pipelineService.ts`, `controllers/pipelineController.ts` |
+| [03](./03_Text_Pipeline_and_Token_IDs.md) | 02 | [notes/02](../../../notes/02_The_Text_Pipeline_and_Why_Token_IDs_Are_Labels.md) | `services/tokenizerService.ts`, `controllers/tokenizerController.ts` |
+| [04](./04_Tokenization_Strategies.md) | 03 | [notes/03](../../../notes/03_Tokenization_Strategies_Word_Character_Subword.md) | `services/strategyService.ts`, `controllers/strategyController.ts` |
+| [05](./05_BPE_and_the_Vocabulary.md) | 04 | [notes/04](../../../notes/04_BPE_WordPiece_SentencePiece_and_Vocabulary.md) | `services/bpeService.ts`, `controllers/bpeController.ts` |
+| [06](./06_Token_Counting_and_Cost.md) | 05 | [notes/05](../../../notes/05_Tokenizers_in_Practice_tiktoken_and_Model_Comparison.md) | `services/countService.ts`, `controllers/countController.ts` |
+| [07](./07_Embeddings_and_Similarity.md) | 06 | [notes/06](../../../notes/06_Embeddings_Dense_Vectors_and_Similarity.md) | `services/embeddingService.ts`, `controllers/embeddingController.ts` |
+| [08](./08_Positional_Encodings.md) | 07 | [notes/07](../../../notes/07_Positional_Encodings_and_Word_Order.md) | `services/positionalService.ts`, `controllers/positionalController.ts` |
+| [09](./09_Context_Window_and_the_Complete_Pipeline.md) | 08 | [notes/08](../../../notes/08_Context_Windows_Training_vs_Inference_and_the_Complete_Pipeline.md) | `services/contextService.ts`, `controllers/contextController.ts` |
 
 > **Why the guide starts with the loop (chapter 02) before the tokenizer (chapter 03).** The pipeline
 > service is the *whole* system in one function, and it imports the tokenizer, the embeddings and the
@@ -62,7 +63,7 @@ chapter `N-1`, so the numbering of the notes and the numbering of the guide neve
 
 ```bash
 cd "code/Basic Code"
-npm install          # once — express, dotenv, typescript, tsx
+npm install          # once — express, dotenv, js-tiktoken, typescript, tsx
 npm run dev          # http://localhost:3000/api
 npm run typecheck    # tsc --noEmit — must print nothing
 npm run build        # compile to dist/
@@ -73,7 +74,9 @@ Smoke test the whole service with one call:
 
 ```bash
 curl -s localhost:3000/api/health
-# {"status":"ok","dModel":32,"defaultModel":"gpt-4o","models":["gpt-4o","gpt-4o-mini","claude-3-5-sonnet"]}
+# {"status":"ok","dModel":32,"defaultModel":"gpt-4o","defaultEncoding":"o200k_base",
+#  "encodings":[{"name":"o200k_base","vocabularySize":199998},{"name":"cl100k_base","vocabularySize":100256}],
+#  "models":["gpt-4o","gpt-4o-mini","claude-3-5-sonnet"]}
 ```
 
 ---
@@ -82,11 +85,12 @@ curl -s localhost:3000/api/health
 
 | Endpoint | Chapter | What you should see |
 | :--- | :---: | :--- |
-| `GET /api/health` | — | Vocabulary size, `d_model`, known models |
-| `POST /api/pipeline/generate` | 01 · 08 | A trace of all eight pipeline stages, then the autoregressive steps — one forward pass per token |
+| `GET /api/health` | — | `d_model`, the default model, the default encoding and the |V| of each tokenizer |
+| `POST /api/pipeline/generate` | 01 · 08 | A trace of every pipeline stage, then the autoregressive steps — one forward pass per token |
 | `POST /api/pipeline/training-step` | 08 | Per-position cross-entropy against the *next* token, and the loss falling when you call it twice |
-| `POST /api/tokenizer/encode` | 02 | Tokens, ids, offsets, special-token mask, round trip |
+| `POST /api/tokenizer/encode` | 02 | Tokens, ids, offsets, the special-token mask, the round trip, and `encoding` + `exact` |
 | `POST /api/tokenizer/decode` | 02 | Ids back to text — decoding the whole buffer |
+| `POST /api/tokenizer/compare` | 02 · 05 | **The roadmap's build task**: one sentence, several tokenizers, side by side |
 | `POST /api/strategies/compare` | 03 | Word vs character vs subword, with the $N^2$ attention multiplier |
 | `POST /api/bpe/train` | 04 | The learned merge list, in order — that list *is* the tokenizer |
 | `POST /api/bpe/encode` | 04 | Merge replay with `</w>`, on the hand-written list or the trained one |
@@ -111,6 +115,6 @@ curl -s localhost:3000/api/health
 
 ---
 
-*Guide for **[Lecture 02 — LLM Foundations](../../README.md)** ·*
-*notes: **[../../notes](../../notes)** · assignment: **[../../Assignment/task.md](../../Assignment/task.md)** ·*
-*roadmap: **[../../../roadmap.md](../../../roadmap.md)***
+*Guide for **[Lecture 02 — LLM Foundations](../../../README.md)** ·*
+*notes: **[../../notes](../../../notes)** · assignment: **[../../Assignment/task.md](../../../Assignment/task.md)** ·*
+*roadmap: **[../../../roadmap.md](../../../../roadmap.md)***

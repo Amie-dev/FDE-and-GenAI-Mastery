@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
 import { config } from "../config/config";
 import { asyncHandler } from "../middleware/errorHandler";
-import { requireText } from "../middleware/validate";
+import { optionalTokenizer, requireText } from "../middleware/validate";
 import * as countService from "../services/countService";
 import { cosine, embedAll, preview } from "../services/embeddingService";
 import * as positional from "../services/positionalService";
-import { encode, normalize, pieceOf } from "../services/tokenizerService";
+import { encode, pieceOf } from "../services/tokenizerService";
 
 /** Chapter 07 - where word order enters the model, and how to prove it did. */
 
@@ -15,8 +15,9 @@ const round = (value: number): number => Number(value.toFixed(6));
 export const encodePositions = asyncHandler((req: Request, res: Response) => {
   const text = requireText(req);
   const model = countService.modelFrom((req.body as { model?: unknown }).model);
+  const input = optionalTokenizer(req);
 
-  const encoded = encode(text);
+  const encoded = encode(text, input);
   const ids = encoded.ids;
   const positions = ids.map((_, index) => index);
 
@@ -30,7 +31,7 @@ export const encodePositions = asyncHandler((req: Request, res: Response) => {
   const repeatedToken =
     laterIndex > 0
       ? {
-          token: pieceOf(ids[laterIndex]),
+          token: pieceOf(ids[laterIndex], input),
           id: ids[laterIndex],
           positions: [earlierIndex, laterIndex],
           embeddingsIdentical: String(vectors[earlierIndex]) === String(vectors[laterIndex]),
@@ -40,13 +41,14 @@ export const encodePositions = asyncHandler((req: Request, res: Response) => {
       : null;
 
   res.json({
-    text: normalize(text),
+    text: encoded.text,
+    encoding: encoded.encoding,
     tokens: encoded.tokens,
     ids,
     dModel: config.dModel,
     table: ids.map((id, index) => ({
       position: index,
-      token: pieceOf(id),
+      token: pieceOf(id, input),
       id,
       embedding: preview(vectors[index]),
       positional: preview(positionalVectors[index]),

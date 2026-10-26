@@ -28,7 +28,7 @@ context, generate, training step, 400 and 404 paths).
 | Piece | State |
 | :--- | :--- |
 | `code/Basic Code/src/**` | ✅ 8 services · 8 controllers · router · middleware · config |
-| `code/Basic Code/implementations guide/` | 🚧 `00_README.md` + `01_Project_Structure_and_Setup.md` written; chapters 02–09 in progress |
+| `code/Basic Code/implementations guide/` | ✅ 10 chapters — orientation + one per note chapter, each with the full file and a block-by-block explanation |
 | `code/Production Code/` | 🔜 not started (provider adapters, budget guard, metrics, tests) |
 | `Assignment/task.md` | ✅ Parts A–E written |
 | The gate | ☐ the 90-second spoken hand-tokenization of `"lowest berry"` is still to be recorded |

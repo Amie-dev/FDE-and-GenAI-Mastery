@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { asyncHandler, badRequest } from "../middleware/errorHandler";
-import { optionalNumber, optionalStringArray, requireText } from "../middleware/validate";
+import { optionalNumber, optionalStringArray, optionalTokenizer, requireText } from "../middleware/validate";
 import * as bpe from "../services/bpeService";
 import * as tokenizer from "../services/tokenizerService";
 
@@ -42,17 +42,19 @@ export const encode = asyncHandler((req: Request, res: Response) => {
   });
 });
 
-/** POST /api/bpe/count-letters   { "text": "strawberry", "letter": "r" } */
+/** POST /api/bpe/count-letters   { "text": "strawberry", "letter": "r", "model"?: "gpt-4o" } */
 export const countLetters = asyncHandler((req: Request, res: Response) => {
   const text = requireText(req);
   const letter = requireText(req, "letter");
-  const encoded = tokenizer.encode(text);
+  const input = optionalTokenizer(req);
+  const encoded = tokenizer.encode(text, input);
   const result = bpe.countLetters(text, letter);
 
   res.json({
     ...result,
+    encoding: encoded.encoding,
     tokenizedAs: encoded.tokens,
-    tokenCount: encoded.tokens.length,
+    tokenCount: encoded.count,
     note: "The model never sees the letters - it sees these tokens. Anything that needs exact character work belongs in code, not in the model (§04.8).",
   });
 });

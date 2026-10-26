@@ -8,6 +8,7 @@ import * as pipeline from "../controllers/pipelineController";
 import * as positional from "../controllers/positionalController";
 import * as strategy from "../controllers/strategyController";
 import * as tokenizer from "../controllers/tokenizerController";
+import { ENCODING_NAMES, vocabularySize } from "../services/tokenizerService";
 
 /**
  * Every route, grouped by the chapter of Lecture 02 it demonstrates.
@@ -21,6 +22,8 @@ router.get("/health", (_req, res) => {
     status: "ok",
     dModel: config.dModel,
     defaultModel: config.defaultModel,
+    defaultEncoding: config.defaultEncoding,
+    encodings: ENCODING_NAMES.map((name) => ({ name, vocabularySize: vocabularySize(name) })),
     models: config.models.map((model) => model.id),
   });
 });
@@ -29,9 +32,10 @@ router.get("/health", (_req, res) => {
 router.post("/pipeline/generate", pipeline.generate);
 router.post("/pipeline/training-step", pipeline.trainingStep);
 
-// Chapter 02 - the text pipeline: text -> tokens -> ids, and back
+// Chapter 02 - the text pipeline: text -> tokens -> ids, and back (real tokenizer)
 router.post("/tokenizer/encode", tokenizer.encode);
 router.post("/tokenizer/decode", tokenizer.decode);
+router.post("/tokenizer/compare", tokenizer.compare);
 
 // Chapter 03 - word vs character vs subword
 router.post("/strategies/compare", strategy.compare);

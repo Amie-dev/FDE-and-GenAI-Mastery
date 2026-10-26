@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { config } from "../config/config";
 import { asyncHandler } from "../middleware/errorHandler";
-import { optionalNumber, requireParts } from "../middleware/validate";
+import { optionalNumber, optionalTokenizer, requireParts } from "../middleware/validate";
 import * as contextService from "../services/contextService";
 import * as countService from "../services/countService";
 
@@ -31,7 +31,7 @@ export const fit = asyncHandler((req: Request, res: Response) => {
   const window = optionalNumber(req, "window", model.contextWindow, 1, 2_000_000);
   const outputReserve = optionalNumber(req, "outputReserve", 1_024, 0, 200_000);
 
-  const parts = countService.countParts(requireParts(req));
+  const parts = countService.countParts(requireParts(req), optionalTokenizer(req));
   const result = contextService.fitToWindow(parts, { window, outputReserve });
 
   res.json({

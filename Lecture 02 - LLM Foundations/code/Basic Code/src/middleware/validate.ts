@@ -40,6 +40,18 @@ export function optionalStringArray(req: Request, field: string, fallback: strin
 }
 
 /**
+ * The tokenizer a request asked for: a model id or an encoding name, in one string.
+ * Every counting endpoint takes it, because a count means nothing without the
+ * vocabulary it was measured in (§02.3).
+ */
+export function optionalTokenizer(req: Request): string | undefined {
+  const body = (req.body ?? {}) as { model?: unknown; encoding?: unknown };
+  if (typeof body.model === "string" && body.model.trim().length > 0) return body.model;
+  if (typeof body.encoding === "string" && body.encoding.trim().length > 0) return body.encoding;
+  return undefined;
+}
+
+/**
  * A prompt, part by part: either the explicit form
  *   { "parts": [{ "name": "system", "text": "..." }, { "name": "user", "text": "..." }] }
  * or the short form `{ "text": "..." }`, which is treated as the user's message.

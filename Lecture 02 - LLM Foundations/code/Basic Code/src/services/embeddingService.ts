@@ -1,6 +1,5 @@
 import { config } from "../config/config";
 import type { TokenId, Vector } from "../types";
-import { VOCAB_SIZE } from "./tokenizerService";
 
 /**
  * Chapter 06 - the embedding table: W_emb is |V| rows by d_model columns, and
@@ -23,17 +22,23 @@ function mulberry32(seed: number): () => number {
   };
 }
 
-/** |V| rows x d_model columns. Row i belongs to token id i, and only to it. */
-const TABLE: Vector[] = Array.from({ length: VOCAB_SIZE }, (_, id) => {
+/**
+ * Row `id` of W_emb. A real table is |V| rows by d_model columns - 199,998 x 4096 for
+ * o200k_base - and it is LEARNED during pre-training (§06.6). This one is GENERATED
+ * from the id instead of stored: same id, same row, on every run, and no 200k-row array
+ * sitting in memory. The mechanism is real (a table read, then geometry); the meaning is
+ * not, because nothing here was learned.
+ */
+export function vectorForId(id: TokenId): Vector {
   const random = mulberry32(id * 2654435761); // same id -> same row, every run
   return Array.from({ length: config.dModel }, () => Number((random() * 2 - 1).toFixed(4)));
-});
+}
 
 export const EMBEDDING_DIMS = config.dModel;
 
 /** The lookup. No arithmetic is ever done on the id itself (§06.1). */
 export function embed(id: TokenId): Vector {
-  return TABLE[id] ?? [];
+  return vectorForId(id);
 }
 
 export function embedAll(ids: TokenId[]): Vector[] {

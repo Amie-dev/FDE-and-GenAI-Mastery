@@ -28,6 +28,13 @@ export const config = {
   /** The model spec used when a request does not name one. */
   defaultModel: process.env.DEFAULT_MODEL ?? "gpt-4o",
 
+  /**
+   * The BPE encoding used when a request names neither a model nor an encoding.
+   * Validated by tokenizerService, which falls back to cl100k_base and says so in
+   * the response rather than crashing on a typo.
+   */
+  defaultEncoding: process.env.DEFAULT_ENCODING ?? "o200k_base",
+
   /** Every model spec the endpoints know about. */
   models: MODELS,
 

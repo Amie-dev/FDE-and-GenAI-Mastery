@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { asyncHandler, badRequest } from "../middleware/errorHandler";
-import { requireText } from "../middleware/validate";
+import { optionalTokenizer, requireText } from "../middleware/validate";
 import * as embeddings from "../services/embeddingService";
 import * as tokenizer from "../services/tokenizerService";
 
@@ -9,21 +9,24 @@ import * as tokenizer from "../services/tokenizerService";
 const METRICS = ["cosine", "dot", "euclidean"] as const;
 const round = (value: number): number => Number(value.toFixed(6));
 
-/** POST /api/embeddings/lookup   { "text": "the cat" } */
+/** POST /api/embeddings/lookup   { "text": "the cat", "model"?: "gpt-4o" } */
 export const lookup = asyncHandler((req: Request, res: Response) => {
   const text = requireText(req);
-  const encoded = tokenizer.encode(text);
+  const input = optionalTokenizer(req);
+  const encoded = tokenizer.encode(text, input);
   const vectors = embeddings.embedAll(encoded.ids);
 
   res.json({
-    text: tokenizer.normalize(text),
+    text: encoded.text,
+    encoding: encoded.encoding,
+    exact: encoded.exact,
     tokens: encoded.tokens,
     ids: encoded.ids,
     dModel: embeddings.EMBEDDING_DIMS,
-    vocabularySize: tokenizer.VOCAB_SIZE,
-    rows: encoded.tokens.map((token, index) => ({
-      token,
-      id: encoded.ids[index],
+    vocabularySize: tokenizer.vocabularySize(input),
+    rows: encoded.pieces.map((piece, index) => ({
+      token: piece.token,
+      id: piece.id,
       embedding: embeddings.preview(vectors[index], 6),
     })),
     textVector: embeddings.preview(embeddings.meanPool(encoded.ids), 6),
@@ -40,8 +43,9 @@ export const similarity = asyncHandler((req: Request, res: Response) => {
     throw badRequest(`"metric" must be one of ${METRICS.join(" | ")}.`);
   }
 
-  const vectorA = embeddings.meanPool(tokenizer.encode(textA).ids);
-  const vectorB = embeddings.meanPool(tokenizer.encode(textB).ids);
+  const input = optionalTokenizer(req);
+  const vectorA = embeddings.meanPool(tokenizer.encode(textA, input).ids);
+  const vectorB = embeddings.meanPool(tokenizer.encode(textB, input).ids);
 
   const cosine = embeddings.cosine(vectorA, vectorB);
   const normalisedDot = embeddings.dot(embeddings.normalize(vectorA), embeddings.normalize(vectorB));
@@ -50,6 +54,7 @@ export const similarity = asyncHandler((req: Request, res: Response) => {
     textA,
     textB,
     metric,
+    encoding: tokenizer.resolveEncoding(input).name,
     dModel: embeddings.EMBEDDING_DIMS,
     vectorA: embeddings.preview(vectorA, 6),
     vectorB: embeddings.preview(vectorB, 6),
@@ -58,6 +63,6 @@ export const similarity = asyncHandler((req: Request, res: Response) => {
     euclidean: round(embeddings.euclidean(vectorA, vectorB)),
     normalisedDot: round(normalisedDot),
     normalisedDotEqualsCosine: Math.abs(cosine - normalisedDot) < 1e-9,
-    note: "Once vectors are unit length, cosine similarity IS the dot product - which is why vector stores normalise on write (§06.4). These vectors come from a random table, so read the numbers as mechanics, not meaning (§06.6).",
+    note: "Once vectors are unit length, cosine similarity IS the dot product - which is why vector stores normalise on write (§06.4). These vectors come from a generated table, so read the numbers as mechanics, not meaning (§06.6).",
   });
 });

@@ -1,39 +1,39 @@
 import { config } from "../config/config";
 import type { ModelSpec, PromptPart } from "../types";
-import { countTokens } from "./tokenizerService";
+import { TIKTOKEN_VERSION, countTokens, resolveEncoding } from "./tokenizerService";
 
 /**
  * Chapter 05 - token accounting: count, budget, cost.
- * These three numbers are what a product manager, a finance team and an on-call
- * engineer will each ask you for - which is why they belong in the codebase and
- * not in a spreadsheet.
+ *
+ * These three numbers are what a product manager, a finance team and an on-call engineer
+ * will each ask you for - which is why they belong in the codebase and not in a
+ * spreadsheet. The count comes from the real tokenizer, and it always travels with the
+ * two facts that make it trustworthy: WHICH tokenizer, and whether it is exact (§05.4).
  */
 
-/** The tokenizer these counts come from, and how much to trust the number (§05.4 warning). */
-export const TOKENIZER_META = {
-  version: "lecture02-toy-v1",
-  exact: false,
-  note:
-    "Counted with this lecture's toy tokenizer. A real service uses tiktoken / js-tiktoken for OpenAI " +
-    "models and asks the provider for closed tokenizers - then labels the number an estimate whenever it " +
-    "does not match the provider's `usage`.",
-} as const;
-
-export type CountResult = {
-  tokens: number;
+export type TokenizerMeta = {
+  name: string;
+  version: string;
+  encoding: string;
   exact: boolean;
-  tokenizerVersion: string;
-  note: string;
+  source: string;
 };
 
-/** Count one piece of text. `exact: false` means "an estimate - label it as one". */
-export function count(text: string): CountResult {
-  return {
-    tokens: countTokens(text),
-    exact: TOKENIZER_META.exact,
-    tokenizerVersion: TOKENIZER_META.version,
-    note: TOKENIZER_META.note,
-  };
+/**
+ * Which tokenizer produced a number, and how much to trust it.
+ * `exact: false` is not a failure - it is the honest answer for a model whose tokenizer
+ * is closed (Claude, Gemini), and the number must be labelled an estimate.
+ */
+export function tokenizerMeta(input?: string): TokenizerMeta {
+  const { name, exact, source } = resolveEncoding(input);
+  return { name: "js-tiktoken", version: TIKTOKEN_VERSION, encoding: name, exact, source };
+}
+
+export type CountResult = TokenizerMeta & { tokens: number };
+
+/** Count one piece of text with the encoding that model really uses. */
+export function count(text: string, input?: string): CountResult {
+  return { tokens: countTokens(text, input), ...tokenizerMeta(input) };
 }
 
 /** Reserve the output FIRST, then see what is left for the prompt (§05.6). */
@@ -66,10 +66,11 @@ export function estimateCost(
 /** Count a whole prompt part by part, so you can see where the window goes. */
 export function countParts(
   parts: { name: PromptPart["name"]; text: string }[],
-): (PromptPart & { preview: string })[] {
+  input?: string,
+): (PromptPart & { preview: string; tokens: number })[] {
   return parts.map((part) => ({
     name: part.name,
-    tokens: countTokens(part.text),
+    tokens: countTokens(part.text, input),
     preview: part.text.slice(0, 60),
   }));
 }
