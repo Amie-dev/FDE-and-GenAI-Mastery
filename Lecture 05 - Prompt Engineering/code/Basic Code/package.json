@@ -1,0 +1,41 @@
+{
+  "name": "lecture-05-basic-prompt-engineering-lab",
+  "version": "1.0.0",
+  "description": "Basic Express + TypeScript prompt-pattern lab: zero-shot, few-shot, Chain-of-Thought, persona, chat templates, prompt hygiene, guardrails and a versioned prompt registry (Lecture 05 — Prompt Engineering)",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "fde",
+    "genai",
+    "prompt-engineering",
+    "express",
+    "typescript",
+    "zero-shot",
+    "few-shot",
+    "chain-of-thought",
+    "persona",
+    "chat-template",
+    "guardrails",
+    "evals"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "openai": "^4.85.4",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.8",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  }
+}
