@@ -42,13 +42,16 @@
 
 ## 🔗 Related workspace links
 
-| Item | Link |
-| :--- | :--- |
-| Lecture workspace / checklist | [README.md](./README.md) |
-| Generation prompt (git-ignored) | [prompt.md](./prompt.md) |
-| Basic + Production code | [code/](./code) |
-| Lecture assignment | [Assignment/task.md](./Assignment/task.md) |
-| Roadmap — Lecture 05 topics, build & gate | [../roadmap.md](../roadmap.md) |
+| Item | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace / checklist | [📄 README.md](./README.md) | ✅ |
+| Generation prompt (git-ignored) | [📄 prompt.md](./prompt.md) | ✅ |
+| **Basic Code** — the prompt-pattern lab: 14 files, **7 endpoints**, four patterns from one assembler, delimiters + escaping, an enforceable output contract, guardrails, and a prompt registry with a golden set, six metrics and a regression gate | [📂 code/Basic Code](./code/Basic%20Code/) | ✅ |
+| Chapter-wise implementation guide (10 chapters, 00 → 09: the full file, then a block-by-block explanation) | [📘 implementations guide](./code/Basic%20Code/implementations%20guide/) | ✅ |
+| **Production Code** — a defended prompt layer (constrained decoding, a real moderation API, registry persistence, drift alerting) | [📂 code/](./code) | 🔜 to build |
+| Lecture assignment — 9 chapter-wise question sets (105 questions), 6 code extensions, the prompt-pattern lab capstone and the completion gate | [📝 Assignment/task.md](./Assignment/task.md) | ✅ |
+| Roadmap — Lecture 05 topics, build & gate | [🗺️ ../roadmap.md](../roadmap.md) | ✅ |
+| Repository chapter index (all lectures) | [📚 ../index.md](../index.md) | ✅ |
 
 ---
 

@@ -87,21 +87,40 @@ export const buildUserBlock = (slots: PromptSlots): string =>
 /**
  * Chapter 07 §07.5 — contradictions the model would otherwise resolve arbitrarily.
  * Each row is [one side, the other side, what the conflict is about].
+ *
+ * The word lists mirror the notes' §07.5 table, which is phrased as *positive* requests
+ * ("Be concise" / "Explain every detail"). Adverbs are matched explicitly (`briefly`),
+ * because `\bbrief\b` does not match `briefly` — and "briefly … be thorough" is the
+ * lecture's own worked example.
  */
 const CONTRADICTIONS: [RegExp, RegExp, string][] = [
-  [/\b(concise|brief|short)\b/i, /\b(thorough|in depth|exhaustive|every detail)\b/i, 'length: concise vs thorough'],
-  [/\b(json only|no prose|no markdown)\b/i, /\b(explain|commentary|introduction|friendly)\b/i, 'format: JSON only vs prose'],
+  [/\b(concise|brief|briefly|short)\b/i, /\b(thorough|thoroughly|in depth|exhaustive|every detail)\b/i, 'length: concise vs thorough'],
+  [/\b(json only|only json|json object|valid json|as json|with json)\b/i, /\b(explain|explanation|commentary|introduction|friendly|conversational|prose)\b/i, 'format: JSON only vs prose'],
   [/\b(one word|single word)\b/i, /\b(explain|reason|steps|detail)\b/i, 'length: one word vs explanation'],
   [/\bnever mention competitors\b/i, /\bcompare (all )?(vendors|alternatives)\b/i, 'scope: no competitors vs compare vendors'],
 ];
 
+/**
+ * Chapter 07 §07.5 — a negation is not a request.
+ * "No commentary, no preamble" is a *constraint*, not an instruction to write commentary.
+ * Without this step, a well-written contract would trip its own contradiction check.
+ */
+const stripNegations = (text: string): string =>
+  text.replace(
+    /\b(?:no|not|never|without|avoid|don't|do not)\s+(?:any\s+|a\s+)?(commentary|preamble|prose|markdown|introduction|explanation|explaining|filler)\b/gi,
+    '',
+  );
+
 /** Chapter 07 §07.5 — report every contradictory pair found in the prompt. */
-export const findContradictions = (prompt: string): Finding[] =>
-  CONTRADICTIONS.filter(([a, b]) => a.test(prompt) && b.test(prompt)).map(([, , detail]) => ({
+export const findContradictions = (prompt: string): Finding[] => {
+  const checked = stripNegations(prompt);
+
+  return CONTRADICTIONS.filter(([a, b]) => a.test(checked) && b.test(checked)).map(([, , detail]) => ({
     rule: 'contradiction',
     severity: 'block' as const,
     detail,
   }));
+};
 
 /** Chapter 07 §07.6 — a "do not" hides the behaviour you actually want. */
 export const toPositiveRule = (negative: string): string => {
@@ -308,15 +327,28 @@ contradiction makes behaviour **non-deterministic and untestable**, because the 
 
 | Row | One side | The other side |
 | :--- | :--- | :--- |
-| 1 | concise / brief / short | thorough / in depth / exhaustive |
-| 2 | JSON only / no prose / no markdown | explain / commentary / introduction / friendly |
+| 1 | concise / brief / **briefly** / short | thorough / thoroughly / in depth / exhaustive / every detail |
+| 2 | **json only / only json / json object / valid json / with json** | explain / explanation / commentary / introduction / friendly / conversational / prose |
 | 3 | one word / single word | explain / reason / steps / detail |
 | 4 | never mention competitors | compare all vendors / alternatives |
 
 Row 2 is the one that actually bit the lecture's own example prompt in chapter 07 §07.10 — *"Respond in a nice
 friendly way with a JSON object"*.
 
-**`findContradictions(prompt)`** — for each row, `a.test(prompt) && b.test(prompt)` means both sides are present.
+> [!IMPORTANT]
+> **Two details in those word lists are not arbitrary, and both were found by testing.**
+>
+> 1. **`briefly` is matched explicitly.** `\bbrief\b` does **not** match `briefly` — the `\b` after `brief`
+>    fails because the next character is a word character. Since *"briefly … be thorough"* is the lecture's own
+>    worked contradiction, a word list that misses the adverb would make the linter blind to its own textbook
+>    example.
+> 2. **Negations are stripped before matching.** *"No markdown, no commentary, no preamble"* is a **constraint**,
+>    not a request for commentary — so without `stripNegations()`, a well-written output contract would trip its
+>    own contradiction check. This is why `findContradictions()` runs the test against `stripNegations(prompt)`
+>    rather than `prompt`.
+
+**`findContradictions(prompt)`** — it strips negations, then for each row `a.test(checked) && b.test(checked)`
+means both sides are present.
 Every hit is a **`block`**, not a `warn`: a contradiction is a defect, not advice.
 
 **`toPositiveRule(negative)`** — chapter 07 §07.6. It maps a negative rule to the positive behaviour it implies:
@@ -465,6 +497,27 @@ warn  | positive-rules         | Negative rules are used without stating the wan
 
 That output is the chapter 07 §07.10 refactor, automated: the linter finds all eight defects the notes list by
 hand.
+
+**And it agrees with the notes' own table.** Feed it the canonical three-pair example from §07.5 and you should
+get exactly three `block` findings — one per row of that table:
+
+```bash
+curl -s -X POST localhost:8080/api/audit -H 'Content-Type: application/json' -d '{
+  "prompt": "Be concise.\nExplain every detail thoroughly.\nAlways return valid JSON.\nInclude a friendly introduction.\nNever mention competitors.\nIf asked about alternatives, compare all vendors."
+}' | python3 -c "
+import json,sys
+for f in json.load(sys.stdin)['data']['hygiene']: print(f['severity'],'|',f['detail'])
+"
+```
+
+```text
+block | length: concise vs thorough
+block | format: JSON only vs prose
+block | scope: no competitors vs compare vendors
+```
+
+Three pairs in, three findings out. That is the check worth repeating whenever you edit the word lists: **the
+linter must still agree with the table in the notes it is built from.**
 
 ---
 

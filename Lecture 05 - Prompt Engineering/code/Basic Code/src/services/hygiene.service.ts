@@ -40,21 +40,40 @@ export const buildUserBlock = (slots: PromptSlots): string =>
 /**
  * Chapter 07 §07.5 — contradictions the model would otherwise resolve arbitrarily.
  * Each row is [one side, the other side, what the conflict is about].
+ *
+ * The word lists mirror the notes' §07.5 table, which is phrased as *positive* requests
+ * ("Be concise" / "Explain every detail"). Adverbs are matched explicitly (`briefly`),
+ * because `\bbrief\b` does not match `briefly` — and "briefly … be thorough" is the
+ * lecture's own worked example.
  */
 const CONTRADICTIONS: [RegExp, RegExp, string][] = [
-  [/\b(concise|brief|short)\b/i, /\b(thorough|in depth|exhaustive|every detail)\b/i, 'length: concise vs thorough'],
-  [/\b(json only|no prose|no markdown)\b/i, /\b(explain|commentary|introduction|friendly)\b/i, 'format: JSON only vs prose'],
+  [/\b(concise|brief|briefly|short)\b/i, /\b(thorough|thoroughly|in depth|exhaustive|every detail)\b/i, 'length: concise vs thorough'],
+  [/\b(json only|only json|json object|valid json|as json|with json)\b/i, /\b(explain|explanation|commentary|introduction|friendly|conversational|prose)\b/i, 'format: JSON only vs prose'],
   [/\b(one word|single word)\b/i, /\b(explain|reason|steps|detail)\b/i, 'length: one word vs explanation'],
   [/\bnever mention competitors\b/i, /\bcompare (all )?(vendors|alternatives)\b/i, 'scope: no competitors vs compare vendors'],
 ];
 
+/**
+ * Chapter 07 §07.5 — a negation is not a request.
+ * "No commentary, no preamble" is a *constraint*, not an instruction to write commentary.
+ * Without this step, a well-written contract would trip its own contradiction check.
+ */
+const stripNegations = (text: string): string =>
+  text.replace(
+    /\b(?:no|not|never|without|avoid|don't|do not)\s+(?:any\s+|a\s+)?(commentary|preamble|prose|markdown|introduction|explanation|explaining|filler)\b/gi,
+    '',
+  );
+
 /** Chapter 07 §07.5 — report every contradictory pair found in the prompt. */
-export const findContradictions = (prompt: string): Finding[] =>
-  CONTRADICTIONS.filter(([a, b]) => a.test(prompt) && b.test(prompt)).map(([, , detail]) => ({
+export const findContradictions = (prompt: string): Finding[] => {
+  const checked = stripNegations(prompt);
+
+  return CONTRADICTIONS.filter(([a, b]) => a.test(checked) && b.test(checked)).map(([, , detail]) => ({
     rule: 'contradiction',
     severity: 'block' as const,
     detail,
   }));
+};
 
 /** Chapter 07 §07.6 — a "do not" hides the behaviour you actually want. */
 export const toPositiveRule = (negative: string): string => {

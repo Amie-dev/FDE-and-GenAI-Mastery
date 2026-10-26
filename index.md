@@ -18,7 +18,8 @@
 | 📚 | **[Lecture 02](#-lecture-02--llm-foundations)** | 8 chapters + consolidated notes |
 | 📚 | **[Lecture 03](#-lecture-03--attention-and-decoding)** | 9 chapters + consolidated notes |
 | 📚 | **[Lecture 04](#-lecture-04--llm-apis-and-multi-sdk)** | 9 chapters + consolidated notes |
-| 🔜 | Lectures 05–31 | Notes not written yet — see the **[README curriculum navigation](./README.md#-curriculum-navigation)** |
+| 📚 | **[Lecture 05](#-lecture-05--prompt-engineering)** | 9 chapters + consolidated notes |
+| 🔜 | Lectures 06–31 | Notes not written yet — see the **[README curriculum navigation](./README.md#-curriculum-navigation)** |
 
 ---
 
@@ -200,6 +201,51 @@ flowchart LR
     L4 --> CN["Lecture_04_Complete_Notes.md"]
     IDX --> CODE["Lecture 04 code/<br/>Basic Code + guide"]
     IDX --> ASG["Lecture 04 Assignment/task.md"]
+    IDX --> RM["roadmap.md<br/>topics, build task, gate"]
+```
+
+---
+
+## 🟩 Lecture 05 — Prompt Engineering
+
+**Phase 2 · The Application Layer · 🟢 Beginner · 9 chapters + 1 consolidated document**
+**Folder:** **[📂 Lecture 05 - Prompt Engineering](./Lecture%2005%20-%20Prompt%20Engineering/)** · **[📄 Roadmap: Phase 2](./roadmap.md#-phase-2--the-application-layer-talking-to-models)**
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **Prompt Engineering as an Engineering Discipline** | A prompt is an interface: **five slots** (role · task · context · constraints · contract), a function signature with a return type, and GIGO as its governing rule; the **lever ladder** tells you when prompting is the wrong tool | [📄 Chapter 01](./Lecture%2005%20-%20Prompt%20Engineering/notes/01_Prompt_Engineering_as_an_Engineering_Discipline.md) |
+| **02** | **Zero-Shot Prompting** | Instruction + context + constraints with **no examples** — the baseline every other technique must beat; the **constraint trap** (the most common misclassification), a failure taxonomy with the correct fix per row, and the improvement ladder to climb *before* adding examples | [📄 Chapter 02](./Lecture%2005%20-%20Prompt%20Engineering/notes/02_Zero_Shot_Prompting.md) |
+| **03** | **Few-Shot Prompting & In-Context Learning** | Examples teach a pattern **without changing weights**; an exemplar is an input→output *pair*; the **four craft rules** — define the task · show consistent examples · cover important classes · use representative examples — plus ordering and per-request exemplar selection | [📄 Chapter 03](./Lecture%2005%20-%20Prompt%20Engineering/notes/03_Few_Shot_Prompting_and_In_Context_Learning.md) |
+| **04** | **Chain-of-Thought & Structured Reasoning** | Give the model **output tokens to think with**; the three mechanisms CoT exploits; zero-shot vs few-shot CoT vs **self-consistency**; the `INITIAL → THINK → ANALYZE → OUTPUT` pipeline; private CoT vs a published rationale — and the cases where **CoT hurts** | [📄 Chapter 04](./Lecture%2005%20-%20Prompt%20Engineering/notes/04_Chain_of_Thought_and_Structured_Reasoning.md) |
+| **05** | **Role-Play & Persona Prompting** | A persona is a **behavioural prior**, not new knowledge: seven fields plus a fallback, six failure modes (over-roleplay · false authority · scope creep · persona hijack · drift · cross-endpoint inconsistency) — and why a persona is **never a security boundary** | [📄 Chapter 05](./Lecture%2005%20-%20Prompt%20Engineering/notes/05_Role_Play_and_Persona_Prompting.md) |
+| **06** | **Model-Specific Prompt Formats & Chat Templates** | A `messages` array **never reaches the transformer**; ChatML · Alpaca · `[INST]` + `<<SYS>>` · Llama-3 header tokens · FLAN-T5 compared; the **generation prompt**; who owns templating at the API vs local-inference boundary; and the three classic formatting bugs, including **double templating** | [📄 Chapter 06](./Lecture%2005%20-%20Prompt%20Engineering/notes/06_Model_Specific_Prompt_Formats_and_Chat_Templates.md) |
+| **07** | **Prompt Hygiene, Delimiters & Output Contracts** | The LLM analogue of **parameterised queries**: separate rules from data, delimit and **escape** it, order instructions deliberately, resolve contradictions with explicit precedence, prefer positive rules — and state an output contract a machine can enforce via the **four-rung validation ladder** | [📄 Chapter 07](./Lecture%2005%20-%20Prompt%20Engineering/notes/07_Prompt_Hygiene_Delimiters_and_Output_Contracts.md) |
+| **08** | **Prompt Injection, Guardrails & Extraction Attacks** | Direct vs **indirect** injection, goal hijacking and exfiltration; why prompt-level defences are insufficient; input / output / tool guardrails as *code*; where moderation APIs belong; prompt extraction vs model distillation; **defence in depth**, least privilege and human-in-the-loop | [📄 Chapter 08](./Lecture%2005%20-%20Prompt%20Engineering/notes/08_Prompt_Injection_Guardrails_and_Extraction_Attacks.md) |
+| **09** | **Prompt Versioning, Evaluation & the Prompt Registry** | Prompts are versioned artifacts: the **registry entry**, semver for prompts, the stratified **golden set**, the **six metrics**, the evaluation harness, the CI regression gate, shadow → canary → A/B — and **drift**, the failure mode nobody instruments | [📄 Chapter 09](./Lecture%2005%20-%20Prompt%20Engineering/notes/09_Prompt_Versioning_Evaluation_and_the_Prompt_Registry.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all nine chapters — executive summary, one master diagram, a **12-part cheat sheet**, **7 decision tables**, **22 misconceptions**, a **48-term glossary** and **20 self-check questions**, with links back into the chapters for detail:
+
+👉 **[Lecture_05_Complete_Notes.md](./Lecture%2005%20-%20Prompt%20Engineering/notes/Lecture_05_Complete_Notes.md)**
+
+### 🧩 This lecture's other artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2005%20-%20Prompt%20Engineering/README.md) | ✅ |
+| Chapter index for the lecture (reading order) | [📑 index.md](./Lecture%2005%20-%20Prompt%20Engineering/index.md) | ✅ |
+| **Basic Code** — Express + TypeScript **prompt-pattern lab**: 14 files, **7 endpoints** (`/api/health` · `/api/prompts` · `/api/prompts/:id` · `/api/lab/preview` · `/api/lab/compare` · `/api/audit` · `/api/eval/run`), four patterns built from one assembler, delimiters with escaping, an enforceable output contract, input/output/tool guardrails, and a prompt registry with a golden set, six metrics and a regression gate | [📂 code/Basic Code](./Lecture%2005%20-%20Prompt%20Engineering/code/Basic%20Code/) | ✅ |
+| Chapter-wise implementation guide (10 chapters, 00 → 09: the full file, then a block-by-block explanation) | [📘 implementations guide](./Lecture%2005%20-%20Prompt%20Engineering/code/Basic%20Code/implementations%20guide/) | ✅ |
+| **Production Code** — a defended prompt layer (constrained decoding, a real moderation API, prompt-registry persistence, drift alerting) | [📂 code/](./Lecture%2005%20-%20Prompt%20Engineering/code/) | 🔜 to build |
+| Assignment — 9 chapter-wise question sets (105 questions), 6 code extensions, the prompt-pattern lab + comparison-table capstone, and the completion gate | [📝 Assignment/task.md](./Lecture%2005%20-%20Prompt%20Engineering/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L5["Lecture 05 notes<br/>9 chapters"]
+    L5 --> CN["Lecture_05_Complete_Notes.md"]
+    IDX --> CODE["Lecture 05 code/<br/>Basic Code + guide"]
+    IDX --> ASG["Lecture 05 Assignment/task.md"]
     IDX --> RM["roadmap.md<br/>topics, build task, gate"]
 ```
 

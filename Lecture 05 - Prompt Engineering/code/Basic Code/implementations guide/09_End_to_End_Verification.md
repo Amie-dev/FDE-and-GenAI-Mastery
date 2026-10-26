@@ -213,28 +213,43 @@ print('blocked:', d['blocked'])
 
 ```text
 --- hygiene ---
-   warn | slot-2-task         | No explicit TASK block — the goal is implicit.
-   warn | slot-4-constraints  | No CONSTRAINTS block — nothing bounds the answer.
-   warn | slot-5-contract     | No OUTPUT CONTRACT — the answer shape is unspecified.
-   warn | data-delimited      | No closing delimiter found — untrusted data may be unmarked.
-   warn | positive-rules      | Negative rules are used without stating the wanted behaviour
+   block | contradiction                  | length: concise vs thorough
+   block | contradiction                  | format: JSON only vs prose
+   warn  | slot-2-task                    | No explicit TASK block — the goal is implicit.
+   warn  | slot-4-constraints             | No CONSTRAINTS block — nothing bounds the answer.
+   warn  | slot-5-contract                | No OUTPUT CONTRACT — the answer shape is unspecified.
+   warn  | data-delimited                 | No closing delimiter found — untrusted data may be unmarked.
+   warn  | positive-rules                 | Negative rules are used without stating the wanted behaviour
 --- input ---
-   warn | injection:instruction-override | Untrusted text contains an instruction-like phrase: "Ignore all previo
-   warn | injection:disclosure-request   | Untrusted text contains an instruction-like phrase: "Print your system
+   warn  | injection:instruction-override | Untrusted text contains an instruction-like phrase: "Ignore all previo
+   warn  | injection:disclosure-request   | Untrusted text contains an instruction-like phrase: "Print your system
 --- output ---
-   block | pii:email           | Output leaked: "a@b.com".
-   block | pii:phone           | Output leaked: "1234567890".
-   block | secret:openai-key   | Output leaked: "sk-abcdef1234567890".
-   block | secret:assignment   | Output leaked: "api_key = sk-abcdef1234567890".
-blocked: True
+   block | pii:email                      | Output leaked: "a@b.com".
+   block | pii:phone                      | Output leaked: "1234567890".
+   block | secret:openai-key              | Output leaked: "sk-abcdef1234567890".
+   block | secret:assignment              | Output leaked: "api_key = sk-abcdef1234567890".
+blocked: true
 ```
 
-**What this proves:** chapter 08 §08.7's central claim — *prompts guide the model; application code enforces
-security*. The hygiene findings are `warn`s (advice), the injection findings are `warn`s (evidence), and the
-leakage findings are `block`s (enforcement) — so `blocked: true` and the response never leaves the service.
+Thirteen findings: **6 blocks and 7 warns**. That ratio is the whole design in one number.
 
-To also see the two `block | contradiction` findings, audit the exact chapter 07 §07.10 text (which uses
-`briefly`/`thorough` and `friendly`/`JSON`) — the contradiction table in `hygiene.service.ts` matches both pairs.
+**What this proves:** chapter 08 §08.7's central claim — *prompts guide the model; application code enforces
+security*. The hygiene findings are `warn`s (advice) **except** the two contradictions, which are `block`s
+because a contradiction is a defect; the injection findings are `warn`s (evidence); and every leakage finding is
+a `block` (enforcement) — so `blocked: true` and the response never leaves the service.
+
+> [!NOTE]
+> **Why the contradictions are `block`s and the injections are only `warn`s.** This asymmetry is deliberate and
+> worth understanding rather than memorising.
+>
+> - A **contradiction** is a defect in *your own* prompt — there is no legitimate reason to ship one, so it
+>   blocks. `findContradictions()` also strips negations first: *"No markdown, no commentary, no preamble"* is a
+>   constraint, not a request for commentary, so a well-written contract does not trip its own linter.
+> - An **injection pattern** is untrusted *user* content. A security ticket that quotes an attack attempt
+>   contains injection patterns and is perfectly legitimate, so a regex match only warns. The delimiters and the
+>   role split do the defending; `scanInput()` is the tripwire that tells you it happened.
+>
+> The one thing both share: `hasBlocking()` decides. One function, one rule — any `block` stops the pipeline.
 
 ---
 
