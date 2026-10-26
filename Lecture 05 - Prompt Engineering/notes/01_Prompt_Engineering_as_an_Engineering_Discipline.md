@@ -580,7 +580,7 @@ flowchart TD
 
 ### Navigation
 
-- **Previous:** Lecture 04 — [Chapter 03 — Message Roles & Prompt Hygiene](../Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/notes/03_Message_Roles_and_Prompt_Hygiene.md)
+- **Previous:** Lecture 04 — [Chapter 03 — Message Roles & Prompt Hygiene](../../Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/notes/03_Message_Roles_and_Prompt_Hygiene.md)
 - **Next:** [Chapter 02 — Zero-Shot Prompting](./02_Zero_Shot_Prompting.md)
 - **Source:** `gen-ai-cohort/week01/learning/day02/notes/🚀 One-Line Summary of Day 02.md` (§1) · `row-class.md` (§1) ·
   `prompting-notes/01 zero short prompting.md` · `04 llm-security-and-guardrails.md` (GIGO) ·
