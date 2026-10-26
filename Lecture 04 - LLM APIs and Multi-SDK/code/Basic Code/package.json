@@ -1,0 +1,40 @@
+{
+  "name": "lecture-04-basic-llm-api-service",
+  "version": "1.0.0",
+  "description": "Basic Express + TypeScript service showing the LLM API protocol, message roles, token economics, retry/backoff and multi-provider adapters (Lecture 04 — LLM APIs and Multi-SDK)",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "fde",
+    "llm",
+    "genai",
+    "express",
+    "typescript",
+    "openai",
+    "gemini",
+    "groq",
+    "mistral",
+    "ollama"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^1.28.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "openai": "^4.85.4",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.8",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  }
+}
