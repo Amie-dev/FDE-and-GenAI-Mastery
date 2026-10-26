@@ -49,7 +49,7 @@
 | Chapter notes | [📂 notes/](./notes/) | ✅ |
 | Basic Code | [📂 code/Basic Code/](./code/Basic%20Code/) · [📖 implementation guide](./code/Basic%20Code/implementations%20guide/00_Overview_and_File_Structure.md) | ✅ |
 | Production Code | [📂 code/](./code/) | 🔜 to build |
-| Lecture assignment | [📝 Assignment/task.md](./Assignment/task.md) | 🔜 to build |
+| Lecture assignment | [📝 Assignment/task.md](./Assignment/task.md) | ✅ |
 | Roadmap — Lecture 06 topics, build & gate | [🗺️ ../roadmap.md](../roadmap.md) | ✅ |
 | Repository chapter index (all lectures) | [📚 ../index.md](../index.md) | ✅ |
 

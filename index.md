@@ -19,7 +19,8 @@
 | 📚 | **[Lecture 03](#-lecture-03--attention-and-decoding)** | 9 chapters + consolidated notes |
 | 📚 | **[Lecture 04](#-lecture-04--llm-apis-and-multi-sdk)** | 9 chapters + consolidated notes |
 | 📚 | **[Lecture 05](#-lecture-05--prompt-engineering)** | 9 chapters + consolidated notes |
-| 🔜 | Lectures 06–31 | Notes not written yet — see the **[README curriculum navigation](./README.md#-curriculum-navigation)** |
+| 📚 | **[Lecture 06](#-lecture-06--chatbots-and-context)** | 8 chapters + consolidated notes |
+| 🔜 | Lectures 07–31 | Notes not written yet — see the **[README curriculum navigation](./README.md#-curriculum-navigation)** |
 
 ---
 
@@ -246,6 +247,50 @@ flowchart LR
     L5 --> CN["Lecture_05_Complete_Notes.md"]
     IDX --> CODE["Lecture 05 code/<br/>Basic Code + guide"]
     IDX --> ASG["Lecture 05 Assignment/task.md"]
+    IDX --> RM["roadmap.md<br/>topics, build task, gate"]
+```
+
+---
+
+## 🟩 Lecture 06 — Chatbots and Context
+
+**Phase 2 · The Application Layer · 🟡 Intermediate · 8 chapters + 1 consolidated document**
+**Folder:** **[📂 Lecture 06 - Chatbots and Context](./Lecture%2006%20-%20Chatbots%20and%20Context/)** · **[📄 Roadmap: Phase 2](./roadmap.md#-phase-2--the-application-layer-talking-to-models)**
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **Stateless LLMs, Conversation History & Role Architecture** | The model is **stateless** — no memory survives a request, so the *application* carries the conversation. The multi-turn dependency and coreference problem; `system` · `user` · `assistant` as **authority levels**, not formatting; why the assistant turn must be echoed back; the **prompt-contamination anti-pattern**; the system role as standing operating procedures; the **4 Pillars**; and why a `sessionId` is a capability that needs an ownership check | [📄 Chapter 01](./Lecture%2006%20-%20Chatbots%20and%20Context/notes/01_Stateless_LLMs_Conversation_History_and_Role_Architecture.md) |
+| **02** | **Context Windows & Token Accumulation** | The window is a hard budget: $L_{\text{in}} + L_{\text{out}} \le C_{\max}$. What actually occupies it; the **two-tier measurement rule** (estimate to *decide*, tokenizer to *report*); the **$O(N^2)$ accumulation problem** of naive history appending; history cost in **three currencies**; the **lost-in-the-middle** recall curve; the fallacy of "send everything"; and the five-step **budget arithmetic** — safe operating limit, six tiers, output reserved first, instrumented, with an explicit failure mode | [📄 Chapter 02](./Lecture%2006%20-%20Chatbots%20and%20Context/notes/02_Context_Windows_and_Token_Accumulation.md) |
+| **03** | **Context Management Strategies** | Four levers — **retain · compress · retrieve · evict** — and the five strategies built from them: the token-budgeted **sliding window**, the **pinned anchor**, **rolling summarisation** with a PRESERVE/DISCARD spec, **semantic recall** over historical memory, and the **layered pipeline** where each layer covers the previous one's blind spot. Includes the comparative table, the selection decision tree, a reference `ContextManager`, and the rule that anything costing latency moves **off the hot path** | [📄 Chapter 03](./Lecture%2006%20-%20Chatbots%20and%20Context/notes/03_Context_Management_Strategies.md) |
+| **04** | **Context vs Model Weights & the Illusion of Learning** | Parametric knowledge ($\Theta$, frozen) vs in-context working memory ($X$, fluid); the **context-conditioned prediction** formula; the same question under two contexts; what training changes that inference does not; deconstructing "**in-context learning**"; the **application-memory vs fine-tuning decision matrix**; and the GDPR right to be forgotten — why erasure is an API call in a database and hard research in weights | [📄 Chapter 04](./Lecture%2006%20-%20Chatbots%20and%20Context/notes/04_Context_vs_Model_Weights_and_the_Illusion_of_Learning.md) |
+| **05** | **Real-Time Streaming & SSE** | Generation is **already incremental** — streaming stops hiding it behind a buffer. The buffered-request bottleneck; **TTFT vs ITL** and total time; the transport options and why **SSE** wins for chat; the wire format (`data:` · `event:` · `id:` · `retry:` · `:comment`, and the `[DONE]` sentinel); the six server responsibilities; cancellation and **orphaned generation**; the production hazards; and persisting history around a stream | [📄 Chapter 05](./Lecture%2006%20-%20Chatbots%20and%20Context/notes/05_Real_Time_Streaming_and_SSE.md) |
+| **06** | **Hallucination Mechanisms: Fluency vs Truth** | Hallucination is the **training objective working as designed**, not a bug. The **orthogonality of fluency and truth**; why output is unwaveringly confident; the taxonomy of **benign nonsense vs coherent fabrication**; the **five catalysts** of production hallucination; **sycophancy** and the false-premise experiment; how to **measure** hallucination (faithfulness, precision/recall, over-refusal); decoding parameters; and over-refusal as the opposite failure | [📄 Chapter 06](./Lecture%2006%20-%20Chatbots%20and%20Context/notes/06_Hallucination_Mechanisms_Fluency_vs_Truth.md) |
+| **07** | **Engineering Defences: Grounding, RAG, Guardrails & Verification** | The fallacy of **prompt-only defences** and the **7-layer defence-in-depth architecture**: input validation & injection guard · RAG grounding · deterministic tools · **calibrated refusal** ("I don't know" as a designed behaviour) · structured outputs · **output verification** (the deterministic verifier toolbox) · observability. Plus the guardrail engineering realities — the false-positive budget and the log-only rollout | [📄 Chapter 07](./Lecture%2006%20-%20Chatbots%20and%20Context/notes/07_Engineering_Defences_Grounding_RAG_Guardrails_and_Verification.md) |
+| **08** | **Complete Enterprise Chatbot Architecture** | The **six-tier topology** and the FDE mental model of the **LLM as an unprivileged kernel**; naive prototype vs enterprise production; **one message end to end** with the failure each step prevents; the consolidated engineering principles; the **build task and the six-requirement completion gate**; and the **cost / coherence / latency triangle** you must be able to defend | [📄 Chapter 08](./Lecture%2006%20-%20Chatbots%20and%20Context/notes/08_Complete_Enterprise_Chatbot_Architecture.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all eight chapters — executive summary, one master diagram, a **cheat sheet**, **6 decision tables**, a **failure → defence matrix**, **20 misconceptions**, a **grouped glossary** and **23 self-check questions**, with links back into the chapters for detail:
+
+👉 **[Lecture_06_Complete_Notes.md](./Lecture%2006%20-%20Chatbots%20and%20Context/notes/Lecture_06_Complete_Notes.md)**
+
+### 🧩 This lecture's other artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2006%20-%20Chatbots%20and%20Context/README.md) | ✅ |
+| Chapter index for the lecture (reading order) | [📑 index.md](./Lecture%2006%20-%20Chatbots%20and%20Context/index.md) | ✅ |
+| **Basic Code** — Express + TypeScript **stateless chatbot microservice**: 17 files, **9 endpoints** (`/api/health` · `/api/session` · `/api/session/:id` · `DELETE /api/session/:id` · `/api/session/:id/memory` · `/api/context/preview` · `/api/context/projection` · `/api/chat` · `/api/chat/stream`), a session store the model lacks, a **derived** token budget, a seven-layer context manager, durable user memory, SSE streaming with TTFT/ITL, and grounded refusal with a deterministic citation verifier — runnable with **no API key** (OFFLINE mode) | [📂 code/Basic Code](./Lecture%2006%20-%20Chatbots%20and%20Context/code/Basic%20Code/) | ✅ |
+| Chapter-wise implementation guide (14 chapters, 00 → 13: the full file, then a block-by-block explanation) | [📘 implementations guide](./Lecture%2006%20-%20Chatbots%20and%20Context/code/Basic%20Code/implementations%20guide/) | ✅ |
+| **Production Code** — a hardened chatbot (Redis + Postgres persistence, a real vector store, durable compaction, a faithfulness eval harness) | [📂 code/](./Lecture%2006%20-%20Chatbots%20and%20Context/code/) | 🔜 to build |
+| Assignment — 8 chapter-wise question sets (81 questions), 6 code extensions, the conversational-microservice capstone with a **context-bloat test** and a **hallucination test**, and the completion gate | [📝 Assignment/task.md](./Lecture%2006%20-%20Chatbots%20and%20Context/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L6["Lecture 06 notes<br/>8 chapters"]
+    L6 --> CN["Lecture_06_Complete_Notes.md"]
+    IDX --> CODE["Lecture 06 code/<br/>Basic Code + guide"]
+    IDX --> ASG["Lecture 06 Assignment/task.md"]
     IDX --> RM["roadmap.md<br/>topics, build task, gate"]
 ```
 

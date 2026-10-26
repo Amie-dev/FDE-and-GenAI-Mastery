@@ -15,9 +15,9 @@ the roadmap is the single source of truth so that no topic is duplicated.
 
 | Step | Status |
 | :--- | :---: |
-| Read every source note listed in the roadmap for Lecture 06 | ☐ |
-| Write my own chapter notes in `notes/` | ☐ |
-| Build / rebuild the code in `code/` | ☐ |
+| Read every source note listed in the roadmap for Lecture 06 | ✅ |
+| Write my own chapter notes in `notes/` | ✅ |
+| Build / rebuild the code in `code/` | ✅ |
 | Pass the lecture's completion gate | ☐ |
 
 ## 📁 Layout
@@ -28,8 +28,9 @@ Lecture 06 - Chatbots and Context/
 ├── index.md           # chapter index (filled by prompt.md → Block 6)
 ├── prompt.md          # generation prompt (git-ignored) — change the chapter number, run it block by block
 ├── .gitignore         # ignores prompt.md
-├── notes/             # chapter notes, written from the source notes
-├── code/              # the rebuilt codebase (Basic Code · Production Code + implementation guides)
+├── notes/             # 8 chapter notes + Lecture_06_Complete_Notes.md
+├── code/
+│   └── Basic Code/    # the stateless chatbot microservice (9 endpoints) + implementations guide/ (14 chapters)
 └── Assignment/
     └── task.md        # the lecture assignment (filled by prompt.md → Block 5)
 ```
