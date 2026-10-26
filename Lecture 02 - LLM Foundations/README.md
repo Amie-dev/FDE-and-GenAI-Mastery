@@ -15,10 +15,23 @@ the roadmap is the single source of truth so that no topic is duplicated.
 
 | Step | Status |
 | :--- | :---: |
-| Read every source note listed in the roadmap for Lecture 02 | ☐ |
+| Read every source note listed in the roadmap for Lecture 02 | ✅ |
 | Write my own chapter notes in `notes/` | ✅ |
-| Build / rebuild the code in `code/` | ☐ |
+| Build / rebuild the code in `code/` | ✅ |
 | Pass the lecture's completion gate | ☐ |
+
+**Code status.** `code/Basic Code` is built and runs: Express + TypeScript, the **real `tiktoken`
+tokenizer** (`js-tiktoken` — `o200k_base` / `cl100k_base`), `npm run typecheck` clean, and every endpoint
+verified with curl (23 calls: encode, decode, compare, strategies, BPE, count, embeddings, positional,
+context, generate, training step, 400 and 404 paths).
+
+| Piece | State |
+| :--- | :--- |
+| `code/Basic Code/src/**` | ✅ 8 services · 8 controllers · router · middleware · config |
+| `code/Basic Code/implementations guide/` | 🚧 `00_README.md` + `01_Project_Structure_and_Setup.md` written; chapters 02–09 in progress |
+| `code/Production Code/` | 🔜 not started (provider adapters, budget guard, metrics, tests) |
+| `Assignment/task.md` | ✅ Parts A–E written |
+| The gate | ☐ the 90-second spoken hand-tokenization of `"lowest berry"` is still to be recorded |
 
 ## 📁 Layout
 
