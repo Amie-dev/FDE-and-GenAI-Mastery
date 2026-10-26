@@ -1,0 +1,44 @@
+{
+  "name": "lecture-06-basic-chatbot-context-lab",
+  "version": "1.0.0",
+  "description": "Basic Express + TypeScript stateless-chatbot lab: session store, role architecture, token budget, context management, application memory, SSE streaming, grounded refusal and citation verification (Lecture 06 — Chatbots and Context)",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "fde",
+    "genai",
+    "chatbot",
+    "stateless",
+    "context-window",
+    "context-management",
+    "session",
+    "sse",
+    "streaming",
+    "hallucination",
+    "grounding",
+    "guardrails",
+    "express",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "gpt-tokenizer": "^4.1.0",
+    "openai": "^4.85.4",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.8",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  }
+}
