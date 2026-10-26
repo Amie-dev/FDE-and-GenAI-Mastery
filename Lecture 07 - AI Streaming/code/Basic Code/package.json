@@ -1,0 +1,42 @@
+{
+  "name": "lecture-07-basic-ai-streaming-lab",
+  "version": "1.0.0",
+  "description": "Basic Express + TypeScript AI streaming lab: generation vs delivery, the stream pump (coalescing + backpressure), raw-text and SSE transports, the four granularities with UTF-8 decoding and frame reassembly, the fragmentation torture test, dual-write history, cancellation and the TTFT-gap metrics (Lecture 07 — AI Streaming)",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "fde",
+    "genai",
+    "streaming",
+    "sse",
+    "chunked",
+    "textdecoder",
+    "utf-8",
+    "ttft",
+    "backpressure",
+    "coalescing",
+    "cancellation",
+    "express",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "openai": "^4.85.4",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.8",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  }
+}

@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lecture 07 — AI Streaming</title>
+<style>
+  :root { color-scheme: dark; }
+  body { font: 15px/1.5 system-ui, sans-serif; margin: 0; padding: 16px; background: #0f1115; color: #e6e6e6; }
+  h1 { font-size: 16px; margin: 0 0 12px; font-weight: 600; }
+  #log { border: 1px solid #262b36; border-radius: 8px; padding: 12px; height: 60vh; overflow-y: auto; }
+  .row { margin: 0 0 10px; display: flex; }
+  .row.user { justify-content: flex-end; }
+  .row span { padding: 8px 10px; border-radius: 8px; max-width: 80%; white-space: pre-wrap; }
+  .user span { background: #1d4ed8; }
+  .assistant span { background: #1c2129; border: 1px solid #2b323d; }
+  .row[data-status="stopped"] span { border-color: #b45309; }
+  form { display: flex; gap: 8px; margin: 12px 0 6px; }
+  input { flex: 1; padding: 9px 10px; border-radius: 6px; border: 1px solid #2b323d; background: #141821; color: inherit; }
+  button { padding: 9px 14px; border-radius: 6px; border: 1px solid #2b323d; background: #1c2129; color: inherit; cursor: pointer; }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  #hud { font-family: ui-monospace, monospace; font-size: 12px; color: #93a1b1; margin: 0; }
+</style>
+</head>
+<body>
+  <h1>Lecture 07 — AI Streaming · one bubble, one decoder, cancellable</h1>
+  <div id="log" aria-live="polite" aria-busy="false"></div>
+
+  <form id="form">
+    <input id="input" value="Explain streaming in one short paragraph." />
+    <button id="send" type="submit">Send</button>
+    <button id="stop" type="button" disabled>Stop</button>
+  </form>
+  <p id="hud">idle</p>
+
+<script>
+  // Chapter 08 §08.1 — everything the server built can be undone right here.
+  const API = '/api/chat/events';
+  const conversationId = 'demo-' + Math.random().toString(36).slice(2, 8);
+
+  const log = document.getElementById('log');
+  const form = document.getElementById('form');
+  const input = document.getElementById('input');
+  const sendBtn = document.getElementById('send');
+  const stopBtn = document.getElementById('stop');
+  const hud = document.getElementById('hud');
+
+  let controller = null;   // one per request, never reused (§08.11)
+  let decoder = null;      // ONE per response, created outside the loop (§08.6)
+  let leftover = '';       // the frame-reassembly buffer (§04.5)
+  let bubble = null;       // ONE assistant bubble, created lazily (§08.7)
+  let text = '';           // ONE accumulator — chunks are not messages (§08.7)
+  let startedAt = 0;
+  let firstCharAt = 0;
+  let serverTtftMs = null;
+
+  function scrollToBottom() {
+    // Sticky scroll: pin to the bottom unless the reader has scrolled up (§08.9).
+    const distance = log.scrollHeight - log.scrollTop - log.clientHeight;
+    if (distance < 40) log.scrollTop = log.scrollHeight;
+  }
+
+  function addBubble(role, content) {
+    const row = document.createElement('div');
+    row.className = 'row ' + role;
+    const span = document.createElement('span');
+    span.textContent = content;   // ⬅ textContent, never innerHTML: no XSS surface (§08.10)
+    row.appendChild(span);
+    log.appendChild(row);
+    log.scrollTop = log.scrollHeight;
+    return span;
+  }
+
+  // Chapter 04 §04.5 — accumulate BEFORE splitting, and RETAIN the tail.
+  function absorb(piece) {
+    leftover += piece;
+    const frames = leftover.split('\n\n');
+    leftover = frames.pop() || '';
+
+    for (const frame of frames) {
+      if (!frame.trim()) continue;                 // empty frame
+      if (frame.trim().startsWith(':')) continue;  // heartbeat comment — not text (§05.3.3)
+      const line = frame.split('\n').find((l) => l.startsWith('data:'));
+      if (!line) continue;
+      const payload = line.slice(5).trim();
+      if (payload === '[DONE]') continue;          // the sentinel is not text (§02.4)
+      handleFrame(frame, payload);
+    }
+  }
+
+  function handleFrame(frame, payload) {
+    const type = (frame.match(/^event:\s*(.+)$/m) || [])[1] || 'message';
+    const data = JSON.parse(payload);
+
+    if (type === 'token') {
+      if (!bubble) bubble = addBubble('assistant', '');  // create ONCE, on first text (§08.7)
+      text += data.text;                                 // append, never replace (§08.7)
+      bubble.textContent = text;
+      if (!firstCharAt) firstCharAt = performance.now();
+      scrollToBottom();
+    } else if (type === 'done') {
+      serverTtftMs = data.ttftMs;
+      hud.textContent = report(data);
+    } else if (type === 'error') {
+      addBubble('assistant', 'Stream error (' + data.code + '): ' + data.message);
+    }
+  }
+
+  // Chapter 03 §03.5 — the client TTFT is the number the user feels,
+  // and the GAP is the one alert worth having (§09.8).
+  function report(done) {
+    const clientTtft = firstCharAt ? Math.round(firstCharAt - startedAt) : null;
+    const gap = clientTtft !== null && serverTtftMs !== null ? clientTtft - serverTtftMs : null;
+    return 'server TTFT ' + serverTtftMs + ' ms · client TTFT ' + clientTtft +
+           ' ms · gap ' + gap + ' ms · ITL ' + done.itlMs + ' ms · ' + done.finishReason;
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const message = input.value.trim();
+    if (!message) return;
+
+    addBubble('user', message);
+    input.value = '';
+    sendBtn.disabled = true;
+    stopBtn.disabled = false;
+    log.setAttribute('aria-busy', 'true');   // §08.12 — announce the generating state
+    hud.textContent = 'streaming…';
+
+    controller = new AbortController();
+    decoder = new TextDecoder('utf-8');       // ⬅ ONE, outside the loop (§04.4)
+    leftover = '';
+    bubble = null;
+    text = '';
+    firstCharAt = 0;
+    serverTtftMs = null;
+    startedAt = performance.now();
+
+    try {
+      const response = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conversationId, message }),
+        signal: controller.signal,
+      });
+
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      // fetch() resolved on HEADERS — the body is still arriving (§08.3).
+      const reader = response.body.getReader();
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;                                    // `done` is not text (§08.5)
+        absorb(decoder.decode(value, { stream: true }));    // ⬅ stream: true (§04.4)
+      }
+      absorb(decoder.decode());                             // ⬅ the flush, or the tail is lost
+
+      if (!bubble) hud.textContent = 'stream produced no text';
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        // Chapter 08 §08.11 — an abort is NOT an error: keep the partial text.
+        if (bubble) bubble.parentElement.dataset.status = 'stopped';
+        hud.textContent = 'stopped by user — partial text kept';
+      } else {
+        addBubble('assistant', 'Request failed: ' + error.message);
+        hud.textContent = 'error';
+      }
+    } finally {
+      sendBtn.disabled = false;
+      stopBtn.disabled = true;
+      controller = null;
+      log.setAttribute('aria-busy', 'false');
+    }
+  });
+
+  // Chapter 06 §06.6 — cancellation must propagate upstream: abort() closes the
+  // connection, the server sees `close`, and generation (and cost) stops.
+  stopBtn.addEventListener('click', () => controller?.abort());
+</script>
+</body>
+</html>
