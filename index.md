@@ -21,7 +21,8 @@
 | 📚 | **[Lecture 05](#-lecture-05--prompt-engineering)** | 9 chapters + consolidated notes |
 | 📚 | **[Lecture 06](#-lecture-06--chatbots-and-context)** | 8 chapters + consolidated notes |
 | 📚 | **[Lecture 07](#-lecture-07--ai-streaming)** | 9 chapters + consolidated notes |
-| 🔜 | Lectures 08–31 | Notes not written yet — see the **[README curriculum navigation](./README.md#-curriculum-navigation)** |
+| 📚 | **[Lecture 08](#-lecture-08--tool-calling)** | 8 chapters + consolidated notes |
+| 🔜 | Lectures 09–31 | Notes not written yet — see the **[README curriculum navigation](./README.md#-curriculum-navigation)** |
 
 ---
 
@@ -342,6 +343,60 @@ flowchart LR
     CODE --> PUMP["stream pump<br/>coalescing + backpressure"]
     CODE --> CD["codec<br/>4 granularities + torture test"]
     CODE --> DW["dual write<br/>one turn per exchange"]
+```
+
+---
+
+## 🟨 Lecture 08 — Tool Calling
+
+**Phase 3 · Agency: Tools, Agents & Output Contracts · 🟡 Intermediate · 8 chapters + 1 consolidated document**
+**Folder:** **[📂 Lecture 08 - Tool Calling](./Lecture%2008%20-%20Tool%20Calling/)** · **[📄 Roadmap: Phase 3](./roadmap.md#-phase-3--agency-tools-agents--output-contracts)**
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **From Token Prediction to Tool Augmentation** | The model predicts tokens and **executes nothing** — BPE chunking destroys digit alignment, so arithmetic must be delegated. The brain-without-hands model; the linguistic impedance mismatch; LLMs as universal semantic decoders; the **five failure classes** of "just ask for JSON"; and the definition the whole lecture rests on — **tool = capability + permission** | [📄 Chapter 01](./Lecture%2008%20-%20Tool%20Calling/notes/01_From_Token_Prediction_to_Tool_Augmentation.md) |
+| **02** | **Tool Contracts: JSON Schema, OpenAPI & Parameter Typing** | A tool is an ordinary function wrapped in a contract — `name`, `description`, JSON Schema `parameters` — and that contract is **the only thing the model knows about your code**. The four pillars; the JSON-Schema vocabulary you actually need; why `description` is the highest-leverage text you will ever write and how it directly controls selection accuracy; what a schema **cannot** enforce; one Zod schema as the single source of truth; the registry; five hygiene rules; and OpenAPI as the same idea for a second audience | [📄 Chapter 02](./Lecture%2008%20-%20Tool%20Calling/notes/02_Tool_Contracts_JSON_Schema_and_OpenAPI.md) |
+| **03** | **The 5-Step Wire Protocol & Double-Turn Tool Calling** | A **stateless HTTP ping-pong**: definitions out → `tool_calls` proposal → local execution → addressed `tool` result → synthesis. Every turn's payload field by field; the message-role invariants; why one hop is **two provider calls** (a proposal turn plus a result turn) and its three structural consequences; parallel calls inside one assistant message; the same protocol across providers; and what changes under streaming | [📄 Chapter 03](./Lecture%2008%20-%20Tool%20Calling/notes/03_The_Five_Step_Wire_Protocol_and_Double_Turn_Calling.md) |
+| **04** | **Tool Taxonomy: Deterministic, Information & Action Tools** | Compute, information and action tools differ in **idempotency, caching, retries, failure cost and permission tier** — and the matrix that turns those differences into policy. A bounded calculator; the four properties every information tool needs; normalising away upstream shape; a scoped database lookup and its five rules; what makes action tools different; six rules for designing the **result** for the model's context; and why results are untrusted input | [📄 Chapter 04](./Lecture%2008%20-%20Tool%20Calling/notes/04_Tool_Taxonomy_Deterministic_and_Live_Information_Tools.md) |
+| **05** | **Multi-Step Chaining & the ReAct Execution Loop** | The model builds the dependency graph from observations — **Thought → Action → Observation** — with no orchestration code written. Sequential chaining and the value that exists nowhere in the prompt; parallel dispatch and its rules; the ReAct triplet and why interleaving beats planning first; the execution engine's four responsibilities; **the five brakes** (steps · deadline · token ceiling · repeated call · no progress) and the failure modes they exist for; how to halt well; and the **visible step trace** | [📄 Chapter 05](./Lecture%2008%20-%20Tool%20Calling/notes/05_Multi_Step_Chaining_and_the_ReAct_Execution_Loop.md) |
+| **06** | **Error Handling, Self-Healing & Result Re-injection** | **A tool failure is a result, not an exception** — a design, not a slogan. Why "never throw" is the wrong reading; the single `executeSafely` boundary; the error taxonomy; the structured contract (`status` · `code` · `message` · `retryable`) and what must never appear in it; the **two-stage** parse-and-validate defence; three levels of self-healing; retry policy with backoff, jitter and a budget; and the anti-patterns behind most production incidents | [📄 Chapter 06](./Lecture%2008%20-%20Tool%20Calling/notes/06_Error_Handling_Self_Healing_and_Result_Reinjection.md) |
+| **07** | **Routing, `tool_choice` & Testing Tool Selection** | Selection is a **semantic match you can measure**. The four `tool_choice` policies and how they interact with tool-set size; the six routing failure modes with a symptom → cause → fix table; fixtures with four expectation kinds; **four metrics** and the **confusion matrix** (including the `none` row most teams forget); regression discipline for anything that changes the match surface; and what else to test besides routing | [📄 Chapter 07](./Lecture%2008%20-%20Tool%20Calling/notes/07_Routing_Tool_Choice_and_Testing_Tool_Selection.md) |
+| **08** | **Security, Permissions & the Token Economy** | **The application is the kernel** — the prompt is not a control. The three-tier authorization matrix; the threat model for tool-calling agents and the six-layer defence in depth; three structural defences against indirect injection; the **approval gate as a tool result**, with its four binding rules; why loop cost is **super-linear** and the four levers that bound it; the minimum viable instrumentation; and the 24-item hardening checklist plus the two-question ship gate | [📄 Chapter 08](./Lecture%2008%20-%20Tool%20Calling/notes/08_Security_Permissions_and_the_Token_Economy.md) |
+| **—** | **Lecture 08 — Complete Notes** | Consolidated revision layer for all eight chapters — executive summary, one **master diagram** plus a concept mindmap, a **cheat sheet**, **decision tables**, the hardening checklist, **20 misconceptions**, a glossary and **20 self-check questions**, with links back into the chapters for detail | [📄 Complete notes](./Lecture%2008%20-%20Tool%20Calling/notes/Lecture_08_Complete_Notes.md) |
+
+**Chapter count: 8** (within the 5–10 limit for this lecture).
+
+### 📘 The consolidated revision layer
+
+One document covers all eight chapters — executive summary, a master diagram plus a concept mindmap, a cheat
+sheet, decision tables, a condensed hardening checklist, **20 misconceptions**, a glossary and **20 self-check
+questions**, with links back into the chapters for detail:
+
+👉 **[Lecture_08_Complete_Notes.md](./Lecture%2008%20-%20Tool%20Calling/notes/Lecture_08_Complete_Notes.md)**
+
+### 🧩 This lecture's other artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2008%20-%20Tool%20Calling/README.md) | ✅ |
+| Chapter index for the lecture (reading order, plus a symptom → chapter troubleshooting table) | [📑 index.md](./Lecture%2008%20-%20Tool%20Calling/index.md) | ✅ |
+| **Basic Code** — Express + TypeScript **tool-calling runtime**: 12 source files, **8 endpoints** (`/api/health` · `/api/tools` · `/api/tools/:name/call` · `/api/agent/run` · `/api/eval/routing` · `/api/ledger` · `/api/approvals` · `/api/approvals/:approvalId`), a **6-tool registry** with three permission tiers (`read` · `write` · `critical`), one Zod schema driving both the wire contract and runtime validation, the **5-step wire protocol**, the **ReAct loop** with five brakes and a causal trace, `executeSafely` as the single error boundary, a **TTL cache** for information tools, **routing fixtures** with four metrics and a confusion matrix, a **Tier 3 approval gate** that executes exactly once, and a per-request **token ledger** — runnable with **no API key** (OFFLINE mode), plus a `scripts/verify.py` walkthrough | [📂 code/Basic Code](./Lecture%2008%20-%20Tool%20Calling/code/Basic%20Code/) | ✅ |
+| Chapter-wise implementation guide (10 chapters, 00 → 09: the full file, then a block-by-block explanation) | [📘 implementations guide](./Lecture%2008%20-%20Tool%20Calling/code/Basic%20Code/implementations%20guide/) | ✅ |
+| **Production Code** — a hardened tool platform (durable approval queue, real tool backends, per-tenant rate limits, an audit log and a shared cache) | [📂 code/](./Lecture%2008%20-%20Tool%20Calling/code/) | 🔜 to build |
+| Assignment — 8 chapter-wise question sets (**96 questions**), **43 runnable checks** plus two gate rehearsals, 8 in-chapter extensions, the **CLI-agent capstone** with a routing-eval harness, a **gate demonstration**, a **cost table** and a live completion gate | [📝 Assignment/task.md](./Lecture%2008%20-%20Tool%20Calling/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L8["Lecture 08 notes<br/>8 chapters"]
+    L8 --> CN["Lecture_08_Complete_Notes.md"]
+    IDX --> CODE["Lecture 08 code/<br/>Basic Code + 10-chapter guide"]
+    IDX --> ASG["Lecture 08 Assignment/task.md"]
+    IDX --> RM["roadmap.md<br/>topics, build task, gate"]
+    CODE --> PROTO["5-step protocol<br/>proposal · result · synthesis"]
+    CODE --> LOOP["ReAct loop<br/>5 brakes + causal trace"]
+    CODE --> TIERS["3 tiers<br/>read · write · critical"]
+    CODE --> GATE["approval gate<br/>bound + executed once"]
+    CODE --> EVAL["routing eval<br/>fixtures + confusion matrix"]
 ```
 
 ---

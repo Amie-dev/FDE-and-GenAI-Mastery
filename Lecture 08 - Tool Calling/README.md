@@ -17,8 +17,8 @@ the roadmap is the single source of truth so that no topic is duplicated.
 | :--- | :---: |
 | Read every source note listed in the roadmap for Lecture 08 | ✅ |
 | Write my own chapter notes in `notes/` | ✅ |
-| Build / rebuild the code in `code/` | ✅ Basic Code |
-| Pass the lecture's completion gate | ✅ Basic Code |
+| Build / rebuild the code in `code/` | ✅ |
+| Pass the lecture's completion gate | ☐ |
 
 **Notes status.** All **8 chapter notes** are written in [`notes/`](./notes) (within the 5–10 chapter
 limit), each with **mermaid** diagrams, JS/TS **pseudo-code** only (no runnable code), and a closing
@@ -31,10 +31,9 @@ diagram, a cheat sheet, decision tables, 20 misconceptions, a glossary and 20 se
 | `notes/01…08_*.md` | ✅ 8 chapters |
 | `notes/Lecture_08_Complete_Notes.md` | ✅ consolidated revision layer |
 | `index.md` | ✅ chapter index with reading paths |
-| `code/Basic Code/` | ✅ 12 source files + 10-chapter implementation guide, verified offline |
-| `code/Production Code/` | 🔜 to build |
-| `Assignment/task.md` | 🔜 to write |
-| The gate | ✅ show a 3-hop tool chain and point at the exact message that caused each hop — see [`code/Basic Code/implementations guide/09_Running_and_Verifying.md`](./code/Basic%20Code/implementations%20guide/09_Running_and_Verifying.md) step 2 |
+| `code/` (Basic + Production) | 🟡 Basic Code ✅ · Production 🔜 |
+| `Assignment/task.md` | ✅ written (8 chapter parts · 96 questions · 43 checks · capstone · gate) |
+| The gate | ☐ show a 3-hop tool chain and point at the exact message that caused each hop |
 
 ## 📁 Layout
 
