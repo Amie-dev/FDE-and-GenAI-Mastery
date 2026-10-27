@@ -1,0 +1,46 @@
+{
+  "name": "lecture-09-basic-ai-agents-hitl-lab",
+  "version": "1.0.0",
+  "description": "Basic Express + TypeScript AI-agent lab: the agency spectrum, the 6-component architecture, the perceive/decide/act loop as a state machine, loop brakes and the execution trace, workspace sandboxing with a safe path resolver, an autonomous website-builder agent, 3-tier tool authorization with durable HITL pause/resume and idempotency, RBAC with object-level checks and ABAC, and the defensive wrapper (Lecture 09 — AI Agents and HITL)",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "fde",
+    "genai",
+    "ai-agents",
+    "agent-loop",
+    "state-machine",
+    "harness-engineering",
+    "sandboxing",
+    "path-traversal",
+    "hitl",
+    "human-in-the-loop",
+    "rbac",
+    "abac",
+    "prompt-injection",
+    "defensive-wrapper",
+    "express",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "openai": "^4.85.4",
+    "zod": "^3.24.2",
+    "zod-to-json-schema": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.8",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  }
+}

@@ -1,0 +1,13 @@
+# Dependencies & build output
+node_modules/
+dist/
+
+# The agent's sandbox — generated at runtime, never committed
+workspace/
+
+# Secrets — never commit a real key
+.env
+.env.local
+
+# Logs
+*.log
