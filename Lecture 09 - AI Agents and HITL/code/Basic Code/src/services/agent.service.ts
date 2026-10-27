@@ -244,12 +244,16 @@ export interface RunResult extends AgentRun {
  * checks rather than hopes.
  */
 export const runAgent = async (opts: RunOptions): Promise<RunResult> => {
+  // The deadline is computed BEFORE any setup work. A request deadline that starts
+  // counting after `initWorkspace` would let setup latency escape the budget
+  // (chapter 04 §04.3 — the clock is the whole request, not just the loop).
+  const deadline = Date.now() + (opts.timeoutMs ?? BRAKES.requestTimeoutMs);
+  const cancelAt = opts.cancelAfterMs === undefined ? Number.POSITIVE_INFINITY : Date.now() + opts.cancelAfterMs;
+
   await initWorkspace(); // §06.4 — the controller's first job
 
   const sessionId = opts.resume?.sessionId ?? `sess_${Date.now().toString(36)}`;
   const maxSteps = opts.maxSteps ?? BRAKES.maxSteps;
-  const deadline = Date.now() + (opts.timeoutMs ?? BRAKES.requestTimeoutMs);
-  const cancelAt = opts.cancelAfterMs === undefined ? Number.POSITIVE_INFINITY : Date.now() + opts.cancelAfterMs;
 
   // Chapter 08 §08.2.2 — filter the registry BEFORE the model ever sees it.
   const allowedTools = toolsForRole(ALL_TOOLS, opts.ctx.role);
@@ -287,7 +291,7 @@ export const runAgent = async (opts: RunOptions): Promise<RunResult> => {
     ledger.steps = step;
 
     // ---- Brake 2: wall clock (chapter 04 §04.3) — termination condition 4 ----
-    if (Date.now() > deadline) {
+    if (Date.now() >= deadline) {
       halted = 'timeout';
       break;
     }
