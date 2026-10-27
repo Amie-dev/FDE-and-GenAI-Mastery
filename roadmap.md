@@ -1297,7 +1297,7 @@ Copy this table into a scratch file (or tick it in your fork) as you go.
 | 06 | Chatbots, Context & Hallucination | ✅ | ✅ | ☐ |
 | 07 | AI Streaming | ✅ | ✅ | ☐ |
 | 08 | Tool Calling | ✅ | ✅ | ☐ |
-| 09 | Agents, Sandboxing & HITL | ☐ | ☐ | ☐ |
+| 09 | Agents, Sandboxing & HITL | ✅ | ✅ | ☐ |
 | 10 | Structured Outputs | ☐ | ☐ | ☐ |
 | 11 | Agent SDK from Scratch | ☐ | ☐ | ☐ |
 | 12 | Embeddings First Principles | ☐ | ☐ | ☐ |

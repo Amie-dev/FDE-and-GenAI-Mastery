@@ -22,7 +22,8 @@
 | 📚 | **[Lecture 06](#-lecture-06--chatbots-and-context)** | 8 chapters + consolidated notes |
 | 📚 | **[Lecture 07](#-lecture-07--ai-streaming)** | 9 chapters + consolidated notes |
 | 📚 | **[Lecture 08](#-lecture-08--tool-calling)** | 8 chapters + consolidated notes |
-| 🔜 | Lectures 09–31 | Notes not written yet — see the **[README curriculum navigation](./README.md#-curriculum-navigation)** |
+| 📚 | **[Lecture 09](#-lecture-09--ai-agents-and-hitl)** | 9 chapters + consolidated notes |
+| 🔜 | Lectures 10–31 | Notes not written yet — see the **[README curriculum navigation](./README.md#-curriculum-navigation)** |
 
 ---
 
@@ -397,6 +398,63 @@ flowchart LR
     CODE --> TIERS["3 tiers<br/>read · write · critical"]
     CODE --> GATE["approval gate<br/>bound + executed once"]
     CODE --> EVAL["routing eval<br/>fixtures + confusion matrix"]
+```
+
+---
+
+## 🟨 Lecture 09 — AI Agents and HITL
+
+**Phase 3 · Agency: Tools, Agents & Output Contracts · 🟡 Intermediate · 9 chapters + 1 consolidated document**
+**Folder:** **[📂 Lecture 09 - AI Agents and HITL](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/)** · **[📄 Roadmap: Phase 3](./roadmap.md#-phase-3--agency-tools-agents--output-contracts)**
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **First Principles of AI Agents & the Agency Spectrum** | An LLM has **no sensors and no actuators**, so "agent" is a claim that must be earned. Agency is a **spectrum of four progressive levels** — raw LLM → single tool → multi-tool routing → **autonomous goal-directed loop** — and the difference between them is *who decides the next step* and *how many decisions chain*. The product-facing **chatbot → copilot → agent** spectrum; the **6-component model**; brain + loop + tools; agent vs workflow; and what an agent is **not** | [📄 Chapter 01](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/notes/01_First_Principles_of_AI_Agents_and_the_Agency_Spectrum.md) |
+| **02** | **Agent Architecture: Components & the Request Lifecycle** | The reference architecture and the split the whole lecture rests on — **what the model owns** (interpretation · selection · synthesis) versus **what the runtime owns** (permissions · budgets & timeouts · retries & idempotency · persistence · truth). The components in depth, the full request lifecycle end to end, the layer map, the two formulas reconciled, and the design decisions the architecture forces you to make | [📄 Chapter 02](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/notes/02_Agent_Architecture_Components_and_Request_Lifecycle.md) |
+| **03** | **The Agent Loop: Perceive → Decide → Act & State Machines** | The fundamental loop, and why an **explicit state machine** beats `while (true)` — every terminal state is named, so every terminal state is testable and a gate becomes a *state* rather than a special case. Agent state; the tool runner; the **four-stage act pipeline** (schema validation → authorization → business rules → execution); **never trust tool arguments**; dynamic error recovery; why recovery ≠ unlimited retry; agent vs RAG; and agent loop vs chain-of-thought | [📄 Chapter 03](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/notes/03_The_Agent_Loop_Perceive_Decide_Act_and_State_Machines.md) |
+| **04** | **Loop Engineering & Harness Engineering** | Why `while (true)` is dangerous and the **four brakes** that fix it — **loop bounding · timeout protection · token/cost limits · repetition & no-progress detection** — plus the **six named termination conditions**, the causal **execution trace**, the `O(N²)` token ledger, the six classic agent failure modes, the full defensive pipeline and the harness's control plane | [📄 Chapter 04](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/notes/04_Loop_Engineering_and_Harness_Engineering.md) |
+| **05** | **Workspace Sandboxing & Agent Security** | **Tool = capability + permission**, and a sandbox is an *architecture, not a sentence*. The fatal anti-pattern of unrestricted shell execution; the **five threat vectors** for filesystem agents; the **`safePath` resolver** with its two mandatory containment checks (lexical *and* canonical) and the four subtleties that make it correct; the four hardened workspace tools; the **hierarchy of isolation tiers**; the three isolation axes; quotas; and the 12-item production checklist | [📄 Chapter 05](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/notes/05_Workspace_Sandboxing_and_Agent_Security.md) |
+
+| **06** | **Building an Autonomous Website-Builder Agent** | From *advice* to *actuation*. The system prompt as a **job description** (and why nothing in it is a limit); the **four workspace tools** that are the agent's entire capability surface — scaffold · produce · verify · explore — and why not five or ten; the **controller vs engine** split (thin HTTP vs thick autonomous); the end-to-end BrewLab walkthrough; the **environmental feedback loop** that makes `readFile` a capability multiplier; multi-file coherence; and general-purpose emergence | [📄 Chapter 06](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/notes/06_Building_an_Autonomous_Website_Builder_Agent.md) |
+| **07** | **Human-in-the-Loop & the 3-Tier Tool Authorization Matrix** | Not every action deserves the same autonomy: the **3-tier matrix** (**read-only → auto** · **scoped mutate → auto within quotas** · **critical/irreversible → HITL mandatory**), the classification decision tree and the five tiering rules. Synchronous vs **asynchronous durable HITL**; the **pause/resume state machine**; the pending-approval record; the policy engine; the resumption webhook's **five correctness requirements**; and the **two layers of idempotency** — because webhooks are at-least-once | [📄 Chapter 07](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/notes/07_Human_in_the_Loop_and_Tool_Authorization_Tiers.md) |
+| **08** | **RBAC, the Defensive Wrapper & Platform Guardrails** | **The model is not part of the authorization path** — its output is a proposal; the backend's check is the decision. Authentication vs authorization; RBAC's three canonical roles; **blast radius**; why a **jailbreak is not an authorization bypass**; tool authorization with **object-level checks** (the IDOR case) and **ABAC**; the **defensive wrapper** with its input gate, 0–100 **risk score** and output gate; wrapper vs guardrail vs firewall; what the wrapper **cannot** solve; the SIEM/SOC audit trail; and the complete security architecture | [📄 Chapter 08](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/notes/08_RBAC_Defensive_Wrapper_and_Platform_Guardrails.md) |
+| **09** | **Enterprise Agent Patterns, Failure Modes & the 25 Cardinal Principles** | Pure workflow vs pure agent vs the **hybrid golden pattern** (agency where the *ambiguity* is, determinism where the *consequence* is); the four enterprise topologies; naive chatbot vs enterprise autonomous agent; the four failure classes; **"the application is the kernel"**; the production-readiness maturity model; and the **25 principles** that tie the lecture together | [📄 Chapter 09](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/notes/09_Enterprise_Agent_Patterns_Failure_Modes_and_the_25_Principles.md) |
+| **—** | **Lecture 09 — Complete Notes** | Consolidated revision layer for all nine chapters — executive summary, one **master diagram**, a **cheat sheet**, **seven decision tables**, **20 misconceptions**, a glossary and **20 self-check questions**, with links back into the chapters for detail | [📄 Complete notes](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/notes/Lecture_09_Complete_Notes.md) |
+
+**Chapter count: 9** (within the 5–10 limit for this lecture).
+
+### 📘 The consolidated revision layer
+
+The single document to read the night before an interview. It adds an executive summary, a master diagram, a cheat
+sheet, seven decision tables, a condensed production checklist, **20 misconceptions**, a glossary and **20
+self-check questions**, with links back into the chapters for detail:
+
+👉 **[Lecture_09_Complete_Notes.md](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/notes/Lecture_09_Complete_Notes.md)**
+
+### 🧩 This lecture's other artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/README.md) | ✅ |
+| Chapter index for the lecture (reading order, plus a symptom → chapter troubleshooting table) | [📑 index.md](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/index.md) | ✅ |
+| **Basic Code** — Express + TypeScript **sandboxed agent runtime**: 15 source files, **9 endpoints** (`/api/health` · `/api/tools` · `/api/agent/run` · `/api/workspace/write` · `/api/workspace/files` · `/api/approvals` · `/api/agent/resume` · `/api/guard/scan` · `/api/audit`), a **7-tool registry** across the **three authorization tiers** (`read` · `write` · `critical`), a **3-role** RBAC layer with **object-level + ABAC** checks, the **`safePath`** sandbox (lexical + canonical containment, encoded-separator rejection, deny-list, five quotas), a **durable HITL pause/resume** with **two-layer idempotency**, the **four brakes** with six named termination conditions and a causal **trace + token ledger**, a **defensive wrapper** with a 0–100 risk score and an output gate, and a **security audit log** — runnable with **no API key** (OFFLINE mode) | [📂 code/Basic Code](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/code/Basic%20Code/) | ✅ |
+| Chapter-wise implementation guide (10 chapters, 00 → 09: the full file, then a block-by-block explanation) | [📘 implementations guide](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/code/Basic%20Code/implementations%20guide/) | ✅ |
+| **Production Code** — a hardened agent platform (durable approval store, real tool backends, container isolation, per-tenant rate limits and a SIEM pipeline) | [📂 code/](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/code/) | 🔜 to build |
+| Assignment — 9 chapter-wise question sets (**172 questions**), **48 runnable checks** plus 3 ABAC extras, 8 in-chapter extensions, the **sandboxed-agent capstone** with an attack log, a **blast-radius statement**, a **cost table** and a live completion gate | [📝 Assignment/task.md](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/Assignment/task.md) | ✅ |
+| Answer sheet template (172 slots + Parts B–D templates + a pre-submit checklist) | [📝 Assignment/answers-template.md](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/Assignment/answers-template.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L9["Lecture 09 notes<br/>9 chapters"]
+    L9 --> CN["Lecture_09_Complete_Notes.md"]
+    IDX --> CODE["Lecture 09 code/<br/>Basic Code + 10-chapter guide"]
+    IDX --> ASG["Lecture 09 Assignment/task.md"]
+    IDX --> RM["roadmap.md<br/>topics, build task, gate"]
+    CODE --> LOOP["the loop<br/>state machine + 4 brakes"]
+    CODE --> SBX["safePath sandbox<br/>2 containment checks"]
+    CODE --> TIER["3 tiers<br/>HITL + idempotency"]
+    CODE --> AUTHZ["RBAC + object-level + ABAC<br/>model OUTSIDE the path"]
+    CODE --> WRAP["defensive wrapper<br/>risk score + output gate"]
 ```
 
 ---
