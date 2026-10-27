@@ -1,0 +1,43 @@
+{
+  "name": "lecture-08-basic-tool-calling-lab",
+  "version": "1.0.0",
+  "description": "Basic Express + TypeScript tool-calling lab: the tool contract (JSON Schema), the 5-step wire protocol, the ReAct execution loop with brakes, structured errors and self-healing, routing policies with fixture evals, permission tiers and the token ledger (Lecture 08 — Tool Calling)",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "fde",
+    "genai",
+    "tool-calling",
+    "function-calling",
+    "react",
+    "agent",
+    "json-schema",
+    "zod",
+    "tool-choice",
+    "permission-tiers",
+    "token-ledger",
+    "express",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "openai": "^4.85.4",
+    "zod": "^3.24.2",
+    "zod-to-json-schema": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.8",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  }
+}
