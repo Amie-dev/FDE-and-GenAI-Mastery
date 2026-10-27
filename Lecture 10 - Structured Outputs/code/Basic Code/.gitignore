@@ -1,0 +1,10 @@
+# Dependencies & build output
+node_modules/
+dist/
+
+# Secrets — never commit a real key
+.env
+.env.local
+
+# Logs
+*.log

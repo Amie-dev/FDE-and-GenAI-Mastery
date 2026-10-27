@@ -1,0 +1,56 @@
+{
+  "name": "lecture-10-production-structured-outputs-platform",
+  "version": "1.0.0",
+  "description": "Production-grade Express + TypeScript structured-output service: a canonical schema compiled to per-provider wire contracts, an enforcement capability registry with graceful degradation, a provider port with timeout/retry/circuit-breaker, tenant-keyed caching, a semantic rule registry with block/review severities, a bounded repair loop with a degraded-object fallback, structured traces and metrics, a golden-set evaluation harness, and an additive-only schema-change guard (Lecture 10 — Structured Outputs)",
+  "main": "dist/main.js",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/main.js",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "eval": "tsx src/eval/run.ts",
+    "schema:check": "tsx src/eval/schema-check.ts"
+  },
+  "keywords": [
+    "fde",
+    "genai",
+    "structured-output",
+    "json-schema",
+    "zod",
+    "constrained-decoding",
+    "strict-mode",
+    "repair-loop",
+    "fallback-ladder",
+    "degraded-object",
+    "golden-set",
+    "evaluation-harness",
+    "circuit-breaker",
+    "express",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "lru-cache": "^11.0.2",
+    "openai": "^4.85.4",
+    "pino": "^9.6.0",
+    "pino-http": "^10.4.0",
+    "zod": "^3.24.2",
+    "zod-to-json-schema": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.8",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  }
+}
