@@ -23,7 +23,7 @@
 | 📚 | **[Lecture 07](#-lecture-07--ai-streaming)** | 9 chapters + consolidated notes |
 | 📚 | **[Lecture 08](#-lecture-08--tool-calling)** | 8 chapters + consolidated notes |
 | 📚 | **[Lecture 09](#-lecture-09--ai-agents-and-hitl)** | 9 chapters + consolidated notes |
-| 🔜 | Lectures 10–31 | Notes not written yet — see the **[README curriculum navigation](./README.md#-curriculum-navigation)** |
+| 📚 | **[Lecture 10 — Structured Outputs](#-lecture-10--structured-outputs)** | 9 chapters + consolidated notes + code + assignment |
 
 ---
 
