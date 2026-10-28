@@ -26,6 +26,7 @@
 | 📚 | **[Lecture 10 — Structured Outputs](#-lecture-10--structured-outputs)** | 9 chapters + consolidated notes + code + assignment |
 | 📚 | **[Lecture 11 — Agent SDK from Scratch](#-lecture-11--agent-sdk-from-scratch)** | 8 chapters + consolidated notes + code + assignment |
 | 📚 | **[Lecture 15 — Vector Databases and ANN](#-lecture-15--vector-databases-and-ann)** | 5 chapters + consolidated notes + code + assignment |
+| 📚 | **[Lecture 16 — RAG](#-lecture-16--rag)** | 9 chapters + consolidated notes + code + assignment |
 
 ---
 
@@ -132,6 +133,47 @@ flowchart LR
     IDX --> RM["roadmap.md<br/>topics, build task, gate"]
 ```
 
+
+## 🟥 Lecture 16 — RAG: The Open-Book Architecture
+
+**Phase 5 · RAG & Knowledge · 🟡 Intermediate · 9 chapters + 1 consolidated document**
+**Folder:** **[📂 Lecture 16 - RAG](./Lecture%2016%20-%20RAG/)** · **[📄 Roadmap: Phase 5](./roadmap.md#-phase-5--rag--knowledge-systems)**
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **RAG Fundamentals — The Stateless Model** | Parametric vs non-parametric memory; why LLMs cannot answer private/recent/proprietary questions; hallucination as expected behaviour outside evidence. | [📄 Chapter 01](./Lecture%2016%20-%20RAG/notes/01_rag_fundamentals_stateless_model.md) |
+| **02** | **RAG — The Open-Book Architecture** | Two pipelines (ingestion offline, serving online); the seven-step query path; why "put the policy in the system prompt" is not RAG. | [📄 Chapter 02](./Lecture%2016%20-%20RAG/notes/02_open_book_architecture_two_pipelines.md) |
+| **03** | **Ingestion — Documents to Chunks** | PDF extraction hazards, cleaning, chunking with size + overlap, metadata for citation/filtering, content-addressed deterministic ids, idempotent re-ingestion. | [📄 Chapter 03](./Lecture%2016%20-%20RAG/notes/03_ingestion_documents_to_chunks.md) |
+| **04** | **Embeddings at Query Time** | One model, one dimension, identical preprocessing at ingest and query; the embedding model as a coordinate system; silent failure when spaces differ. | [📄 Chapter 04](./Lecture%2016%20-%20RAG/notes/04_embeddings_at_query_time.md) |
+| **05** | **The Vector Index — Storing and Searching Knowledge** | Record model `id + vector + metadata`; namespaces for isolation; ANN top-K + metadata filter; score floor; dedupe per document; keep top-K. | [📄 Chapter 05](./Lecture%2016%20-%20RAG/notes/05_vector_index_retrieval_engine.md) |
+| **06** | **Grounded Generation and the Prompt Contract** | Role + verbatim context + `[n]` citation grammar + explicit refusal; answer only from context; verify citations against chunks in the prompt. | [📄 Chapter 06](./Lecture%2016%20-%20RAG/notes/06_grounded_generation_prompt_contract.md) |
+| **07** | **Conversation State and Memory** | Session history per `sessionId`; query rewriting to stand-alone questions; bounded history; tenant isolation on sessions. | [📄 Chapter 07](./Lecture%2016%20-%20RAG/notes/07_conversation_state_memory.md) |
+| **08** | **Evaluation and Debugging** | Goldenset of question → gold chunk pairs; Hit Rate @ K and Recall @ K; refusal testing; CI regression gate with baseline. | [📄 Chapter 08](./Lecture%2016%20-%20RAG/notes/08_evaluation_debugging.md) |
+| **09** | **Production System Design** | Four layers (presentation, application, data, infrastructure); tenant isolation in query filter; cost control via topK/prompt/output caps; four escape questions. | [📄 Chapter 09](./Lecture%2016%20-%20RAG/notes/09_production_system_design.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all nine chapters — executive summary, one master diagram, decision tables, common pitfalls, and links back into each chapter for detail:
+
+👉 **[Lecture_16_Complete_Notes.md](./Lecture%2016%20-%20RAG/notes/Lecture_16_Complete_Notes.md)**
+
+### 🧩 This lecture's other artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2016%20-%20RAG/README.md) | ✅ |
+| Chapter index for the lecture (reading order) | [📑 index.md](./Lecture%2016%20-%20RAG/index.md) | ✅ |
+| **Basic Code** — Express + TypeScript **minimum RAG server**: `POST /api/ingest` (document → chunks → embed → upsert with content-addressed id), `POST /api/query` (embed question → tenant-filtered retrieval → grounded generation with `[n]` citations + refusal), `GET /api/health` across `config/` · `controllers/` · `router/` · `services/` · `types/`, plus a 10-chapter implementation guide (00 → 09) | [📂 code/Basic Code](./Lecture%2016%20-%20RAG/code/Basic%20Code/) | ✅ |
+| Chapter-wise implementation guide (10 chapters, 00 → 09: full file + block-by-block explanation) | [📘 implementations guide](./Lecture%2016%20-%20RAG/code/Basic%20Code/implementations%20guide/) | ✅ |
+| Assignment — chapter-wise practice questions & completion gate | [📝 Assignment/task.md](./Lecture%2016%20-%20RAG/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L16["Lecture 16 notes<br/>9 chapters"]
+    L16 --> CN["Lecture_16_Complete_Notes.md"]
+    IDX --> ASG["Lecture 16 Assignment/task.md"]
+    IDX --> RM["roadmap.md<br/>topics, build task, gate"]
+```
 
 
 
