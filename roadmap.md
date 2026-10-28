@@ -1303,7 +1303,7 @@ Copy this table into a scratch file (or tick it in your fork) as you go.
 | 12 | Embeddings First Principles | ✅ | ✅ | ☐ |
 | 13 | Semantic Search Project | ☐ | ☐ | ☐ |
 | 14 | Vector Search & Storage | ✅ | ✅ | ☐ |
-| 15 | Vector DBs & ANN | ✅ | ☐ | ☐ |
+| 15 | Vector DBs & ANN | ✅ | ✅ | ☐ |
 | 16 | RAG | ☐ | ☐ | ☐ |
 | 17 | Advanced RAG | ☐ | ☐ | ☐ |
 | 18 | Vectorless RAG & LLM Wiki | ☐ | ☐ | ☐ |

@@ -25,7 +25,7 @@
 | 📚 | **[Lecture 09](#-lecture-09--ai-agents-and-hitl)** | 9 chapters + consolidated notes |
 | 📚 | **[Lecture 10 — Structured Outputs](#-lecture-10--structured-outputs)** | 9 chapters + consolidated notes + code + assignment |
 | 📚 | **[Lecture 11 — Agent SDK from Scratch](#-lecture-11--agent-sdk-from-scratch)** | 8 chapters + consolidated notes + code + assignment |
-| 📚 | **[Lecture 15 — Vector Databases and ANN](#-lecture-15--vector-databases-and-ann)** | 5 chapters + consolidated notes |
+| 📚 | **[Lecture 15 — Vector Databases and ANN](#-lecture-15--vector-databases-and-ann)** | 5 chapters + consolidated notes + code + assignment |
 
 ---
 
@@ -120,7 +120,9 @@ A single document combining all five chapters — end-to-end narrative, paramete
 | :--- | :--- | :---: |
 | Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2015%20-%20Vector%20Databases%20and%20ANN/README.md) | ✅ |
 | Chapter index for the lecture (reading order) | [📑 index.md](./Lecture%2015%20-%20Vector%20Databases%20and%20ANN/index.md) | ✅ |
-| Assignment — chapter-wise practice questions & completion gate | [📝 Assignment/task.md](./Lecture%2015%20-%20Vector%20Databases%20and%20ANN/Assignment/task.md) | ⬜ to write |
+| **Basic Code** — Express + TypeScript **vector search API**: `POST /api/vectors` (store id + vector + payload), `POST /api/search` (cosine similarity top-K with optional metadata filter), `GET /api/vectors/count` across `config/` · `controllers/` · `routes/` · `services/` · `types/`, plus a 6-chapter implementation guide (00 → 05) | [📂 code/Basic Code](./Lecture%2015%20-%20Vector%20Databases%20and%20ANN/code/Basic%20Code/) | ✅ |
+| Chapter-wise implementation guide (6 chapters, 00 → 05: full file + block-by-block explanation) | [📘 implementations guide](./Lecture%2015%20-%20Vector%20Databases%20and%20ANN/code/Basic%20Code/implementations%20guide/) | ✅ |
+| Assignment — chapter-wise practice questions & completion gate | [📝 Assignment/task.md](./Lecture%2015%20-%20Vector%20Databases%20and%20ANN/Assignment/task.md) | ✅ |
 
 ```mermaid
 flowchart LR
