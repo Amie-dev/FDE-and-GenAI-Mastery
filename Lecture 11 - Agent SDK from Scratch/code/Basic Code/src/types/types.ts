@@ -1,42 +1,54 @@
 /**
  * Core type definitions for the Basic Agent SDK.
  * Based on: Lecture 11 - Agent SDK from Scratch (GAC D08)
+ * Chapters: 01 (Architecture), 02 (Builder & Configuration)
  */
 
 // Message roles used in conversation history
 export type MessageRole = 'system' | 'user' | 'assistant' | 'tool';
 
+/** Single turn in the conversation history. */
 export interface Message {
   role: MessageRole;
   content: string;
 }
 
-// Tool result returned after execution
+/** Result returned by a tool after execution. */
 export interface ToolResult {
   toolCallId?: string;
   content: string;
 }
 
-// LLM engine interface (abstraction over LLM calls)
+/** Abstraction over LLM provider. The Agent SDK only needs generate(). */
 export interface LLMEngine {
-  /** Send conversation to LLM and return response content */
   generate(messages: Message[], options?: Record<string, unknown>): Promise<string>;
 }
 
-// Instructions type (from harness)
+/** Harness/system prompt and optional structured output schema. */
 export interface Instructions {
-  /** System prompt / harness instructions */
   systemPrompt?: string;
-  /** Optional structured output schema */
   outputSchema?: unknown;
 }
 
-// Tool interface - what an agent can call
+/** Tool contract: unique name, description, and execute function. */
 export interface ITool {
-  /** Unique tool name used by LLM for toolCall */
   name: string;
-  /** Human-readable description of tool capabilities */
   description: string;
-  /** Execute the tool with raw args (JSON string) */
   execute(args: Record<string, unknown>): Promise<ToolResult>;
+}
+
+/** Configuration object passed to the AgentBuilder. */
+export interface AgentConfig {
+  name: string;
+  instructions: Instructions;
+  llmEngine: LLMEngine;
+  toolList: ITool[];
+  maxLoop?: number;
+}
+
+/** Runtime Agent interface. */
+export interface Agent {
+  readonly name: string;
+  addMessage(message: { role: 'user' | 'assistant' | 'tool'; content: string }): void;
+  run(input: string): Promise<string>;
 }

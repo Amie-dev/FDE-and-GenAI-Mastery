@@ -1,5 +1,5 @@
 import { Message, MessageRole, ToolResult } from '../types/types';
-import { ToolRegistry } from '../core/tool-registry';
+import { ToolRegistry } from '../services/tool-registry';
 import { LLMEngine } from '../types/types';
 import { MessageHistory } from '../core/message-history';
 

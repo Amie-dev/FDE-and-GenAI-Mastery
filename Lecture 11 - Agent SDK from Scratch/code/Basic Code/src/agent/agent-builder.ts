@@ -1,6 +1,5 @@
-import { AgentConfig, Agent } from '../types/agent-config';
-import { ITool, LLMEngine, Instructions } from '../types/types';
-import { ToolRegistry } from '../core/tool-registry';
+import { AgentConfig, Agent, ITool, LLMEngine, Instructions } from '../types/types';
+import { ToolRegistry } from '../services/tool-registry';
 import { MessageHistory } from '../core/message-history';
 import { HarnessPipeline } from '../harness/reasoning-engine';
 
