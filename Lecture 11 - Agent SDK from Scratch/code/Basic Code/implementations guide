@@ -1,0 +1,248 @@
+# Implementation Guide — Basic Agent SDK (Lecture 11)
+
+Follow chapters 0 → 8 in order. Each chapter builds on the previous one.
+
+---
+
+## Chapter 0 — File Structure
+
+Before writing any code, understand the layout:
+
+```
+code/Basic Code/
+├── package.json            # Dependencies: express, zod; scripts: build/start/dev
+├── tsconfig.json           # TypeScript compilation settings
+├── src/
+│   ├── types/types.ts      # Message, MessageRole, ToolResult, LLMEngine, Instructions, ITool
+│   ├── types/agent-config.ts # AgentConfig, Agent interfaces
+│   ├── core/tool-registry.ts   # ToolRegistry (toolMap, register, execute)
+│   ├── core/message-history.ts # MessageHistory + BasicLLMEngine
+│   ├── harness/reasoning-engine.ts # HarnessPipeline (ReAct state machine)
+│   ├── agent/agent-builder.ts    # AgentBuilder + Agent implementation
+│   └── server/index.ts   # Express server + /chat endpoint
+```
+
+---
+
+## Chapter 1 — Types (`src/types/types.ts`)
+
+### File details
+- **Path:** `src/types/types.ts`
+- **Command:** Create file
+
+### Code block by block
+
+```ts
+export type MessageRole = 'system' | 'user' | 'assistant' | 'tool';
+```
+Defines the four message roles used in conversation history. A Message object carries `role` + `content`.
+
+```ts
+export interface Message { role: MessageRole; content: string; }
+```
+Single turn in the conversation history.
+
+```ts
+export interface ToolResult { toolCallId?: string; content: string; }
+```
+Result returned by a tool after execution. `toolCallId` links result back to the tool call.
+
+```ts
+export interface LLMEngine { generate(messages: Message[], options?: Record<string, unknown>): Promise<string>; }
+```
+Abstraction over LLM provider. The Agent SDK only needs `generate()`; any provider can be plugged in.
+
+```ts
+export interface Instructions { systemPrompt?: string; outputSchema?: unknown; }
+```
+Harness/system prompt and optional structured output schema.
+
+```ts
+export interface ITool { name: string; description: string; execute(args: Record<string, unknown>): Promise<ToolResult>; }
+```
+Tool contract: unique `name`, human `description`, and `execute` that takes args and returns a ToolResult.
+
+---
+
+## Chapter 2 — AgentConfig & Agent (`src/types/agent-config.ts`)
+
+### File details
+- **Path:** `src/types/agent-config.ts`
+- **Command:** Create file
+
+### Code block by block
+
+```ts
+export interface AgentConfig { name: string; instructions: Instructions; llmEngine: LLMEngine; toolList: ITool[]; maxLoop?: number; }
+```
+Configuration object passed to the Builder. `maxLoop` limits ReAct iterations (Chapter 5).
+
+```ts
+export interface Agent { readonly name: string; addMessage(...): void; run(input: string): Promise<string>; }
+```
+Runtime Agent interface: read-only name, `addMessage` to push history, `run` to execute the agent.
+
+---
+
+## Chapter 3 — Tool Registry (`src/core/tool-registry.ts`)
+
+### File details
+- **Path:** `src/core/tool-registry.ts`
+- **Command:** Create file
+
+### Code block by block
+
+```ts
+private tools = new Map<string, ITool>();
+```
+`toolMap` — O(1) lookup of tools by name (Chapter 4).
+
+```ts
+register(tool: ITool): void { this.tools.set(tool.name, tool); }
+```
+Adds a tool to the registry.
+
+```ts
+get(name: string): ITool | undefined { return this.tools.get(name); }
+```
+Retrieves a tool by its name.
+
+```ts
+async execute(name: string, args: Record<string, unknown>): Promise<ToolResult> { ... }
+```
+Looks up the tool in `toolMap`, calls `tool.execute(args)`, and returns a `ToolResult`. Returns an error toolResult if tool is missing or throws.
+
+---
+
+## Chapter 4 — Message History (`src/core/message-history.ts`)
+
+### File details
+- **Path:** `src/core/message-history.ts`
+- **Command:** Create file
+
+### Code block by block
+
+```ts
+private messages: Message[] = [];
+private interceptors: Interceptor[] = [];
+```
+Internal array storing conversation history, plus an array of interceptor functions.
+
+```ts
+addMessage(message: Message): void { ... for interceptor ... }
+```
+Pushes a message through each interceptor (if any returns `null`, message is dropped), then stores it.
+
+```ts
+addUserMessage / addAssistantMessage / addToolMessage(content): void
+```
+Convenience methods for adding messages with specific roles.
+
+```ts
+getMessages(): Message[] { return [...this.messages]; }
+```
+Returns a shallow copy of all messages.
+
+```ts
+use(interceptor: Interceptor): void { this.interceptors.push(interceptor); }
+```
+Registers an interceptor hook (Chapter 5 — input/output filtering).
+
+```ts
+class BasicLLMEngine implements LLMEngine { ... }
+```
+Minimal LLM engine stub for learning purposes — echoes the last user message.
+
+---
+
+## Chapter 5 — Harness ReAct Pipeline (`src/harness/reasoning-engine.ts`)
+
+### File details
+- **Path:** `src/harness/reasoning-engine.ts`
+- **Command:** Create file
+
+### Code block by block
+
+```ts
+export type HarnessStage = 'INITIAL' | 'THINK' | 'TOOL_REQUEST' | 'ANALYSE' | 'OUTPUT';
+```
+The 5-stage state machine (Chapter 3).
+
+```ts
+class HarnessPipeline { ... run(input, history): Promise<string> { ... } }
+```
+Main loop:
+1. **INITIAL** — build message array from system prompt + history + user input.
+2. **THINK** — call `llmEngine.generate()`; if response contains a tool call, go to TOOL_REQUEST; else go to OUTPUT.
+3. **TOOL_REQUEST** — execute each tool via `toolRegistry.execute()`, append results to messages.
+4. **ANALYSE** — reset tool calls/results, loop back to THINK.
+5. **OUTPUT** — return final output string.
+
+The `maxLoop` counter stops infinite loops (Chapter 5).
+
+---
+
+## Chapter 6 — Agent Builder (`src/agent/agent-builder.ts`)
+
+### File details
+- **Path:** `src/agent/agent-builder.ts`
+- **Command:** Create file
+
+### Code block by block
+
+```ts
+class AgentBuilder { setName/setInstructions/setLlmEngine/setTools/setMaxLoop/build(): Agent }
+```
+Fluent builder: chain `.setName().setInstructions().setLlmEngine().setTools().setMaxLoop().build()`.
+
+```ts
+build(): Agent { ... validates config ... creates ToolRegistry, HarnessPipeline, MessageHistory ... returns Agent object }
+```
+Validates required config, wires together `ToolRegistry` → `HarnessPipeline` → `Agent`, returns an `Agent` instance whose `run()` drives the ReAct pipeline.
+
+---
+
+## Chapter 7 — Express Server (`src/server/index.ts`)
+
+### File details
+- **Path:** `src/server/index.ts`
+- **Command:** `npm install` then `npm run dev`
+
+### Code block by block
+
+```ts
+app.use(express.json());
+```
+Parses JSON request bodies.
+
+```ts
+const agent = new AgentBuilder().setName('basic-agent').setInstructions(...).setLlmEngine(...).setTools([...]).setMaxLoop(5).build();
+```
+Instantiates one agent with a `WeatherTool` and `CalculatorTool`.
+
+```ts
+app.post('/chat', async (req, res) => { const result = await agent.run(req.body.message); res.json({ response: result }); });
+```
+HTTP endpoint: POST `{ message: "..." }` → `{ response: "..." }`.
+
+```ts
+app.listen(PORT, ...);
+```
+Starts the server on port 3000.
+
+---
+
+## Commands
+
+```bash
+cd "code/Basic Code"
+npm install
+npm run build      # compile TypeScript to dist/
+npm start          # run compiled server
+npm run dev        # run with ts-node (no build step)
+```
+
+Test:
+```bash
+curl -X POST http://localhost:3000/chat -H "Content-Type: application/json" -d '{"message":"Hello"}'
+```
