@@ -1,0 +1,22 @@
+{
+  "name": "lecture-14-vector-search-basic",
+  "version": "1.0.0",
+  "description": "Basic brute-force KNN vector search with Express and TypeScript (Lecture 14 notes)",
+  "main": "dist/src/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/src/index.js",
+    "dev": "ts-node src/index.ts"
+  },
+  "keywords": ["vector-search", "knn", "express", "typescript"],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.0"
+  }
+}
