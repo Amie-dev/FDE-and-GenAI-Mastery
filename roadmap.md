@@ -1297,12 +1297,13 @@ Copy this table into a scratch file (or tick it in your fork) as you go.
 | 06 | Chatbots, Context & Hallucination | ✅ | ✅ | ☐ |
 | 07 | AI Streaming | ✅ | ✅ | ☐ |
 | 08 | Tool Calling | ✅ | ✅ | ☐ |
-| 09 | Agents, Sandboxing & HITL | ✅ | ✅ | ☐ |\n| 10 | Structured Outputs | ✅ | ✅ | ☐ |
+| 09 | Agents, Sandboxing & HITL | ✅ | ✅ | ☐ |
+| 10 | Structured Outputs | ✅ | ✅ | ☐ |
 | 11 | Agent SDK from Scratch | ✅ | ✅ | ☐ |
-| 12 | Embeddings First Principles | ☐ | ☐ | ☐ |
+| 12 | Embeddings First Principles | ✅ | ✅ | ☐ |
 | 13 | Semantic Search Project | ☐ | ☐ | ☐ |
 | 14 | Vector Search & Storage | ✅ | ✅ | ☐ |
-| 15 | Vector DBs & ANN | ☐ | ☐ | ☐ |
+| 15 | Vector DBs & ANN | ✅ | ☐ | ☐ |
 | 16 | RAG | ☐ | ☐ | ☐ |
 | 17 | Advanced RAG | ☐ | ☐ | ☐ |
 | 18 | Vectorless RAG & LLM Wiki | ☐ | ☐ | ☐ |
