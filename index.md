@@ -53,6 +53,49 @@
 | Assignment — chapter-wise practice questions, hands-on coding tasks, capstone extensions, completion gate | [📝 Assignment/task.md](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/Assignment/task.md) | ✅ |
 
 ---
+## 🟧 Lecture 12 — Vector Embeddings
+
+**Phase 4 · Meaning & Retrieval: Embeddings · 🟢 Beginner · 7 chapters + 1 consolidated document**
+**Folder:** **[📂 Lecture 12 - Vector Embeddings](./Lecture%2012%20-%20Vector%20Embeddings/)** · **[📄 Roadmap: Phase 4](./roadmap.md#-phase-4--meaning--retrieval-embeddings)**
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **The Problem of Meaning in Computers** | Symbols ≠ meaning; identity matching vs semantic similarity; why math requires vectors | [📄 Chapter 01](./Lecture%2012%20-%20Vector%20Embeddings/notes/01_the_problem_of_meaning_in_computers.md) |
+| **02** | **From Numbers to Vectors** | Building feature spaces (1D → 2D → ND); vector order; dimensions; vector space | [📄 Chapter 02](./Lecture%2012%20-%20Vector%20Embeddings/notes/02_from_numbers_to_vectors.md) |
+| **03** | **Measuring Similarity Between Vectors** | Euclidean (L2), Manhattan (L1), Dot Product, Cosine; when to use each | [📄 Chapter 03](./Lecture%2012%20-%20Vector%20Embeddings/notes/03_measuring_similarity_between_vectors.md) |
+| **04** | **The Failure of Hand-Crafted Features** | One-hot, BoW, TF-IDF limitations; interpretability trap; embedding vs generative LLM | [📄 Chapter 04](./Lecture%2012%20-%20Vector%20Embeddings/notes/04_the_failure_of_hand_crafted_features.md) |
+| **05** | **What Are Embeddings? Learning Representations** | Learned representations; "company it keeps"; vector arithmetic (king − man + woman ≈ queen); latent features | [📄 Chapter 05](./Lecture%2012%20-%20Vector%20Embeddings/notes/05_what_are_embeddings_learning_representations.md) |
+| **06** | **Vector vs Embedding — Applications & Real-World Use Cases** | Vector vs embedding distinction; semantic search, recommendation, clustering, classification, RAG; common models & dimensions | [📄 Chapter 06](./Lecture%2012%20-%20Vector%20Embeddings/notes/06_vector_vs_embedding_and_applications.md) |
+| **07** | **The Complete Journey — From Objects to Embeddings** | Full progression synthesis; definitive definition; end-to-end RAG example; geometry encodes semantics | [📄 Chapter 07](./Lecture%2012%20-%20Vector%20Embeddings/notes/07_the_complete_journey_synthesis.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all seven chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary, and 20 self-check questions:
+
+👉 **[Lecture_12_Complete_Notes.md](./Lecture%2012%20-%20Vector%20Embeddings/notes/Lecture_12_Complete_Notes.md)**
+
+### 🧩 This lecture's other artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2012%20-%20Vector%20Embeddings/README.md) | ✅ |
+| Chapter index for the lecture (reading order) | [📑 index.md](./Lecture%2012%20-%20Vector%20Embeddings/index.md) | ✅ |
+| Basic Code — Express + TypeScript vector similarity API (24 sentences, 4 similarity measures, nearest neighbours, vector arithmetic) | [📂 code/Basic Code](./Lecture%2012%20-%20Vector%20Embeddings/code/Basic%20Code/) | ✅ |
+| Production Code | [📂 code/](./Lecture%2012%20-%20Vector%20Embeddings/code/) | 🔜 to build |
+| Assignment — chapter-wise practice questions, hands-on coding tasks, completion gate | [📝 Assignment/task.md](./Lecture%2012%20-%20Vector%20Embeddings/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L12["Lecture 12 notes<br/>7 chapters"]
+    L12 --> CN["Lecture_12_Complete_Notes.md"]
+    IDX --> CODE["Lecture 12 code/Basic Code/"]
+    IDX --> ASG["Lecture 12 Assignment/task.md"]
+    IDX --> RM["roadmap.md<br/>topics, build task, gate"]
+```
+
+---
+
+
 
 ## 🟦 Lecture 01 — Introduction to FDE and AI History
 
