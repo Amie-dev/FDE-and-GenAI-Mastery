@@ -1301,7 +1301,7 @@ Copy this table into a scratch file (or tick it in your fork) as you go.
 | 11 | Agent SDK from Scratch | ✅ | ✅ | ☐ |
 | 12 | Embeddings First Principles | ☐ | ☐ | ☐ |
 | 13 | Semantic Search Project | ☐ | ☐ | ☐ |
-| 14 | Vector Search & Storage | ☐ | ☐ | ☐ |
+| 14 | Vector Search & Storage | ✅ | ✅ | ☐ |
 | 15 | Vector DBs & ANN | ☐ | ☐ | ☐ |
 | 16 | RAG | ☐ | ☐ | ☐ |
 | 17 | Advanced RAG | ☐ | ☐ | ☐ |
