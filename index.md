@@ -24,6 +24,33 @@
 | 📚 | **[Lecture 08](#-lecture-08--tool-calling)** | 8 chapters + consolidated notes |
 | 📚 | **[Lecture 09](#-lecture-09--ai-agents-and-hitl)** | 9 chapters + consolidated notes |
 | 📚 | **[Lecture 10 — Structured Outputs](#-lecture-10--structured-outputs)** | 9 chapters + consolidated notes + code + assignment |
+| 📚 | **[Lecture 11 — Agent SDK from Scratch](#-lecture-11--agent-sdk-from-scratch)** | 8 chapters + consolidated notes + code + assignment |
+
+---
+
+## 🟦 Lecture 11 — Agent SDK from Scratch
+
+**Phase 3 · Agency & Contracts · 🟠 Advanced · 8 chapters + 1 consolidated document**
+**Folder:** **[📂 Lecture 11 - Agent SDK from Scratch](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/)** · **[📄 Roadmap: Phase 3](./roadmap.md#-phase-3--agency-tools-agents--output-contracts)**
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **Introduction to Agent SDK & Core Architecture** | Stateless vs stateful agents; the Agent SDK triad (LLM + Instructions + State + Tools + Execution Loop). | [📄 Chapter 01](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/notes/01-introduction-to-agent-sdk-and-architecture.md) |
+| **02** | **Builder Pattern & Agent Configuration** | Fluent `AgentBuilder`, config decoupling, validation at `build()`, `toolList → toolMap`. | [📄 Chapter 02](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/notes/02-builder-pattern-and-agent-configuration.md) |
+| **03** | **Harness Prompting & ReAct Pipeline** | Harness prompt as LLM/runtime contract; 5-stage pipeline `INITIAL → THINK → TOOL_REQUEST → ANALYSE → OUTPUT`. | [📄 Chapter 03](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/notes/03-harness-prompting-and-react-pipeline.md) |
+| **04** | **Tool Execution Engine & Registry** | `ITool` contract, metadata vs execution, tool registry, dispatch loop, error handling, self-correction. | [📄 Chapter 04](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/notes/04-tool-execution-engine-and-registry.md) |
+| **05** | **Message State Execution & Interceptor Middleware** | `messageHistory` lifecycle, message roles, interceptors/observability, `MAX_LOOP`, context window management. | [📄 Chapter 05](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/notes/05-message-state-execution-and-interceptors.md) |
+| **06** | **Structured Output & Defensive Parsing** | Strict JSON contract, defensive extraction, Zod schema validation, error recovery loops. | [📄 Chapter 06](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/notes/06-structured-output-and-defensive-parsing.md) |
+| **07** | **Guardrails, Safety & Production Hardening** | Input/output guardrails, CLI safety, timeouts, `MAX_LOOP`, retries, circuit breakers, observability, testing. | [📄 Chapter 07](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/notes/07-guardrails-safety-and-production-hardening.md) |
+| **08** | **Multi-Agent Swarms, Handoffs & Provider Packaging** | Multi-agent topologies, handoff protocol, `AgentSwarm`, provider abstraction, SDK packaging. | [📄 Chapter 08](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/notes/08-multi-agent-swarms-providers-packaging.md) |
+
+### 🧩 This lecture's other artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| **Basic Code** — Express + TypeScript Agent SDK: 9 source files, `POST /chat` + `GET /health`, fluent `AgentBuilder`, `ToolRegistry` with `toolMap`, `MessageHistory` with interceptors, `HarnessPipeline` ReAct loop, `BasicLLMEngine` stub, example `WeatherTool` + `CalculatorTool`, chapter-wise implementation guide | [📂 code/Basic Code](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/code/Basic%20Code/) | ✅ |
+| Chapter-wise implementation guide (9 chapters, 00 → 08: overview + full code + block-by-block explanation) | [📘 implementations guide](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/code/Basic%20Code/implementations%20guide/) | ✅ |
+| Assignment — chapter-wise practice questions, hands-on coding tasks, capstone extensions, completion gate | [📝 Assignment/task.md](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/Assignment/task.md) | ✅ |
 
 ---
 
