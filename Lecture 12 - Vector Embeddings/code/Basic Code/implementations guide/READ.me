@@ -1,0 +1,89 @@
+# Implementations Guide — Lecture 12: Vector Embeddings
+
+Chapter-wise, in order. Each chapter explains:
+1. File details (path, purpose)
+2. The command if needed
+3. The **full** code file
+4. Block-by-block explanation of how it works
+
+## Chapter Order
+
+| # | Chapter | Guide File |
+|---|---------|------------|
+| 0 | Overview — Project Structure & File Layout | `00_overview_file_structure.md` |
+| 1 | Environment Setup — Commands & Config | `01_environment_setup.md` |
+| 2 | Shared Types & Interfaces | `02_types_interface.md` |
+| 3 | Configuration Loader — `.env` → typed config | `03_config.md` |
+| 4 | Vector Math Engine — 4 similarity measures | `04_vector_math_engine.md` |
+| 5 | Sentence → Vector Corpus — 24 embedded sentences | `05_sentence_embeddings.md` |
+| 6 | Nearest Neighbour Search — top-N ranking | `06_nearest_neighbors.md` |
+| 7 | Vector Arithmetic — king − man + woman ≈ queen | `07_vector_arithmetic.md` |
+| 8 | Routes & Entry Point — wiring everything together | `08_router_and_entry_point.md` |
+
+## How to Read This Guide
+
+1. Follow chapters in order (0 → 8).
+2. Each chapter includes the **full** code file.
+3. After each full code block, you'll find a **block-by-block** explanation.
+4. Run each chapter's code before moving to the next.
+
+## End-to-End Flow (How Everything Fits Together)
+
+```
+Client (curl / browser)
+  ↓
+src/routes/index.ts          → URL matcher, mounts /api/*
+  ↓
+Controller (thin)            → validates input, delegates
+  ↓
+Service (business logic)     → vector math, embeddings, nearest neighbour
+  ↓
+Services (data)              → corpus of sentences, vector arithmetic examples
+  ↓
+Types (shared interfaces)    → Vector, SentenceEmbedding, Neighbor, AppConfig
+  ↓
+Config (env)                 → port, dim, etc.
+  ↓
+Express + errorHandler       → HTTP server, centralised error handling
+  ↓
+Client response (JSON)
+```
+
+## Commands
+
+```bash
+npm install        # Install all dependencies
+npm run dev        # Run with tsx (no build needed)
+npm run build      # Compile TypeScript to JavaScript in ./dist
+npm start          # Run compiled server
+```
+
+## Quick Test Commands
+
+```bash
+# Health check
+curl http://localhost:4000/api/health
+
+# Show the build-target insight (paraphrases cluster vs word-overlap)
+curl http://localhost:4000/api/similarity/chart
+
+# Nearest neighbours for the fox sentence
+curl "http://localhost:4000/api/neighbors?text=the%20quick%20brown%20fox%20jumps&top=3"
+
+# All 4 similarity measures between two sentences
+curl "http://localhost:4000/api/similarity?a=...&b=..."
+
+# Vector arithmetic: king - man + woman ≈ queen
+curl http://localhost:4000/api/vector-arithmetic
+
+# Full corpus
+curl http://localhost:4000/api/sentences
+```
+
+## Notes on the Implementation
+
+- **No external embedding API needed** — the app uses a deterministic hash-based
+  vector generator so it runs anywhere without API keys.
+- **TypeScript strict mode** — `tsconfig.json` has `"strict": true`.
+- **ES modules** — `package.json` has `"type": "module"`, so all imports use `.js` extensions.
+- **Express 5** — the app targets Express 5.x features (error-handling middleware, etc.).
