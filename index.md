@@ -26,7 +26,7 @@
 | 📚 | **[Lecture 10 — Structured Outputs](#-lecture-10--structured-outputs)** | 9 chapters + consolidated notes + code + assignment |
 | 📚 | **[Lecture 11 — Agent SDK from Scratch](#-lecture-11--agent-sdk-from-scratch)** | 8 chapters + consolidated notes + code + assignment |
 | 📚 | **[Lecture 15 — Vector Databases and ANN](#-lecture-15--vector-databases-and-ann)** | 5 chapters + consolidated notes + code + assignment |
-| 📚 | **[Lecture 16 — RAG](#-lecture-16--rag)** | 9 chapters + consolidated notes + code + assignment |
+| 📚 | **[Lecture 16 — RAG](#-lecture-16--rag)** | 10 chapters + consolidated notes + code + assignment |
 
 ---
 
