@@ -17,7 +17,7 @@ the roadmap is the single source of truth so that no topic is duplicated.
 | :--- | :---: |
 | Read every source note listed in the roadmap for Lecture 21 | ☑ |
 | Write my own chapter notes in `notes/` | ☑ |
-| Build / rebuild the code in `code/` | ☐ |
+| Build / rebuild the code in `code/` | ☑ |
 | Pass the lecture's completion gate | ☐ |
 
 ## 📁 Layout
