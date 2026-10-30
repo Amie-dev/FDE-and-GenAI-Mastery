@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { McpClient } from "@modelcontextprotocol/client";
+import { Client } from "@modelcontextprotocol/client";
 import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 import { fileURLToPath } from "url";
 import path from "path";
@@ -25,13 +25,13 @@ const transport = new StdioClientTransport({
   args: [serverEntry],
 });
 
-const client = new McpClient({ name: "demo-client", version: "1.0.0" });
+const client = new Client({ name: "demo-client", version: "1.0.0" });
 await client.connect(transport);
 
 // ── 1. DISCOVERY ─────────────────────────────────────────────────────────────
 // tools/list returns the cached catalogue — not called on every message.
 const { tools } = await client.listTools();
-console.log(`\n[1] DISCOVERY — tools/list -> ${tools.map((t) => t.name).join(", ")}`);
+console.log(`\n[1] DISCOVERY — tools/list -> ${(tools as any[]).map((t: any) => t.name).join(", ")}`);
 
 // ── 2. SELECTION ─────────────────────────────────────────────────────────────
 // In production the LLM picks the tool (probabilistic). Here we hard-code it
