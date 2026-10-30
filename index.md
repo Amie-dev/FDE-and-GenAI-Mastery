@@ -29,6 +29,7 @@
 | 📚 | **[Lecture 16 — RAG](#-lecture-16--rag)** | 10 chapters + consolidated notes + code + assignment |
 | 📚 | **[Lecture 18 — Vectorless RAG & LLM Wiki](#-lecture-18--vectorless-rag--llm-wiki)** | 7 chapters + consolidated notes + code + assignment |
 | 📚 | **[Lecture 19 — Agent Memory Systems](#-lecture-19--agent-memory-systems)** | 8 chapters + consolidated notes + code + assignment |
+| 📚 | **[Lecture 22 — MCP Resources, Prompts & Gateway](#-lecture-22--mcp-resources-prompts--gateway)** | 9 chapters + consolidated notes + code + assignment |
 
 ---
 
@@ -704,6 +705,59 @@ A single document combining all eight chapters — executive summary, cheat shee
 | Chapter-wise implementation guide (00 → 07: the full file, then a block-by-block explanation) | [📘 implementations guide](./Lecture%2019%20-%20Agent%20Memory%20Systems/code/Basic%20Code/implementations%20guide/) | ✅ |
 | Assignment — 8 chapter-wise task sets, completion gate and end-to-end capstone | [📝 Assignment/task.md](./Lecture%2019%20-%20Agent%20Memory%20Systems/Assignment/task.md) | ✅ |
 
+```
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L19["Lecture 19 notes<br/>8 chapters"]
+    L19 --> CN["Lecture_19_Complete_Notes.md"]
+    IDX --> CODE["Lecture 19 code/Basic Code/"]
+    IDX --> ASG["Lecture 19 Assignment/task.md"]
+    IDX --> RM["roadmap.md<br/>topics, build task, gate"]
+```
+
+---
+
+## 🟪 Lecture 22 — MCP Resources, Prompts & Gateway
+
+**Phase 6 · Integration · 🟠 Advanced · 9 chapters + 1 consolidated document**
+**Folder:** **[📂 Lecture 22 - MCP Resources Prompts and Gateway](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/)** · **[📄 Roadmap: Phase 6](./roadmap.md#-phase-6--integration--interoperability)**
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **The Three Primitives & the Control Model** | Every capability is a Tool, Resource, or Prompt; who decides: model, application, or user. | [📄 Chapter 01](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/notes/01_The_Three_Primitives_and_the_Control_Model.md) |
+| **02** | **Why Resources** | Context as a first-class primitive; why resources separate knowledge from action. | [📄 Chapter 02](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/notes/02_Why_Resources_Context_as_a_First_Class_Primitive.md) |
+| **03** | **Resource Discovery, Reading and Anatomy** | The `resources/list`, `resources/read`, and `resources/templates/list` protocol; URI, MIME, and template anatomy. | [📄 Chapter 03](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/notes/03_Resource_Discovery_Reading_and_Anatomy.md) |
+| **04** | **Building Resources — Static, Dynamic, and Templated** | `listResources()` + `readResource(uri)` for static strings, dynamic reads and templated variables. | [📄 Chapter 04](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/notes/04_Building_Resources_Static_Dynamic_and_Templated.md) |
+| **05** | **How the Application Chooses a Resource** | Selection strategies: user selection, application state, retrieval, LLM routing; fallback order and scoring. | [📄 Chapter 05](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/notes/05_How_the_Application_Chooses_a_Resource.md) |
+| **06** | **MCP Prompts — Reusable Interaction Templates** | `prompts/list` + `prompts/get`; Prompts as message templates with arguments and client wiring. | [📄 Chapter 06](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/notes/06_MCP_Prompts_Reusable_Interaction_Templates.md) |
+| **07** | **Prompt Arguments, Discovery and Client Wiring** | Argument schemas, validation against the declared JSON schema, and how a client discovers and fills them. | [📄 Chapter 07](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/notes/07_Prompt_Arguments_Discovery_and_Client_Wiring.md) |
+| **08** | **Bringing Tools, Resources, and Prompts Together** | End-to-end MCP flow: prompt → resources → tools → response; the gateway as the integration layer. | [📄 Chapter 08](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/notes/08_Bringing_Tools_Resources_and_Prompts_Together.md) |
+| **09** | **MCP Gateway, Context Poisoning & Security** | Gateway filtering, routing, auth, audit; tool context poisoning vectors and the 4-part defence. | [📄 Chapter 09](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/notes/09_MCP_Gateway_Context_Poisoning_and_Security.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all nine chapters — executive summary, cheat sheet, decision tables, and links back into each chapter for detail:
+
+👉 **[Lecture_22_Complete_Notes.md](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/notes/Lecture_22_Complete_Notes.md)**
+
+### 🧩 This lecture's other artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/README.md) | ✅ |
+| Chapter index for the lecture (reading order) | [📑 index.md](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/index.md) | ✅ |
+| **Basic Code** — Express + TypeScript MCP server with all three primitives | [📂 code/Basic Code](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/code/Basic%20Code/) | ✅ |
+| Chapter-wise implementation guide (00 → 08: full file + block-by-block explanation) | [📘 implementations guide](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/code/Basic%20Code/implementations%20guide/) | ✅ |
+| Assignment — chapter-wise practice questions, hands-on coding tasks, completion gate | [📝 Assignment/task.md](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L22["Lecture 22 notes<br/>9 chapters"]
+    L22 --> CN["Lecture_22_Complete_Notes.md"]
+    IDX --> CODE["Lecture 22 code/Basic Code/"]
+    IDX --> ASG["Lecture 22 Assignment/task.md"]
+    IDX --> RM["roadmap.md<br/>topics, build task, gate"]
 ```
 
 ## 🟪 Lecture 21 — MCP Core

@@ -1310,7 +1310,7 @@ Copy this table into a scratch file (or tick it in your fork) as you go.
 | 19 | Agent Memory Systems | ✅ | ✅ | ☐ |
 | 20 | Graph DB, Cypher & GraphRAG | ✅ | ✅ | ✅ |
 | 21 | MCP Core | ✅ | ✅ | ✅ |
-| 22 | MCP Resources, Prompts & Gateway | ☐ | ☐ | ☐ |
+| 22 | MCP Resources, Prompts & Gateway | ✅ | ☐ | ☐ |
 | 23 | Claude Skills | ☐ | ☐ | ☐ |
 | 24 | Multimodal AI | ☐ | ☐ | ☐ |
 | 25 | vLLM & PagedAttention | ☐ | ☐ | ☐ |
