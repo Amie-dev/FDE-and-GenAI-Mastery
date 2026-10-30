@@ -15,10 +15,10 @@ the roadmap is the single source of truth so that no topic is duplicated.
 
 | Step | Status |
 | :--- | :---: |
-| Read every source note listed in the roadmap for Lecture 22 | ☐ |
-| Write my own chapter notes in `notes/` | ☐ |
-| Build / rebuild the code in `code/` | ☐ |
-| Pass the lecture's completion gate | ☐ |
+| Read every source note listed in the roadmap for Lecture 22 | ✅ |
+| Write my own chapter notes in `notes/` | ✅ |
+| Build / rebuild the code in `code/` | ✅ |
+| Pass the lecture's completion gate | ✅ |
 
 ## 📁 Layout
 
