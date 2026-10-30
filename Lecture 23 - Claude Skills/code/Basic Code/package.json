@@ -1,0 +1,22 @@
+{
+  "name": "day16-claude-skills-code",
+  "version": "1.0.0",
+  "description": "Production-grade Claude Skills implementation examples in JavaScript/Node.js",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test:pay-skill": "node pay-skill/scripts/validate_payment.js --email user@example.com --amount 4999 --currency USD",
+    "test:pay-subscription": "node pay-skill/scripts/process_subscription.js --action create_customer --email test@company.com --name 'Acme Corp'",
+    "test:validate-skill": "node skill-creator/scripts/validate_skill.js --skill-path ./pay-skill",
+    "test:package-skill": "node skill-creator/scripts/package_skill.js --skill-path ./pay-skill --output-dir ./dist"
+  },
+  "keywords": [
+    "claude-skills",
+    "mcp",
+    "javascript",
+    "agentic-ai",
+    "node"
+  ],
+  "author": "GenAI Cohort",
+  "license": "MIT"
+}
