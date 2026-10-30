@@ -136,7 +136,7 @@ Follow the phases **in order** — each one assumes only the phase before it. Co
 | **21** | 🟪 MCP Core | 6 | 🟡 | [📂](./Lecture%2021%20-%20MCP%20Core/) | [📄](./roadmap.md#lecture-21--mcp-from-first-principles-host-client-server--tools) |
 | **22** | 🟪 MCP Resources Prompts and Gateway | 6 | 🟠 | [📂](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/) | [📄](./roadmap.md#lecture-22--mcp-resources-prompts--production-gateway-architecture) |
 | **23** | 🟪 Claude Skills | 6 | 🟠 | [📂](./Lecture%2023%20-%20Claude%20Skills/) | [📄](./roadmap.md#lecture-23--claude-skills--the-agent-skills-open-standard) |
-| **24** | 🟫 Multimodal AI | 7 | 🟠 | [📂](./Lecture%2024%20-%20Multimodal%20AI/) | [📄](./roadmap.md#lecture-24--multimodal-ai-how-llms-understand-images) |
+| **24** | ✅ Multimodal AI | 7 | 🟠 | [📂](./Lecture%2024%20-%20Multimodal%20AI/) | [📄](./roadmap.md#lecture-24--multimodal-ai-how-llms-understand-images) |
 | **25** | 🟦 vLLM and PagedAttention | 8 | 🔴 | [📂](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/) | [📄](./roadmap.md#lecture-25--high-performance-inference-gpu-mechanics-vllm--pagedattention) |
 | **26** | 🟦 Durable Execution with Inngest | 8 | 🟠 | [📂](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/) | [📄](./roadmap.md#lecture-26--durable-execution--event-driven-multi-agent-workflows-inngest) |
 | **27** | 🟦 Full-Stack AI Platform | 8 | 🔴 | [📂](./Lecture%2027%20-%20Full-Stack%20AI%20Platform/) | [📄](./roadmap.md#lecture-27--enterprise-full-stack-ai-platform-architecture-db-auth--ingestion) |

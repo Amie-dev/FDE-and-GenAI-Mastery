@@ -1312,7 +1312,7 @@ Copy this table into a scratch file (or tick it in your fork) as you go.
 | 21 | MCP Core | ✅ | ✅ | ✅ |
 | 22 | MCP Resources, Prompts & Gateway | ✅ | ✅ | ☐ |
 | 23 | Claude Skills | ☐ | ☐ | ☐ |
-| 24 | Multimodal AI | ☐ | ☐ | ☐ |
+| 24 | Multimodal AI | ✅ | ✅ | ✅ |
 | 25 | vLLM & PagedAttention | ☐ | ☐ | ☐ |
 | 26 | Durable Execution (Inngest) | ☐ | ☐ | ☐ |
 | 27 | Full-Stack AI Platform | ☐ | ☐ | ☐ |

@@ -30,6 +30,7 @@
 | 📚 | **[Lecture 18 — Vectorless RAG & LLM Wiki](#-lecture-18--vectorless-rag--llm-wiki)** | 7 chapters + consolidated notes + code + assignment |
 | 📚 | **[Lecture 19 — Agent Memory Systems](#-lecture-19--agent-memory-systems)** | 8 chapters + consolidated notes + code + assignment |
 | 📚 | **[Lecture 22 — MCP Resources, Prompts & Gateway](#-lecture-22--mcp-resources-prompts--gateway)** | 9 chapters + consolidated notes + code + assignment |
+| 📚 | **[Lecture 24 — Multimodal AI](#-lecture-24--multimodal-ai)** | 10 chapters + consolidated notes + code + assignment |
 
 ---
 
@@ -796,5 +797,46 @@ flowchart LR
     L21 --> CN["Lecture_21_Complete_Notes.md"]
     IDX --> CODE["Lecture 21 code/<br/>Basic Code + guide"]
     IDX --> ASG["Lecture 21 Assignment/task.md"]
+    IDX --> RM["roadmap.md<br/>topics, build task, gate"]
+```
+
+### 🟧 Lecture 24 — Multimodal AI
+
+**Phase 7 · Multimodality · 🟠 Advanced · 10 chapters + 1 consolidated document**
+**Folder:** **[📂 Lecture 24 - Multimodal AI](./Lecture%2024%20-%20Multimodal%20AI/)** · **[📄 Roadmap: Phase 7](./roadmap.md#-phase-7--multimodality)**
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **Why Text-Only AI Is Not Enough** | Text-only models cannot represent visual content; multimodality bridges the gap. | [📄](./Lecture%2024%20-%20Multimodal%20AI/notes/01_Why_Text_Only_AI_Is_Not_Enough.md) |
+| **02** | **What Multimodal Models Understand & OCR vs MLLM** | What models "see"; OCR for structured text; MLLM for free-form understanding; when each wins. | [📄](./Lecture%2024%20-%20Multimodal%20AI/notes/02_What_Multimodal_Models_Understand_And_OCR_vs_MLLM.md) |
+| **03** | **The Text Pipeline Recap** | Text → Tokens → Token IDs → Vectors; deterministic pseudo-tokenizer for reproducible demos. | [📄](./Lecture%2024%20-%20Multimodal%20AI/notes/03_The_Text_Pipeline_Recap.md) |
+| **04** | **Images Are Numbers: Pixels, Patches, Visual Embeddings** | Pixels → Grid → Patches → Embeddings; fixed patch size; dimension arithmetic. | [📄](./Lecture%2024%20-%20Multimodal%20AI/notes/04_Images_Are_Numbers_Pixels_Patches_And_Visual_Embeddings.md) |
+| **05** | **Connecting Vision to Language** | Projection layers, positional encoding, cross-attention; connecting vision and language spaces. | [📄](./Lecture%2024%20-%20Multimodal%20AI/notes/05_Connecting_Vision_To_Language_Projection_Position_And_Attention.md) |
+| **06** | **How Models Learn Vision-Language Alignment** | Contrastive pretraining, instruction tuning, cosine similarity; training data = images + descriptions. | [📄](./Lecture%2024%20-%20Multimodal%20AI/notes/06_How_Models_Learn_Vision_Language_Alignment.md) |
+| **07** | **End-to-End Multimodal Pipeline & Application Boundary** | Full request lifecycle; `/chat` contract; application packages, never interprets. | [📄](./Lecture%2024%20-%20Multimodal%20AI/notes/07_The_End_To_End_Multimodal_Pipeline.md) |
+| **08** | **Production Multimodal Systems: Cost, Security, Evaluation** | Token budgets, cost guards, untrusted image middleware, security considerations. | [📄](./Lecture%2024%20-%20Multimodal%20AI/notes/08_Production_Multimodal_Systems_Cost_Security_And_Evaluation.md) |
+| **09** | **Multimodal Data Ingestion & Advanced RAG** | Multi-modality ingestion (images, audio, video, PDF, web); chunking and indexing strategies. | [📄](./Lecture%2024%20-%20Multimodal%20AI/notes/09_Multimodal_Data_Ingestion_And_Advanced_RAG.md) |
+| **10** | **Multimodal RAG & The Complete Picture** | Multimodal retrieval, RAG pipeline, cost/latency reports, evaluation harness. | [📄](./Lecture%2024%20-%20Multimodal%20AI/notes/10_Multimodal_RAG_And_Complete_Picture.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all ten chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary, and 20 self-check questions:
+
+👉 **[Lecture_24_Complete_Notes.md](./Lecture%2024%20-%20Multimodal%20AI/notes/Lecture_24_Complete_Notes.md)**
+
+### 🧩 This lecture's other artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| **Basic Code** — Express + TypeScript multimodal service: config, services, middleware, routes, controllers, demo, tests (5 files + implementation guide) | [📂 code/Basic Code](./Lecture%2024%20-%20Multimodal%20AI/code/Basic%20Code/) | ✅ |
+| Chapter-wise implementation guide (10 chapters, 00 → 10: overview + full code + block-by-block explanation) | [📘 implementations guide](./Lecture%2024%20-%20Multimodal%20AI/code/Basic%20Code/implementations%20guide/) | ✅ |
+| Assignment — chapter-wise practice questions, hands-on coding tasks and completion gate | [📝 Assignment/task.md](./Lecture%2024%20-%20Multimodal%20AI/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L24["Lecture 24 notes<br/>10 chapters"]
+    L24 --> CN["Lecture_24_Complete_Notes.md"]
+    IDX --> CODE["Lecture 24 code/Basic Code/"]
+    IDX --> ASG["Lecture 24 Assignment/task.md"]
     IDX --> RM["roadmap.md<br/>topics, build task, gate"]
 ```

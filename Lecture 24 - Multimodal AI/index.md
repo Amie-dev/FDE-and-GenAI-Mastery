@@ -21,6 +21,37 @@
 
 ---
 
+## Code
+
+### Basic Code (TypeScript / Express)
+
+- **Entry:** [`code/Basic Code/src/index.ts`](./code/Basic Code/src/index.ts)
+- **Config:** [`code/Basic Code/src/config/config.ts`](./code/Basic Code/src/config/config.ts)
+- **Services:**
+  - [`code/Basic Code/src/services/textPipeline.ts`](./code/Basic Code/src/services/textPipeline.ts) — Text → Tokens → IDs → Vectors
+  - [`code/Basic Code/src/services/visionPipeline.ts`](./code/Basic Code/src/services/visionPipeline.ts) — Pixels → Patches → Embeddings
+  - [`code/Basic Code/src/services/alignmentService.ts`](./code/Basic Code/src/services/alignmentService.ts) — Position, Projection, Cosine, Attention
+  - [`code/Basic Code/src/services/costService.ts`](./code/Basic Code/src/services/costService.ts) — Image token budget & cost guard
+  - [`code/Basic Code/src/services/chatService.ts`](./code/Basic Code/src/services/chatService.ts) — Multimodal call + history
+- **Middleware:** [`code/Basic Code/src/middleware/upload.ts`](./code/Basic Code/src/middleware/upload.ts) — Untrusted image gate
+- **Controllers:** [`code/Basic Code/src/controllers/chatController.ts`](./code/Basic Code/src/controllers/chatController.ts) — HTTP in/out
+- **Routes:** [`code/Basic Code/src/routes/index.ts`](./code/Basic Code/src/routes/index.ts) — `/health`, `POST /chat`, `DELETE /chat`
+- **Demo:** [`code/Basic Code/src/demo.ts`](./code/Basic Code/src/demo.ts) — Offline walkthrough (`npm run demo`)
+- **Tests:** [`code/Basic Code/app.test.js`](./code/Basic Code/app.test.js) — Built-in test runner (`npm test`)
+- **Implementation Guide:** [`code/Basic Code/implementations guide/`](./code/Basic Code/implementations guide/) — 10 chapters, full code + block-by-block explanation
+
+### Production Code
+
+- *Not implemented for this lecture*
+
+---
+
+## Assignment
+
+- [Assignment/task.md](./Assignment/task.md) — Deliverables, acceptance criteria, stretch goals
+
+---
+
 ## Source References
 
 - **FDE L16**: `Forward-Deployed-Engineer/Lecture 16/notes/01...08`
@@ -32,5 +63,5 @@
 
 - [x] Read every source note listed in the roadmap for Lecture 24
 - [x] Write my own chapter notes in `notes/`
-- [ ] Build / rebuild the code in `code/`
-- [ ] Pass the lecture's completion gate
+- [x] Build / rebuild the code in `code/`
+- [x] Pass the lecture's completion gate

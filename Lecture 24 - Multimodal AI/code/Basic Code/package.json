@@ -2,16 +2,17 @@
   "name": "lecture-16-multimodal-basics",
   "version": "1.0.0",
   "private": true,
-  "description": "Lecture 16 — Multimodal AI: How LLMs Understand Images. The minimal, runnable code behind the notes: the text pipeline, the vision pipeline, alignment, the /chat contract and the image cost guard.",
+  "description": "Lecture 24 — Multimodal AI: How LLMs Understand Images. The minimal, runnable code behind the notes: the text pipeline, the vision pipeline, alignment, the /chat contract and the image cost guard.",
   "type": "module",
   "engines": {
     "node": ">=20.0.0"
   },
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "node --watch src/index.js",
-    "demo": "node src/demo.js",
-    "test": "node --test"
+    "start": "tsx src/index.ts",
+    "dev": "tsx --watch src/index.ts",
+    "demo": "tsx src/demo.ts",
+    "test": "tsx --test",
+    "build": "tsc --outDir dist --declaration --module commonjs --moduleResolution node && mv dist/*.js src/ 2>/dev/null || tsc"
   },
   "keywords": [
     "fde",
@@ -27,5 +28,9 @@
     "express": "^5.0.0",
     "multer": "^2.0.0",
     "openai": "^6.0.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   }
 }
