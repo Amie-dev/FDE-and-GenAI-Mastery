@@ -27,6 +27,7 @@
 | 📚 | **[Lecture 11 — Agent SDK from Scratch](#-lecture-11--agent-sdk-from-scratch)** | 8 chapters + consolidated notes + code + assignment |
 | 📚 | **[Lecture 15 — Vector Databases and ANN](#-lecture-15--vector-databases-and-ann)** | 5 chapters + consolidated notes + code + assignment |
 | 📚 | **[Lecture 16 — RAG](#-lecture-16--rag)** | 10 chapters + consolidated notes + code + assignment |
+| 📚 | **[Lecture 18 — Vectorless RAG & LLM Wiki](#-lecture-18--vectorless-rag--llm-wiki)** | 7 chapters + consolidated notes + code + assignment |
 
 ---
 
@@ -626,4 +627,49 @@ the existing ones**:
 ```
 
 Then tick the lecture in **[roadmap.md → Appendix D](./roadmap.md#-appendix-d--progress-tracker)**
+
+---
+
+## 🟫 Lecture 18 — Vectorless RAG & LLM Wiki
+
+**Phase 5 · RAG & Knowledge · 🟠 Advanced · 7 chapters + 1 consolidated document**
+**Folder:** **[📂 Lecture 18 - Vectorless RAG and LLM Wiki](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/)** · **[📄 Roadmap: Phase 5](./roadmap.md#-phase-5--rag--knowledge)**
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **Limitations of Vector RAG & the Abrupt Chunking Problem** | Fixed-size token chunking breaks logical boundaries; similarity score does not guarantee relevance. | [📄 Chapter 01](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/notes/01_limitations_vector_rag_chunking.md) |
+| **02** | **Vectorless RAG & Tree-Structured Indexing** | Documents become hierarchical trees (chapter → section → page) instead of flat vector chunks. | [📄 Chapter 02](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/notes/02_vectorless_rag_tree_indexing.md) |
+| **03** | **Agentic Tree Search & LLM Relevance Retrieval** | An LLM navigation agent walks the tree branch by branch, pruning irrelevant sections before loading content. | [📄 Chapter 03](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/notes/03_agentic_tree_search_llm_relevance.md) |
+| **04** | **LLM Wiki Architecture (Andrej Karpathy)** | The LLM acts as a background librarian: organize, summarize, tag, link into a human-readable Markdown vault. | [📄 Chapter 04](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/notes/04_llm_wiki_librarian_architecture.md) |
+| **05** | **Two-Pass Retrieval & Lazy Loading** | Pass 1 scans lightweight metadata; Pass 2 loads full content only for selected documents. | [📄 Chapter 05](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/notes/05_two_pass_retrieval_lazy_loading.md) |
+| **06** | **System Comparison & Hybrid RAG** | Vector RAG vs Vectorless RAG vs LLM Wiki compared across structure, retrieval, context, cost and accuracy. | [📄 Chapter 06](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/notes/06_system_comparison_hybrid_rag.md) |
+| **07** | **Decision Framework, Benchmarks & Production Architecture** | When to choose each architecture; hybrid combines vector pre-filtering with tree navigation. | [📄 Chapter 07](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/notes/07_decision_framework_production_architecture.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all seven chapters — the complete mental model of Vectorless RAG vs Vector RAG vs LLM Wiki, with the hybrid production architecture and decision framework:
+
+👉 **[Lecture_18_Complete_Notes.md](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/notes/Lecture_18_Complete_Notes.md)**
+
+### 🧩 This lecture's other artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/README.md) | ✅ |
+| Chapter index for the lecture (reading order) | [📑 index.md](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/index.md) | ✅ |
+| **Basic Code** — Express + TypeScript API with tree indexing, agentic tree search, LLM Wiki vault, and two-pass retrieval | [📂 code/Basic Code](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/code/Basic%20Code/) | ✅ |
+| Chapter-wise implementation guide (10 chapters, 00 → 09: the full file, then a block-by-block explanation) | [📘 implementations guide](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/code/Basic%20Code/implementations%20guide/) | ✅ |
+| **Production Code** | [📂 code/](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/code/) | 🔜 to build |
+| Assignment — 7 chapter-wise question sets and the completion gate | [📝 Assignment/task.md](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L18["Lecture 18 notes<br/>7 chapters"]
+    L18 --> CN["Lecture_18_Complete_Notes.md"]
+    IDX --> CODE["Lecture 18 code/<br/>Basic Code + guide"]
+    IDX --> ASG["Lecture 18 Assignment/task.md"]
+    IDX --> RM["roadmap.md<br/>topics, build task, gate"]
+```
+
+---
 (`Notes written` · `Code built` · `Gate passed`).
