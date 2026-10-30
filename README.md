@@ -132,7 +132,7 @@ Follow the phases **in order** — each one assumes only the phase before it. Co
 | **17** | 🟥 Advanced RAG | 5 | 🟠 | [📂](./Lecture%2017%20-%20Advanced%20RAG/) | [📄](./roadmap.md#lecture-17--advanced-rag-chunking-hybrid-retrieval-reranking--context-engineering) |
 | **18** | 🟥 Vectorless RAG and LLM Wiki | 5 | 🟠 | [📂](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/) | [📄](./roadmap.md#lecture-18--vectorless-rag-hierarchical-tree-indexing--llm-wiki-engines) |
 | **19** | 🟥 Agent Memory Systems | 5 | 🟠 | [📂](./Lecture%2019%20-%20Agent%20Memory%20Systems/) | [📄](./roadmap.md#lecture-19--agent-memory-systems-stm-ltm-graph-memory-dreaming--mem0) |
-| **20** | 🟥 Graph Databases and GraphRAG | 5 | 🟠 | [📂](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/) | [📄](./roadmap.md#lecture-20--graph-databases-cypher-neo4j--graphrag) |
+| **20** | ✅ Graph Databases and GraphRAG | 5 | 🟠 | [📂](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/) | [📄](./roadmap.md#lecture-20--graph-databases-cypher-neo4j--graphrag) |
 | **21** | 🟪 MCP Core | 6 | 🟡 | [📂](./Lecture%2021%20-%20MCP%20Core/) | [📄](./roadmap.md#lecture-21--mcp-from-first-principles-host-client-server--tools) |
 | **22** | 🟪 MCP Resources Prompts and Gateway | 6 | 🟠 | [📂](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/) | [📄](./roadmap.md#lecture-22--mcp-resources-prompts--production-gateway-architecture) |
 | **23** | 🟪 Claude Skills | 6 | 🟠 | [📂](./Lecture%2023%20-%20Claude%20Skills/) | [📄](./roadmap.md#lecture-23--claude-skills--the-agent-skills-open-standard) |

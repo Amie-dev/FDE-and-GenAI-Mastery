@@ -102,4 +102,4 @@ Build a **cognitive-memory GraphRAG application** that combines vector similarit
 
 - **Notes:** `../notes/01…08_*.md`
 - **Roadmap Build/Gate:** `../roadmap.md` → "Lecture 20"
-- **Implementation guide:** `../code/Basic Code/impl-guide/`
+- **Implementation guide:** `../code/Basic Code/implementations guide/`
