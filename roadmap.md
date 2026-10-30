@@ -1307,7 +1307,7 @@ Copy this table into a scratch file (or tick it in your fork) as you go.
 | 16 | RAG | ✅ | ✅ | ☐ |
 | 17 | Advanced RAG | ☐ | ☐ | ☐ |
 | 18 | Vectorless RAG & LLM Wiki | ✅ | ✅ | ☐ |
-| 19 | Agent Memory Systems | ☐ | ☐ | ☐ |
+| 19 | Agent Memory Systems | ✅ | ✅ | ☐ |
 | 20 | Graph DB, Cypher & GraphRAG | ☐ | ☐ | ☐ |
 | 21 | MCP Core | ☐ | ☐ | ☐ |
 | 22 | MCP Resources, Prompts & Gateway | ☐ | ☐ | ☐ |

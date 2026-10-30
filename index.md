@@ -28,6 +28,7 @@
 | 📚 | **[Lecture 15 — Vector Databases and ANN](#-lecture-15--vector-databases-and-ann)** | 5 chapters + consolidated notes + code + assignment |
 | 📚 | **[Lecture 16 — RAG](#-lecture-16--rag)** | 10 chapters + consolidated notes + code + assignment |
 | 📚 | **[Lecture 18 — Vectorless RAG & LLM Wiki](#-lecture-18--vectorless-rag--llm-wiki)** | 7 chapters + consolidated notes + code + assignment |
+| 📚 | **[Lecture 19 — Agent Memory Systems](#-lecture-19--agent-memory-systems)** | 8 chapters + consolidated notes + code + assignment |
 
 ---
 
@@ -671,5 +672,43 @@ flowchart LR
     IDX --> RM["roadmap.md<br/>topics, build task, gate"]
 ```
 
----
-(`Notes written` · `Code built` · `Gate passed`).
+## 🟫 Lecture 19 — Agent Memory Systems
+
+**Phase 5 · RAG & Knowledge · 🟠 Advanced · 8 chapters + 1 consolidated document**
+**Folder:** **[📂 Lecture 19 - Agent Memory Systems](./Lecture%2019%20-%20Agent%20Memory%20Systems/)** · **[📄 Roadmap: Phase 5](./roadmap.md#-phase-5--rag--knowledge-systems)**
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **Stateless LLM APIs & Context-Window Limitations** | LLM APIs are stateless; the application must store, manage and selectively send conversation context with every request. | [📄 Chapter 01](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/01_Stateless_LLM_APIs_and_Context_Window_Limitations.md) |
+| **02** | **Short-Term Memory (STM) & Sliding Windows** | Sliding windows keep only the last N turns so context stays bounded while preserving conversational continuity. | [📄 Chapter 02](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/02_Short_Term_Memory_and_Sliding_Windows.md) |
+| **03** | **Long-Term Memory (LTM) Taxonomy & Fact Extraction** | Semantic, episodic and graph memory store persistent facts; an LLM-based extraction pipeline turns raw conversation into curated memories. | [📄 Chapter 03](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/03_Long_Term_Memory_Taxonomy_and_Fact_Extraction.md) |
+| **04** | **Dynamic Context Assembly (STM + LTM_RAG + Query)** | Combines STM, retrieved LTM facts and the current Query into one LLM prompt inside a token budget. | [📄 Chapter 04](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/04_Dynamic_Context_Assembly_Stm_Ltm_Rag_Query.md) |
+| **05** | **Memory Eviction, Contradiction Resolution & Decay** | Memory scoring (frequency + recency) identifies eviction candidates; contradiction resolution keeps newer/high-confidence facts. | [📄 Chapter 05](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/05_Memory_Eviction_Contradiction_Resolution_and_Decay.md) |
+| **06** | **Claude-Style Memory Dreaming & Background Reflection** | A background reflection process cleans duplicates, contradictions and stale memories without blocking the user request path. | [📄 Chapter 06](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/06_Claude_Style_Memory_Dreaming_and_Background_Reflection.md) |
+| **07** | **Managed Memory (mem0) + Multi-tenancy, Privacy & Compliance** | mem0 abstracts memory storage/retrieval; every operation enforces userId isolation, encryption, consent and deletion. | [📄 Chapter 07](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/07_Managed_Memory_mem0_Multi_Tenancy_Privacy_Compliance.md) |
+| **08** | **Production Memory System Architecture** | Three-layer design (API / Memory / Background) with token budgeting, caching, monitoring and operational best practices. | [📄 Chapter 08](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/08_Production_Memory_System_Architecture.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all eight chapters — executive summary, cheat sheets, decision tables, misconceptions, glossary and 20 self-check questions:
+
+👉 **[Lecture_19_Complete_Notes.md](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/Lecture_19_Complete_Notes.md)**
+
+### 🧩 This lecture's other artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2019%20-%20Agent%20Memory%20Systems/README.md) | ✅ |
+| Chapter index for the lecture (reading order) | [📑 index.md](./Lecture%2019%20-%20Agent%20Memory%20Systems/index.md) | ✅ |
+| **Basic Code** — Express + TypeScript agent memory: STM sliding window, LTM fact store + search, context assembly, fact extraction, dreaming | [📂 code/Basic Code](./Lecture%2019%20-%20Agent%20Memory%20Systems/code/Basic%20Code/) | ✅ |
+| Chapter-wise implementation guide (00 → 07: the full file, then a block-by-block explanation) | [📘 implementations guide](./Lecture%2019%20-%20Agent%20Memory%20Systems/code/Basic%20Code/implementations%20guide/) | ✅ |
+| Assignment — 8 chapter-wise task sets, completion gate and end-to-end capstone | [📝 Assignment/task.md](./Lecture%2019%20-%20Agent%20Memory%20Systems/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L19["Lecture 19 notes<br/>8 chapters"]
+    L19 --> CN["Lecture_19_Complete_Notes.md"]
+    IDX --> CODE["Lecture 19 code/<br/>Basic Code + guide"]
+    IDX --> ASG["Lecture 19 Assignment/task.md"]
+    IDX --> RM["roadmap.md<br/>topics, build task, gate"]
+```
