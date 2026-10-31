@@ -23,6 +23,8 @@ flowchart TD
     style T fill:#a6e3a1,color:#1e1e2e
 ```
 
+This architecture shows the complete flow where the AI application interacts with the MCP client, which manages the server connection and tool invocation. The LLM makes decisions within the AI application about which tools to use.
+
 An MCP Server may expose tools such as:
 
 ```text
@@ -67,6 +69,8 @@ flowchart TD
     style P fill:#cba6f7,color:#1e1e2e
 ```
 
+This diagram visualizes how an MCP Server can expose all three primitives simultaneously, forming a complete capability surface for AI applications.
+
 The lecture's mental model is deliberately short:
 
 | Primitive | It is about… |
@@ -81,13 +85,13 @@ Resources   → Context
 Prompts     → Reusable AI workflows
 ```
 
-Read that as three different user needs:
+This representation shows three distinct user needs:
 
-- *"I want my AI to **do** something."* → Tool
-- *"I want my AI to **know** something."* → Resource
-- *"I want a **reusable way** of asking my AI for something."* → Prompt
+- *"I want my AI to **do** something."* → **Tool** (action-oriented)
+- *"I want my AI to **know** something."* → **Resource** (knowledge-oriented)
+- *"I want a **reusable way** of asking my AI for something."* → **Prompt** (workflow-oriented)
 
-> **One server can expose any subset.** A server that only registers tools is legal and common — it is simply leaving two thirds of the protocol unused, and some capabilities genuinely fit the other primitives better (Chapters 02 and 06 make that case).
+> **One server can expose any subset.** A server that only registers tools is legal and common — it is simply leaving two thirds of the protocol unused. Some capabilities genuinely fit the other primitives better, as detailed in Chapters 02 and 06. The decision of which primitives to implement depends on the specific use case and what the application needs to achieve.
 
 ---
 
@@ -215,7 +219,44 @@ PROMPTS
 
 ---
 
-## 1.6 Key Takeaways
+## 1.6 Beyond the Lecture: Capability Negotiation
+
+The lecture teaches the three primitives conceptually. The protocol underneath gives each of them its own small method namespace, and this is worth memorising because it is what you will see on the wire:
+
+| Namespace | Methods | Capability flag |
+|---|---|---|
+| **Tools** | `tools/list`, `tools/call` | `capabilities.tools` |
+| **Resources** | `resources/list`, `resources/read`, `resources/templates/list`, `resources/subscribe`, `resources/unsubscribe` | `capabilities.resources` |
+| **Prompts** | `prompts/list`, `prompts/get` | `capabilities.prompts` |
+
+Plus the change notifications:
+
+```text
+notifications/tools/list_changed
+notifications/resources/list_changed
+notifications/resources/updated
+notifications/prompts/list_changed
+```
+
+### Capability negotiation
+
+A server declares what it supports during `initialize`, and the client learns the surface before it ever calls anything:
+
+```json
+{
+  "capabilities": {
+    "tools":     { "listChanged": true },
+    "resources": { "subscribe": true, "listChanged": true },
+    "prompts":   { "listChanged": true }
+  }
+}
+```
+
+> **Engineering consequence:** "does this server have resources?" is not a guess — it is a negotiated fact. A well-behaved host hides primitives the server did not advertise instead of calling methods that will fail.
+
+---
+
+## 1.7 Key Takeaways
 
 1. **An MCP Server can expose three primitives:** Tools, Resources, and Prompts. They are distinct by purpose and by who controls them.
 2. **Tools** → model-controlled, capabilities, may have side effects, identified by `name`.

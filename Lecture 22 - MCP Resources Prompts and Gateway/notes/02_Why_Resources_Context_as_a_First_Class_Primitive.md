@@ -289,7 +289,62 @@ Resources are the primitive most likely to be *stale*, because they are read rep
 
 ---
 
-## 2.9 Common Mistakes
+## 2.9 Beyond the Lecture: Resources vs RAG, Read-Only Contract, and Budget
+
+### Resources vs RAG (a preview)
+
+Lecture 12 built retrieval-augmented generation. Chapter 05 of this lecture shows an application doing something conceptually similar to RAG — embedding a query and comparing it to Resource metadata. The two are related but not identical:
+
+| | RAG pipeline | MCP Resources |
+|---|---|---|
+| Where the corpus lives | Your vector store | Behind the MCP Server, addressed by URI |
+| Who owns the index | The application | The server (the application may still rank) |
+| Transport | Internal function calls | `resources/list` / `resources/read` |
+| Composition | One retrieval system | Many servers, each exposing its own context |
+
+The practical consequence: **MCP Resources give RAG a standard source of truth**, but the *ranking* decision stays with the application (Chapter 05).
+
+### Read-only is a contract, not an enforcement
+
+Nothing in the protocol stops a `resources/read` handler from writing to a database. The primitive's contract says a read is a read. Two consequences:
+
+1. **Never mutate in a read handler.** A host may cache, re-read, or subscribe to a resource; a write inside a read is an invisible side effect that will fire at unpredictable times.
+2. **Do not put privileged data behind a URI the host can read freely.** Reading is application-controlled — but the application is code, and code has bugs.
+
+### Size and token budget
+
+A Resource is context, and context is finite. A 40 MB log file read into a prompt is not context, it is a denial-of-service against your own token budget.
+
+```ts
+// Pseudocode — resource size discipline
+const MAX_RESOURCE_CHARS = 20_000;
+
+function readResource(uri: string): string {
+  const text = load(uri);
+  if (text.length <= MAX_RESOURCE_CHARS) return text;
+
+  // Truncate deliberately and TELL the model it was truncated
+  return (
+    text.slice(0, MAX_RESOURCE_CHARS) +
+    `\n\n[truncated: showing first ${MAX_RESOURCE_CHARS} of ${text.length} characters]`
+  );
+}
+```
+
+### Freshness, caching and versioning
+
+Resources are the primitive most likely to be *stale*, because they are read repeatedly and cached aggressively.
+
+| Concern | Practical move |
+|---|---|
+| Freshness | Return a `lastModified` annotation; use `resources/subscribe` when the host supports it |
+| Caching | Cache by URI **and** by a version/etag you control |
+| Versioning | Put the version in the URI (`company://policies/return-policy@v2`) or in metadata, never in prose |
+| Invalidation | If the catalogue changes, emit `notifications/resources/list_changed` |
+
+---
+
+## 2.10 Common Mistakes
 
 - Treating every "fetch and return data" as a Tool just because it returns a value.
 - Assuming a Resource becomes part of the context automatically once discovered.
