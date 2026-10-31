@@ -828,7 +828,7 @@ The distinction between "the corpus has nothing" and "the filter excluded everyt
 ## Where This Goes Next
 
 - **[Chapter 04](./04_Hybrid_Search_and_RRF.md)** — filters must be applied to *both* the dense and the lexical retriever, or the fusion mixes authorised and unauthorised results.
-- **[Chapter 05](./05_Reranking.md)** — the candidates K retrieved are now re-ordered for precision.
+- **[Chapter 05](./05_Reranking_Two_Stage_Retrieval.md)** — the candidates K retrieved are now re-ordered for precision.
 - **[Chapter 07](./07_Context_Engineering.md)** — the precedence problem (specific vs general) that over-filtering was trying to solve, solved in the prompt instead.
 - **[Chapter 08](./08_Production_RAG.md)** — the filter metrics here become part of the observability runbook.
 

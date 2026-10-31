@@ -508,7 +508,7 @@ For a first production system, **application-side fusion with RRF** is the bette
 
 ## Where This Goes Next
 
-- **[Chapter 05](./05_Reranking.md)** — after fusion, a cross-encoder can re-order the top-N far more accurately than either retriever.
+- **[Chapter 05](./05_Reranking_Two_Stage_Retrieval.md)** — after fusion, a cross-encoder can re-order the top-N far more accurately than either retriever.
 - **[Chapter 06](./06_Query_Processing.md)** — query rewriting, step-back and HyDE transform the *input* before either retriever sees it.
 - **[Chapter 07](./07_Context_Engineering.md)** — the fused top-4 now needs ordering, labelling and conflict resolution.
 - **[Chapter 08](./08_Production_RAG.md)** — the per-class eval harness here.
