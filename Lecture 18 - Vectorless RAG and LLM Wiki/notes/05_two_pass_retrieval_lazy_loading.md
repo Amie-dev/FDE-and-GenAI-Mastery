@@ -2,13 +2,15 @@
 
 ## 5.1 The Core Problem
 
-Modern knowledge systems often contain thousands of documents, each potentially holding thousands of tokens. If you try to load everything into the LLM context at once, you face three problems:
+Modern knowledge systems often contain thousands of documents, each potentially holding thousands of tokens. Loading everything into the LLM context at once creates three fundamental problems:
 
-| Problem | Consequence |
-|---------|-------------|
-| **Token budget exceeded** | Model context window overflows |
-| **Noise** | Irrelevant content dilutes the signal |
-| **Cost** | Processing every document per query is expensive |
+```text
+| Problem            | Consequence                        |
+|--------------------|------------------------------------|
+| Token budget exceeded | Model context window overflows      |
+| Noise              | Irrelevant content dilutes signal  |
+| Cost               | Processing every document per query is expensive |
+```
 
 > **The solution is not to load everything, but to load only what you need.**
 
@@ -16,23 +18,27 @@ Modern knowledge systems often contain thousands of documents, each potentially 
 
 ## 5.2 What Is Two-Pass Retrieval?
 
-**Two-Pass Retrieval** is a strategy where retrieval happens in two distinct stages:
+**Two-Pass Retrieval** is a retrieval strategy where retrieval happens in two distinct stages:
 
 | Pass | Purpose | What's Loaded |
 |------|---------|---------------|
 | **Pass 1** | Lightweight scan of metadata | Titles, summaries, tags, page ranges, categories |
-| **Pass 2** | Selective full-content loading | Only the documents/files selected by Pass 1 |
+| **Pass 2** | Selective full-content loading | Only the documents selected by Pass 1 |
 
 ### Mental Model
 
-```
-Traditional Retrieval:
-Query → Load ALL documents → Filter → Answer
-                    ↑ Expensive
+```mermaid
+flowchart LR
 
-Two-Pass Retrieval:
-Query → Pass 1: Scan metadata → Select candidates → Pass 2: Load only selected → Answer
-              ↑ Cheap                    ↑ Expensive but targeted
+    TRAD["🔵 Traditional Retrieval"]
+    TWOPASS["🟢 Two-Pass Retrieval"]
+    LLM["🤖 LLM Context"]
+
+    TRAD --> QUERY["Query → Load ALL → Filter → Answer"]
+    TWOPASS --> PASS1["Query → Pass 1 → Candidates → Pass 2 → Selected → Answer"]
+
+    style TRAD fill:#e8f4fd,stroke:#4a90d9
+    style TWOPASS fill:#e8f8e8,stroke:#2ecc71
 ```
 
 ---
@@ -43,24 +49,26 @@ Query → Pass 1: Scan metadata → Select candidates → Pass 2: Load only sele
 
 Pass 1 reads **metadata only**, not full document content. This includes:
 
-- File names
-- Titles
-- Summaries
-- Tags
-- Categories
-- YAML frontmatter metadata
-- Folder paths
-- Page ranges
-- Relationships / links
+| Metadata Type | Example |
+|---------------|---------|
+| File names | `alb.md` |
+| Titles | `ALB Sticky Sessions` |
+| Summaries | `Describes ALB architecture, routing, health checks` |
+| Tags | `alb, load-balancing, routing` |
+| Categories | `infrastructure` |
+| YAML frontmatter metadata | `title`, `tags`, `category` |
+| Folder paths | `infrastructure/load-balancing/` |
+| Page ranges | `[181, 200]` |
+| Relationships / links | `[[ALB Failover]]` |
 
-### What Happens
+### How It Works
 
 The LLM evaluates these lightweight summaries against the user query:
 
 ```mermaid
 flowchart TD
 
-    Q["👤 User Query"]
+    Q["👤 User Query: ALB session failover behavior?"]
 
     Q --> CATALOG["📚 Metadata Catalog"]
 
@@ -81,8 +89,6 @@ flowchart TD
 
 ### Example Catalog Scan
 
-The catalog might contain lightweight entries like:
-
 ```text
 📄 alb.md
 Summary: Application Load Balancer architecture, routing, health checks
@@ -101,14 +107,16 @@ Summary: Primary-replica database replication
 Tags: database, replication
 ```
 
-For a query about ALB session failover, the LLM can quickly identify:
+For a query about ALB session failover:
 
 ```text
-alb.md
-sticky-sessions.md
+alb.md   → ✅ Relevant
+sticky-sessions.md → ✅ Relevant
+cdn.md → ❌ Pruned
+database-replication.md → ❌ Pruned
 ```
 
-as likely candidates, without loading their full content.
+Without loading any full content.
 
 ---
 
@@ -139,10 +147,8 @@ flowchart TD
 
     LOAD --> CONTEXT["📝 Full Context"]
 
-    CONTEXT --> ANSWER["🤖 Generate Answer"]
+    CONTEXT --> ANSWER["💬 Answer Generation"]
 ```
-
-This avoids wasting tokens on irrelevant documents.
 
 ### Why This Matters
 
@@ -166,26 +172,29 @@ Loading everything would require:
 
 Instead:
 
-### Pass 1
+#### Pass 1
 
 Read:
+
 ```text
 1,000 summaries ≈ small amount of text
 ```
 
 Then identify:
+
 ```text
 3 relevant files
 ```
 
-### Pass 2
+#### Pass 2
 
 Load:
+
 ```text
 3 × full documents ≈ 15,000 tokens
 ```
 
-The LLM doesn't need to process the entire knowledge base for every query.
+> **The LLM doesn't need to process the entire knowledge base for every query.**
 
 ---
 
@@ -193,7 +202,6 @@ The LLM doesn't need to process the entire knowledge base for every query.
 
 ```mermaid
 sequenceDiagram
-
     autonumber
 
     actor User
@@ -206,23 +214,19 @@ sequenceDiagram
     User->>Engine: What load balancing algorithms do we use?
 
     rect rgb(240, 248, 255)
-
         Note over Engine,Catalog: PASS 1 — Lightweight Scan
 
         Engine->>Catalog: Read titles, summaries, tags
         Catalog-->>Engine: Candidate files
         Engine->>LLM: Evaluate candidate summaries
         LLM-->>Engine: Select relevant files
-
     end
 
     rect rgb(255, 245, 238)
-
         Note over Engine,Vault: PASS 2 — Full Content
 
         Engine->>Vault: Load selected Markdown files
         Vault-->>Engine: Full document content
-
     end
 
     Engine->>LLM: Generate answer
@@ -338,6 +342,7 @@ flowchart TD
 ## 5.8 Pseudo Code: Two-Pass Retrieval with Lazy Loading (TypeScript)
 
 ```typescript
+// Catalog entry — lightweight metadata
 interface CatalogEntry {
   filePath: string;
   title: string;
@@ -348,6 +353,7 @@ interface CatalogEntry {
   relevanceHeuristic?: string; // For faster filtering
 }
 
+// Full document after Pass 2
 interface FullDocument {
   filePath: string;
   content: string;
@@ -357,6 +363,24 @@ interface FullDocument {
 // Lightweight metadata catalog stored once after indexing
 type MetadataCatalog = Map<string, CatalogEntry>;
 
+// Zero-vector relevance scoring — no embeddings needed
+async function zeroVectorScore(
+  query: string,
+  entry: CatalogEntry
+): Promise<number> {
+  const prompt = `
+    User Query: "${query}"
+    Document Title: ${entry.title}
+    Summary: ${entry.summary}
+    Tags: ${entry.tags.join(", ")}
+    Keywords: ${entry.keywords?.join(", ") || "N/A"}
+
+    Rate relevance 0-100. Output only a number.
+  `;
+
+  return parseInt(await llmGenerate(prompt));
+}
+
 // Pass 1 — Scan lightweight catalog with LLM-based relevance scoring
 async function pass1Scan(
   query: string,
@@ -365,7 +389,6 @@ async function pass1Scan(
   const candidates: CatalogEntry[] = [];
 
   for (const entry of catalog.values()) {
-    // Zero-vector relevance scoring using summary + metadata
     const score = await zeroVectorScore(query, entry);
     if (score > 50) { // Threshold for "potentially relevant"
       entry.relevanceScore = score;
@@ -377,24 +400,6 @@ async function pass1Scan(
   return candidates
     .sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0))
     .slice(0, 5); // Limit candidates for Pass 2
-}
-
-// Zero-vector relevance scoring (no embeddings)
-async function zeroVectorScore(
-  query: string,
-  entry: CatalogEntry
-): Promise<number> {
-  const prompt = `
-    User Query: "${query}"
-    Document Title: ${entry.title}
-    Summary: ${entry.summary}
-    Tags: ${entry.tags.join(", ")}
-    Keywords: ${entry.keywords?.join(", ") || "N/A"}
-    
-    Rate relevance 0-100. Output only a number.
-  `;
-  
-  return parseInt(await llmGenerate(prompt));
 }
 
 // Pass 2 — Load full content only for selected candidates
@@ -415,8 +420,11 @@ async function pass2Load(
   return documents;
 }
 
-// End-to-end two-pass retrieval
-async function retrieve(query: string, catalog: MetadataCatalog): Promise<string> {
+// End-to-end two-pass retrieval pipeline
+async function retrieve(
+  query: string,
+  catalog: MetadataCatalog
+): Promise<{ answer: string; sources: FullDocument[]; context: string }> {
   // Pass 1: cheap scan
   const candidates = await pass1Scan(query, catalog);
 
@@ -424,19 +432,27 @@ async function retrieve(query: string, catalog: MetadataCatalog): Promise<string
   const documents = await pass2Load(candidates);
 
   // Combine full content into context
-  const context = documents.map(d => d.content).join('\n\n');
+  const context = documents.map((d) => d.content).join("\n\n");
 
-  // Generate answer
-  return await llmGenerate(query, context);
+  // Generate answer with citations
+  const answer = await llmGenerate(query, context);
+
+  return {
+    answer,
+    sources: documents,
+    context,
+  };
 }
 
 // Lazy loading for tree-based systems
-async function lazyLoadNodeContent(node: TreeNode): Promise<string> {
+async function lazyLoadNodeContent(
+  node: TreeNode
+): Promise<string> {
   const pages = await loadPagesFromDocument(
     node.sourceFile,
     node.pageRange
   );
-  return pages.join('\n\n');
+  return pages.join("\n\n");
 }
 ```
 
@@ -444,7 +460,7 @@ async function lazyLoadNodeContent(node: TreeNode): Promise<string> {
 
 ## 5.9 Enhanced Two-Pass with Tree Traversal
 
-In Vectorless RAG, the tree traversal naturally performs **Pass 1** (traversing summaries), and lazy loading performs **Pass 2**:
+In Vectorless RAG, tree traversal naturally performs **Pass 1** (traversing summaries), and lazy loading performs **Pass 2**:
 
 ```mermaid
 flowchart TD
@@ -466,10 +482,22 @@ flowchart TD
 
 | Approach | Tokens Loaded | Cost per Query | Best For |
 |----------|---------------|----------------|----------|
-| Load everything | All documents × all tokens | Very High | Tiny knowledge bases |
-| Vector RAG (Top-K) | K × chunk size | Medium | Simple semantic search |
-| Two-Pass Retrieval | Summaries + selected full docs | Low–Medium | Structured knowledge bases |
-| Vectorless RAG + Lazy Load | Tree metadata + target pages | Low | Complex documents |
+| **Load everything** | All documents × all tokens | Very High | Tiny knowledge bases only |
+| **Vector RAG (Top-K)** | K × chunk size | Medium | Simple semantic search |
+| **Two-Pass Retrieval** | Summaries + selected full docs | Low–Medium | Structured knowledge bases |
+| **Vectorless RAG + Lazy Load** | Tree metadata + target pages | Low | Complex documents |
+
+### Token Savings Example
+
+```text
+Without Two-Pass:
+  1,000 files × 5,000 tokens = 5,000,000 tokens
+
+With Two-Pass (1% selected):
+  10 summaries + 3 × 5,000 = ~15,010 tokens
+
+Reduction: ~99.7%
+```
 
 ---
 
@@ -482,9 +510,10 @@ flowchart TD
 5. **Together they reduce token usage, cost, and noise while preserving relevant context.**
 6. **The tree index or catalog acts as a lightweight map to the source-of-truth documents.**
 7. **Zero-vector relevance scoring in Pass 1 enables semantic filtering without embeddings.**
+8. **The key mental model:** *"Without Two-Pass: Load the whole library to read one page. With Two-Pass: Read the card catalog first, then go directly to the right book."*
 
 > **Mental Model:**
-> *Without Two-Pass:* Load the whole library to read one page.
+> *Without Two-Pass:* Load the whole library to read one page.  
 > *With Two-Pass:* Read the card catalog first, then go directly to the right book.
 
 ---

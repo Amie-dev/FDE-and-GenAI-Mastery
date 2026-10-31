@@ -2,26 +2,31 @@
 
 ## 4.1 What Is an LLM Wiki?
 
-The **LLM Wiki** concept, discussed by **Andrej Karpathy**, rethinks how we store and retrieve personal or organizational knowledge. Instead of simply taking documents, converting them into embeddings, and putting those embeddings into a vector database, an **LLM acts like a background librarian**.
+The **LLM Wiki** concept, popularized by **Andrej Karpathy**, rethinks how we store and retrieve personal or organizational knowledge.
 
-Its job is to:
-- 📖 Read incoming information
-- 📁 Organize it
-- 📝 Create summaries
-- 🏷️ Add metadata and tags
-- 🔗 Connect related documents
-- 🧠 Maintain a human-readable knowledge base
+Instead of simply taking documents, converting them into embeddings, and putting those embeddings into a vector database, an **LLM acts like a background librarian**.
 
-The result is a collection of **Markdown files, folders, metadata, and links** that both humans and LLMs can understand.
+### The Librarian's Job
+
+* 📖 Read incoming information
+* 📁 Organize it into a logical structure
+* 📝 Create summaries
+* 🏷️ Add metadata and tags
+* 🔗 Connect related documents
+* 🧠 Maintain a human-readable knowledge base
+
+### The Result
+
+A collection of **Markdown files, folders, metadata, and links** that both humans and LLMs can understand.
 
 ### Simple Mental Model
 
-> **Vector RAG:** Store content for search.
+> **Vector RAG:** Store content for search.  
 > **LLM Wiki:** Organize knowledge so it can be understood and maintained.
 
 ---
 
-## 4.2 Vector RAG vs LLM Wiki
+## 4.2 Vector RAG vs LLM Wiki — Architecture Comparison
 
 ```mermaid
 flowchart LR
@@ -48,6 +53,9 @@ flowchart LR
         SUM --> VAULT
         LINK --> VAULT
     end
+
+    style VR fill:#e8f4fd,stroke:#4a90d9
+    style WIKI fill:#e8f8e8,stroke:#2ecc71
 ```
 
 The key difference is **what happens after the content arrives**.
@@ -58,7 +66,6 @@ The key difference is **what happens after the content arrives**.
 
 ### 🔵 Vector RAG — Push Content
 
-The typical workflow is:
 ```text
 Document
    ↓
@@ -74,7 +81,6 @@ The system mainly asks:
 
 ### 🟢 LLM Wiki — Update Knowledge
 
-The workflow becomes:
 ```text
 Document
    ↓
@@ -100,7 +106,7 @@ The system asks:
 
 Imagine you download a PDF about **Load Balancing**.
 
-#### Traditional Vector System
+### Traditional Vector System
 
 ```text
 PDF
@@ -113,6 +119,7 @@ Vector DB
 ```
 
 You might end up with:
+
 ```text
 [0.124, -0.821, 0.442, ...]
 [0.731,  0.112, -0.391, ...]
@@ -121,7 +128,7 @@ You might end up with:
 
 The stored representation is useful for machines but difficult for humans to inspect.
 
-#### LLM Wiki Approach
+### LLM Wiki Approach
 
 ```
 vault/
@@ -142,17 +149,18 @@ vault/
 ```
 
 Now the knowledge is:
-- ✅ Human-readable
-- ✅ Editable
-- ✅ Searchable
-- ✅ Version-controllable
-- ✅ Easy to inspect
+
+| Property | ✅ Available |
+|----------|--------------|
+| Human-readable | Yes |
+| Editable | Yes |
+| Searchable | Yes |
+| Version-controllable | Yes |
+| Easy to inspect | Yes |
 
 ---
 
 ## 4.5 LLM as a Background Librarian
-
-Think of the LLM as a **digital librarian**. When a new document arrives, the librarian performs several tasks:
 
 ```mermaid
 flowchart TD
@@ -175,9 +183,13 @@ flowchart TD
     META --> VAULT
     SUMMARY --> VAULT
     REL --> VAULT
+
+    style NEW fill:#e3f2fd,stroke:#1976d2
+    style LLM fill:#fff3e0,stroke:#ef6c00
+    style VAULT fill:#e8f5e9,stroke:#2e7d32
 ```
 
-### Example
+### Example Processing
 
 ```text
 New file:
@@ -207,7 +219,7 @@ Generated:
 
 ## 4.6 Heterogeneous Data Ingestion
 
-An LLM Wiki doesn't have to depend on one source. It can collect knowledge from many places:
+An LLM Wiki doesn't depend on one source. It can collect knowledge from many places:
 
 ```mermaid
 flowchart LR
@@ -217,7 +229,7 @@ flowchart LR
     WEB["🌐 Web Articles"]
     GIST["🔗 Gists / Links"]
     LOCAL["💻 Local Files"]
-    USB["💾 USB / External Storage"]
+    USB["💾 USB / External"]
     NOTES["📝 Existing Markdown"]
 
     DRIVE --> INGEST["⚙️ Ingestion Layer"]
@@ -245,15 +257,15 @@ Suppose you add:
 alb-failover.pdf
 ```
 
-The background LLM might process it like this:
-
 ### Step 1 — Understand
+
 ```text
 Topic:
 Application Load Balancing
 ```
 
 ### Step 2 — Organize
+
 ```text
 vault/
 └── infrastructure/
@@ -261,7 +273,7 @@ vault/
         └── alb-failover.md
 ```
 
-### Step 3 — Generate Metadata
+### Step 3 — Generate Metadata (YAML Frontmatter)
 
 ```yaml
 ---
@@ -296,7 +308,7 @@ Related:
 
 ## 4.8 The Knowledge Vault
 
-The resulting structure could look like:
+The resulting structure:
 
 ```mermaid
 graph TD
@@ -318,7 +330,7 @@ graph TD
     FAIL --> REL3["🔗 High Availability"]
 ```
 
-Notice that the structure itself contains useful information. The **folder hierarchy + metadata + links** become part of the retrieval system.
+The structure itself contains useful information. The **folder hierarchy + metadata + links** become part of the retrieval system.
 
 ### Example Markdown Node
 
@@ -369,7 +381,7 @@ flowchart LR
     VAULT --> AI2["🤖 AI Uses Updated Knowledge"]
 ```
 
-The human isn't locked out of the system. You can manually fix:
+The human isn't locked out. You can manually fix:
 
 ```text
 Wrong summary
@@ -379,7 +391,7 @@ Missing relationship
 Incorrect information
 ```
 
-And the LLM can use the corrected version later.
+And the LLM uses the corrected version later.
 
 ---
 
@@ -387,7 +399,8 @@ And the LLM can use the corrected version later.
 
 ### 1. 💰 Token & Cost Efficiency
 
-The system doesn't repeatedly load every document. Instead:
+The system doesn't repeatedly load every document:
+
 ```text
 Metadata → Filter → Full Content
 ```
@@ -397,11 +410,13 @@ Only relevant information reaches the final LLM context.
 ### 2. 👀 Human Readability
 
 Unlike raw embeddings:
+
 ```text
 [0.124, -0.82, 0.31, ...]
 ```
 
 You get:
+
 ```text
 infrastructure/
 └── load-balancing/
@@ -414,7 +429,7 @@ Humans can understand and modify the system.
 
 ### 3. ✏️ Easy Maintenance
 
-Need to correct one fact? With Markdown:
+Need to correct one fact?
 
 ```text
 Open file
@@ -428,7 +443,8 @@ No need to think about a proprietary vector-store schema.
 
 ### 4. 🔓 No Vendor Lock-In
 
-The knowledge can live in standard formats:
+The knowledge lives in standard formats:
+
 ```text
 Markdown
 YAML
@@ -437,11 +453,12 @@ Folders
 Git
 ```
 
-You can move the vault between tools without rebuilding your entire knowledge base from scratch.
+You can move the vault between tools without rebuilding from scratch.
 
 ### 5. 🔗 Knowledge Relationships
 
-Because documents can contain explicit links:
+Documents contain explicit links:
+
 ```text
 ALB
  ↓
@@ -454,25 +471,25 @@ Failover
 High Availability
 ```
 
-The system can build a much richer knowledge structure.
+The system builds a much richer knowledge structure.
 
 ---
 
-## 4.11 LLM Wiki vs Vector RAG — Comparison Table
+## 4.11 LLM Wiki vs Vector RAG — Detailed Comparison
 
-| Feature          | 🔵 Vector RAG               | 🟢 LLM Wiki                              |
-| ---------------- | --------------------------- | ---------------------------------------- |
-| Main idea        | Search stored embeddings    | Maintain organized knowledge             |
-| Storage          | Vector DB                   | Markdown / Files / Wiki                  |
-| Representation   | Embeddings                  | Human-readable documents                 |
-| Organization     | Usually external to vectors | Built into folders + metadata            |
-| Retrieval        | Similarity search           | Catalog → selective loading              |
-| Maintenance      | Re-index / re-embed often   | Edit files directly                      |
-| Human-readable   | ❌                           | ✅                                        |
-| Cross-links      | Usually additional logic    | Native Markdown links                    |
-| Vendor lock-in   | Potentially higher          | Low                                      |
-| Token efficiency | Depends on retrieval        | Strong with two-pass retrieval           |
-| Best suited for  | Semantic search             | Structured personal/enterprise knowledge |
+| Feature | 🔵 Vector RAG | 🟢 LLM Wiki |
+|---------|---------------|-------------|
+| Main idea | Search stored embeddings | Maintain organized knowledge |
+| Storage | Vector DB | Markdown / Files / Wiki |
+| Representation | Embeddings | Human-readable documents |
+| Organization | External to vectors | Built into folders + metadata |
+| Retrieval | Similarity search | Catalog → selective loading |
+| Maintenance | Re-index / re-embed often | Edit files directly |
+| Human-readable | ❌ | ✅ |
+| Cross-links | Usually additional logic | Native Markdown links |
+| Vendor lock-in | Potentially higher | Low |
+| Token efficiency | Depends on retrieval | Strong with two-pass retrieval |
+| Best suited for | Semantic search | Structured personal/enterprise knowledge |
 
 ---
 
@@ -480,39 +497,35 @@ The system can build a much richer knowledge structure.
 
 The LLM Wiki isn't simply another RAG implementation. It's a different philosophy:
 
-```text
-Traditional RAG
-      ↓
-Store information
-      ↓
-Search information
-      ↓
-Generate answer
-```
+```mermaid
+flowchart TD
 
-Whereas:
+    subgraph TRAD["🔵 Traditional RAG"]
+        T1["Store Information"]
+        T2["Search Information"]
+        T3["Generate Answer"]
+        T1 --> T2 --> T3
+    end
 
-```text
-LLM Wiki
-      ↓
-Understand information
-      ↓
-Organize information
-      ↓
-Connect information
-      ↓
-Maintain knowledge
-      ↓
-Retrieve relevant knowledge
-      ↓
-Generate answer
+    subgraph WIKI["🟢 LLM Wiki"]
+        W1["Understand Information"]
+        W2["Organize Information"]
+        W3["Connect Information"]
+        W4["Maintain Knowledge"]
+        W5["Retrieve Relevant Knowledge"]
+        W6["Generate Answer"]
+        W1 --> W2 --> W3 --> W4 --> W5 --> W6
+    end
+
+    style TRAD fill:#e8f4fd,stroke:#4a90d9
+    style WIKI fill:#e8f8e8,stroke:#2ecc71
 ```
 
 The LLM becomes more than a **retrieval component**. It becomes a **knowledge librarian**.
 
 ---
 
-## 4.14 Karpathy's Obsidian Vault Architecture
+## 4.13 Karpathy's Obsidian Vault Architecture
 
 Andrej Karpathy's vision specifically uses **Obsidian** — a Markdown-based knowledge base that supports bidirectional linking, graph visualization, and plugins. The vault structure is designed for both human and LLM consumption.
 
@@ -600,9 +613,9 @@ graph TD
 
 ---
 
-## 4.15 Two-Pass Retrieval Integration with LLM Wiki
+## 4.14 Two-Pass Retrieval Integration with LLM Wiki
 
-The LLM Wiki naturally enables **two-pass retrieval** (covered in Chapter 5):
+The LLM Wiki naturally enables **two-pass retrieval** (covered in detail in Chapter 5):
 
 ```mermaid
 flowchart TD
@@ -630,12 +643,12 @@ flowchart TD
   updated: "2024-01-15"
 ```
 
-**Pass 1** (Fast): Filter catalog entries by tags/keywords/summary using LLM
-**Pass 2** (Complete): Load full Markdown content only for selected candidates
+* **Pass 1 (Fast)**: Filter catalog entries by tags/keywords/summary using LLM
+* **Pass 2 (Complete)**: Load full Markdown content only for selected candidates
 
 ---
 
-## 4.16 Pseudo Code: LLM Wiki Ingestion Agent (TypeScript)
+## 4.15 Pseudo Code: LLM Wiki Ingestion Agent (TypeScript)
 
 ```typescript
 // Metadata frontmatter structure
@@ -645,6 +658,7 @@ interface DocumentMetadata {
   tags: string[];
   keywords: string[];
   relatedFiles: string[];
+  updated: string;
 }
 
 // Processed document entry
@@ -656,81 +670,330 @@ interface WikiDocument {
   relatedLinks: string[];
 }
 
+// Lightweight catalog entry for two-pass retrieval
+interface CatalogEntry {
+  file: string;
+  title: string;
+  tags: string[];
+  summary: string;
+  keywords: string[];
+  related: string[];
+  updated: string;
+}
+
+// LLM client interface
+interface LLMClient {
+  generate(prompt: string): Promise<string>;
+  generateJSON<T>(prompt: string): Promise<T>;
+}
+
 // Ingest a new file into the LLM Wiki
-async function ingestFile(sourcePath: string): Promise<void> {
-  const content = await readFile(sourcePath);
-  
-  // 1. Analyze content with LLM
-  const analysis = await llmAnalyze(content);
-  
+async function ingestFile(
+  sourcePath: string,
+  llm: LLMClient,
+  vaultRoot: string
+): Promise<void> {
+  // 1. Read raw content
+  const rawContent = await readFile(sourcePath);
+
+  // 2. Analyze content with LLM
+  const analysis = await analyzeDocument(rawContent, llm);
+
+  // 3. Build metadata
   const metadata: DocumentMetadata = {
     title: analysis.title,
     category: analysis.category,
     tags: analysis.tags,
     keywords: analysis.keywords,
-    relatedFiles: await findRelatedDocuments(analysis.keywords),
+    relatedFiles: await findRelatedDocuments(analysis.keywords, vaultRoot),
+    updated: new Date().toISOString(),
   };
-  
-  // 2. Organize into the correct folder
-  const vaultPath = buildVaultPath(metadata.category, metadata.title);
-  
-  // 3. Generate summary
-  const summary = await llmSummarize(content);
-  
-  // 4. Find related knowledge
+
+  // 4. Determine vault path
+  const vaultPath = buildVaultPath(vaultRoot, metadata.category, metadata.title);
+
+  // 5. Generate summary
+  const summary = await llmSummarize(rawContent, llm);
+
+  // 6. Find related knowledge
   const relatedLinks = metadata.relatedFiles;
-  
-  // 5. Assemble the wiki document
+
+  // 7. Assemble the wiki document with frontmatter
   const wikiDoc: WikiDocument = {
     filePath: vaultPath,
     metadata,
     summary,
-    content,
+    content: rawContent,
     relatedLinks,
   };
-  
-  // 6. Write to vault
+
+  // 8. Write to vault (with YAML frontmatter)
   await writeWikiDocument(wikiDoc);
-  
-  // 7. Update the lightweight catalog
+
+  // 9. Update the lightweight catalog
   await updateCatalog(wikiDoc);
 }
 
+// Analyze document using LLM
+async function analyzeDocument(
+  content: string,
+  llm: LLMClient
+): Promise<{
+  title: string;
+  category: string;
+  tags: string[];
+  keywords: string[];
+}> {
+  const prompt = `
+    Analyze this document and extract:
+    1. A concise title
+    2. Category (e.g., infrastructure, ml, system-design)
+    3. 5-10 tags
+    4. 5-10 keywords
+
+    Document:
+    ${content.slice(0, 8000)}
+
+    Return as JSON.
+  `;
+
+  return llm.generateJSON(prompt);
+}
+
+// Generate summary using LLM
+async function llmSummarize(content: string, llm: LLMClient): Promise<string> {
+  const prompt = `
+    Summarize this document in 2-3 sentences:
+
+    ${content.slice(0, 8000)}
+  `;
+  return llm.generate(prompt);
+}
+
+// Find related documents by keyword overlap
+async function findRelatedDocuments(
+  keywords: string[],
+  vaultRoot: string
+): Promise<string[]> {
+  const catalog = await loadCatalog(vaultRoot);
+  const keywordSet = new Set(keywords.map((k) => k.toLowerCase()));
+
+  return catalog
+    .map((entry) => ({
+      file: entry.file,
+      overlap: entry.keywords.filter((k) => keywordSet.has(k.toLowerCase())).length,
+    }))
+    .filter((e) => e.overlap > 0)
+    .sort((a, b) => b.overlap - a.overlap)
+    .slice(0, 5)
+    .map((e) => e.file);
+}
+
+// Build vault path from category and title
+function buildVaultPath(
+  vaultRoot: string,
+  category: string,
+  title: string
+): string {
+  const safeTitle = title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+  return `${vaultRoot}/${category}/${safeTitle}.md`;
+}
+
+// Write wiki document with YAML frontmatter
+async function writeWikiDocument(doc: WikiDocument): Promise<void> {
+  const frontmatter = `---
+title: ${doc.metadata.title}
+category: ${doc.metadata.category}
+tags: ${JSON.stringify(doc.metadata.tags)}
+keywords: ${JSON.stringify(doc.metadata.keywords)}
+related: ${JSON.stringify(doc.relatedLinks)}
+updated: ${doc.metadata.updated}
+---`;
+
+  const fullContent = `${frontmatter}\n\n# ${doc.metadata.title}\n\n${doc.summary}\n\n## Related Knowledge\n\n${doc.relatedLinks.map((r) => `- [[${r.replace(/\.md$/, "")}]]`).join("\n")}\n\n${doc.content}`;
+
+  await writeFile(doc.filePath, fullContent);
+}
+
+// Load lightweight catalog
+async function loadCatalog(vaultRoot: string): Promise<CatalogEntry[]> {
+  const catalogPath = `${vaultRoot}/.catalog.json`;
+  try {
+    const data = await readFile(catalogPath);
+    return JSON.parse(data);
+  } catch {
+    return [];
+  }
+}
+
+// Update catalog with new document
+async function updateCatalog(doc: WikiDocument): Promise<void> {
+  const catalog = await loadCatalog(doc.filePath.split("/").slice(0, -2).join("/"));
+  const entry: CatalogEntry = {
+    file: doc.filePath,
+    title: doc.metadata.title,
+    tags: doc.metadata.tags,
+    summary: doc.summary,
+    keywords: doc.metadata.keywords,
+    related: doc.relatedLinks,
+    updated: doc.metadata.updated,
+  };
+  catalog.push(entry);
+  await writeFile(`${doc.filePath.split("/").slice(0, -2).join("/")}/.catalog.json`, JSON.stringify(catalog, null, 2));
+}
+
 // Pass 1: Scan catalog to find candidates
-async function scanCatalog(query: string): Promise<WikiDocument[]> {
-  const catalog = await loadCatalog();
-  
-  return catalog.filter(doc => 
-    llmRelevanceCheck(query, doc.metadata, doc.summary)
-  );
+async function scanCatalog(
+  query: string,
+  vaultRoot: string,
+  llm: LLMClient
+): Promise<CatalogEntry[]> {
+  const catalog = await loadCatalog(vaultRoot);
+
+  // LLM-based relevance check on lightweight catalog
+  return catalog.filter((doc) => llmRelevanceCheck(query, doc, llm));
+}
+
+// LLM relevance check on catalog entry
+async function llmRelevanceCheck(
+  query: string,
+  entry: CatalogEntry,
+  llm: LLMClient
+): Promise<boolean> {
+  const prompt = `
+    User Query: "${query}"
+
+    Document:
+    Title: ${entry.title}
+    Tags: ${entry.tags.join(", ")}
+    Summary: ${entry.summary}
+    Keywords: ${entry.keywords.join(", ")}
+
+    Is this document likely to contain information relevant to the query?
+    Answer ONLY "yes" or "no".
+  `;
+
+  const response = await llm.generate(prompt);
+  return response.trim().toLowerCase() === "yes";
 }
 
 // Pass 2: Load full content for selected candidates
-async function loadFullContent(candidates: WikiDocument[]): Promise<string> {
+async function loadFullContent(candidates: CatalogEntry[]): Promise<string> {
   const contents = await Promise.all(
-    candidates.map(c => readFile(c.filePath))
+    candidates.map((c) => readFile(c.file))
   );
-  return contents.join('\n\n');
+  return contents.join("\n\n---\n\n");
 }
 ```
 
 ---
 
+## 4.16 Pseudo Code: Two-Pass Retrieval Engine (TypeScript)
+
+```typescript
+interface RetrievalResult {
+  answer: string;
+  sources: CatalogEntry[];
+  context: string;
+}
+
+interface TwoPassRetriever {
+  vaultRoot: string;
+  llm: LLMClient;
+}
+
+// Complete two-pass retrieval pipeline
+async function twoPassRetrieval(
+  query: string,
+  retriever: TwoPassRetriever
+): Promise<RetrievalResult> {
+  // Pass 1: Fast catalog scan
+  const candidates = await scanCatalog(query, retriever.vaultRoot, retriever.llm);
+
+  // Limit to top N candidates
+  const topCandidates = candidates.slice(0, 5);
+
+  // Pass 2: Load full content
+  const fullContext = await loadFullContent(topCandidates);
+
+  // Generate answer with citations
+  const answer = await generateAnswer(query, fullContext, retriever.llm);
+
+  return {
+    answer,
+    sources: topCandidates,
+    context: fullContext,
+  };
+}
+
+async function generateAnswer(
+  query: string,
+  context: string,
+  llm: LLMClient
+): Promise<string> {
+  const prompt = `
+    Answer the user's question using ONLY the provided context.
+    Cite sources using [[filename]] format.
+
+    Question: ${query}
+
+    Context:
+    ${context}
+
+    Answer:
+  `;
+  return llm.generate(prompt);
+}
+```
+
+---
+
+## 4.17 LLM Wiki vs Agentic Tree Search — Relationship
+
+The LLM Wiki and Agentic Tree Search are **complementary**:
+
+```mermaid
+flowchart LR
+
+    subgraph WIKI["🟢 LLM Wiki (Storage & Organization)"]
+        W1["Markdown Files"]
+        W2["YAML Frontmatter"]
+        W3["Folder Hierarchy"]
+        W4["Bidirectional Links"]
+    end
+
+    subgraph SEARCH["🔍 Agentic Tree Search (Retrieval)"]
+        S1["Tree Index"]
+        S2["Node Summaries"]
+        S3["LLM Navigation"]
+        S4["Lazy Loading"]
+    end
+
+    WIKI -.->|"Index"| SEARCH
+
+    style WIKI fill:#e8f8e8,stroke:#2ecc71
+    style SEARCH fill:#fff3e0,stroke:#ef6c00
+```
+
+* The **LLM Wiki** handles **storage, organization, and maintenance**.
+* The **Agentic Tree Search** handles **retrieval and navigation**.
+* Together they form a complete knowledge system.
+
+---
+
 ## 🎯 Key Takeaways
 
-Remember these **7 points**:
-
-1. **LLM Wiki treats the LLM as a background librarian that organizes knowledge.**
+1. **LLM Wiki treats the LLM as a background librarian that organizes knowledge** — not just retrieves it.
 2. **Instead of only pushing content into a vector database, the system continuously updates a structured knowledge base.**
-3. **Markdown, folders, metadata, and links make the knowledge human-readable and editable.**
+3. **Markdown, folders, metadata (YAML frontmatter), and links make the knowledge human-readable and editable.**
 4. **Heterogeneous sources (PDFs, Drive, web pages, local files) can be unified into one vault.**
 5. **Two-Pass Retrieval first scans lightweight metadata and summaries, then loads only relevant full documents.**
 6. **This significantly reduces unnecessary context, token usage, and retrieval overhead.**
 7. **The biggest advantage is that knowledge remains understandable and maintainable by both humans and AI.**
+8. **Obsidian's bidirectional links, graph view, and Dataview plugin make it an ideal substrate for LLM Wikis.**
 
 > **Mental Model:**
-> 📦 **Vector RAG:** *Store content → Search similar chunks → Answer*
->
+> 📦 **Vector RAG:** *Store content → Search similar chunks → Answer*  
 > 📚 **LLM Wiki:** *Understand → Organize → Connect → Maintain → Retrieve → Answer*
 
 ---

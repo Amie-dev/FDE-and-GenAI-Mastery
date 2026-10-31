@@ -1,61 +1,205 @@
 # Chapter 03 — Agentic Tree Search & LLM Relevance-Based Retrieval
 
-## 3.3 AlphaGo-Inspired Tree Traversal
+## 3.1 What Is Agentic Tree Search?
 
-Chapter 3's current content is solid, but could be enhanced with more specific AlphaGo-inspired details and pseudo-code for the tree traversal algorithm.
+**Agentic Tree Search** is a retrieval technique where an LLM acts as an **agent** that actively navigates a hierarchical document tree to find the most relevant content.
 
-Looking at the roadmap, it specifically mentions "AlphaGo-inspired top-down agentic tree traversal" as a key topic. The current content mentions AlphaGo but could be more specific about the connection.
+Instead of relying on similarity matching between vectors, the agent:
 
-**AlphaGo Pattern Connection:**
-- **Monte Carlo Tree Search (MCTS)**: AlphaGo uses this for game tree evaluation
-- **Value Estimation**: AlphaGo estimates the value of board positions
-- **Policy Networks**: AlphaGo learns which moves are more promising
+* 🧭 Evaluates node summaries and metadata
+* 🎯 Selects which branches to explore
+* ✂️ Prunes branches deemed irrelevant
+* 📄 Lazy-loads full content only when needed
+* 🧠 Synthesizes answers with full structural context
 
-Vectorless RAG can use similar concepts:
+### Key Components
+
+```mermaid
+flowchart LR
+
+    QUERY["👤 User Query"]
+    TREE["🌳 Tree Index"]
+    AGENT["🤖 LLM Agent"]
+    STORE["🗄️ Tree Store"]
+    SOURCE["📄 Original Document"]
+
+    QUERY --> AGENT
+    TREE --> AGENT
+    STORE --> TREE
+    TREE --> SOURCE
+
+    style QUERY fill:#e3f2fd,stroke:#1976d2
+    style TREE fill:#e8f5e9,stroke:#2e7d32
+    style AGENT fill:#fff3e0,stroke:#ef6c00
+    style STORE fill:#f3e5f5,stroke:#7b1fa2
+    style SOURCE fill:#fff8e1,stroke:#ffa000
+```
+
+### Agentic Retrieval vs. Traditional Retrieval
+
+| Aspect | Traditional Vector Search | Agentic Tree Search |
+|--------|--------------------------|---------------------|
+| Search Space | Flat vector space | Document hierarchy |
+| Retrieval Method | Similarity matching | Structural navigation |
+| Decision Maker | Metric (cosine, dot) | LLM reasoning |
+| Context | Chunk-level | Hierarchical |
+| Explainability | Low (score = 0.814) | High (path = Chapter → Section → Page) |
+
+---
+
+## 3.2 AlphaGo-Inspired Tree Traversal
+
+The roadmap specifies **AlphaGo-inspired top-down agentic tree traversal** as a core technique. AlphaGo uses Monte Carlo Tree Search (MCTS) to progressively explore promising game positions rather than examining every possible position equally.
+
+### AlphaGo Patterns Applied to Tree Navigation
+
+| AlphaGo Concept | Vectorless RAG Application |
+|-----------------|---------------------------|
+| **Progressive Narrowing** | Explore promising document branches; prune irrelevant ones |
+| **Value Estimation** | LLM estimates node relevance based on query intent |
+| **Policy Networks** | Heuristics determine which branches are most promising |
+| **Monte Carlo Sampling** | Balance exploration vs. exploitation during evaluation |
+
+### Progressive Narrowing
+
+```mermaid
+flowchart TD
+
+    QUERY["👤 Query: Sticky sessions during ALB failure?"]
+
+    QUERY --> ROOT["📘 Document Root"]
+
+    ROOT --> CH1["Chapter 1"]
+    ROOT --> CH2["Chapter 2: Load Balancing"]
+    ROOT --> CH3["Chapter 3"]
+
+    CH1 --> PRUNE1["❌ Pruned"]
+    CH2 --> KEEP["✅ Kept"]
+    CH3 --> PRUNE2["❌ Pruned"]
+
+    KEEP --> SEC21["Section 2.1"]
+    KEEP --> SEC22["Section 2.2: Session Persistence"]
+    KEEP --> SEC23["Section 2.3"]
+
+    SEC21 --> PRUNE3["❌ Pruned"]
+    SEC22 --> KEEP2["✅ Kept"]
+    SEC23 --> PRUNE4["❌ Pruned"]
+
+    KEEP2 --> SUB221["2.2.1 Cookie-Based"]
+    KEEP2 --> SUB222["2.2.2 Session Failover"]
+
+    SUB221 --> PRUNE5["⚠️ Reviewed"]
+    SUB222 --> TARGET["🎯 Target"]
+
+    style QUERY fill:#fff3e0,stroke:#ef6c00
+    style ROOT fill:#e8f5e9,stroke:#2e7d32
+    style CH1 fill:#ffcdd2,stroke:#c62828
+    style CH2 fill:#c8e6c9,stroke:#2e7d32
+    style CH3 fill:#ffcdd2,stroke:#c62828
+    style SEC22 fill:#c8e6c9,stroke:#2e7d32
+    style SUB222 fill:#c8e6c9,stroke:#2e7d32
+```
+
+### AlphaGo-Inspired Pseudo-Code (TypeScript)
 
 ```typescript
-// AlphaGo-inspired tree traversal with MCTS principles
-async function alphaGoTreeSearch(tree: TreeIndex, query: string): Promise<RetrievedNode> {
-  const root = tree.getRoot();
-  const queue = [root];
+type TreeNode = {
+  nodeId: string;
+  title: string;
+  level: number;
+  pageRange: [number, number];
+  parentId: string | null;
+  childrenIds: string[];
+  summary: string;
+  keywords: string[];
+  entities: string[];
+};
+
+type RetrievedNode = {
+  node: TreeNode;
+  content: string;
+  path: TreeNode[];
+  relevanceScore: number;
+};
+
+// AlphaGo-style MCTS-inspired tree traversal with progressive refinement
+async function alphaGoTreeSearch(
+  tree: Map<string, TreeNode>,
+  query: string,
+  rootId: string,
+  llm: { generate(prompt: string): Promise<string> },
+  maxIterations = 20,
+  topK = 3
+): Promise<RetrievedNode> {
+  const root = tree.get(rootId)!;
   const visited = new Set<string>();
-  
-  while (queue.length > 0) {
-    const current = queue.shift();
-    if (visited.has(current.nodeId)) continue;
+  const path: TreeNode[] = [];
+
+  let current = root;
+  path.push(current);
+
+  // Progressive narrowing — top-down
+  for (let i = 0; i < maxIterations; i++) {
+    if (visited.has(current.nodeId)) break;
     visited.add(current.nodeId);
-    
-    // 1. Evaluation: Assess node's relevance (similar to AlphaGo's policy network)
-    const score = await evaluateNodeRelevance(current, query);
-    
-    // 2. Selection: Choose promising children (similar to MCTS selection)
-    const children = tree.getChildren(current.nodeId);
+
+    // 1. Policy Evaluation (AlphaGo policy network equivalent)
+    const score = await evaluateNodeRelevance(current, query, llm);
+
+    // 2. Selection — get children
+    const children = current.childrenIds
+      .map((id) => tree.get(id))
+      .filter((n): n is TreeNode => n !== undefined);
+
+    // 3. Check if leaf node
     if (children.length === 0) {
-      return current; // Leaf node reached
+      const content = await lazyLoadContent(current);
+      return { node: current, content, path, relevanceScore: score };
     }
-    
-    const promisingChildren = children
-      .filter(child => child.summary.includes(queryKeywords))
+
+    // 4. MCTS Selection — sort by score, explore top-K branches
+    const scoredChildren = await Promise.all(
+      children.map(async (child) => ({
+        node: child,
+        score: await evaluateNodeRelevance(child, query, llm),
+      }))
+    );
+
+    const promising = scoredChildren
       .sort((a, b) => b.score - a.score)
-      .slice(0, 3); // Explore top 3 most promising branches
-    
-    queue.push(...promisingChildren);
+      .slice(0, topK);
+
+    // 5. UCB-like exploration bonus for under-visited branches
+    const finalScores = promising.map((p) => {
+      const explorationBonus = visited.has(p.node.nodeId) ? -Infinity : 5;
+      return { ...p, adjustedScore: p.score + explorationBonus };
+    });
+
+    // 6. Exploit the best branch (descend)
+    const best = finalScores.reduce((max, cur) =>
+      cur.adjustedScore > max.adjustedScore ? cur : max
+    );
+
+    current = best.node;
+    path.push(current);
   }
-  
-  throw new Error("No relevant node found");
+
+  const content = await lazyLoadContent(current);
+  const score = await evaluateNodeRelevance(current, query, llm);
+  return { node: current, content, path, relevanceScore: score };
 }
 ```
 
-**Key AlphaGo Concepts Applied:**
+### Key Benefits
 
-1. **Progressive Narrowing**: Like AlphaGo exploring promising board regions, not the entire board
-2. **Monte Carlo Sampling**: Random exploration of promising branches balanced with exploitation
-3. **Value Estimation**: LLM scores node relevance based on query intent
-4. **Policy Networks**: Heuristics to determine which branches are most likely to contain answers
+1. **Progressive Narrowing** — Like AlphaGo exploring promising board regions, the agent narrows to the most promising document sections.
+2. **Self-Improving** — Learns which document regions are most relevant for similar queries over time.
+3. **Efficient Pruning** — Skips irrelevant sections before loading their full content.
+4. **Explicit Path** — Every retrieval decision is traceable.
 
-This approach makes the system **self-improving** as it learns which document regions are most promising for similar queries in the future.
+---
 
-## 3.2 Vector Search vs Agentic Tree Search
+## 3.3 Vector Search vs Agentic Tree Search
 
 ```mermaid
 flowchart LR
@@ -94,25 +238,26 @@ flowchart LR
 ### Mental Model
 
 **Vector RAG:**
-> Search everywhere and rank by similarity.
+> "Search everywhere and rank by similarity."
 
 **Vectorless RAG:**
-> Navigate intelligently and progressively narrow the search.
+> "Navigate intelligently and progressively narrow the search."
 
 ---
 
-## 3.3 Example Query: Step-by-Step Navigation
+## 3.4 Example Query: Step-by-Step Navigation
 
 Consider this question:
+
 > **"How do sticky sessions behave during ALB failure?"**
 
 Suppose our document contains:
 
-```
+```text
 Distributed Systems Architecture Manual
 
 ├── Chapter 1: Networking
-│
+
 ├── Chapter 2: Load Balancing
 │   ├── Section 2.1: CDN Architecture
 │   ├── Section 2.2: Session Persistence
@@ -123,21 +268,15 @@ Distributed Systems Architecture Manual
 └── Chapter 3: Database Replication
 ```
 
-The correct answer is probably somewhere inside:
+The correct answer is inside:
 
-```
+```text
 Chapter 2
    ↓
 Section 2.2
    ↓
 Subsection 2.2.2
 ```
-
-The agent should not need to inspect every page.
-
----
-
-## 3.4 Step-by-Step Agentic Tree Traversal
 
 ### Step 1 — Evaluate the Root
 
@@ -146,7 +285,7 @@ The LLM first sees the top-level structure:
 ```mermaid
 flowchart TD
 
-    Q["👤 Query:<br/>How do sticky sessions behave during ALB failure?"]
+    Q["👤 Query:<br/>How do sticky sessions behave<br/>during ALB failure?"]
 
     Q --> ROOT["📘 Document Root"]
 
@@ -162,7 +301,8 @@ flowchart TD
 ```
 
 The agent reasons:
-```
+
+```text
 Sticky sessions + ALB failure
         ↓
 Load Balancing
@@ -170,13 +310,11 @@ Load Balancing
 Chapter 2 is relevant
 ```
 
-So it **prunes** Chapters 1 and 3.
-
----
+It **prunes** Chapters 1 and 3.
 
 ### Step 2 — Expand the Relevant Branch
 
-The agent now looks inside Chapter 2:
+The agent looks inside Chapter 2:
 
 ```mermaid
 flowchart TD
@@ -192,8 +330,9 @@ flowchart TD
     S3 --> X3["❌ Discard"]
 ```
 
-The LLM sees summaries such as:
-```
+LLM sees summaries like:
+
+```text
 2.1 CDN Architecture
 → Static asset distribution and edge caching.
 
@@ -205,9 +344,7 @@ The LLM sees summaries such as:
 → General request routing and traffic policies.
 ```
 
-Section 2.2 clearly matches the query.
-
----
+Section 2.2 matches the query.
 
 ### Step 3 — Continue Down the Tree
 
@@ -226,23 +363,22 @@ flowchart TD
 ```
 
 The agent identifies:
-```
+
+```text
 2.2.2 Session Failover & Recovery
         ↓
 Pages 181–200
 ```
 
-Now we have reached the target area.
+We have reached the target area.
 
----
+### Step 4 — Lazy Load the Actual Content
 
-## 3.5 Step 4 — Lazy Load the Actual Content
+#### Why Lazy Loading Matters
 
-### Why Lazy Loading Matters
+The system did **not** load the entire 500-page document. Instead, it used lightweight metadata:
 
-The system did **not** load the entire 500-page document into the LLM. Instead, it first used lightweight metadata:
-
-```
+```text
 Chapter summaries
 Section summaries
 Page ranges
@@ -271,17 +407,15 @@ flowchart TD
     CONTEXT --> LLM["🤖 Answer Generation"]
 ```
 
-### Comparison
+#### Comparison
 
-| Traditional approach | Tree approach |
-|---------------------|---------------|
+| Traditional Approach | Tree Approach |
+|----------------------|---------------|
 | Search → 10 fragmented chunks → LLM | Navigate → Relevant section → 1–2 targeted pages → Full surrounding context → LLM |
 
 ---
 
-## 3.6 Complete Agentic Tree Search
-
-Putting all steps together:
+## 3.5 Complete Agentic Tree Search Flow
 
 ```mermaid
 flowchart TD
@@ -314,22 +448,22 @@ flowchart TD
     LOAD --> ANSWER["🧠 Synthesize Answer"]
 ```
 
-This is **agentic retrieval** because the LLM is actively making retrieval decisions.
+This is **agentic retrieval** because the LLM actively decides which branches to explore.
 
 ---
 
-## 3.7 Why This Is More Traceable
+## 3.6 Why This Is More Traceable
 
-One major problem with Vector RAG is that the retrieval process can be difficult to explain. You might get:
+A Vector RAG retrieval might look like:
 
-```
+```text
 Chunk #472
 Similarity: 0.814
 ```
 
-But Vectorless RAG can provide an explicit path:
+Vectorless RAG provides an explicit path:
 
-```
+```text
 Document
   ↓
 Chapter 2: Load Balancing
@@ -341,17 +475,10 @@ Subsection 2.2.2: Session Failover
 Pages 181–184
 ```
 
-The retrieval decision becomes much easier to inspect.
+### Traceable Answer Template
 
----
-
-## 3.8 Traceable Answer Generation
-
-A Vectorless RAG system can produce an answer together with its navigation path:
-
-```
+```text
 Answer:
-
 When an ALB node fails, session traffic is redirected
 according to the documented failover mechanism.
 
@@ -371,20 +498,23 @@ Node:
 sub_2_2_2
 ```
 
-The important part isn't simply the citation. It's that the system can explain **how it reached that source**.
+The important part isn't just the citation — it's that the system can explain **how it reached that source**.
 
 ---
 
-## 3.9 Why Hierarchical Context Helps
+## 3.7 Why Hierarchical Context Helps
 
 Consider a query:
+
 > "How does it handle state persistence?"
 
 The word **"it"** is ambiguous. But if the previous conversation was:
+
 > "How does the ALB maintain user sessions?"
 
 Then the LLM can resolve:
-```
+
+```text
 "it"
   ↓
 ALB
@@ -394,7 +524,7 @@ Load Balancing
 Session Persistence
 ```
 
-The tree gives the agent a natural place to continue searching.
+### Reference Resolution via Tree
 
 ```mermaid
 flowchart TD
@@ -414,17 +544,19 @@ flowchart TD
     SESSION --> ANSWER["Relevant Content"]
 ```
 
+The tree gives the agent a natural place to continue searching.
+
 ---
 
-## 3.10 Complex Queries: Global Context
-
-Vectorless RAG becomes especially interesting when the query isn't asking about one small piece of information.
+## 3.8 Complex Queries: Global Context
 
 ### Query
+
 > **"Summarize all high-availability strategies across the entire system."**
 
-A simple vector search might return:
-```
+A vector search might return:
+
+```text
 Chunk 12 → High availability
 Chunk 89 → High availability
 Chunk 203 → HA architecture
@@ -434,11 +566,7 @@ Chunk 512 → Failover
 
 These are isolated pieces. The system may miss the **global architecture**.
 
----
-
-## 3.11 Tree-Based Global Search
-
-A tree-based system can inspect high-level summaries first:
+### Tree-Based Global Search
 
 ```mermaid
 flowchart TD
@@ -462,48 +590,42 @@ flowchart TD
     AGG --> FINAL["📋 Global Architecture Summary"]
 ```
 
-The agent can inspect multiple branches and combine their findings.
+The agent inspects multiple branches and combines findings.
 
 ---
 
-## 3.12 Agentic Retrieval Is a Reasoning Process
+## 3.9 Agentic Retrieval Is a Reasoning Process
 
-The important difference is that retrieval becomes a **reasoning process**:
+> Retrieval becomes a **reasoning process**:
 
-```text
-Query
-  ↓
-Understand intent
-  ↓
-Inspect root
-  ↓
-Select branch
-  ↓
-Inspect children
-  ↓
-Select section
-  ↓
-Inspect deeper nodes
-  ↓
-Find target
-  ↓
-Load content
-  ↓
-Reason over content
-  ↓
-Generate answer
+```mermaid
+flowchart TD
+
+    Q["Query"]
+    Q --> Q1["Understand intent"]
+    Q1 --> Q2["Inspect root"]
+    Q2 --> Q3["Select branch"]
+    Q3 --> Q4["Inspect children"]
+    Q4 --> Q5["Select section"]
+    Q5 --> Q6["Inspect deeper nodes"]
+    Q6 --> Q7["Find target"]
+    Q7 --> Q8["Load content"]
+    Q8 --> Q9["Reason over content"]
+    Q9 --> Q10["Generate answer"]
+
+    style Q fill:#e3f2fd,stroke:#1976d2
+    style Q10 fill:#fff3e0,stroke:#ef6c00
 ```
 
-So:
 > **Retrieval itself becomes an intelligent navigation task.**
 
 ---
 
-## 3.13 Optimization #1 — Summary-First Pruning
+## 3.10 Optimization #1 — Summary-First Pruning
 
-Don't send the entire content of every node to the LLM. Instead, send a small summary:
+Don't send entire content of every node. Instead, send a summary:
 
-```
+```text
 Expensive:
 5,000-token section
    ↓
@@ -533,34 +655,50 @@ flowchart TD
     KEEP --> RAW["Load Full Content"]
 ```
 
-This means the LLM first asks:
+The LLM first asks:
+
 > **"Is this branch worth exploring?"**
 
 Only promising branches are expanded.
 
----
+### Summary-First Pruning Pseudo-Code
 
-## 3.14 Optimization #2 — Parallel Subtree Evaluation
+```typescript
+async function shouldPruneNode(
+  node: TreeNode,
+  query: string,
+  llm: { generate(prompt: string): Promise<string> }
+): Promise<boolean> {
+  const prompt = `
+    Node Title: ${node.title}
+    Summary: ${node.summary}
+    Keywords: ${node.keywords.join(", ")}
+    Page Range: ${node.pageRange.join("–")}
 
-Sibling nodes can often be evaluated concurrently:
+    User Query: "${query}"
 
-```text
-Section 1
-   ↓
-wait
+    Does this section appear relevant?
+    Answer ONLY "yes" or "no".
+  `;
 
-Section 2
-   ↓
-wait
-
-Section 3
-   ↓
-wait
+  const response = await llm.generate(prompt);
+  return response.trim().toLowerCase() !== "yes";
+}
 ```
 
-Can become:
+---
+
+## 3.11 Optimization #2 — Parallel Subtree Evaluation
+
+Sibling nodes can be evaluated concurrently:
 
 ```text
+Sequential:
+Section 1 → wait
+Section 2 → wait
+Section 3 → wait
+
+Parallel:
 Section 1 ──┐
 Section 2 ──┼──→ LLM Evaluation
 Section 3 ──┘
@@ -586,13 +724,32 @@ flowchart TD
     R --> SELECT["🎯 Select Best Branch"]
 ```
 
-In JavaScript/TypeScript, this can be implemented using concurrency patterns such as `Promise.all(...)`. The goal is to reduce **wall-clock latency**.
+In TypeScript, this uses `Promise.all(...)`:
+
+```typescript
+async function parallelBranchEvaluation(
+  children: TreeNode[],
+  query: string,
+  llm: { generate(prompt: string): Promise<string> }
+): Promise<{ node: TreeNode; score: number }[]> {
+  const evaluations = await Promise.all(
+    children.map(async (child) => ({
+      node: child,
+      score: await evaluateNodeRelevance(child, query, llm),
+    }))
+  );
+
+  return evaluations.sort((a, b) => b.score - a.score);
+}
+```
+
+The goal is to reduce **wall-clock latency**.
 
 ---
 
-## 3.15 Optimization #3 — Tree Structure Caching
+## 3.12 Optimization #3 — Tree Structure Caching
 
-The document tree usually doesn't need to be generated every time a user asks a question. It can be created once during indexing.
+The document tree is usually generated once during indexing and reused.
 
 ```mermaid
 flowchart LR
@@ -610,21 +767,21 @@ flowchart LR
     CACHE --> Q4["Query 4"]
 ```
 
-Possible storage options include:
-- In-memory cache
-- Redis
-- SQLite
-- PostgreSQL
-- JSON files
+### Storage Options
 
-The important idea:
+| Storage | Use Case | Notes |
+|---------|----------|-------|
+| **In-memory** | Small KBs | Fastest, no persistence |
+| **Redis** | Medium KBs | Fast, shared across instances |
+| **SQLite** | Local apps | ACID, single file |
+| **PostgreSQL** | Enterprise | JSON + full-text search |
+| **JSON files** | Portable | Simple, human-readable |
+
 > **Build the tree once, reuse it for many queries.**
 
 ---
 
-## 3.16 Combined Optimization Strategy
-
-The three techniques work together:
+## 3.13 Combined Optimization Strategy
 
 ```mermaid
 flowchart TD
@@ -650,104 +807,172 @@ flowchart TD
 
 ---
 
-## 3.17 End-to-End Agentic Tree Search
+## 3.14 Zero-Vector Relevance Reasoning
 
-Now we can combine everything:
+**Zero-vector relevance reasoning** determines relevance **without** embedding vectors or similarity scores.
 
-```mermaid
-flowchart TD
+### Zero-Vector vs. Vector-Based Relevance
 
-    Q["👤 User Query"]
+| Approach | Decision Basis | Example Output |
+|----------|----------------|----------------|
+| **Vector-Based** | Math: cosine / dot product | "Chunk #472, similarity: 0.814" |
+| **Zero-Vector** | Structural summary + LLM | "Section 2.2: Session Persistence" |
 
-    Q --> HISTORY["💬 Conversation Context"]
+### Zero-Vector Pseudo-Code (TypeScript)
 
-    HISTORY --> ROOT["🌳 Root Tree"]
+```typescript
+/**
+ * Zero-vector relevance scoring — no embeddings, no similarity math.
+ * The LLM judges relevance purely from structural metadata.
+ */
+async function zeroVectorRelevanceScoring(
+  node: TreeNode,
+  query: string,
+  llm: { generate(prompt: string): Promise<string> }
+): Promise<number> {
+  const prompt = `
+    Node Title: ${node.title}
+    Node Summary: ${node.summary}
+    Keywords: ${node.keywords.join(", ")}
+    Entities: ${node.entities.join(", ")}
+    Page Range: ${node.pageRange.join("–")}
 
-    ROOT --> SUM1["Read Node Summaries"]
+    User Query: "${query}"
 
-    SUM1 --> PAR["⚡ Parallel Branch Evaluation"]
+    On a scale of 0–100, how likely is this node to contain
+    the information needed to answer the query?
+    Output ONLY a number.
+  `;
 
-    PAR --> PRUNE["✂️ Prune Irrelevant Branches"]
+  const score = parseInt(await llm.generate(prompt));
+  return isNaN(score) ? 0 : score;
+}
 
-    PRUNE --> NEXT["Relevant Branch"]
+/**
+ * Zero-vector agentic search over a document tree.
+ */
+async function vectorlessAgenticSearch(
+  tree: Map<string, TreeNode>,
+  query: string,
+  rootId: string,
+  llm: { generate(prompt: string): Promise<string> }
+): Promise<RetrievedNode> {
+  const path: TreeNode[] = [];
+  let current = tree.get(rootId)!;
 
-    NEXT --> SUM2["Read Child Summaries"]
+  while (true) {
+    path.push(current);
 
-    SUM2 --> PRUNE2["✂️ Further Pruning"]
+    const score = await zeroVectorRelevanceScoring(current, query, llm);
 
-    PRUNE2 --> LEAF["🎯 Target Leaf"]
+    const children = current.childrenIds
+      .map((id) => tree.get(id))
+      .filter((n): n is TreeNode => n !== undefined);
 
-    LEAF --> PAGE["📄 Page Range"]
+    if (children.length === 0 || score < 30) {
+      break;
+    }
 
-    PAGE --> LOAD["📥 Lazy Load Full Content"]
+    const childScores = await Promise.all(
+      children.map(async (child) => ({
+        node: child,
+        score: await zeroVectorRelevanceScoring(child, query, llm),
+      }))
+    );
 
-    LOAD --> CONTEXT["📝 Full Structural Context"]
+    const best = childScores.reduce((max, cur) =>
+      cur.score > max.score ? cur : max
+    );
 
-    CONTEXT --> LLM["🤖 LLM"]
+    current = best.node;
+  }
 
-    LLM --> ANSWER["💬 Answer"]
+  const content = await lazyLoadContent(current);
+  const score = await zeroVectorRelevanceScoring(current, query, llm);
 
-    ANSWER --> CITE["🔗 Explicit Source Path"]
+  return {
+    node: current,
+    content,
+    path,
+    relevanceScore: score,
+  };
+}
+
+// Lazy load the full content of a node only after it is selected
+async function lazyLoadContent(node: TreeNode): Promise<string> {
+  return `[Lazy loaded content for node: ${node.title}\nPage range: ${node.pageRange.join("–")}]`;
+}
 ```
 
----
+### Why Zero-Vector Matters
 
-## 3.18 Vector RAG vs Agentic Tree Search
-
-| Aspect           | 🔵 Vector RAG     | 🟢 Agentic Tree Search         |
-| ---------------- | ----------------- | ------------------------------ |
-| Retrieval method | Similarity search | Hierarchical navigation        |
-| Search space     | Flat chunks       | Document tree                  |
-| Decision maker   | Similarity metric | LLM                            |
-| Context          | Chunk-based       | Structure-aware                |
-| Search path      | Often opaque      | Explicit                       |
-| Citations        | Retrieved chunks  | Section/page lineage           |
-| Complex queries  | Can struggle      | Better suited                  |
-| Global queries   | Difficult         | Can traverse multiple branches |
-| Cost             | Usually lower     | More LLM calls                 |
-| Latency          | Usually lower     | Requires optimization          |
-| Explainability   | Moderate          | High                           |
+| Benefit | Explanation |
+|---------|-------------|
+| **Explicit Traceability** | Decisions based on readable node summaries, not opaque vector scores |
+| **Structural Context** | Relevance tied to document hierarchy, not content similarity alone |
+| **Auditability** | Easy to explain why a section was selected (title matches topic, summary aligns) |
+| **Simplicity** | No embedding infrastructure needed at inference time |
+| **Reduced Bias** | Based on structural logic rather than potentially biased embeddings |
 
 ---
 
-## 3.19 Important Trade-Off
+## 3.15 Vector RAG vs Agentic Tree Search — Detailed Comparison
 
-Vectorless RAG is not automatically better for every use case.
+| Aspect | 🔵 Vector RAG | 🟢 Agentic Tree Search |
+|--------|---------------|------------------------|
+| Retrieval Method | Similarity search | Hierarchical navigation |
+| Search Space | Flat chunks | Document tree |
+| Decision Maker | Similarity metric | LLM |
+| Context | Chunk-based | Structure-aware |
+| Search Path | Often opaque | Explicit |
+| Citations | Retrieved chunks | Section/page lineage |
+| Complex Queries | Can struggle | Better suited |
+| Global Queries | Difficult | Can traverse multiple branches |
+| Cost | Usually lower | More LLM calls |
+| Latency | Usually lower | Requires optimization |
+| Explainability | Moderate | High |
 
-The trade-off is:
+---
+
+## 3.16 Trade-Off Considerations
 
 ```mermaid
 flowchart LR
 
-    SPEED["⚡ Fast / Cheap Retrieval"]
-
+    SPEED["⚡ Fast / Low-Cost Retrieval"]
     QUALITY["🎯 Structured / Explainable Retrieval"]
+    TRADE["⚖️ Trade-off"]
 
-    SPEED --- TRADE["⚖️ Trade-off"] --- QUALITY
+    SPEED --- TRADE --- QUALITY
+
+    style SPEED fill:#e3f2fd,stroke:#1976d2
+    style QUALITY fill:#e8f5e9,stroke:#2e7d32
+    style TRADE fill:#fff3e0,stroke:#ef6c00
 ```
 
-### Vector RAG can be preferable when:
-- Documents are relatively simple
-- Semantic search is enough
-- Very low latency is important
-- The knowledge base is highly unstructured
+### Vector RAG Is Preferable When
 
-### Vectorless RAG can be preferable when:
-- Documents are highly structured
-- Exact sections matter
-- Page-level traceability matters
-- Context preservation is important
-- Documents are long and complex
-- Explainability is important
+* Documents are relatively simple / unstructured
+* Semantic search is sufficient
+* Very low latency is critical
+* Knowledge base is flat or short
+
+### Vectorless RAG Is Preferable When
+
+* Documents are highly structured (manuals, textbooks, wikis)
+* Exact sections and page-level traceability matter
+* Context preservation is important
+* Documents are long and complex
+* Explainability is a priority
+* Multi-hop or global queries are common
 
 ---
 
-## 3.20 The Complete Mental Model
-
-Think of the two systems like two people searching a book.
+## 3.17 Complete Mental Model
 
 ### 🔵 Vector RAG
-```
+
+```text
 Question
    ↓
 Search every page for similar language
@@ -758,7 +983,8 @@ Answer
 ```
 
 ### 🟢 Vectorless RAG
-```
+
+```text
 Question
    ↓
 Open Table of Contents
@@ -776,159 +1002,54 @@ Read Full Context
 Answer
 ```
 
+### The Agentic Reasoning Loop
+
+```mermaid
+flowchart TD
+
+    START["👤 Query"]
+
+    START --> INTENT["1️⃣ Understand Intent"]
+
+    INTENT --> EVAL_ROOT["2️⃣ Evaluate Root"]
+
+    EVAL_ROOT --> PRUNE["3️⃣ Prune / Branch"]
+
+    PRUNE --> EVAL_CHILD["4️⃣ Evaluate Children"]
+
+    EVAL_CHILD --> DECIDE{"More depth?"}
+
+    DECIDE -->|"No"| LEAF["🎯 Reached Target"]
+    DECIDE -->|"Yes"| PRUNE
+
+    LEAF --> LOAD["5️⃣ Lazy Load Content"]
+
+    LOAD --> REASON["6️⃣ Reason Over Context"]
+
+    REASON --> ANSWER["💬 Answer"]
+
+    style START fill:#e3f2fd,stroke:#1976d2
+    style ANSWER fill:#fff3e0,stroke:#ef6c00
+    style LEAF fill:#c8e6c9,stroke:#2e7d32
+```
+
+---
+
 ## 🎯 Key Takeaways
 
-Remember these **8 points**:
-
-1. **Agentic Tree Search turns retrieval into a navigation problem.**
-2. **The LLM evaluates node summaries and chooses which branches to explore.**
-3. **Irrelevant branches can be pruned before loading their raw content.**
-4. **Lazy loading retrieves full text only after reaching a relevant node or page range.**
-5. **Tree traversal provides an explicit and traceable retrieval path.**
-6. **Hierarchical retrieval is particularly useful for long, structured documents and complex queries.**
-7. **Summary-first pruning, parallel evaluation, and caching help control token usage and latency.**
-8. **Vectorless RAG trades some retrieval simplicity and latency for better structural reasoning, context preservation, and explainability.**
+1. **Agentic Tree Search turns retrieval into a navigation problem** — the LLM actively decides which branches to explore.
+2. **The LLM evaluates node summaries** and chooses which branches are most relevant to descend into.
+3. **Irrelevant branches are pruned** before any raw content is loaded.
+4. **Lazy loading** retrieves full text only after reaching a relevant node or page range.
+5. **Tree traversal provides an explicit, traceable retrieval path** (Chapter → Section → Page).
+6. **Hierarchical retrieval excels for long, structured documents** and complex or global queries.
+7. **Summary-first pruning, parallel evaluation, and caching** help control tokens and latency.
+8. **Vectorless RAG trades some simplicity and latency for better structural reasoning, context preservation, and explainability**.
+9. **AlphaGo-inspired MCTS and zero-vector relevance scoring** make the system audit-friendly and structure-driven.
 
 > **Mental Model:**
 > **Vector RAG asks, "Which text is similar?"**
 > **Agentic Tree Search asks, "Which branch of the knowledge structure should I explore next?"**
-
----
-
-## 3.27 AlphaGo-Inspired Tree Traversal
-
-The roadmap explicitly mentions **AlphaGo-inspired top-down agentic tree traversal** as a key concept. AlphaGo's architecture uses Monte Carlo Tree Search (MCTS) to progressively explore promising game board positions rather than examining every possible position equally.
-
-Vectorless RAG can apply similar principles to document tree navigation:
-
-### AlphaGo Patterns Applied to Tree Navigation
-
-| AlphaGo Concept | Vectorless RAG Application |
-|-----------------|---------------------------|
-| **Progressive Narrowing** | Explore promising document branches, prune irrelevant ones |
-| **Value Estimation** | LLM estimates node relevance based on query intent |
-| **Policy Networks** | Heuristics determine which branches are most promising |
-| **Monte Carlo Sampling** | Balance exploration vs. exploitation when evaluating branches |
-
-### AlphaGo-Inspired Pseudo-Code
-
-```typescript
-// AlphaGo-style tree traversal with progressive refinement
-async function alphaGoTreeSearch(tree: TreeIndex, query: string): Promise<RetrievedNode> {
-  const root = tree.getRoot();
-  const queue = [root];
-  const visited = new Set<string>();
-  
-  while (queue.length > 0) {
-    const current = queue.shift();
-    if (visited.has(current.nodeId)) continue;
-    visited.add(current.nodeId);
-    
-    // 1. Evaluation: Assess relevance (AlphaGo policy network equivalent)
-    const score = await evaluateNodeRelevance(current, query);
-    
-    // 2. Selection: Pick promising children (AlphaGo MCTS selection)
-    const children = tree.getChildren(current.nodeId);
-    if (children.length === 0) {
-      return current; // Leaf node reached
-    }
-    
-    // Filter and sort by relevance, explore top branches
-    const promisingChildren = children
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 3); // Explore top 3 most promising
-    
-    queue.push(...promisingChildren);
-  }
-  
-  throw new Error("No relevant node found");
-}
-```
-
-### Key Benefits
-
-1. **Progressive Narrowing**: Like AlphaGo exploring promising board regions, the agent narrows down to the most promising document sections
-2. **Self-Improving**: Learns which document regions are most relevant for similar queries over time
-3. **Efficient Pruning**: Skips irrelevant sections before loading their full content
-
----
-
-## 3.28 Zero-Vector Relevance Reasoning
-
-**Zero-vector relevance reasoning** means determining relevance **without** computing any embedding vectors or similarity scores. The roadmap lists this as a core Vectorless RAG concept.
-
-### Zero-Vector vs. Vector-Based Relevance
-
-| Approach | Decision Basis | Example Output |
-|----------|----------------|----------------|
-| **Vector-Based** | Mathematical similarity (cosine/dot product) | "Chunk #472, similarity: 0.814" |
-| **Zero-Vector** | Structural position + semantic summary | "Section 2.2: Session Persistence" |
-
-### Zero-Vector Pseudo-Code
-
-```typescript
-// Zero-vector relevance scoring — no embeddings, no similarity math
-async function zeroVectorRelevanceScoring(
-  node: TreeNode,
-  query: string
-): Promise<number> {
-  const prompt = `
-    Node Title: ${node.title}
-    Node Summary: ${node.summary}
-    Keywords: ${node.keywords.join(", ")}
-    
-    User Query: "${query}"
-    
-    On a scale of 0-100, how relevant is this node's content for answering
-    the user's query? Output only a number.
-  `;
-  
-  const score = parseInt(await llm.generate(prompt));
-  return score;
-}
-
-// Zero-vector agentic search
-async function vectorlessAgenticSearch(tree: TreeIndex, query: string): Promise<RetrievedNode> {
-  const path = await buildAgenticPath(tree.getRoot(), query);
-  const targetNode = path[path.length - 1];
-  
-  // Only load full content AFTER determining relevance via zero-vector scoring
-  if (targetNode.relevanceScore > 50) {
-    const fullContent = await lazyLoadContent(targetNode);
-    return { node: targetNode, content: fullContent, path };
-  }
-  
-  throw new Error("No relevant content found");
-}
-```
-
-### Why Zero-Vector Matters
-
-1. **Explicit Traceability**: Decisions based on readable node summaries, not opaque vector scores
-2. **Structural Context**: Relevance tied to document hierarchy, not content similarity alone
-3. **Auditability**: Easy to explain why a section was selected (title matches topic, summary aligns)
-4. **Simplicity**: No complex embedding infrastructure needed at inference time
-5. **Reduced Bias**: Based on structural logic rather than potentially biased embeddings
-
----
-
-## 🎯 Updated Key Takeaways
-
-Remember these **9 points**:
-
-1. **Agentic Tree Search turns retrieval into a navigation problem.**
-2. **The LLM evaluates node summaries and chooses which branches to explore.**
-3. **Irrelevant branches can be pruned before loading their raw content.**
-4. **Lazy loading retrieves full text only after reaching a relevant node or page range.**
-5. **Tree traversal provides an explicit and traceable retrieval path.**
-6. **Hierarchical retrieval is particularly useful for long, structured documents and complex queries.**
-7. **Summary-first pruning, parallel evaluation, and caching help control token usage and latency.**
-8. **Vectorless RAG trades some retrieval simplicity and latency for better structural reasoning, context preservation, and explainability.**
-9. **AlphaGo-inspired MCTS and zero-vector relevance scoring make Vectorless RAG audit-friendly and structure-driven.**
-
-> **Extended Mental Model:**
-> **Vector RAG asks, "Which text is similar?"**
-> **Agentic Tree Search asks, "Which branch of the knowledge structure should I explore next?"**
-> **Zero-Vector Reasoning asks, "Based on document structure and summaries, which section is most likely to contain the answer?"**
+> **Zero-Vector Reasoning asks, "Based on document structure and summaries, which section contains the answer?"**
 
 ---
