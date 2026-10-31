@@ -192,6 +192,49 @@ If:
 
 > **Rule of thumb:** keep retrieved context under 5–15% of the window for headroom. If you need more, invest in **context compression** (summaries) or a smaller topK with better reranking, rather than widening the window.
 
+---
+
+## 6.4.1 The U-Shaped Attention Curve
+
+Context ordering is not cosmetic. Models attend most reliably to the beginning and the end of a long prompt; material buried in the middle is used least often. This is the **U-shaped attention curve**.
+
+```mermaid
+flowchart LR
+    POS["Position in prompt"] --> ATT["Attention weight"]
+    POS --> P1["START<br/>highest"]
+    POS --> P2["MIDDLE<br/>lowest"]
+    POS --> P3["END<br/>high again"]
+    P1 --> U["U-shaped curve"]
+    P2 --> U
+    P3 --> U
+
+    style U fill:#f9e2af,color:#1e1e2e
+```
+
+```text
+┌───────────────────────────────┐
+│  START   → high attention     │  ← best chunks here
+│  ...                          │
+│  MIDDLE  → lowest attention   │  ← important fact here = often missed
+│  ...                          │
+│  END     → high attention     │  ← and here
+└───────────────────────────────┘
+```
+
+### Practical consequences for the prompt contract
+
+| Rule | Why |
+|---|---|
+| **Put the highest-scoring passage first** (or immediately before the question) | It lands in a high-attention zone |
+| **Never rely on "it's in there somewhere"** | If the fact is in position 60 of 80, assume it may be ignored |
+| **Fewer, better chunks beat many mediocre ones** | Top-K = 4 good chunks usually beats Top-K = 40 |
+| **Order deliberately, not by score alone** | Score ≠ position; the most important fact goes first |
+| **Long context is not free** | Every extra chunk is money, latency and noise |
+
+Recent independent studies (for example, Chroma's 2025 "Context Rot" report) show accuracy degrading as input length grows even on trivial tasks — the window is a maximum, not a usable budget.
+
+---
+
 ### Strategies for tight budgets
 
 | Strategy | When to use |

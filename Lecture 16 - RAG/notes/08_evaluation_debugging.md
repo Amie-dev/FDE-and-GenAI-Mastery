@@ -105,6 +105,30 @@ flowchart LR
 
 ---
 
+### 8.3.1 The Retrieval vs Generation 2×2 Diagnosis Matrix
+
+Every wrong answer falls into one of four quadrants. This matrix is your first diagnostic tool when a goldenset row fails.
+
+```mermaid
+flowchart TD
+    WRONG["Wrong answer"] --> R1{"Gold chunk<br/>retrieved?"}
+    R1 -- "yes" --> G1{"Model cited<br/>correctly?"}
+    R1 -- "no" --> G2{"Model cited<br/>correctly?"}
+    G1 -- "yes" --> J["Judge error"]
+    G1 -- "no" --> GEN["GENERATION FAILURE<br/>Prompt, temperature, citation grammar"]
+    G2 -- "yes" --> RETG["RETRIEVAL + GEN<br/>Wrong chunk found, cited"]
+    G2 -- "no" --> RET["RETRIEVAL FAILURE<br/>Chunk missing from index"]
+```
+
+| | **Gold chunk retrieved** | **Gold chunk NOT retrieved** |
+|---|---|---|
+| **Model cited correctly** | ✅ Correct | ❌ Retrieval failure |
+| **Model cited wrong / no citation** | ❌ Generation failure | ❌ Retrieval + Generation failure |
+
+> **Use this every time a goldenset row fails.** It tells you in 30 seconds whether to debug chunking/embeddings (retrieval) or the prompt/model (generation). Do not skip it.
+
+---
+
 ## 8.4 The Evaluation Loop
 
 Run evaluation on every change. Goldenset → retrieve → generate → score → compare to baseline.

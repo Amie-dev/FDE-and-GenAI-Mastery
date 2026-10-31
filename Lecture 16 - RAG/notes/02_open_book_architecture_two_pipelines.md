@@ -198,6 +198,72 @@ flowchart TD
 | Problem | At 3 policies | At 300 policies |
 |---|---|---|
 | Prompt length | ~500 tokens | ~50,000 tokens |
+
+---
+
+## 2.6 The Human Brain / Library Mental Model for Search
+
+The lecture board draws an analogy: **RAG is a library, not a brain**. The embedding model is the catalog; the index is the shelves; retrieval is the librarian finding the right book; the LLM is the reader who reads and answers. This mental model prevents the most common category errors.
+
+```mermaid
+flowchart LR
+    subgraph LIB["THE LIBRARY (RAG system)"]
+        CAT["Embedding model<br/>= Catalog system"]
+        SHF["Vector index<br/>= Shelves"]
+        LIBR["Retrieval<br/>= Librarian"]
+    end
+
+    READ["LLM<br/>= Reader"]
+    Q["Question"] --> CAT
+    CAT --> SHF
+    SHF --> LIBR
+    LIBR --> CTX["Book on table<br/>= Context"]
+    CTX --> READ
+    READ --> A["Answer + citation"]
+
+    style CAT fill:#89b4fa,color:#1e1e2e
+    style SHF fill:#a6e3a1,color:#1e1e2e
+    style LIBR fill:#f9e2af,color:#1e1e2e
+    style READ fill:#cba6f7,color:#1e1e2e
+```
+
+| Brain thinking | Library thinking | Why it matters |
+|---|---|---|
+| "The model knows this" | "The book is on the shelf" | Knowledge is in documents, not weights |
+| "Make the model smarter" | "Buy better books, organize the shelves" | Improve corpus + indexing, not the LLM |
+| "Why did it hallucinate?" | "The librarian brought the wrong book" | Debug retrieval, not the model |
+| "Add more training data" | "Catalog the new books properly" | Ingestion quality decides the ceiling |
+
+> **Key idea:** the model is a *reasoning engine*, not a knowledge base. RAG changes what it reasons *over*. Treat the corpus as the source of truth; the model is just the interpreter.
+
+---
+
+Even a "correctly built" basic RAG system can fail in seven common ways. This section is the bridge to Lecture 17 — if you are fixing failures here, you are ready for advanced RAG.
+
+```mermaid
+flowchart TD
+    B["Basic RAG system"] --> F1["1. Retrieval miss: chunk not in index"]
+    B --> F2["2. Context overflow: too many chunks in prompt"]
+    B --> F3["3. Unfaithful generation: model ignores context"]
+    B --> F4["4. Phantom citation: cites chunk not in prompt"]
+    B --> F5["5. Cross-tenant leak: wrong tenant's chunks read"]
+    B --> F6["6. Stale index: documents not re-embedded"]
+    B --> F7["7. No refusal: answers when context says 'I don't know'"]
+```
+
+| # | Failure mode | Root cause | Primary fix (this lecture) |
+|---|---|---|---|
+| **1** | **Retrieval miss** | Chunk was never ingested, or was deleted, or indexed under a different namespace | Add re-ingestion job; enforce deterministic IDs (Ch 03); verify namespace + tenant filter (Ch 05, 09) |
+| **2** | **Context overflow** | topK too large for the context window; chunks crowd out each other; lost-in-the-middle | Cap topK to 3–5 into prompt; use reranker to reduce candidates first (Ch 05) |
+| **3** | **Unfaithful generation** | Model attends to context but answers from weights; fluent but unsupported | Add explicit "answer ONLY from context + cite [n]" instruction (Ch 06); test with citation checker |
+| **4** | **Phantom citation** | Model cites `[n]` but chunk `n` was dropped to fit the window | Post-generation verification: every cited n must exist in the rendered prompt (Ch 06); log dropped chunks |
+| **5** | **Cross-tenant leak** | Chunk from tenant A included in prompt for user of tenant B | Enforce tenantId filter in vector query (Ch 05, 09); verify session key includes tenantId (Ch 07); cite-by-id check before replying (Ch 09) |
+| **6** | **Stale index** | Document updated but re-ingestion did not run; old vector still served | Schedule periodic re-ingestion; add `updatedAt` metadata + staleness alerts (Ch 03, 09); log index version |
+| **7** | **No refusal** | Model answers confidently even when context is insufficient or irrelevant | Add explicit "I don't have that information" instruction; temperature 0–0.2; post-generation refusal classifier (Ch 06) |
+
+> **Bridge to Lecture 17:** surviving these seven failures means your basic RAG is solid. Lecture 17 then addresses the *next layer* of complexity: query mismatch, hybrid fusion, rerankers, and context engineering.
+
+---
 | Cost per question | Negligible | Significant, every time |
 | Relevance | All of it | 99% irrelevant noise |
 | Update path | Edit prompt, redeploy | Impossible to keep consistent |
@@ -216,9 +282,36 @@ Question       →  the user's actual ask
 
 ---
 
-## 2.6 The Canonical Query Path (from the Board)
+## 2.8 The Seven Ways Basic RAG Fails
 
-The lecture board draws the smallest complete RAG system:
+Even a "correctly built" basic RAG system can fail in seven common ways. This section is the bridge to Lecture 17 — if you are fixing failures here, you are ready for advanced RAG.
+
+```mermaid
+flowchart TD
+    B["Basic RAG system"] --> F1["1. Retrieval miss: chunk not in index"]
+    B --> F2["2. Context overflow: too many chunks in prompt"]
+    B --> F3["3. Unfaithful generation: model ignores context"]
+    B --> F4["4. Phantom citation: cites chunk not in prompt"]
+    B --> F5["5. Cross-tenant leak: wrong tenant's chunks read"]
+    B --> F6["6. Stale index: documents not re-embedded"]
+    B --> F7["7. No refusal: answers when context says 'I don't know'"]
+```
+
+| # | Failure mode | Root cause | Primary fix (this lecture) |
+|---|---|---|---|
+| **1** | **Retrieval miss** | Chunk was never ingested, or was deleted, or indexed under a different namespace | Add re-ingestion job; enforce deterministic IDs (Ch 03); verify namespace + tenant filter (Ch 05, 09) |
+| **2** | **Context overflow** | topK too large for the context window; chunks crowd out each other; lost-in-the-middle | Cap topK to 3–5 into prompt; use reranker to reduce candidates first (Ch 05) |
+| **3** | **Unfaithful generation** | Model attends to context but answers from weights; fluent but unsupported | Add explicit "answer ONLY from context + cite [n]" instruction (Ch 06); test with citation checker |
+| **4** | **Phantom citation** | Model cites `[n]` but chunk `n` was dropped to fit the window | Post-generation verification: every cited n must exist in the rendered prompt (Ch 06); log dropped chunks |
+| **5** | **Cross-tenant leak** | Chunk from tenant A included in prompt for user of tenant B | Enforce tenantId filter in vector query (Ch 05, 09); verify session key includes tenantId (Ch 07); cite-by-id check before replying (Ch 09) |
+| **6** | **Stale index** | Document updated but re-ingestion did not run; old vector still served | Schedule periodic re-ingestion; add `updatedAt` metadata + staleness alerts (Ch 03, 09); log index version |
+| **7** | **No refusal** | Model answers confidently even when context is insufficient or irrelevant | Add explicit "I don't have that information" instruction; temperature 0–0.2; post-generation refusal classifier (Ch 06) |
+
+> **Bridge to Lecture 17:** surviving these seven failures means your basic RAG is solid. Lecture 17 then addresses the *next layer* of complexity: query mismatch, hybrid fusion, rerankers, and context engineering.
+
+---
+
+## 2.9 The Canonical Query Path (from the Board)
 
 ```text
 Client  ──"Can I get a refund?"──►  Server  ──►  Embedding model
@@ -262,7 +355,7 @@ The board annotates this loop as **Input + Output**: the *input* to the LLM is t
 
 ---
 
-## 2.7 The Seven Steps, With Their Failure Modes
+## 2.8 The Seven Steps, With Their Failure Modes
 
 | # | Step | Question it answers | If it fails |
 |---|---|---|---|

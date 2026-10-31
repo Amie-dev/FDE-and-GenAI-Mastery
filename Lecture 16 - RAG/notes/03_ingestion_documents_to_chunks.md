@@ -330,17 +330,19 @@ Why this matters in JavaScript/TypeScript: the popular libraries (`tiktoken`, `j
 ---
 
 ## 3.8 Contextual Headers and Metadata
-
 ### The context header
 
 A chunk that begins "As described above, the same applies…" is semantically incomplete: the embedding has no idea what it refers to. Prepend a short header **before embedding**:
 
 ```text
 Source: Refund Policy.pdf · Section: Apparel · Page 3
+
 Refunds are allowed within 3 days of delivery, provided the item is unused.
 ```
 
 This one change often improves retrieval more than swapping models, because it puts the *topic* into the vector, not just the clause.
+
+> **The rule:** metadata must be attached *before* the split. Section names, document titles, page numbers and tenant IDs must be associated with the source structure **at chunk time**, not patched on afterward. If you chunk first and tag later, chunks inherit no structure and the embedding has no topic signal.
 
 | Header ingredient | Why |
 |---|---|
