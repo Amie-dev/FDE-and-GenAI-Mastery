@@ -307,36 +307,7 @@ This has three engineering consequences, expanded in Chapter 07:
 
 ---
 
-## 1.7 The Knowledge Cutoff: A Model Frozen in Time
-
-Every model is trained on a snapshot of the world. The date after which it saw nothing is the **knowledge cutoff**. Two independent problems follow:
-
-```mermaid
-flowchart LR
-    subgraph TRAIN["Training window"]
-        T1["Public web up to cutoff date"]
-        T2["Licensed corpora"]
-        T3["Curated instructions"]
-    end
-    T1 --> W["Frozen weights"]
-    T2 --> W
-    T3 --> W
-    W --> GAP1["Anything after cutoff<br/>does not exist"]
-    W --> GAP2["Anything private<br/>was never included"]
-    W --> GAP3["Anything changed<br/>is now stale"]
-```
-
-| Gap | Example | What the model does | Consequence |
-|---|---|---|---|
-| **Temporal** | "What is our price today?" | Answers from the last price it saw | Stale, confidently wrong |
-| **Private** | Internal SOP, customer tickets | Invents a plausible one | Policy violation, legal risk |
-| **Long tail** | A niche product SKU | Guesses the format | Wrong ID, wrong URL |
-
-> **Freshness is an architectural property, not a model property.** There is no "update the model with today's data" button.
-
----
-
-## 1.8 The Context Window Is Not Memory
+## 1.7 The Context Window Is Not Memory
 
 A large context window feels like a solution: "just give the model 200k tokens". It helps, but it is a **capacity** limit, not a **memory** or **attention** guarantee.
 
@@ -351,7 +322,7 @@ flowchart LR
 
 ### The lost-in-the-middle effect
 
-Retrieval quality inside the context is **position-dependent**. Models attend most reliably to the beginning and the end of a long prompt; material buried in the middle is used less often.
+Context ordering is not cosmetic. Models attend most reliably to the beginning and the end of a long prompt; material buried in the middle is used less often.
 
 ```text
 ┌───────────────────────────────┐
@@ -361,7 +332,9 @@ Retrieval quality inside the context is **position-dependent**. Models attend mo
 │  ...                          │
 │  END     → high attention     │  ← and here
 └───────────────────────────────┘
-```> **Practical consequences, used later in Chapter 06:**
+```
+
+> **Practical consequences, used later in Chapter 06:**
 > 1. **Fewer, better chunks beat many mediocre ones.** Top-K = 4 good chunks usually beats Top-K = 40.
 > 2. **Order deliberately.** Put the highest-scoring passage first (or immediately before the question).
 > 3. **Never rely on "it's in there somewhere".** If the fact is in position 60 of 80, assume it may be ignored.
@@ -371,7 +344,7 @@ Retrieval quality inside the context is **position-dependent**. Models attend mo
 
 ---
 
-## 1.9 Pseudo-code: Closed-Book vs Open-Book
+## 1.8 Pseudo-code: Closed-Book vs Open-Book
 
 TypeScript-shaped pseudo-code for the JS/TS runtime. It describes the *contract*, not production code.
 
@@ -434,7 +407,7 @@ async function openBookAnswer(question: string, session: Session) {
 
 ---
 
-## 1.10 Common Mistakes
+## 1.9 Common Mistakes
 
 | Mistake | Why it hurts | Correct approach |
 |---|---|---|
@@ -449,7 +422,7 @@ async function openBookAnswer(question: string, session: Session) {
 
 ---
 
-## 1.11 Chapter Summary
+## 1.10 Chapter Summary
 
 | Concept | Takeaway |
 |---|---|
@@ -466,10 +439,47 @@ async function openBookAnswer(question: string, session: Session) {
 
 ---
 
-## 1.12 Where This Goes Next
+## 1.11 Where This Goes Next
 
 - **Chapter 02** turns this motivation into an architecture: the two pipelines, the query path and the running "Tomato" example from the board.
 - **Lecture 08** rebuilds the semantic-search foundation used here (`[Lecture 08 notes](../../Lecture%2008/notes/Lecture_08_Complete_Notes.md)`).
 - **Lecture 10** covers the index and retrieval layer in depth (`[Lecture 10 notes](../../Lecture%2010/notes/Lecture_10_Complete_Notes.md)`).
 
 ---
+
+### The history illusion
+
+The board shows a **History** box next to the LLM. That box is not inside the model — it is a data structure that the **client or server resends on every call**:
+
+```mermaid
+flowchart LR
+    subgraph CLIENT["Client"]
+        H["History buffer<br/>[u1, a1, u2, a2, ...]"]
+    end
+    H --> R["Server builds request"]
+    R --> P["messages = history + new question"]
+    P --> L["LLM"]
+    L --> A["Answer"]
+    A --> H
+
+    style H fill:#89b4fa,color:#1e1e2e
+    style L fill:#cba6f7,color:#1e1e2e
+```
+
+| Layer | Who owns it | Lifetime | Cost |
+|---|---|---|---|
+| Weights | Model provider | Training run | Fixed |
+| **Context window** | You (the caller) | One request | Per token, every call |
+| Conversation store | Your server or client | Session / TTL | Storage + re-sending |
+| Vector memory | Your infrastructure | Until deleted | Embedding + retrieval |
+
+> **Key idea:** "memory" in a chat product is an application feature. The model contributes only the *ability to condition on whatever you send*. If you do not send the history, it does not exist.
+
+This has three engineering consequences, expanded in Chapter 07:
+
+1. **History consumes context budget on every turn** — cost grows quadratically in a long conversation.
+2. **History must be stored and authorised by you** — a session token is not an identity proof.
+3. **History is **input the model will trust**, so it is an injection surface.
+
+---
+

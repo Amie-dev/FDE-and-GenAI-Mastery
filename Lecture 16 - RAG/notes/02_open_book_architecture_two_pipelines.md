@@ -263,7 +263,8 @@ flowchart TD
 
 > **Bridge to Lecture 17:** surviving these seven failures means your basic RAG is solid. Lecture 17 then addresses the *next layer* of complexity: query mismatch, hybrid fusion, rerankers, and context engineering.
 
----
+## 2.7 The Anti-Pattern on the Board: System Prompt Only (Cost Table Edition)
+
 | Cost per question | Negligible | Significant, every time |
 | Relevance | All of it | 99% irrelevant noise |
 | Update path | Edit prompt, redeploy | Impossible to keep consistent |
@@ -355,7 +356,7 @@ The board annotates this loop as **Input + Output**: the *input* to the LLM is t
 
 ---
 
-## 2.8 The Seven Steps, With Their Failure Modes
+## 2.10 The Seven Steps, With Their Failure Modes
 
 | # | Step | Question it answers | If it fails |
 |---|---|---|---|
@@ -381,7 +382,7 @@ flowchart TD
 
 ---
 
-## 2.8 Pseudocode: The System Skeleton
+## 2.11 Pseudocode: The System Skeleton
 
 The whole architecture in one shape. Names match the lecture's companion script so chapters and code can be read side by side.
 
@@ -450,7 +451,7 @@ async function answerUserQuery(question: string, ctx: RequestContext) {
 
 ---
 
-## 2.9 Common Mistakes
+## 2.12 Common Mistakes
 
 | Mistake | Symptom | Fix |
 |---|---|---|
@@ -465,7 +466,7 @@ async function answerUserQuery(question: string, ctx: RequestContext) {
 
 ---
 
-## 2.10 Chapter Summary
+## 2.13 Chapter Summary
 
 | Layer | Decision | Consequence |
 |---|---|---|
