@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  # Optional Local Inngest Dev Server Service
+  inngest-dev:
+    image: inngest/inngest:latest
+    container_name: inngest-dev-day13
+    ports:
+      - "8288:8288" # Local Inngest Dev Dashboard
+    command: "inngest dev -u http://host.docker.internal:3000/api/inngest"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

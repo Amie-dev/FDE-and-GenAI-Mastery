@@ -1,0 +1,35 @@
+{
+  "name": "day13-inngest-durable-workflows",
+  "version": "1.0.0",
+  "description": "Week 07 Day 13 - Inngest Workflows in AI & Durable Execution Architecture",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js",
+    "server": "node src/server.js",
+    "inngest:dev": "npx inngest-cli@latest dev -u http://localhost:3000/api/inngest",
+    "demo:all": "node index.js --all",
+    "demo:pipeline": "node -e \"require('./src/demos/demo-01-durable-pipeline').runDurablePipelineDemo().then(() => process.exit(0))\"",
+    "demo:parallel": "node -e \"require('./src/demos/demo-02-parallel-agents').runParallelAgentsDemo().then(() => process.exit(0))\"",
+    "demo:human": "node -e \"require('./src/demos/demo-03-human-in-the-loop').runHumanInTheLoopDemo().then(() => process.exit(0))\"",
+    "demo:concurrency": "node -e \"require('./src/demos/demo-04-concurrency-limits').runConcurrencyLimitsDemo().then(() => process.exit(0))\"",
+    "demo:failure": "node -e \"require('./src/demos/demo-05-failure-recovery').runFailureRecoveryDemo().then(() => process.exit(0))\"",
+    "test": "node index.js --test"
+  },
+  "keywords": [
+    "inngest",
+    "durable-execution",
+    "multi-agent",
+    "workflows",
+    "express",
+    "async-architecture"
+  ],
+  "author": "Gen AI Cohort",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "inngest": "^3.30.0"
+  },
+  "devDependencies": {}
+}
