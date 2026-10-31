@@ -75,11 +75,35 @@ Modern AI agents can access many external systems through tools and MCP servers.
 
 For example, an agent might have access to:
 
-```text
-GitHub    ├── create_issue  ├── update_issue  ├── create_pr  ├── merge_pr  └── search_code
-Linear    ├── create_issue  ├── update_issue  ├── assign_issue └── create_project
-Slack     ├── send_message  ├── search_messages └── create_channel
-Database  ├── query         ├── insert        ├── update     └── delete
+```mermaid
+graph LR
+    subgraph GITHUB["GitHub"]
+        G1[create_issue]
+        G2[update_issue]
+        G3[create_pr]
+        G4[merge_pr]
+        G5[search_code]
+    end
+
+    subgraph LINEAR["Linear"]
+        L1[create_issue]
+        L2[update_issue]
+        L3[assign_issue]
+        L4[create_project]
+    end
+
+    subgraph SLACK["Slack"]
+        S1[send_message]
+        S2[search_messages]
+        S3[create_channel]
+    end
+
+    subgraph DATABASE["Database"]
+        D1[query]
+        D2[insert]
+        D3[update]
+        D4[delete]
+    end
 ```
 
 As the number of tools increases, simply giving an LLM access to all of them does not automatically give it good **workflow knowledge**.
@@ -97,6 +121,31 @@ The model may know **what tools exist**, but it still needs to know:
 
 **This is where Skills become useful.**
 
+Tool selection decision logic (TS/JS pseudo code):
+
+```ts
+function selectTool(request: UserRequest, availableTools: Tool[]): Tool | null {
+  const relevantTools = availableTools.filter(tool =>
+    tool.matchesIntent(request.intent)
+  )
+
+  if (relevantTools.length === 0) return null
+
+  const bestMatch = relevantTools.sort((a, b) =>
+    b.confidenceScore(request) - a.confidenceScore(request)
+  )[0]
+
+  return bestMatch
+}
+
+function validateParameters(tool: Tool, params: any): boolean {
+  for (const requiredParam of tool.requiredParams) {
+    if (!(requiredParam in params)) return false
+  }
+  return true
+}
+```
+
 ---
 
 ## 3. MCP vs Skills — A Common Misconception
@@ -105,7 +154,7 @@ A common misconception:
 
 > **MCP and Skills are competing technologies.**
 
-They are better understood as **different layers of an agent system**.
+They are better understood as **different layers of an agent system.**
 
 ### MCP — Connectivity Layer
 
@@ -206,7 +255,7 @@ Imagine an agent has access to:
 15 Slack tools
 ```
 
-That's potentially **155 tool interfaces**.
+That's potentially **155 tool interfaces.**
 
 If all detailed schemas and instructions are placed into the model's active context continuously, several problems can appear.
 
@@ -246,7 +295,7 @@ The model may choose an inappropriate tool or construct incorrect parameters, pa
 
 ### 5.5 Workflow Gaps
 
-A tool generally describes **what an operation does**.
+A tool generally describes **what an operation does.**
 
 It does not necessarily define the complete business workflow:
 
@@ -268,6 +317,26 @@ flowchart TD
 
 A tool schema alone does not encode this workflow. A Skill can provide this higher-level workflow guidance.
 
+Tool conflict resolution (TS/JS pseudo code):
+
+```ts
+interface ToolConflict {
+  toolA: Tool
+  toolB: Tool
+  overlapScore: number
+}
+
+function resolveToolConflict(conflict: ToolConflict, context: ToolContext): Tool {
+  if (context.userPreference === conflict.toolA.name) {
+    return conflict.toolA
+  }
+  if (conflict.toolA.successRate > conflict.toolB.successRate) {
+    return conflict.toolA
+  }
+  return conflict.toolB
+}
+```
+
 ---
 
 ## 6. Context Poisoning
@@ -280,7 +349,7 @@ In tool-heavy systems, excessive tool definitions can contribute to context over
 
 ### Important Distinction
 
-Do not treat **context poisoning** as synonymous with **large context**.
+Do not treat **context poisoning** as synonymous with **large context.**
 
 Large context and context poisoning are related but different concepts:
 
@@ -291,6 +360,22 @@ Large context and context poisoning are related but different concepts:
 | May be useful | Necessarily harmful |
 
 Large context can increase the opportunity for irrelevant or conflicting information to interfere, but large context by itself is not necessarily poisoning.
+
+Context poisoning risk assessment (TS/JS pseudo code):
+
+```ts
+interface PoisoningRisk {
+  source: string
+  type: 'irrelevant' | 'conflicting' | 'malicious' | 'excessive'
+  impact: 'low' | 'medium' | 'high'
+}
+
+function assessContextRisk(contextItems: ContextItem[]): PoisoningRisk[] {
+  return contextItems.filter(item => {
+    return item.isUntrusted || item.isIrrelevant || item.conflictsWith(existingContext)
+  })
+}
+```
 
 ---
 
@@ -333,7 +418,33 @@ flowchart TD
     style I fill:#f9f,stroke:#333,stroke-width:2px
 ```
 
-This creates a **layered information model**.
+This creates a **layered information model.**
+
+Progressive disclosure state machine (TS/JS pseudo code):
+
+```ts
+type DisclosureLevel = 'metadata' | 'instructions' | 'resources' | 'execution'
+
+class ProgressiveDisclosure {
+  currentLevel: DisclosureLevel = 'metadata'
+
+  advance(to: DisclosureLevel): boolean {
+    const order = ['metadata', 'instructions', 'resources', 'execution']
+    const currentIndex = order.indexOf(this.currentLevel)
+    const targetIndex = order.indexOf(to)
+
+    if (targetIndex <= currentIndex) return false
+
+    this.currentLevel = to
+    return true
+  }
+
+  canAccess(resource: Resource): boolean {
+    const requiredLevel = resource.requiredDisclosureLevel
+    return this.currentLevel >= requiredLevel
+  }
+}
+```
 
 ---
 
@@ -454,7 +565,7 @@ Skill
 └── Assets / Templates
 ```
 
-Therefore, a Skill can provide both **knowledge and operational resources**.
+Therefore, a Skill can provide both **knowledge and operational resources.**
 
 Example — Invoice Processing Skill:
 
@@ -538,6 +649,34 @@ Depending on the product and implementation, Skills can be used in environments 
 - Anthropic API-based applications
 
 The exact availability and implementation details can differ by environment, so always verify the current platform documentation when implementing them.
+
+Portability across environments (TS/JS pseudo code):
+
+```ts
+interface SkillCapability {
+  requiredTools: string[]
+  requiredScripts: string[]
+  requiredRuntime: 'claude.ai' | 'claude-code' | 'api'
+}
+
+function checkPortability(skill: Skill, targetEnvironment: Environment): {
+  portable: boolean
+  missingDependencies: string[]
+} {
+  const missing: string[] = []
+
+  for (const tool of skill.capability.requiredTools) {
+    if (!targetEnvironment.supportsTool(tool)) {
+      missing.push(tool)
+    }
+  }
+
+  return {
+    portable: missing.length === 0,
+    missingDependencies: missing
+  }
+}
+```
 
 ---
 
@@ -749,7 +888,7 @@ MCP primarily provides standardized connectivity between an AI application and e
 
 Simple version:
 
-> MCP tells Claude **what it can access**; Skills help define **how to perform a task**.
+> MCP tells Claude **what it can access**; Skills help define **how to perform a task.**
 
 ### Q3. What is progressive disclosure?
 
@@ -789,35 +928,35 @@ Instructions
 ## 20. Chapter 1 Cheat Sheet
 
 ```text
-                    CLAUDE SKILLS
-                             │
-           ┌─────────────────┴─────────────────┐
-           │                                   │
-         WHY?                                WHAT?
-           │                                   │
-   Tool complexity                    Packaged capabilities
-   Context overload                   Instructions
-   Workflow gaps                      Workflows
-   Repeated instructions              References
-                                     Scripts
-                                     Assets
-           │
-           ▼
-    Progressive Disclosure
-           │
+                     CLAUDE SKILLS
+                              │
+            ┌─────────────────┴─────────────────┐
+            │                                   │
+          WHY?                                WHAT?
+            │                                   │
+    Tool complexity                    Packaged capabilities
+    Context overload                   Instructions
+    Workflow gaps                      Workflows
+    Repeated instructions              References
+                                      Scripts
+                                      Assets
+            │
+            ▼
+     Progressive Disclosure
+            │
       ┌────┼────┐
       ↓    ↓    ↓
      L1   L2   L3
- Metadata │    │
-          │    └── References/Scripts/Assets
-          └─────── Skill Instructions
+  Metadata │    │
+           │    └── References/Scripts/Assets
+           └─────── Skill Instructions
 
-           │
-           ▼
-        MCP / Tools
-           │
-           ▼
-  External Systems
+            │
+            ▼
+         MCP / Tools
+            │
+            ▼
+   External Systems
 ```
 
 ### The most important distinction

@@ -15,9 +15,10 @@ A useful Skill also needs a reliable way to be:
 - used by agents programmatically
 - maintained across different environments
 
+The complete lifecycle:
+
 ```mermaid
 flowchart LR
-
     A["Build Skill"] --> B["Package"]
     B --> C["Version"]
     C --> D["Distribute"]
@@ -51,7 +52,6 @@ There are several ways to distribute Skills depending on the environment.
 
 ```mermaid
 flowchart TD
-
     S["Agent Skill"]
 
     S --> A["Personal / User Installation"]
@@ -65,6 +65,8 @@ flowchart TD
     C --> C1["Installable Skill Bundle"]
     D --> D1["Uploaded / Available Skills"]
     E --> E1["Skills API / Agent Configuration"]
+
+    style S fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
 ```
 
 The exact installation mechanism is **platform-specific**. The common element is the Skill package itself: `SKILL.md` plus any supporting resources.
@@ -81,8 +83,8 @@ A Skill can be distributed directly to an individual developer or user.
 payment-gateway-builder/
 ├── SKILL.md
 ├── scripts/
-│   ├── validate.py
-│   └── configure.py
+│   ├── validate.js
+│   └── configure.js
 ├── references/
 │   └── payment-api.md
 └── assets/
@@ -95,7 +97,6 @@ The user can then install or upload the package using whatever mechanism their a
 
 ```mermaid
 sequenceDiagram
-
     participant D as Developer
     participant S as Skill Package
     participant A as Agent
@@ -154,7 +155,7 @@ my-project/
 │       └── api-testing/
 │           ├── SKILL.md
 │           └── scripts/
-│               └── test_api.py
+│               └── test_api.js
 │
 ├── src/
 ├── package.json
@@ -165,7 +166,7 @@ This creates an important development pattern:
 
 > **The repository can contain both the application and the instructions that tell an agent how to work on that application.**
 
-Anthropic's current API/agent documentation also describes repository-based Skills under `.claude/skills`, where each Skill is discovered from its own directory containing `SKILL.md`.
+Repository-based Skills under `.claude/skills`, where each Skill is discovered from its own directory containing `SKILL.md`.
 
 ---
 
@@ -187,7 +188,6 @@ Examples:
 
 ```mermaid
 flowchart TD
-
     ORG["Organization"]
 
     ORG --> S1["Security Skill"]
@@ -204,6 +204,8 @@ flowchart TD
 
     S3 --> T3
     S4 --> T1
+
+    style ORG fill:#e1f5fe,stroke:#01579b,stroke-width:2px
 ```
 
 ### The important distinction:
@@ -233,6 +235,16 @@ Agents working on repository
 ```
 
 For team workflows, repository-based Skills have a major advantage: **the Skill can be version-controlled alongside the codebase.**
+
+### Distribution decision matrix:
+
+| Use Case | Recommended Model | Why |
+|---|---|---|
+| Personal project | Local / Repository | Simple setup, no infrastructure needed |
+| Team collaboration | Repository-based | Version control alongside codebase |
+| Organization-wide | Centralized / Marketplace | Governance, consistent standards |
+| Public sharing | Marketplace / GitHub | Discoverability, community |
+| SaaS application | Skills API / Agent Platform | Programmatic access, embedded agents |
 
 ---
 
@@ -270,6 +282,39 @@ The standard describes:
 - optional references
 - optional assets
 
+### Skill manifest example:
+
+```ts
+interface SkillManifest {
+  name: string
+  description: string
+  version?: string
+  entryPoint: string
+  scripts?: string[]
+  references?: string[]
+  assets?: string[]
+  dependencies?: {
+    mcpServers?: string[]
+    environment?: string[]
+    tools?: string[]
+  }
+}
+
+const paySkillManifest: SkillManifest = {
+  name: 'pay-skill',
+  description: 'Configures payment gateway integrations with validation and compliance rules.',
+  version: '1.0.0',
+  entryPoint: 'SKILL.md',
+  scripts: ['scripts/validate_payment.js'],
+  references: ['references/compliance-rules.md'],
+  assets: ['assets/invoice-template.md'],
+  dependencies: {
+    mcpServers: ['stripe-mcp', 'payflow-mcp'],
+    environment: ['STRIPE_API_KEY', 'PAYFLOW_API_KEY']
+  }
+}
+```
+
 ---
 
 ## 7. Portability
@@ -290,12 +335,13 @@ Other-agent-specific instructions
 
 you can create a common Skill:
 
-```text
-             Agent Skills
-                  │
-           ┌───────┼────────┐
-           ↓       ↓        ↓
-        Agent A  Agent B  Agent C
+```mermaid
+flowchart TB
+    S["Agent Skills Format"]
+    S --> A["Agent A"]
+    S --> B["Agent B"]
+    S --> C["Agent C"]
+    S --> D["Agent D"]
 ```
 
 ### However:
@@ -322,8 +368,7 @@ Therefore, portability of the **format** does not guarantee identical portabilit
 Think about portability in three layers.
 
 ```mermaid
-flowchart TD
-
+flowchart TB
     A["Skill Package"]
 
     A --> B["Portable Layer"]
@@ -339,8 +384,9 @@ flowchart TD
     C --> C3["MCP Servers"]
     C --> C4["APIs"]
     C --> C5["Credentials"]
+    C --> C6["OS / Shell"]
 
-    C --> D["Platform Compatibility"]
+    C --> D["Platform Compatibility Check"]
 ```
 
 ### Example:
@@ -358,6 +404,40 @@ security-scanner
 ```
 
 Therefore the Skill should clearly document those dependencies.
+
+### Portability documentation example:
+
+```ts
+interface PortabilityReport {
+  skillName: string
+  formatPortable: boolean
+  runtimePortable: boolean
+  dependencies: {
+    mcpServers: string[]
+    environmentVariables: string[]
+    osRequirements: string[]
+    runtimeRequirements: string[]
+  }
+  notes: string[]
+}
+
+const portabilityReport: PortabilityReport = {
+  skillName: 'pay-skill',
+  formatPortable: true,
+  runtimePortable: false,
+  dependencies: {
+    mcpServers: ['stripe-mcp'],
+    environmentVariables: ['STRIPE_API_KEY'],
+    osRequirements: ['Node.js 18+'],
+    runtimeRequirements: ['agent runtime with MCP support']
+  },
+  notes: [
+    'SKILL.md instructions are portable across agents.',
+    'scripts/validate_payment.js requires Node.js runtime.',
+    'Requires Stripe MCP server and STRIPE_API_KEY environment variable.'
+  ]
+}
+```
 
 ---
 
@@ -378,23 +458,24 @@ But developers may also want Skills inside:
 ### Architecture:
 
 ```mermaid
-flowchart LR
-
+flowchart TB
     U["User / Event"]
+    APP["Your Application"]
+    AGENT["Agent Runtime"]
+    SKILL["Skill"]
+    TOOLS["Tools / MCP"]
+    EXT["External Systems"]
 
-    U --> APP["Your Application"]
-
-    APP --> AGENT["Agent Runtime"]
-
-    AGENT --> SKILL["Skill"]
-
-    SKILL --> TOOLS["Tools / MCP"]
-
-    TOOLS --> EXT["External Systems"]
+    U --> APP
+    APP --> AGENT
+    AGENT --> SKILL
+    SKILL --> TOOLS
+    TOOLS --> EXT
 
     EXT --> DB["Database"]
     EXT --> API["External API"]
     EXT --> GIT["GitHub"]
+    EXT --> SAAS["SaaS Service"]
 ```
 
 ### The key separation:
@@ -411,6 +492,10 @@ What external capabilities can be accessed?
 Agent Runtime
   ↓
 Who executes the workflow?
+
+Application / API
+  ↓
+How is the agent programmaticallly invoked?
 ```
 
 ---
@@ -437,7 +522,6 @@ This gives Skills a lifecycle similar to other software artifacts:
 
 ```mermaid
 flowchart LR
-
     A["Create"] --> B["Version"]
     B --> C["Publish"]
     C --> D["Attach to Agent"]
@@ -445,6 +529,80 @@ flowchart LR
     E --> F["Evaluate"]
     F --> G["Create New Version"]
     G --> C
+```
+
+### Skills API client (TS/JS pseudo code):
+
+```ts
+interface Skill {
+  id: string
+  name: string
+  description: string
+  version: string
+  status: 'draft' | 'published' | 'archived'
+}
+
+interface SkillVersion {
+  id: string
+  skillId: string
+  versionNumber: string
+  content: string
+  createdAt: string
+}
+
+class SkillsApiClient {
+  private baseUrl: string
+
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl
+  }
+
+  async createSkill(skill: Omit<Skill, 'id'>): Promise<Skill> {
+    const response = await fetch(`${this.baseUrl}/v1/skills`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(skill)
+    })
+    return response.json()
+  }
+
+  async getSkills(): Promise<Skill[]> {
+    const response = await fetch(`${this.baseUrl}/v1/skills`)
+    return response.json()
+  }
+
+  async getSkill(id: string): Promise<Skill> {
+    const response = await fetch(`${this.baseUrl}/v1/skills/${id}`)
+    return response.json()
+  }
+
+  async deleteSkill(id: string): Promise<void> {
+    await fetch(`${this.baseUrl}/v1/skills/${id}`, { method: 'DELETE' })
+  }
+
+  async createVersion(skillId: string, content: string): Promise<SkillVersion> {
+    const response = await fetch(`${this.baseUrl}/v1/skills/${skillId}/versions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content })
+    })
+    return response.json()
+  }
+
+  async listVersions(skillId: string): Promise<SkillVersion[]> {
+    const response = await fetch(`${this.baseUrl}/v1/skills/${skillId}/versions`)
+    return response.json()
+  }
+
+  async attachSkillToAgent(agentId: string, skillId: string, version?: string): Promise<void> {
+    const response = await fetch(`${this.baseUrl}/v1/agents/${agentId}/skills`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ skillId, version: version || 'latest' })
+    })
+    return response.json()
+  }
+}
 ```
 
 ---
@@ -476,16 +634,15 @@ Therefore, production agents should avoid silently receiving breaking changes.
 
 ### Recommended strategy:
 
-```text
-Development
-    ↓
-v1.1.0
-    ↓
-Evaluation
-    ↓
-Staging
-    ↓
-Production
+```mermaid
+flowchart LR
+    DEV["Development"] --> EVAL["Evaluation"]
+    EVAL --> STAGING["Staging"]
+    STAGING --> PROD["Production"]
+
+    DEV -->|v1.1.0| EVAL
+    EVAL -->|v1.2.0| STAGING
+    STAGING -->|v1.3.0| PROD
 ```
 
 For high-risk workflows:
@@ -504,6 +661,31 @@ latest
 
 Anthropic's current API documentation supports attaching Skills with a specific version or `"latest"` in supported agent configurations.
 
+### Version pinning (TS/JS pseudo code):
+
+```ts
+interface AgentSkillConfig {
+  agentId: string
+  skillId: string
+  pinnedVersion?: string // e.g., '1.4.2'
+  useLatest: boolean // false means pinned version is required
+}
+
+function resolveSkillVersion(config: AgentSkillConfig): string {
+  if (config.useLatest) {
+    return 'latest'
+  }
+
+  return config.pinnedVersion || 'latest'
+}
+
+function isBreakingChange(oldVersion: string, newVersion: string): boolean {
+  const oldMajor = parseInt(oldVersion.split('.')[0])
+  const newMajor = parseInt(newVersion.split('.')[0])
+  return newMajor > oldMajor
+}
+```
+
 ---
 
 ## 12. Skills + MCP + API
@@ -511,23 +693,27 @@ Anthropic's current API documentation supports attaching Skills with a specific 
 These three concepts should not be confused.
 
 ```mermaid
-flowchart TD
-
+flowchart TB
     USER["User"]
+    AGENT["AI Agent"]
+    SKILL["Skill"]
+    MCP["MCP / Tools"]
+    REF["References"]
+    SCRIPT["Scripts"]
 
-    USER --> AGENT["AI Agent"]
-
-    AGENT --> SKILL["Skill"]
-
-    SKILL --> MCP["MCP / Tools"]
+    USER --> AGENT
+    AGENT --> SKILL
+    SKILL --> MCP
+    SKILL --> REF
+    SKILL --> SCRIPT
 
     MCP --> GITHUB["GitHub"]
     MCP --> DB["Database"]
     MCP --> STRIPE["Payment API"]
     MCP --> SLACK["Slack"]
 
-    SKILL --> REF["References"]
-    SKILL --> SCRIPT["Scripts"]
+    style SKILL fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style MCP fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
 ```
 
 ### Skill
@@ -554,6 +740,15 @@ Provides:
 
 > **The actual data or operation.**
 
+### Side-by-side comparison:
+
+| Component | Question Answered | Example |
+|---|---|---|
+| Skill | How should I do this? | "Create an enterprise subscription." |
+| MCP | What can I access? | `payment.create_subscription` |
+| API | How do I control the agent? | `POST /v1/skills` |
+| External System | What is the actual operation? | Stripe Payment API |
+
 ---
 
 ## 13. Example: Payment Gateway Skill
@@ -564,7 +759,7 @@ Suppose we create:
 payment-gateway-builder/
 ├── SKILL.md
 ├── scripts/
-│   └── validate_config.py
+│   └── validate_config.js
 └── references/
     └── payment-api.md
 ```
@@ -613,6 +808,25 @@ Payment API:
 "Actually create the subscription."
 ```
 
+### Mermaid visualization:
+
+```mermaid
+flowchart TB
+    USER["User Request"]
+    SKILL["Skill: Payment Gateway Builder"]
+    MCP["MCP: Payment Tools"]
+    API["Payment API / Stripe"]
+
+    USER --> SKILL
+    SKILL --> MCP
+    MCP --> API
+
+    SKILL --> STEP1["Validate input"]
+    SKILL --> STEP2["Configure provider"]
+    SKILL --> STEP3["Run validation"]
+    SKILL --> STEP4["Report changes"]
+```
+
 ---
 
 ## 14. GitHub Distribution
@@ -640,7 +854,7 @@ payflow-skill/
 │   └── payflow-integration/
 │       ├── SKILL.md
 │       ├── scripts/
-│       │   └── validate.py
+│       │   └── validate.js
 │       ├── references/
 │       │   └── api-schema.md
 │       └── assets/
@@ -740,6 +954,8 @@ Configure PayFlow integrations through a reusable
 agent workflow with validation and API guidance.
 ```
 
+The second approach explains what it does for the user, not just what it is internally.
+
 ---
 
 ## 16. Positioning: Sell the Outcome, Not the Folder
@@ -752,7 +968,7 @@ They care about the result.
 
 ### Implementation-focused:
 
-> "This Skill contains Markdown instructions and Python scripts."
+> "This Skill contains Markdown instructions and JavaScript scripts."
 
 This explains **what it is internally**.
 
@@ -808,7 +1024,6 @@ Execution Interface
 
 ```mermaid
 flowchart TD
-
     U["User Request"]
 
     U --> D["Skill Description"]
@@ -822,6 +1037,40 @@ flowchart TD
     S --> R["Load References / Scripts"]
 
     R --> E["Execute Workflow"]
+```
+
+### Discovery flow (TS/JS pseudo code):
+
+```ts
+interface SkillDiscovery {
+  skills: Skill[]
+}
+
+interface Skill {
+  id: string
+  name: string
+  description: string
+  relevantFor: string[] // intent keywords
+}
+
+function discoverSkills(
+  userRequest: string,
+  availableSkills: SkillDiscovery
+): Skill[] {
+  const relevant: Skill[] = []
+
+  for (const skill of availableSkills.skills) {
+    const descriptionMatches = skill.relevantFor.some((keyword) =>
+      userRequest.toLowerCase().includes(keyword.toLowerCase())
+    )
+
+    if (descriptionMatches) {
+      relevant.push(skill)
+    }
+  }
+
+  return relevant.sort((a, b) => b.description.length - a.description.length)
+}
 ```
 
 ---
@@ -853,6 +1102,14 @@ References / Scripts / Assets
 
 This allows many Skills to coexist without requiring every detailed instruction to be loaded at once. The Agent Skills documentation explicitly describes this three-stage discovery → activation → execution model.
 
+### Progressive disclosure levels:
+
+| Level | Content | When Loaded |
+|-------|---------|-------------|
+| 1 | Metadata (name, description) | Always — for discovery |
+| 2 | SKILL.md instructions | When Skill is activated |
+| 3 | References, scripts, assets | When the workflow needs them |
+
 ---
 
 ## 19. Security Considerations
@@ -875,17 +1132,12 @@ This is particularly important when a Skill contains scripts or interacts with t
 
 ```mermaid
 flowchart TD
-
     SKILL["Third-Party Skill"]
 
     SKILL --> REVIEW["Review Source"]
-
     REVIEW --> PERM["Check Permissions"]
-
     PERM --> DEP["Check Dependencies"]
-
     DEP --> TEST["Run in Safe Environment"]
-
     TEST --> PROD["Production"]
 ```
 
@@ -895,7 +1147,7 @@ flowchart TD
 
 If the agent has tools such as shell, filesystem, web access, or APIs, the Skill's instructions can influence real actions.
 
-Anthropic's current repository documentation similarly warns that repository Skills are part of the agent's trust boundary and should be audited before being used with powerful tools.
+Repository Skills are part of the agent's trust boundary and should be audited before being used with powerful tools.
 
 ---
 
@@ -931,7 +1183,6 @@ api_key = os.environ["PAYFLOW_API_KEY"]
 
 ```mermaid
 flowchart LR
-
     SKILL["Skill"]
 
     SKILL --> ENV["Environment / Secret Manager"]
@@ -944,6 +1195,34 @@ flowchart LR
 ```
 
 The Skill should describe **how to use a credential**, not contain the credential itself.
+
+### Credential resolution (TS/JS pseudo code):
+
+```ts
+interface CredentialSource {
+  name: string
+  type: 'env' | 'secret-manager' | 'runtime-auth'
+  value?: string
+}
+
+function resolveCredential(source: CredentialSource): string | null {
+  switch (source.type) {
+    case 'env':
+      return process.env[source.name]
+    case 'secret-manager':
+      return fetchSecret(source.name)
+    case 'runtime-auth':
+      return getRuntimeCredential(source.name)
+    default:
+      return null
+  }
+}
+
+function validateNoHardcodedSecrets(skillContent: string): boolean {
+  const secretPattern = /(sk_|api[_-]?key|secret|password)\s*=\s*["'][^"']+["']/i
+  return !secretPattern.test(skillContent)
+}
+```
 
 ---
 
@@ -1001,23 +1280,35 @@ Does the correct version load?
 Does it behave safely with malicious input?
 ```
 
+### Distribution testing matrix:
+
+| Test | Expected | Tool / Method |
+|------|----------|---------------|
+| Installation | Skill installs without errors | CLI / Platform UI |
+| Discovery | Agent finds Skill for relevant queries | Trigger test suite |
+| Non-triggering | Skill stays inactive for unrelated queries | Negative test suite |
+| Execution | Workflow completes successfully | Functional tests |
+| Dependencies | All required tools available | Environment check |
+| Versioning | Correct version loads | Version pinning check |
+| Security | No secrets in files, safe with bad input | Security scan |
+
 ---
 
 ## 22. Distribution Quality Checklist
 
-| Area          | Question                                       |
-| ------------- | ---------------------------------------------- |
-| Packaging     | Is the Skill self-contained?                   |
-| Metadata      | Is `name` clear?                               |
-| Discovery     | Is `description` specific?                     |
-| Installation  | Can users install it easily?                   |
-| Dependencies  | Are requirements documented?                   |
-| Versioning    | Are releases versioned?                        |
-| Testing       | Are trigger/workflow tests included?           |
-| Security      | Are secrets excluded?                          |
-| Documentation | Is README useful to humans?                    |
-| Portability   | Are platform-specific requirements documented? |
-| Maintenance   | Is there a clear update strategy?              |
+| Area | Question |
+|------|----------|
+| Packaging | Is the Skill self-contained? |
+| Metadata | Is `name` clear? |
+| Discovery | Is `description` specific? |
+| Installation | Can users install it easily? |
+| Dependencies | Are requirements documented? |
+| Versioning | Are releases versioned? |
+| Testing | Are trigger/workflow tests included? |
+| Security | Are secrets excluded? |
+| Documentation | Is README useful to humans? |
+| Portability | Are platform-specific requirements documented? |
+| Maintenance | Is there a clear update strategy? |
 
 ---
 
@@ -1027,7 +1318,6 @@ A mature Skill can follow a software-style release process:
 
 ```mermaid
 flowchart LR
-
     A["Develop"] --> B["Local Test"]
 
     B --> C["Trigger Tests"]
@@ -1039,7 +1329,6 @@ flowchart LR
     F --> G["Publish"]
 
     G --> H["Staging"]
-
     H --> I["Production"]
 
     I --> J["Monitor"]
@@ -1061,7 +1350,6 @@ Putting everything together:
 
 ```mermaid
 flowchart TB
-
     DEV["Skill Developer"]
 
     DEV --> GIT["Git Repository"]
@@ -1119,17 +1407,17 @@ Update
 
 ## 25. Skill vs MCP vs API vs Repository
 
-| Component         | Main Responsibility                              |
-| ----------------- | ------------------------------------------------ |
-| **Skill**         | Instructions, workflow, domain knowledge         |
-| **SKILL.md**      | Skill entry point and instructions               |
-| **Scripts**       | Deterministic executable logic                   |
-| **References**    | Detailed supporting knowledge                    |
-| **MCP**           | Standardized connection to tools/resources       |
-| **API**           | Programmatic interface to an AI platform/service |
-| **GitHub**        | Versioning and distribution mechanism            |
-| **Agent Runtime** | Executes the agent workflow                      |
-| **External API**  | Performs the actual business operation           |
+| Component | Main Responsibility |
+|-----------|---------------------|
+| **Skill** | Instructions, workflow, domain knowledge |
+| **SKILL.md** | Skill entry point and instructions |
+| **Scripts** | Deterministic executable logic |
+| **References** | Detailed supporting knowledge |
+| **MCP** | Standardized connection to tools/resources |
+| **API** | Programmatic interface to an AI platform/service |
+| **GitHub** | Versioning and distribution mechanism |
+| **Agent Runtime** | Executes the agent workflow |
+| **External API** | Performs the actual business operation |
 
 ### One-line mental model:
 
@@ -1169,7 +1457,6 @@ A user asks:
 
 ```mermaid
 sequenceDiagram
-
     participant U as User
     participant A as Agent
     participant S as React Native Skill
@@ -1221,23 +1508,13 @@ That is progressive disclosure applied to a real development workflow.
 
 ### Q1. How do you distribute an Agent Skill?
 
-**Answer:**
-
 A Skill is distributed as a structured directory containing `SKILL.md` and optional supporting resources such as scripts, references, and assets. Depending on the runtime, it can be installed locally, committed to a project repository, distributed through a plugin/marketplace mechanism, or managed through an API.
-
----
 
 ### Q2. What is the Agent Skills open standard?
 
-**Answer:**
-
 Agent Skills is an open format for packaging reusable agent instructions and resources. Its core structure is a Skill directory containing `SKILL.md`, with optional scripts, references, and assets. It was originally developed by Anthropic and is intended to support reuse across compatible agent implementations.
 
----
-
 ### Q3. Does an open Skill automatically work identically on every AI platform?
-
-**Answer:**
 
 No.
 
@@ -1252,11 +1529,7 @@ The Skill format can be portable, but the runtime may have different:
 
 Therefore, portability of the **format** does not guarantee identical portability of the **behavior**.
 
----
-
 ### Q4. Why use GitHub for Skills?
-
-**Answer:**
 
 GitHub provides:
 
@@ -1270,19 +1543,11 @@ GitHub provides:
 
 It allows Skills to be maintained similarly to software projects.
 
----
-
 ### Q5. Why should credentials not be stored inside a Skill?
-
-**Answer:**
 
 Because a Skill may be shared, committed to source control, or installed by other users. Credentials should instead be provided through secure environment variables, secret managers, or the runtime's authentication mechanism.
 
----
-
 ### Q6. What is the difference between Skill and MCP?
-
-**Answer:**
 
 A Skill defines **how a task should be performed**.
 
@@ -1295,19 +1560,11 @@ Skill = Procedure
 MCP = Connectivity
 ```
 
----
-
 ### Q7. Why is Skill versioning important?
-
-**Answer:**
 
 Because changing a Skill can change agent behavior. Versioning allows developers to test, release, roll back, and pin known-good versions rather than unexpectedly changing production agent behavior.
 
----
-
 ### Q8. What should a good Skill README contain?
-
-**Answer:**
 
 At minimum:
 
@@ -1421,7 +1678,7 @@ Chapter 5
 HOW DO WE ARCHITECT & TROUBLESHOOT THEM?
 ```
 
-**Key correction:** Avoid memorizing the original chapter's exact claim that every API Skill invocation is simply `container.skills` plus a Code Execution beta container. Anthropic's current Skill/agent documentation has evolved and now documents Skills API management and agent-level Skill attachment as well.
+**Key correction:** Avoid memorizing any claim that every API Skill invocation is simply `container.skills` plus a Code Execution beta container. Anthropic's current Skill/agent documentation now documents Skills API management and agent-level Skill attachment as well.
 
 For your MCP/agent-learning path, the most important mental model from this chapter is:
 
