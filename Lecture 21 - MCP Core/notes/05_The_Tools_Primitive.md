@@ -1,7 +1,7 @@
 # Chapter 05: The Tools Primitive — Executable Capability
 
 > **Chapter Goal:** Tools are where the two layers of Chapter 03 converge, and where the lecture spends the most time. This chapter covers the full life of a tool: how it is **defined**, how it is **discovered**, how it is **invoked**, what a **result** looks like, how **errors** are reported, how to write names/descriptions/schemas a model can actually use, and which **security duties** fall on the server versus the client.
-
+>
 > At the end of this chapter you should be able to answer: *given a capability, write a tool definition that a model will select correctly, argue with a schema, and fail safely.*
 
 ---
@@ -31,7 +31,7 @@ flowchart TD
 ```
 
 | Primitive | Intent | Who typically drives it | Typical protocol calls |
-|---|----------|---|---|
+|---|---|---|---|
 | **Tools** | *Do* something | The **model** | `tools/list`, `tools/call` |
 | **Resources** | *Know* something | The **application** | `resources/list`, `resources/read` |
 | **Prompts** | Reuse an instruction | The **user** | `prompts/list`, `prompts/get` |
@@ -107,7 +107,7 @@ The lecture's example, extended with the fields the specification allows:
 ```
 
 > **This tells the client and model:**
-> 
+>
 > ```text
 > title   -> required string
 > dueDate -> optional string
@@ -117,7 +117,7 @@ The lecture's example, extended with the fields the specification allows:
 |---|---|---|---|
 | `name` | **Yes** | Unique identifier | Machine-safe, stable, verb-first |
 | `title` | No | Human-readable display name | Shown in consent UIs, not chosen by the model |
-| `description` | Recommended | *When and why* to use this tool | **The model's only guidance** |
+| `description` | Recommended | *When and why* to use this tool | The single highest-leverage field |
 | `inputSchema` | **Yes** | JSON Schema for arguments | The contract the model must satisfy |
 | `outputSchema` | No | JSON Schema for the result *(2025-06-18+)* | Enables strict validation of results |
 | `annotations` | No | Hints: read-only, destructive, idempotent, open-world | Drives client consent behaviour |
@@ -144,124 +144,124 @@ flowchart TD
 ## 5.4 Tool Discovery: `tools/list`
 
 > Suppose the AI application connects to a Task MCP Server.
-> 
+>
 > The MCP Client asks: **"What tools do you have?"**
-> 
+>
 > The server responds:
-> 
-> ```text
-> createTask
-> listTasks
-> completeTask
-> ```
-> 
-> > **This process is called Tool Discovery.**
-> > **The MCP operation for discovering tools is: `tools/list`.**
-> 
-> > **The server does not return only the names.** It can return definitions such as:
-> 
-> ```json
-> {
->   "name": "createTask",
->   "description": "Creates a new task",
->   "inputSchema": {
->     "type": "object",
->     "properties": {
->       "title": { "type": "string" }
->     },
->     "required": ["title"]
->   }
-> }
-> ```
-> 
-> > **The client now knows:**
-> > 
-> > ```text
-> NAME
-> DESCRIPTION
-> INPUT SCHEMA
-> ```
-> 
-> ```mermaid
-> flowchart LR
->     participant C as MCP Client
->     participant S as MCP Server
->     C->>S: tools/list
->     S-->>C: tools [ name, description, inputSchema ]
->     Note over C: definitions can now be given to the LLM
-> ```
-> 
-> > **These definitions can then be made available to the LLM.**
-> 
-> ### The full `tools/list` response shape
-> 
-> A real response contains an **array** of tools, and may be **paginated**:
-> 
-> ```json
-> {
->   "tools": [
->     {
->       "name": "createTask",
->       "description": "Creates a new task",
->       "inputSchema": {
->         "type": "object",
->         "properties": { "title": { "type": "string" } },
->         "required": ["title"]
->       }
->     },
->     {
->       "name": "listTasks",
->       "description": "Returns all tasks",
->       "inputSchema": { "type": "object" }
->     },
->     {
->       "name": "completeTask",
->       "description": "Marks a task as completed",
->       "inputSchema": {
->         "type": "object",
->         "properties": { "id": { "type": "integer" } },
->         "required": ["id"]
->       }
->     }
->   ],
->   "nextCursor": "optional-cursor-value"
-> }
-> ```
-> 
-> | Element | Meaning | Why it matters |
-> |---|---|---|
-> | `tools[]` | The catalogue | One entry per callable capability |
-> | `name` | Identifier the model will use | Must be unique and stable |
-> | `description` | Natural-language purpose | **The model's only guidance** |
-> | `inputSchema` | JSON Schema for arguments | The contract; the server re-validates against it |
-> | `nextCursor` | Pagination token | Large catalogues must be paged |
-> 
-> > **The client now understands the available tools.**
-> 
-> ### `listChanged`: discovery is not a one-time event *(beyond the lecture)*
-> 
-> A server that supports tools declares the capability:
-> 
-> ```json
-> { "capabilities": { "tools": { "listChanged": true } } }
-> ```
-> 
-> and may then emit, when its catalogue changes:
-> 
-> ```text
-> notifications/tools/list_changed
-> ```
-> 
-> ```mermaid
-> sequenceDiagram
->     participant S as Server
->     participant C as Client
->     S-->>C: notifications/tools/list_changed
->     C->>S: tools/list (refresh)
->     S-->>C: updated catalogue
-> ```
-> 
-> This is what makes **dynamic tool discovery** (Chapter 07, §7.5) real: a server can add a tool and a well-behaved client will pick it up without a restart.
+
+```text
+createTask
+listTasks
+completeTask
+```
+
+> **This process is called Tool Discovery.**
+> **The MCP operation for discovering tools is: `tools/list`.**
+
+> **The server does not return only the names.** It can return definitions such as:
+
+```json
+{
+  "name": "createTask",
+  "description": "Creates a new task",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "title": { "type": "string" }
+    },
+    "required": ["title"]
+  }
+}
+```
+
+> **The client now knows:**
+
+```text
+NAME
+DESCRIPTION
+INPUT SCHEMA
+```
+
+```mermaid
+sequenceDiagram
+    participant C as MCP Client
+    participant S as MCP Server
+    C->>S: tools/list
+    S-->>C: tools [ name, description, inputSchema ]
+    Note over C: definitions can now be given to the LLM
+```
+
+> **These definitions can then be made available to the LLM.**
+
+### The full `tools/list` response shape
+
+A real response contains an **array** of tools, and may be **paginated**:
+
+```json
+{
+  "tools": [
+    {
+      "name": "createTask",
+      "description": "Creates a new task",
+      "inputSchema": {
+        "type": "object",
+        "properties": { "title": { "type": "string" } },
+        "required": ["title"]
+      }
+    },
+    {
+      "name": "listTasks",
+      "description": "Returns all tasks",
+      "inputSchema": { "type": "object" }
+    },
+    {
+      "name": "completeTask",
+      "description": "Marks a task as completed",
+      "inputSchema": {
+        "type": "object",
+        "properties": { "id": { "type": "integer" } },
+        "required": ["id"]
+      }
+    }
+  ],
+  "nextCursor": "optional-cursor-value"
+}
+```
+
+| Element | Meaning | Why it matters |
+|---|---|---|
+| `tools[]` | The catalogue | One entry per callable capability |
+| `name` | Identifier the model will use | Must be unique and stable |
+| `description` | Natural-language purpose | **The model's only guidance** |
+| `inputSchema` | JSON Schema for arguments | The contract; the server re-validates against it |
+| `nextCursor` | Pagination token | Large catalogues must be paged |
+
+> **The client now understands the available tools.**
+
+### `listChanged`: discovery is not a one-time event *(beyond the lecture)*
+
+A server that supports tools declares the capability:
+
+```json
+{ "capabilities": { "tools": { "listChanged": true } } }
+```
+
+and may then emit, when its catalogue changes:
+
+```text
+notifications/tools/list_changed
+```
+
+```mermaid
+sequenceDiagram
+    participant S as Server
+    participant C as Client
+    S-->>C: notifications/tools/list_changed
+    C->>S: tools/list (refresh)
+    S-->>C: updated catalogue
+```
+
+This is what makes **dynamic tool discovery** (Chapter 07, §7.5) real: a server can add a tool and a well-behaved client will pick it up without a restart.
 
 ---
 
@@ -306,55 +306,55 @@ Conceptually:
 ```
 
 > **The MCP Server executes the underlying business logic and sends the result back.**
-> 
-> > **Example:**
-> > 
-> > ```json
-> > {
-> >   "id": 42,
-> >   "title": "Record MCP Video",
-> >   "status": "PENDING"
-> > }
-> > ```
-> 
-> The result travels back:
-> 
-> ```text
-> MCP Server
->     |
-> MCP Client
->     |
-> AI Application
->     |
-> LLM
-> ```
-> 
-> > **The LLM can then generate:**
-> > 
-> > *"I've added 'Record MCP Video' to your tasks."*
-> 
-> ### The `tools/call` contract in detail
-> 
+>
+> Example:
+>
 > ```json
 > {
->   "jsonrpc": "2.0",
->   "id": 2,
->   "method": "tools/call",
->   "params": {
->     "name": "createTask",
->     "arguments": { "title": "Record MCP Video" }
->   }
+>   "id": 42,
+>   "title": "Record MCP Video",
+>   "status": "PENDING"
 > }
 > ```
-> 
-> | Field | Rule |
-> |---|---|
-> | `name` | Must match a name returned by `tools/list` |
-> | `arguments` | Must satisfy that tool's `inputSchema` |
-> | `id` | Correlates request and response |
-> | Result | `content[]` (always) and optionally `structuredContent` |
-> 
-> > **The server must validate `arguments` against the schema itself.** The schema is a contract, not a guarantee — the model can produce anything, and a hostile client can produce anything deliberately.
+
+The result travels back:
+
+```text
+MCP Server
+    |
+MCP Client
+    |
+AI Application
+    |
+LLM
+```
+
+> **The LLM can then generate:**
+>
+> *"I've added 'Record MCP Video' to your tasks."*
+
+### The `tools/call` contract in detail
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/call",
+  "params": {
+    "name": "createTask",
+    "arguments": { "title": "Record MCP Video" }
+  }
+}
+```
+
+| Field | Rule |
+|---|---|
+| `name` | Must match a name returned by `tools/list` |
+| `arguments` | Must satisfy that tool's `inputSchema` |
+| `id` | Correlates request and response |
+| Result | `content[]` (always) and optionally `structuredContent` |
+
+> **The server must validate `arguments` against the schema itself.** The schema is a contract, not a guarantee — the model can produce anything, and a hostile client can produce anything deliberately.
 
 ---
 
@@ -724,7 +724,7 @@ flowchart LR
 ```
 
 | Duty | Owner | Why it is non-negotiable |
-|---|------|----|
+|---|---|---|
 | Validate all tool inputs | **Server** | The model's arguments are untrusted user input in disguise |
 | Implement access controls | **Server** | The server is the last component that can refuse |
 | Rate limit invocations | **Server** | A looping agent can exhaust a vendor quota in seconds |
@@ -751,7 +751,7 @@ flowchart TD
 ```
 
 | Path | Mitigation | Owner |
-|---|-----------|----|
+|---|---|---|
 | Arguments **out** — tool calls used to exfiltrate | Show arguments to the user; restrict which tools reach the model; constrain outbound destinations | Client |
 | Content **in** — tool results carrying instructions | Sanitise and clearly delimit tool output; never treat tool text as trusted instruction; strip control sequences | Server + client |
 
@@ -762,7 +762,7 @@ flowchart TD
 ## 5.12 Common Mistakes
 
 | Mistake | Why it hurts | Correct habit |
-|---|--------------|----|
+|---|---|---|
 | A one-line description | The model cannot tell when to use the tool | State *what*, *when*, and *when not* |
 | Two sibling tools with no disambiguation clause | The model picks the wrong one and blames nothing | Describe the difference explicitly |
 | Free-string `operator` / `status` / `action` fields | Infinite vocabulary; near-miss values fail validation | Use `enum` |
@@ -796,6 +796,296 @@ flowchart TD
 
 ---
 
+## 5.14 Underlying Protocol: JSON-RPC 2.0 *(beyond the lecture)*
+
+MCP itself is an application-layer protocol whose messages are carried in **JSON-RPC 2.0** envelopes. Every `tools/list`, `tools/call`, `resources/read`, and notification is one JSON-RPC message.
+
+```mermaid
+flowchart TB
+    subgraph MCP["MCP protocol messages"]
+        TL["tools/list"]
+        TC["tools/call"]
+        RL["resources/list"]
+        PL["prompts/list"]
+        NT["notifications/*"]
+    end
+    MCP --> JR["JSON-RPC 2.0 envelope"]
+    JR --> J1["jsonrpc: \"2.0\""]
+    JR --> J2["id"]
+    JR --> J3["method"]
+    JR --> J4["params"]
+    JR --> J5["result OR error"]
+
+    style JR fill:#89b4fa,color:#1e1e2e
+    style J1 fill:#f9e2af,color:#1e1e2e
+    style J5 fill:#f38ba8,color:#1e1e2e
+```
+
+### Request → Response shapes
+
+| Direction | `id`? | Notification? | Example |
+|---|---|---|---|
+| Client → Server request | Yes | No | `{"jsonrpc":"2.0","id":1,"method":"tools/list"}` |
+| Server → Client response | Yes | — | `{"jsonrpc":"2.0","id":1,"result":{…}}` |
+| Server → Client error | Yes | — | `{"jsonrpc":"2.0","id":1,"error":{"code":-32602,"message":"…"}}` |
+| Server → Client notification | No | Yes | `{"jsonrpc":"2.0","method":"notifications/tools/list_changed"}` |
+
+Example JSON-RPC error for an unknown tool:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "error": { "code": -32602, "message": "Unknown tool: invalid_tool_name" }
+}
+```
+
+> **JSON-RPC is the envelope; MCP is the letter.** The transport layer (stdio, Streamable HTTP — Chapter 04) moves the envelope without caring what is inside it.
+
+---
+
+## 5.15 Transports: How MCP Messages Travel *(beyond the lecture)*
+
+The protocol is about *what* is communicated; the transport is about *how*. Two transports matter:
+
+| Transport | Primary use | How messages move | When to choose |
+|---|---|---|---|
+| **stdio** | Local servers | Client spawns the server as a subprocess; messages over stdin/stdout | Local files, CLI tools, desktop apps, development |
+| **Streamable HTTP** | Remote servers | JSON-RPC messages over HTTP(S) POST; optional GET/SSE streaming | Cloud, SaaS, shared enterprise services |
+
+### stdio — local process communication
+
+```mermaid
+flowchart LR
+    H["Host / MCP Client"]
+
+    I["stdin<br/>JSON-RPC Requests"]
+
+    S["MCP Server<br/>Child Process"]
+
+    O["stdout<br/>JSON-RPC Responses"]
+
+    E["stderr<br/>Logs / Debugging"]
+
+    H -->|Write| I
+    I --> S
+
+    S -->|Write| O
+    O --> H
+
+    S -->|Logs| E
+
+    style H fill:#89b4fa,color:#1e1e2e
+    style S fill:#f9e2af,color:#1e1e2e
+```
+
+Lifecycle:
+
+```mermaid
+sequenceDiagram
+    participant H as Host / MCP Client
+    participant S as MCP Server Process
+
+    H->>S: Spawn MCP Server
+    H->>S: JSON-RPC request via stdin
+    S->>H: JSON-RPC response via stdout
+    S-->>H: Logs via stderr
+    H->>S: Additional JSON-RPC requests
+    S->>H: Additional responses
+    H->>S: Stop / terminate process
+    S-->>H: Process exits
+```
+
+> **Rule:** stdout carries protocol messages only. Arbitrary logs go to stderr, otherwise they corrupt JSON-RPC parsing.
+
+### Streamable HTTP — remote network communication
+
+```mermaid
+sequenceDiagram
+    participant C as MCP Client
+    participant S as Remote MCP Server
+
+    C->>S: HTTP(S) POST with JSON-RPC body
+    S-->>C: HTTP response with JSON-RPC result
+    C->>S: Another MCP request
+    S-->>C: Response / streamed updates
+```
+
+```mermaid
+flowchart TB
+    A["AI Application"]
+    B["MCP Client"]
+    C["HTTPS"]
+    D["Reverse Proxy / Load Balancer"]
+    E["Remote MCP Server"]
+    F["External Services"]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+
+    style B fill:#94e2d5,color:#1e1e2e
+    style E fill:#f9e2af,color:#1e1e2e
+```
+
+### Legacy note: HTTP + SSE vs Streamable HTTP
+
+Older tutorials may show `HTTP + SSE` with endpoints `/sse` and `/message`. Modern MCP uses **Streamable HTTP** — a single endpoint supporting POST plus optional streaming. If you see SSE-era patterns, treat them as legacy, not current.
+
+### Choosing a transport
+
+| Consideration | stdio | Streamable HTTP |
+|---|---|---|
+| Server location | Same machine | Anywhere / cloud |
+| Who starts the server | The client (subprocess) | Independently |
+| Multiple clients per server | No | Yes |
+| Authentication | Local OS / process controls | OAuth 2.1 resource server |
+| Best for | Local dev, desktop tools | Shared, hosted, networked capability |
+
+> Start with stdio locally; move to Streamable HTTP when you must share or host the server.
+
+---
+
+## 5.16 Tool Overload, Tool Context Poisoning, and the MCP Gateway *(beyond the lecture)*
+
+When many MCP servers are connected, the catalogue can grow to hundreds of tools. Presenting all of them to the model at once creates three distinct problems.
+
+### Tool overload
+
+Enterprise agents can easily expose **250+ tools** across GitHub, Stripe, Jira, Slack, Salesforce, and others:
+
+```mermaid
+flowchart TB
+    A["Enterprise AI Agent"]
+
+    A --> G["GitHub MCP<br/>25 tools"]
+    A --> S["Stripe MCP<br/>40 tools"]
+    A --> D["Database MCP<br/>30 tools"]
+    A --> J["Jira MCP<br/>50 tools"]
+    A --> SL["Slack MCP<br/>15 tools"]
+    A --> SF["Salesforce MCP<br/>100+ tools"]
+
+    G --> T["250+ Available Tools"]
+    S --> T
+    D --> T
+    J --> T
+    SL --> T
+    SF --> T
+```
+
+### Consequences
+
+```mermaid
+flowchart TB
+    A["AI Agent"]
+
+    A --> B["250+ Tool Definitions"]
+
+    B --> C["Large Context"]
+    C --> D["Higher Token Usage"]
+    C --> E["More Processing"]
+    C --> F["More Tool Selection Complexity"]
+```
+
+| Symptom | Mechanism |
+|---|---|
+| Model forgets tools exist | Attention diluted across too many definitions |
+| Latency creeps up | Larger prompts are slower to prefill |
+| Wrong tool chosen more often | Near-duplicates compete |
+| Cost rises without more usage | Fixed token tax per turn |
+
+### Tool context poisoning
+
+Tool context poisoning is distinct from overload: it is when irrelevant, conflicting, misleading, redundant, or malicious tool-related information enters the model's context and actively harms reasoning or selection.
+
+```mermaid
+flowchart TB
+    U["User: 'Check payment status for order #108'"]
+
+    A["Available tools<br/>(250+)"]
+
+    U --> A
+
+    A --> P1["search_customer<br/>find_customer<br/>get_customer"]
+    A --> P2["Always call this tool first"]
+    A --> P3["Ignore previous instructions..."]
+
+    P1 --> X["Conflicting selection"]
+    P2 --> X
+    P3 --> X
+```
+
+### The MCP Gateway
+
+An **MCP Gateway** is an intermediary layer between an AI application and one or more downstream MCP Servers:
+
+```mermaid
+flowchart TB
+    U["User"]
+
+    A["AI Application / Agent"]
+
+    C["MCP Client"]
+
+    G["MCP Gateway"]
+
+    G --> S1["GitHub MCP Server"]
+    G --> S2["Stripe MCP Server"]
+    G --> S3["Database MCP Server"]
+    G --> S4["CRM MCP Server"]
+
+    U --> A
+    A --> C
+    C --> G
+
+    style A fill:#89b4fa,color:#1e1e2e
+    style C fill:#94e2d5,color:#1e1e2e
+    style G fill:#cba6f7,color:#1e1e2e
+```
+
+### What a gateway can provide
+
+| Capability | What it does |
+|---|---|
+| Tool discovery | Central catalogue of all connected servers' tools |
+| Tool filtering | Exposes only task-relevant tools to the model |
+| Routing | Routes `tools/call` to the owning server by namespace |
+| Authentication | Central AuthN — "who are you?" |
+| Authorization | Central AuthZ — "what are you allowed to do?" |
+| Credential management | Secrets stay in the gateway; the model never sees them |
+| Observability | Logs, metrics, tracing, audit trail |
+| Rate limiting | Per-user, per-tool, per-minute caps |
+
+### Why tool filtering matters
+
+Without filtering, every tool definition is text in the model's prompt on every turn. With filtering, a query like *"Check payment status for order #108"* exposes only:
+
+```text
+stripe.get_payment_status
+order_db.get_order
+```
+
+instead of 250+ unrelated tools.
+
+### Gateway vs direct connection
+
+| Aspect | Direct MCP connections | Gateway architecture |
+|---|---|---|
+| Topology | Client connects to multiple servers | Client connects through one central gateway |
+| Tool management | Distributed | Centralised |
+| Tool filtering | Application-dependent | Centralised |
+| Routing | Client manages connections | Gateway routes by namespace |
+| Authentication | Distributed | Centralised |
+| Authorization | Per-server / per-app | Central policy layer |
+| Observability | Distributed | Centralised |
+| Complexity | Simpler initially | More infrastructure |
+
+> **Do not assume "more tools = more powerful agent."** More tools means more context, more selection complexity, and potentially worse tool selection. A gateway keeps many capabilities available while exposing only the relevant subset to the model for each task.
+
+---
+
 ## Where This Goes Next
 
 - **[Chapter 06](./06_Resources_and_Prompts.md)** — the other two primitives, and the control model.
@@ -805,4 +1095,4 @@ flowchart TD
 
 ---
 
-**Back to:** [Lecture 14 — Chapter Index](./README.md) · [Complete Consolidated Notes](./Lecture_14_Complete_Notes.md)
+**Back to:** [Lecture 21 — Chapter Index](./README.md) · [Complete Consolidated Notes](./Lecture_21_Complete_Notes.md)

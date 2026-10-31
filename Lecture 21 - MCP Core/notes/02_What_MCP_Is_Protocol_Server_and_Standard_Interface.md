@@ -131,11 +131,12 @@ ChatClient
 
 It could simply contain normal business logic:
 
-```java
-public Task createTask(String title) {
-    Task task = new Task(title);
-    tasks.add(task);
-    return task;
+```ts
+// pseudo-code — normal, deterministic business logic
+function createTask(title: string): Task {
+  const task = new Task(title);
+  tasks.add(task);
+  return task;
 }
 ```
 

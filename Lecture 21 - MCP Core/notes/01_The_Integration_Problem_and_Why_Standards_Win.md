@@ -254,13 +254,40 @@ And the shape matters more than the number. In the N × M world, **every new app
 
 Before reaching for a standard, the correct engineering instinct is an **adapter** (or *anti-corruption layer*): one module per external system that translates your domain objects into that system's contract.
 
-```pseudo-code
+```ts
 // pseudo-code — an adapter hides one vendor's contract behind our own types
-type Adapter<TRequest, TResult> = {
+interface Adapter<TRequest, TResult> {
   authenticate(): Promise<void>;
   call(request: TRequest): Promise<TResult>;
   toDomain(raw: unknown): TResult;
-};
+}
+```
+
+```mermaid
+flowchart LR
+    subgraph BESPOKE["Without MCP — N × M Adapters"]
+        A1["App A"] --> AD1["GitHub Adapter"]
+        A1 --> AD2["Slack Adapter"]
+        A2["App B"] --> AD3["GitHub Adapter"]
+        A2 --> AD4["Slack Adapter"]
+        AD1 --> GH["GitHub API"]
+        AD2 --> SL["Slack API"]
+        AD3 --> GH
+        AD4 --> SL
+    end
+    subgraph MCP["With MCP — N + M"]
+        MA1["App A"] --> MCP_C["MCP Client"]
+        MA2["App B"] --> MCP_C
+        MCP_C --> M(("MCP Protocol"))
+        M --> MS1["GitHub<br/>MCP Server"]
+        M --> MS2["Slack<br/>MCP Server"]
+        MS1 --> GH
+        MS2 --> SL
+    end
+
+    style BESPOKE fill:#f38ba8,color:#1e1e2e
+    style MCP fill:#a6e3a1,color:#1e1e2e
+    style M fill:#cba6f7,color:#1e1e2e
 ```
 
 This is good design and you should still do it. But notice what it does **not** fix:
@@ -273,6 +300,25 @@ This is good design and you should still do it. But notice what it does **not** 
 | Centralises auth code *within one app* | The model has no way to learn a tool's schema at runtime |
 
 An adapter makes **N × M integrations cleaner**. It does not make them **fewer**. That distinction is the entire reason a protocol is needed rather than more discipline.
+
+### What MCP Replaces in the Adapter
+
+```ts
+// pseudo-code — what the adapter does vs what MCP does
+// ADAPTER (per app, per vendor)
+const githubAdapter = new GitHubAdapter({
+  baseUrl: "https://api.github.com",
+  token: process.env.GITHUB_TOKEN,  // per-app token management
+});
+await githubAdapter.call({ action: "createIssue", ... });
+
+// MCP (shared protocol, vendor writes server once)
+const mcpClient = new MCPClient("stdio", "npx @mcp/github");
+const tools = await mcpClient.listTools();  // discovers at runtime
+await mcpClient.callTool("create_issue", { title: "Bug", body: "..." });
+```
+
+The adapter encapsulates **vendor knowledge** (endpoints, auth, shapes). MCP encapsulates **integration mechanics** (discovery, invocation, error handling, transport). You still need adapters *inside* the server; MCP removes the need for them *outside*.
 
 ---
 

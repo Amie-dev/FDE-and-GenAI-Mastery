@@ -257,7 +257,7 @@ send it credentials.
 Whatever the transport, the **MCP Inspector** speaks the protocol directly — no LLM, no host — so it is the fastest way
 to separate *my server is wrong* from *my host is wrong*.
 
-```bash
+```pseudo-code
 # stdio server, with the UI
 npx @modelcontextprotocol/inspector npx tsx src/index.ts
 
@@ -266,10 +266,10 @@ npx @modelcontextprotocol/inspector --cli npx tsx src/index.ts --method tools/li
 ```
 
 > **Which protocol era is it testing?** The Inspector defaults to the **legacy** era, which exercises the 2025-era
-`initialize` handshake. To exercise a `2026-07-28` client — the stateless model with `server/discover` — pass
-`--protocol-era modern`:
-> 
-> ```bash
+> `initialize` handshake. To exercise a `2026-07-28` client — the stateless model with `server/discover` — pass
+> `--protocol-era modern`:
+>
+> ```pseudo-code
 > npx @modelcontextprotocol/inspector --cli npx tsx src/index.ts --protocol-era modern --method tools/list
 > ```
 > 
