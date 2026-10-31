@@ -28,13 +28,22 @@
 
 ---
 
+## Implementation Guides
+
+| Guide | Location |
+|-------|----------|
+| Basic Code | `code/Basic Code/implementations guide/` — 9 chapters (0–8), full file + block-by-block explanation |
+| Production Code | `code/Production Code/implementations guide/` — chapter-wise guide with production patterns |
+
+---
+
 ## Code & Assignment
 
 | Path | Description |
 |------|-------------|
-| `code/Basic Code/` | Basic implementation (to be built per prompt.md Block 3) |
-| `code/Production Code/` | Production-ready implementation (to be built per prompt.md Block 4) |
-| `Assignment/task.md` | Lecture assignment (to be built per prompt.md Block 5) |
+| `code/Basic Code/` | Basic implementation — TypeScript + Express (package.json, tsconfig, .env, 8 services, controller, router) + implementations guide |
+| `code/Production Code/` | Production implementation — TypeScript + Express with Zod config, rate limiting, PII masking, CRAG retry, full tracing + implementations guide |
+| `Assignment/task.md` | Lecture assignment: 36 tasks across concept questions, hands-on code tasks, a capstone integration, and reflection |
 
 ---
 

@@ -6,52 +6,6 @@
 
 ---
 
-## 8.1 The Measurement Discipline
-
-The lecture's closing principle governs everything else:
-
-> **Evaluate retrieval and generation separately. First inspect what the database returned; then inspect how the model used it.**
-
-```mermaid
-flowchart TD
-    Q["Golden set<br/>questions + labelled evidence"] --> R{"Retrieval:<br/>was the evidence found?"}
-    R -->|"No"| FIX1["Chunking · filters · hybrid · K"]
-    R -->|"Yes"| G{"Generation:<br/>was it used correctly?"}
-    G -->|"No"| FIX2["Context engineering · prompt · refusal"]
-    G -->|"Yes"| OK["Ship it"]
-
-    FIX1 --> R
-    FIX2 --> G
-
-    style R fill:#89b4fa,color:#1e1e2e
-    style G fill:#a6e3a1,color:#1e1e2e
-    style OK fill:#a6e3a1,color:#1e1e2e
-```
-
-### The metric suite
-
-| Stage | Metric | Definition | Target |
-|---|---|---|---|
-| **Retrieval** | `recall@K` | Fraction of queries where all gold chunks are in top-K | ≥ 0.95 @ K=20 |
-| | `precision@K` | Fraction of returned chunks that are relevant | ≥ 0.60 @ K=4 |
-| | `MRR` | Mean of `1/rank` of the first relevant result | ≥ 0.80 |
-| | `nDCG@5` | Graded ranking quality | ≥ 0.75 |
-| **Context** | `context recall` | Gold sentences present in the assembled prompt | ≥ 0.95 |
-| | `context precision` | Relevant-token fraction of the prompt | ≥ 0.55 |
-| | `token efficiency` | Correct answers per 1K context tokens | Rising, not flat |
-| **Generation** | `faithfulness` | Every claim supported by context | ≥ 0.98 |
-| | `answer correctness` | Matches the expected answer | ≥ 0.90 |
-| | `citation validity` | Every `[n]` resolves to a sent source | 100% |
-| | `refusal correctness` | Refuses exactly the unanswerable cases | ≥ 0.95 |
-| **System** | `p50/p95 latency` | End-to-end | p95 < 3 s |
-| | `cost/query` | Tokens + rerank + embedding | Budget-defined |
-| | `empty-result rate` | Queries with no hits | < 5% |
-| | `degraded rate` | Fallbacks triggered | < 1% |
-
-> **The pairing rule:** never report a generation metric without a retrieval metric beside it. A faithfulness of 0.99 on a system with `recall@20` = 0.6 means *"it faithfully answers the wrong questions"*.
-
----
-
 ## 8.2 Building the Golden Set
 
 Thirty to one hundred cases is enough to start; correctness matters more than size.

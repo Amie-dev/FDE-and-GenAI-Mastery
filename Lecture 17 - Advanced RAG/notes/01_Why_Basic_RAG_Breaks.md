@@ -1111,7 +1111,63 @@ class RAGDebugger {
 
 ---
 
-## 1.10 Chapter Summary
+## 1.9 The Running Example, Tracked End to End
+
+The same question is used in every chapter, so that each technique's contribution is visible. This table is the spine of the lecture.
+
+| Stage | What happens to "damaged headphones after 10 days" | Chapter |
+|-------|-----------------------------------|---------|
+| Corpus design | Three separate policy documents; rule and exception live in different files | 01 |
+| Chunking | Each policy fits one chunk → good. A longer policy would split the window from the exception | 02–03 |
+| Metadata | `category=electronics`, `policyType=returns` attached at ingest | 05 |
+| Dense search | Electronics and General policies rank high; damaged policy ranks 4th | 04 |
+| Lexical search | `damaged` and `headphones` matched exactly; boosts the damaged policy | 06 |
+| Fusion | RRF puts the damaged policy at rank 1–2 | 06 |
+| Threshold | All surviving scores ≥ 0.70; nothing is discarded | 04 |
+| Rerank | Cross-encoder scores the damaged policy 0.97 vs general 0.68 | 07 |
+| Context | Specific policies labelled and ordered **before** the general one, with a precedence rule | 08 |
+| Answer | "No — electronics returns close at 7 days and damage must be reported within 48 hours" + citations | 08 |
+| Evaluation | recall@5 = 1.0, faithfulness = 1.0, refusal correct on out-of-domain | 09 |
+
+---
+
+## 1.10 Pseudo-code: One Trace Object for the Whole Pipeline
+
+The single most useful engineering artifact in advanced RAG is a **per-stage trace**. Every chapter adds fields to it.
+
+```ts
+// pseudo-code — the shape of a traced retrieval request
+type Trace = {
+  query: string;
+  filters: Record<string, unknown> | null;
+  dense: { id: string; score: number }[];
+  lexical: { id: string; score: number }[];
+  fused: { id: string; rrf: number }[];
+  thresholdDropped: string[];
+  reranked: { id: string; relevance: number }[];
+  contextTokens: number;
+  answer: string;
+  citations: string[];
+};
+
+async function answerWithTrace(question: string): Promise<Trace> {
+  const filters = deriveFilters(question);                            // Ch. 05 — server-side, never from the LLM
+  const dense = await denseSearch(question, { topK: 20, filters });   // Ch. 04
+  const lexical = await bm25Search(question, { topK: 20, filters });  // Ch. 06
+  const fused = rrfMerge([dense, lexical], { k: 60 });                // Ch. 06
+  const gated = applyScoreFloor(fused, 0.70);                         // Ch. 04
+  const reranked = await rerank(question, gated, { topN: 12 });       // Ch. 07
+  const context = buildContext(reranked.slice(0, 4));                 // Ch. 08
+  const answer = await generate({ question, context });              // Ch. 08
+  return { /* ...all fields above... */ } as Trace;
+}
+```
+
+The point is not the code — it is that **every decision leaves a trace**. When an answer is wrong, the trace tells you which stage to open.
+
+---
+
+## 1.11 Chapter Summary
 
 | Idea | Statement |
 |---|---|
@@ -1133,6 +1189,9 @@ class RAGDebugger {
 - **[Chapter 03](./03_Retrieval_Controls.md)** — how many chunks may be retrieved, and how weak a match is still accepted.
 - **[Chapter 04](./04_Hybrid_Search_and_RRF.md)** — why dense search loses exact identifiers and how BM25 + RRF fixes it.
 - **[Chapter 05](./05_Reranking_Two_Stage_Retrieval.md)** — when the right document is retrieved but ranked too low.
+- **[Chapter 06](./06_Query_Processing.md)** — cleaning up the query before retrieval; routing to the right source.
+- **[Chapter 07](./07_Context_Engineering.md)** — why good chunks produce wrong answers; ordering, labels, precedence.
+- **[Chapter 08](./08_Production_RAG.md)** — guardrails, golden sets, cost budgets, runbooks.
 
 ---
 
