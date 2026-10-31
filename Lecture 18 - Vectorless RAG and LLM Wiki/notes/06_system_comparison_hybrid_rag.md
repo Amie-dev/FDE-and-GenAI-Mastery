@@ -689,20 +689,61 @@ async function traverseTree(
 
 ## 🎯 Key Takeaways
 
-Remember these **10 points**:
+Remember these **12 points**:
 
-1. **Vector RAG is optimized for fast semantic retrieval.**
-2. **Vectorless RAG is optimized for structural and context-aware retrieval.**
+1. **Vector RAG is optimized for fast semantic retrieval over simple, unstructured content.**
+2. **Vectorless RAG is optimized for structural and context-aware retrieval over long, structured documents.**
 3. **LLM Wiki focuses on organizing and maintaining knowledge rather than only searching it.**
-4. **Vector RAG works well for short, relatively unstructured content.**
-5. **Vectorless RAG is particularly useful for long, highly structured professional documents.**
-6. **LLM Wiki is useful for personal and team knowledge systems.**
+4. **Vector RAG works well for short, relatively unstructured content with fast query needs.**
+5. **Vectorless RAG is particularly useful for long, highly structured professional documents (legal, financial, technical).**
+6. **LLM Wiki is useful for personal and team knowledge systems where human collaboration matters.**
 7. **Hybrid RAG can combine vector search for broad filtering with tree search for precise retrieval.**
 8. **More LLM reasoning can improve retrieval quality but increases token usage and latency.**
 9. **Better retrieval reduces hallucination risk but does not eliminate hallucinations.**
-10. **Production systems should choose or combine retrieval strategies based on the actual workload rather than assuming one RAG architecture fits everything.**
+10. **Production systems should choose or combine retrieval strategies based on the actual workload.**
+11. **Enterprise systems often benefit from hybrid architectures: vector pre-filtering + tree navigation.**
+12. **Benchmarks show Vectorless RAG excels at multi-hop and structural queries; Vector RAG leads in pure semantic similarity tasks.**
 
-> ### 🧠 The Ultimate Mental Model
+---
+
+## 6.21 Benchmarks & When Each Architecture Wins
+
+The roadmap specifically asks: *"Benchmarks and when each architecture wins."*
+
+### Benchmark Scenarios
+
+| Benchmark Type | Description | Vector RAG | Vectorless RAG | LLM Wiki | Hybrid |
+|----------------|-------------|------------|----------------|----------|--------|
+| **Exact Page Citation** | "Find page 42's exact content" | ❌ Poor | ✅ Excellent | ⚠️ Good | ✅ Excellent |
+| **Multi-Hop Reasoning** | "What connects A → B → C?" | ⚠️ Moderate | ✅ Excellent | ⚠️ Moderate | ✅ Excellent |
+| **Semantic Similarity** | "Find similar content to X" | ✅ Excellent | ⚠️ Good | ⚠️ Good | ✅ Excellent |
+| **Simple Fact Lookup** | "What is X?" | ✅ Excellent | ⚠️ Moderate | ✅ Good | ✅ Excellent |
+| **Structural Context** | "Within section Y, find Z" | ⚠️ Moderate | ✅ Excellent | ⚠️ Good | ✅ Excellent |
+| **Cross-Document Aggregation** | "Summarize across documents" | ⚠️ Moderate | ⚠️ Moderate | ✅ Excellent | ✅ Excellent |
+
+### When Each Architecture Wins
+
+```mermaid
+flowchart TD
+    A["📊 Decision: Query Type & Requirements"]
+
+    A --> B["Simple semantic search<br/>+ large corpus<br/>+ low latency?"]
+    B -->|Yes| V["🔵 Vector RAG"]
+
+    A --> C["Long structured docs?<br/>Need citations?<br/>Need context?"]
+    C -->|Yes| T["🟢 Vectorless RAG"]
+
+    A --> D["Team/personal<br/>knowledge base?<br/>Frequent edits?"]
+    D -->|Yes| W["🟣 LLM Wiki"]
+
+    A --> E["Enterprise scale?<br/>Need both speed + accuracy?"]
+    E -->|Yes| H["🔵🟢 Hybrid RAG"]
+
+    V --> F["✅ Winner: Fast / Cheap"]
+    T --> G["✅ Winner: Traceable / Precise"]
+    W --> I["✅ Winner: Human-Centric / Maintainable"]
+    H --> J["✅ Winner: Enterprise / Balanced"]
+```
 > 
 > **🔵 Vector RAG:**
 > **"Find similar content."**

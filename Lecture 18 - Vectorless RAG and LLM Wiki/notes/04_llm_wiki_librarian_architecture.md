@@ -512,7 +512,130 @@ The LLM becomes more than a **retrieval component**. It becomes a **knowledge li
 
 ---
 
-## 4.13 Pseudo Code: LLM Wiki Ingestion Agent (TypeScript)
+## 4.14 Karpathy's Obsidian Vault Architecture
+
+Andrej Karpathy's vision specifically uses **Obsidian** — a Markdown-based knowledge base that supports bidirectional linking, graph visualization, and plugins. The vault structure is designed for both human and LLM consumption.
+
+### Vault Directory Structure
+
+```
+vault/
+│
+├── .obsidian/              # Obsidian config & plugins
+├── templates/              # Note templates
+├── daily-notes/            # Daily journal entries
+├── MOC/                    # Maps of Content (index pages)
+│   ├── infrastructure.md
+│   ├── ml-ops.md
+│   └── system-design.md
+│
+├── infrastructure/
+│   ├── load-balancing/
+│   │   ├── alb.md
+│   │   ├── cdn.md
+│   │   ├── sticky-sessions.md
+│   │   └── failover.md
+│   ├── networking/
+│   │   ├── routing.md
+│   │   └── dns.md
+│   └── databases/
+│       ├── replication.md
+│       └── sharding.md
+│
+├── ml/
+│   ├── training/
+│   ├── evaluation/
+│   └── deployment/
+│
+└── index.md                # Root navigation page
+```
+
+### Obsidian-Specific Features
+
+| Feature | Description | Benefit for LLM Wiki |
+|---------|-------------|---------------------|
+| **Bidirectional Links** | `[[Note Name]]` creates backlinks | Automatic relationship discovery |
+| **Graph View** | Visualizes note connections | Human + LLM can see knowledge topology |
+| **Dataview Plugin** | Query vault like a database | LLM can run structured queries |
+| **Templates** | Consistent note structure | Easier LLM ingestion & formatting |
+| **Frontmatter (YAML)** | Structured metadata | Lightweight catalog for two-pass retrieval |
+| **Canvas** | Visual workspace | LLM can generate diagrams |
+
+### Vault Graph Visualization
+
+```mermaid
+graph TD
+    VAULT["📚 Obsidian Vault"]
+
+    VAULT --> MOC["🗺️ Maps of Content"]
+    MOC --> InfraMOC["Infrastructure MOC"]
+    MOC --> MLMOC["ML Ops MOC"]
+
+    VAULT --> INFRA["Infrastructure"]
+    INFRA --> LB["Load Balancing"]
+    LB --> ALB["ALB"]
+    LB --> CDN["CDN"]
+    LB --> STICKY["Sticky Sessions"]
+    LB --> FAIL["Failover"]
+
+    ALB --> REL1["🔗 Sticky Sessions"]
+    ALB --> REL2["🔗 Failover"]
+    FAIL --> REL3["🔗 High Availability"]
+
+    VAULT --> DAILY["📅 Daily Notes"]
+    DAILY --> TAGS["#meeting #decision"]
+
+    VAULT --> TEMPLATES["📋 Templates"]
+    TEMPLATES --> TPL1["Project Template"]
+    TEMPLATES --> TPL2["Meeting Template"]
+```
+
+### Why Obsidian?
+
+1. **Local-First**: Plain Markdown files on disk, no cloud dependency
+2. **Human-Editable**: Open any file in any text editor
+3. **Extensible**: Plugin ecosystem for custom workflows
+4. **Graph-Native**: Bidirectional links create natural knowledge graphs
+5. **LLM-Friendly**: Structured Markdown + YAML frontmatter = easy parsing
+
+---
+
+## 4.15 Two-Pass Retrieval Integration with LLM Wiki
+
+The LLM Wiki naturally enables **two-pass retrieval** (covered in Chapter 5):
+
+```mermaid
+flowchart TD
+    Q["👤 Query"]
+    Q --> PASS1["1️⃣ Pass 1: Catalog Scan"]
+    PASS1 --> CATALOG[("📋 Lightweight Catalog\n(Frontmatter + Summaries)")]
+    CATALOG --> FILTER["🤖 LLM Filters by Metadata"]
+    FILTER --> CANDIDATES["📦 Candidate Files"]
+    CANDIDATES --> PASS2["2️⃣ Pass 2: Full Load"]
+    PASS2 --> VAULT["📚 Obsidian Vault"]
+    VAULT --> CONTENT["📄 Full Markdown Content"]
+    CONTENT --> ANSWER["💬 Answer Generation"]
+```
+
+### Catalog Structure for Two-Pass Retrieval
+
+```yaml
+# Lightweight catalog entry (frontmatter only)
+- file: "infrastructure/load-balancing/alb.md"
+  title: "ALB Sticky Sessions"
+  tags: [load-balancing, alb, sessions]
+  summary: "Sticky sessions route same-client requests to same backend"
+  keywords: ["sticky sessions", "cookie routing", "session persistence"]
+  related: ["failover.md", "high-availability.md"]
+  updated: "2024-01-15"
+```
+
+**Pass 1** (Fast): Filter catalog entries by tags/keywords/summary using LLM
+**Pass 2** (Complete): Load full Markdown content only for selected candidates
+
+---
+
+## 4.16 Pseudo Code: LLM Wiki Ingestion Agent (TypeScript)
 
 ```typescript
 // Metadata frontmatter structure

@@ -1,15 +1,5 @@
 # Chapter 02 — Vectorless RAG & Tree-Structured Indexing
 
-## 2.1 What Is Vectorless RAG?
-
-**Vectorless RAG** is a retrieval approach that does not depend primarily on:
-- ❌ Vector embeddings
-- ❌ Vector databases
-- ❌ Fixed-size token chunks
-- ❌ Pure similarity search
-
-Instead, it builds a **hierarchical tree representation of the document** and uses an LLM to navigate that tree.
-
 The main idea is simple:
 
 > **Instead of searching through random chunks, understand the document's structure and navigate to the relevant section.**
@@ -174,6 +164,53 @@ This structure gives every piece of information a **place inside the document**.
 
 ---
 
+## 2.4 Hierarchical Document Tree
+
+The heart of Vectorless RAG is the **document tree**. Instead of treating a 500-page document as thousands of independent chunks, we preserve its natural hierarchy.
+
+```mermaid
+flowchart TD
+
+    ROOT["📘 Distributed Systems Architecture Handbook<br/>Pages 1–500"]
+
+    ROOT --> CH1["📑 Chapter 1<br/>Networking & Routing<br/>pp. 1–120"]
+    ROOT --> CH2["📑 Chapter 2<br/>Load Balancing & Traffic Control<br/>pp. 121–250"]
+    ROOT --> CH3["📑 Chapter 3<br/>Database Replication<br/>pp. 251–400"]
+
+    CH2 --> SEC21["📌 Section 2.1<br/>CDN vs ALB Architecture<br/>pp. 121–160"]
+
+    CH2 --> SEC22["📌 Section 2.2<br/>Session Persistence & Sticky Sessions<br/>pp. 161–200"]
+
+    SEC22 --> SUB221["📄 2.2.1<br/>Cookie-Based Sticky Sessions<br/>pp. 161–180"]
+
+    SEC22 --> SUB222["📄 2.2.2<br/>Session Failover & Recovery<br/>pp. 181–200"]
+```
+
+This specific **Root→Chapter→Section→Page** structure follows the hierarchical pattern:
+
+```mermaid
+flowchart TD
+
+    Root["📖 Document"]
+
+    Root --> Ch1["Chapter 1"]
+    Root --> Ch2["Chapter 2"]
+
+    Ch1 --> Sec1_1["Section 1.1"]
+    Ch1 --> Sec1_2["Section 1.2"]
+
+    Sec1_1 --> Pg1_1_1["Page 1.1.1"]
+    Sec1_1 --> Pg1_1_2["Page 1.1.2"]
+
+    Ch2 --> Sec2_1["Section 2.1"]
+
+    Sec2_1 --> Pg2_1_1["Page 2.1.1"]
+```
+
+**Key Insight:** Every piece of information has an explicit address in this hierarchy.
+
+---
+
 ## 2.5 Why Hierarchy Matters
 
 Consider this question:
@@ -189,21 +226,19 @@ server
 crash
 ```
 
-But Vectorless RAG can reason through the document:
+But Vectorless RAG can reason through the document's **explicit structure** using structural navigation:
 
-```text
-Distributed Systems Handbook
-        ↓
-Chapter 2: Load Balancing
-        ↓
-Section 2.2: Session Persistence
-        ↓
-Subsection 2.2.2: Session Failover
-        ↓
-Pages 181–200
+```mermaid
+flowchart TD
+
+    DS["📖 Distributed Systems Handbook"]
+    DS --> Ch2["📑 Chapter 2: Load Balancing"]
+    Ch2 --> Sec2_2["📌 Section 2.2: Session Persistence"]
+    Sec2_2 --> Sub2_2_2["📄 Subsection 2.2.2: Session Failover"]
+    Sub2_2_2 --> Pgs["📄 Pages 181–200"]
 ```
 
-The retrieval path itself provides useful context.
+The retrieval path itself provides useful context. The hierarchy ensures that we look at the **correct logical context** — failover within the realm of load balancing — not just any document mentioning "session" and "failover".
 
 ---
 
@@ -819,17 +854,75 @@ flowchart TD
 
 ## 🎯 Key Takeaways
 
-Remember these **7 points**:
+Remember these **9 points**:
 
 1. **Vectorless RAG replaces similarity-first retrieval with structure-first retrieval.**
 2. **Documents are represented as hierarchical trees instead of flat chunks.**
-3. **Natural units such as chapters, sections, subsections, and pages are preserved.**
+3. **Natural units such as chapters, sections, subsections, and pages are preserved (Root → Chapter → Section → Page).**
 4. **Each tree node can contain summaries, keywords, entities, page ranges, and parent/child relationships.**
 5. **Raw content can be lazy-loaded only after the relevant branch is identified.**
 6. **Retrieval becomes more explainable because the system can show the exact navigation path.**
 7. **The tree is the map; the original document is the source of truth.**
+8. **Node metadata summaries allow relevance scoring without loading full content.**
+9. **Zero-vector reasoning uses LLM-based structural traversal, not embedding similarity, to determine relevance.**
 
 > **Mental Model:**
 > **Vector RAG searches the embedding space. Vectorless RAG navigates the document tree.**
+
+---
+
+## 2.24 Zero-Vector Relevance Reasoning
+
+**Zero-vector relevance reasoning** is the conceptual bridge between tree indexing and agentic traversal. Instead of computing any embedding vectors or similarity scores, the system relies entirely on:
+
+1. **Structural Position** — Where does a node sit in the document hierarchy?
+2. **Semantic Summary** — What does the node's summary say it contains?
+3. **Logical Intent** — What does the user's query map to in terms of topics and intent?
+
+```mermaid
+flowchart TD
+
+    Q["👤 User Query"]
+    Q --> INTENT["🧠 LLM Extracts Intent"]
+    INTENT --> TOPICS["📋 Topic Keywords"]
+    TOPICS --> TREE["🌳 Traverse Tree Nodes"]
+    TREE --> MATCH["✅ Match Intent to Node Summaries"]
+    MATCH --> RELEVANT["📍 Relevant Branch Located"]
+    RELEVANT --> LOAD["📥 Lazy Load Full Content"]
+
+    style Q fill:#4a90d9,color:#fff
+    style MATCH fill:#2ecc71,color:#fff
+    style RELEVANT fill:#27ae60,color:#fff
+```
+
+### Pseudo Code: Zero-Vector Relevance Scoring
+
+```typescript
+// Zero-vector relevance scoring — no embeddings, no similarity math
+async function zeroVectorRelevance(
+  node: TreeNode,
+  queryIntent: QueryIntent
+): Promise<number> {
+  const relevancePrompt = `
+    Node Title: ${node.title}
+    Node Summary: ${node.summary}
+    Node Keywords: ${node.keywords.join(", ")}
+    Node Entities: ${node.entities.join(", ")}
+    
+    Query: ${queryIntent.originalQuery}
+    Extracted Intent: ${queryIntent.parsedIntent}
+    Required Topics: ${queryIntent.topics.join(", ")}
+    
+    On a scale of 0 to 100, how likely does this node contain 
+    the information needed to answer the query? 
+    Only output a number.
+  `;
+  
+  const score = parseInt(await llm.generate(relevancePrompt));
+  return score;
+}
+```
+
+The key advantage: **traceability**. When a node is scored 85, you can read the LLM's prompt and see exactly why it was deemed relevant — no opaque vector math.
 
 ---

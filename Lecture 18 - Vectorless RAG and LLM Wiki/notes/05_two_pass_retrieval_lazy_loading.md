@@ -344,6 +344,8 @@ interface CatalogEntry {
   summary: string;
   tags: string[];
   pageRange?: [number, number];
+  keywords?: string[];
+  relevanceHeuristic?: string; // For faster filtering
 }
 
 interface FullDocument {
@@ -355,7 +357,7 @@ interface FullDocument {
 // Lightweight metadata catalog stored once after indexing
 type MetadataCatalog = Map<string, CatalogEntry>;
 
-// Pass 1 — Scan lightweight catalog
+// Pass 1 — Scan lightweight catalog with LLM-based relevance scoring
 async function pass1Scan(
   query: string,
   catalog: MetadataCatalog
@@ -363,13 +365,36 @@ async function pass1Scan(
   const candidates: CatalogEntry[] = [];
 
   for (const entry of catalog.values()) {
-    const isRelevant = await llmRelevanceCheck(query, entry.summary, entry.tags);
-    if (isRelevant) {
+    // Zero-vector relevance scoring using summary + metadata
+    const score = await zeroVectorScore(query, entry);
+    if (score > 50) { // Threshold for "potentially relevant"
+      entry.relevanceScore = score;
       candidates.push(entry);
     }
   }
 
-  return candidates;
+  // Sort by relevance score, take top K
+  return candidates
+    .sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0))
+    .slice(0, 5); // Limit candidates for Pass 2
+}
+
+// Zero-vector relevance scoring (no embeddings)
+async function zeroVectorScore(
+  query: string,
+  entry: CatalogEntry
+): Promise<number> {
+  const prompt = `
+    User Query: "${query}"
+    Document Title: ${entry.title}
+    Summary: ${entry.summary}
+    Tags: ${entry.tags.join(", ")}
+    Keywords: ${entry.keywords?.join(", ") || "N/A"}
+    
+    Rate relevance 0-100. Output only a number.
+  `;
+  
+  return parseInt(await llmGenerate(prompt));
 }
 
 // Pass 2 — Load full content only for selected candidates
@@ -417,17 +442,38 @@ async function lazyLoadNodeContent(node: TreeNode): Promise<string> {
 
 ---
 
-## 5.9 Cost Comparison
+## 5.9 Enhanced Two-Pass with Tree Traversal
 
-| Approach | Tokens Loaded | Cost per Query |
-|----------|---------------|----------------|
-| Load everything | All documents × all tokens | Very High |
-| Two-Pass Retrieval | Summaries + selected full docs | Low–Medium |
-| Vectorless RAG + Lazy Load | Tree metadata + target pages | Low |
+In Vectorless RAG, the tree traversal naturally performs **Pass 1** (traversing summaries), and lazy loading performs **Pass 2**:
+
+```mermaid
+flowchart TD
+    Q["👤 Query"]
+    Q --> ROOT["🌳 Root"]
+    ROOT --> PASS1["📖 Pass 1: Summary Scan"]
+    PASS1 --> PARALLEL["⚡ Parallel Branch Eval"]
+    PARALLEL --> PRUNE["✂️ Prune Irrelevant"]
+    PRUNE --> LEAF["🎯 Target Leaf"]
+    LEAF --> RANGE["📄 Page Range"]
+    RANGE --> PASS2["📥 Pass 2: Lazy Load"]
+    PASS2 --> FULL["📝 Full Content"]
+    FULL --> ANSWER["💬 Answer"]
+```
 
 ---
 
-## 5.10 Key Takeaways
+## 5.10 Cost Comparison
+
+| Approach | Tokens Loaded | Cost per Query | Best For |
+|----------|---------------|----------------|----------|
+| Load everything | All documents × all tokens | Very High | Tiny knowledge bases |
+| Vector RAG (Top-K) | K × chunk size | Medium | Simple semantic search |
+| Two-Pass Retrieval | Summaries + selected full docs | Low–Medium | Structured knowledge bases |
+| Vectorless RAG + Lazy Load | Tree metadata + target pages | Low | Complex documents |
+
+---
+
+## 5.11 Key Takeaways
 
 1. **Two-Pass Retrieval separates lightweight scanning from expensive full-content loading.**
 2. **Pass 1 reads metadata only: titles, summaries, tags, page ranges.**
@@ -435,6 +481,7 @@ async function lazyLoadNodeContent(node: TreeNode): Promise<string> {
 4. **Lazy Loading keeps raw content in the original file until the relevant node or page range is identified.**
 5. **Together they reduce token usage, cost, and noise while preserving relevant context.**
 6. **The tree index or catalog acts as a lightweight map to the source-of-truth documents.**
+7. **Zero-vector relevance scoring in Pass 1 enables semantic filtering without embeddings.**
 
 > **Mental Model:**
 > *Without Two-Pass:* Load the whole library to read one page.

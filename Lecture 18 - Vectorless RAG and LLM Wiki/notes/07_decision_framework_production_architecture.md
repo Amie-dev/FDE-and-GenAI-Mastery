@@ -594,7 +594,45 @@ flowchart LR
 
 ---
 
-## 7.21 Quick Guide to Choosing the Right Architecture
+## 7.21 Production Architecture Checklist
+
+For deploying Vectorless RAG systems to production:
+
+```mermaid
+flowchart TD
+    A["🚀 Production Readiness"]
+
+    A --> B["📊 Observability"]
+    A --> C["⚡ Performance"]
+    A --> D["🛡️ Safety"]
+    A --> E["🧩 Integration"]
+
+    B --> B1["Retrieval path logging"]
+    B --> B2["Relevance score tracking"]
+    B --> B3["Latency monitoring"]
+    B --> B4["Token usage metrics"]
+
+    C --> C1["Tree caching strategy"]
+    C --> C2["Parallel evaluation"]
+    C --> C3["Context window budget"]
+    C --> C4["Lazy loading thresholds"]
+
+    D --> D1["Answer confidence scoring"]
+    D --> D2["Out-of-domain detection"]
+    D --> D3["Fallback to vector search"]
+    D --> D4["Human review queues"]
+
+    E --> E1["API gateway integration"]
+    E --> E2["Model version management"]
+    E --> E3["Index update pipelines"]
+    E --> E4["Multi-tenant support"]
+```
+
+**Key production considerations:**
+- Cache tree structures with TTL-based invalidation
+- Implement circuit breakers for LLM-based tree traversal
+- Log entire navigation paths for auditability
+- Use hybrid retrieval as a safety net when tree search returns low confidence
 
 ### Choose 🔵 Vector RAG when:
 
@@ -631,20 +669,55 @@ flowchart LR
 
 ---
 
-## 🎯 Key Takeaways
+## 7.22 Quick Guide to Choosing the Right Architecture
 
-Remember these **10 points**:
+### Choose 🔵 Vector RAG when:
+✅ You need fast, low-latency retrieval  
+✅ You're working with short, relatively unstructured documents  
+✅ Semantic similarity is enough  
+✅ You have high query volume  
+✅ Token budgets are tight  
+✅ Exact document structure isn't critical  
 
-1. **Vector RAG is optimized for fast semantic retrieval.**
-2. **Vectorless RAG is optimized for structural and context-aware retrieval.**
+### Choose 🟢 Vectorless RAG when:
+✅ You have long, structured documents  
+✅ Document hierarchy matters  
+✅ Exact section/page references are required  
+✅ You need traceable retrieval paths  
+✅ You're working with professional/technical documentation  
+✅ Context preservation is important  
+
+### Choose 🟣 LLM Wiki when:
+✅ You want to build a living knowledge base  
+✅ Your knowledge comes from mixed sources (PDFs, Drive, web, notes)  
+✅ Human readability and maintainability matter  
+✅ You want better token efficiency through two-pass retrieval  
+✅ You're building personal or team knowledge systems  
+
+### Consider 🔵🟢 Hybrid RAG when:
+✅ You have large enterprise-scale knowledge bases  
+✅ You need both broad filtering and precise navigation  
+✅ You want to balance cost and accuracy  
+✅ Simple vector RAG alone isn't accurate enough  
+
+---
+
+## 🎯 Updated Key Takeaways
+
+Remember these **12 points**:
+
+1. **Vector RAG is optimized for fast semantic retrieval over simple, unstructured content.**
+2. **Vectorless RAG is optimized for structural and context-aware retrieval over long, structured documents.**
 3. **LLM Wiki focuses on organizing and maintaining knowledge rather than only searching it.**
-4. **Vector RAG works well for short, relatively unstructured content.**
-5. **Vectorless RAG is particularly useful for long, highly structured professional documents.**
-6. **LLM Wiki is useful for personal and team knowledge systems.**
+4. **Vector RAG works well for short, relatively unstructured content with fast query needs.**
+5. **Vectorless RAG is particularly useful for long, highly structured professional documents (legal, financial, technical).**
+6. **LLM Wiki is useful for personal and team knowledge systems where human collaboration matters.**
 7. **Hybrid RAG can combine vector search for broad filtering with tree search for precise retrieval.**
 8. **More LLM reasoning can improve retrieval quality but increases token usage and latency.**
 9. **Better retrieval reduces hallucination risk but does not eliminate hallucinations.**
-10. **Production systems should choose or combine retrieval strategies based on the actual workload rather than assuming one RAG architecture fits everything.**
+10. **Production systems should choose or combine retrieval strategies based on the actual workload.**
+11. **Enterprise systems often benefit from hybrid architectures: vector pre-filtering + tree navigation.**
+12. **Production readiness requires observability (retrieval path logging), performance (caching/parallelization), safety (confidence scoring/fallbacks), and integration (API/model versioning).**
 
 > ### 🧠 The Ultimate Mental Model
 > 

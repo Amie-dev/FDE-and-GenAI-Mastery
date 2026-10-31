@@ -48,6 +48,32 @@ Send chunks to LLM
 Generate answer
 ```
 
+Pseudo-code representation:
+
+```typescript
+// Traditional Vector RAG Pipeline
+function traditionalVectorRAG(documents: Document[], query: string): Answer {
+  // Ingestion phase
+  const chunks = documents.flatMap(doc => 
+    fixedSizeChunk(doc.content, { size: 500, overlap: 50 })
+  );
+  
+  const embeddings = chunks.map(chunk => 
+    embeddingModel.embed(chunk.text)
+  );
+  
+  vectorDB.upsert(chunks.zip(embeddings));
+  
+  // Retrieval phase
+  const queryEmbedding = embeddingModel.embed(query);
+  const topKChunks = vectorDB.similaritySearch(queryEmbedding, k);
+  
+  // Generation phase
+  const context = topKChunks.map(c => c.text).join("\n\n");
+  return llm.generate({ query, context });
+}
+```
+
 This works well for **simple questions over relatively simple documents**.
 
 However, problems become more obvious when working with large, structured documents such as:
@@ -292,21 +318,37 @@ But in real-world retrieval:
 Similarity ≠ Contextual Relevance
 ```
 
-A chunk can be **similar to the query** without actually answering it.
+### Semantic Similarity vs. Contextual Relevance — The Nuanced Difference
 
-### Similarity Search vs Relevance Search
+**Semantic Similarity** measures how closely the *meaning* of two text pieces aligns in vector space. It captures:
+- Shared vocabulary and terminology
+- Related concepts and topics
+- Syntactic and semantic patterns
+
+**Contextual Relevance** measures whether a piece of text *actually answers the user's specific question* within the correct context. It requires:
+- Understanding the user's intent and question type
+- Knowing the document's logical structure
+- Verifying that retrieved content addresses the specific query
+- Ensuring completeness (not just a fragment of the answer)
 
 ```mermaid
 flowchart LR
+    subgraph "Semantic Similarity Space"
+        Q["👤 Query"] --> SIM["🔢 Vector Distance"]
+        SIM --> CLUSTER["Nearby vectors:<br/>similar topics, vocabulary"]
+    end
 
-    Q["👤 User Query"]
+    subgraph "Contextual Relevance Space"
+        Q --> INTENT["🧠 Understand Intent"]
+        INTENT --> STRUCT["📚 Map Document Structure"]
+        STRUCT --> VERIFY["✅ Verify Answer Completeness"]
+        VERIFY --> RELEVANT["Text that answers<br/>the specific question"]
+    end
 
-    Q --> SIM["🔢 Similarity Search"]
-    SIM --> S["Text with similar<br/>meaning / vocabulary"]
-
-    Q --> REL["🧠 Relevance Search"]
-    REL --> R["Text that actually<br/>answers the question"]
+    CLUSTER -.-> GAP["⚠️ Gap: similarity ≠ answer"]
 ```
+
+A chunk can be **semantically similar to the query** without being **contextually relevant** to the specific question.
 
 ### Example
 
@@ -323,7 +365,7 @@ Static asset caching
 HTTP traffic routing
 ```
 
-These topics are semantically related to the query.
+These topics are semantically related to the query (they share "load balancing", "traffic", "routing" vocabulary).
 
 But the actual answer may exist in a section titled:
 
@@ -733,7 +775,43 @@ This is the foundation for the next topic:
 
 ---
 
-## 1.12 Common Mistakes
+## 1.12 Zero-Vector Relevance Reasoning
+
+The core insight from the failure modes above is that **similarity scoring alone cannot determine relevance**. What if we could determine relevance *without* computing any vector similarity at all?
+
+**Zero-vector relevance reasoning** replaces embedding-based similarity with structural and semantic understanding:
+
+1. **Parse the document structure** (headings, sections, pages, tables)
+2. **Understand the query intent** using the LLM itself
+3. **Navigate to the relevant structural region** based on topic alignment
+4. **Retrieve complete context** from that region, not isolated chunks
+
+This means:
+- No vector database required
+- No embedding model needed at inference time
+- Relevance determined by logical position in document structure, not distance in vector space
+- Full traceability: you know *why* a section was retrieved (because its heading matches the query intent)
+
+Pseudo-code:
+
+```typescript
+// Zero-vector relevance reasoning
+function zeroVectorRelevance(docTree: DocumentTree, query: string): RelevantRegion {
+  const intent = llm.extractIntent(query);           // What is the user asking?
+  const candidateNodes = docTree.findNodesByTopic(intent.topic);
+  const scored = candidateNodes.map(node => ({
+    node,
+    score: llm.scoreRelevance(node.summary, intent)  // LLM judges relevance, not vectors
+  }));
+  return scored.sort((a, b) => b.score - a.score)[0].node;
+}
+```
+
+This reasoning approach forms the foundation for **Vectorless RAG**, where document structure replaces vector similarity as the primary retrieval mechanism.
+
+---
+
+## 1.13 Common Mistakes
 
 | # | Mistake | Why It's Wrong |
 |---|---------|----------------|
@@ -745,7 +823,7 @@ This is the foundation for the next topic:
 
 ---
 
-## 1.13 Key Takeaways
+## 1.14 Key Takeaways
 
 1. **Vector RAG converts documents to embeddings and retrieves via similarity search.**
 2. **Fixed-size chunking destroys document structure by cutting at token boundaries, not logical ones.**
@@ -755,8 +833,10 @@ This is the foundation for the next topic:
 6. **Vibe retrieval means retrieving chunks that "look related" without verifying logical relevance.**
 7. **Opaque scoring makes vector retrieval difficult to audit and debug.**
 8. **Professional documents (financial, legal, technical) are especially harmed by fragmented context.**
-9. **The alternative is to preserve document structure through hierarchical tree indexing.**
-10. **Vectorless RAG replaces similarity-first retrieval with structure-first retrieval.**
+9. **Semantic similarity and contextual relevance are different concepts — similarity measures vector distance, relevance measures answer quality.**
+10. **Zero-vector relevance reasoning replaces similarity scoring with structural navigation + LLM-based relevance judgment.**
+11. **The alternative is to preserve document structure through hierarchical tree indexing.**
+12. **Vectorless RAG replaces similarity-first retrieval with structure-first retrieval.**
 
 > **Mental Model:** Vector RAG asks, "Which chunks are similar?" Vectorless RAG asks, "Where in the document structure should I look?"
 
