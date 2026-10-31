@@ -1,286 +1,230 @@
-# 🔀 06 — GraphRAG & Hybrid Retrieval
+# Chapter 06 — GraphRAG & Hybrid Retrieval
 
-> **Goal:** Understand how to combine vector‑style semantic retrieval with graph‑style traversal to answer complex questions, and build a working GraphRAG endpoint that layers both retrieval modes.
+## 6.1 What Is GraphRAG?
 
----
+**GraphRAG** fuses dense vector retrieval with graph traversal.
 
-## 1. 🌟 Why Hybrid Retrieval?
-
-| Situation | Vector‑only | Graph‑only |
-|-----------|-------------|-----------|
-| “Find documents about *topic X*” | ✅ Good semantic match | ❌ No concept of “topic” without explicit nodes/edges |
-| “Find people who know someone who worked on *project Y*” | ❌ No relationship information | ✅ Traverses `KNOWS` / `WORKED_ON` edges |
-| “Answer a factual question that needs both evidence and context” | ⚠️ May retrieve irrelevant facts | ⚠️ May miss semantically similar but disconnected facts |
-
-**Hybrid retrieval** leverages the strengths of each:
-
-* **Vector search** → semantic similarity, surface‑level content matching
-* **Graph traversal** → follows `relationship` hops, discovers connected entities, filters by domain constraints
-
-The typical workflow (illustrated in mermaid below) is:
+| Retrieval Type | Strength | Weakness |
+|----------------|----------|----------|
+| Vector-only | Semantic similarity, fast | Struggles with multi-hop facts & global questions |
+| Graph-only | Multi-hop structured reasoning | Needs anchors; no semantic similarity |
+| GraphRAG | Both connected + semantic context | Slightly more latency |
 
 ```mermaid
-flowchart TD
-    Q[User Question] --> E(Generate Embedding)
-    E --> V[Vector Index Search]
-    V -->|Top N chunks| D[Graph Traversal]
-    D -->|Related entities, paths| C[Context Fusion]
-    C --> L[LLM Answer]
+flowchart TB
+    Q[Query: "Which hotels near Paris did Alice's friends visit?"]
+    
+    subgraph Vector Path
+    VQ[Vector Embedding]
+    VS[Vector Index Search: top-k chunks]
+    end
+    
+    subgraph Graph Path
+    AN[Vector anchors → graph nodes]
+    TR[Bounded hops (1-2): friends → events → hotels]
+    end
+    
+    F[Fusion: vector context + graph context]
+    L[LLM generates grounded answer]
+    
+    Q --> VQ
+    Q --> VS
+    VS --> AN
+    AN --> TR
+    TR --> F
+    VQ --> F
+    F --> L
 ```
 
-> **Key insight:** Vector search gives you *what* is semantically similar; graph traversal gives you *how* those items connect in the domain model.
+## 6.2 Neo4j Native Vector Indexes
 
----
+Neo4j 5+ supports native vector indexes over `embedding` properties (cosine / euclidean / dot-product similarity).
 
-## 2. 📚 Vector Index in Neo4j
-
-Neo4j (>= 4.x) supports native vector indexes. Below is the minimal setup.
-
-### 2.1 Create a vector index
+### 6.2.1 Create Vector Index
 
 ```cypher
-CREATE VECTOR INDEX document_embeddings IF NOT EXISTS
+CREATE VECTOR INDEX doc_embeddings IF NOT EXISTS
 FOR (d:Document) ON (d.embedding)
 OPTIONS {
-  `vector.dimensions`: 1536,
-  `vector.similarity_function`: 'cosine'
+  indexConfig: {
+    `vector.dimensions`: 1536,
+    `vector.similarity_function`: 'cosine'
+  }
 };
 ```
 
-### 2.2 Index a document with an embedding
+### 6.2.2 Query Vector Index
 
 ```cypher
-CREATE (d:Document {
-  id: "doc_42",
-  title: "Intro to Neo4j Cypher",
-  content: "...",
-  embedding: [0.12, -0.45, 0.78, ...]   // 1536‑dim float list
-});
-```
-
-### 2.3 Query the vector index (top‑k similar)
-
-```cypher
-CALL db.index.vector.queryNodes(
-  'document_embeddings',
-  5,               // k = 5 nearest neighbours
-  $queryEmbedding
-)
+CALL db.index.vector.queryNodes('doc_embeddings', $k, $queryVector)
 YIELD node AS doc, score
-RETURN doc.title, score
-ORDER BY score DESC;
+WHERE score >= $threshold
+RETURN doc.title AS title, doc.summary AS summary, score AS sim_score;
 ```
 
-> **Pseudo‑code** for the same operation in Node.js driver:
+## 6.3 Bounded Graph Expansion
 
-```ts
-// TS pseudo‑code (non‑run‑nable, explanatory)
-import { Neo4jDriver } from 'neo4j-driver';
-
-async function findSimilarDocs(driver, queryEmbedding: number[]) {
-  const session = driver.session({ database: 'neo4j' });
-  const result = await session.run(
-    `CALL db.index.vector.queryNodes($idx, $k, $embedding)
-     YIELD node AS doc, score
-     RETURN doc.title, score
-     ORDER BY score DESC`,
-    { idx: 'document_embeddings', k: 5, embedding: queryEmbedding }
-  );
-  await session.close();
-  return result.records; // [{title:string, score:float}, …]
-}
-```
-
----
-
-## 3. 🗺️ Graph Traversal after Vector Retrieval
-
-Once you have the top‑k documents (or any entity nodes), you can extend the context by traversing relationships.
-
-### 3.1 Example: From a Document to its Author & Topics
+After vector search identifies anchor documents, expand **1–2 hops** into the graph to pull connected entities and relationships.
 
 ```cypher
-// 1️⃣ Vector retrieval already gave us doc nodes
-// 2️⃣ Now follow outgoing relationships
-
-MATCH (doc:Document)
-WHERE doc.title = $title
-MATCH (doc)-[:WRITTEN_BY]->(author:User)
-MATCH (doc)-[:ABOUT]->(topic:Topic)
-RETURN author.name, collect(DISTINCT topic.name) AS topics;
+// Anchor nodes from vector search
+MATCH (d:Document)
+WHERE d.id IN $anchorIds
+OPTIONAL MATCH (d)-[:MENTIONS]->(e:Entity)
+OPTIONAL MATCH (d)-[:BELONGS_TO]->(c:Category)
+OPTIONAL MATCH (e)-[:REFERENCES]->(t:Topic)
+RETURN d.title, collect(DISTINCT c.name) AS categories,
+       collect(DISTINCT e.name) AS entities,
+       collect(DISTINCT t.name) AS topics
+LIMIT 50;
 ```
 
-### 3.2 Variable‑length hop (bounded)
+### Why bound hops?
 
-```cypher
-MATCH (doc:Document)-[r*1..2]->(related)
-WHERE doc.title = $title
-RETURN type(r), related;
+```mermaid
+graph TD
+    A[Unbounded * traversal] -->|whole graph visited| B[O(|V| + |E|) → timeout]
+    C[Bounded *1..3] -->|only local neighborhood| D[O(k × degree^h) → predictable]
+    
+    style A fill:#fcc,stroke:#999
+    style C fill:#cfc,stroke:#333
 ```
 
-> **Caution:** Unbounded `*` can be expensive; always provide a numeric bound (`1..3`, `1..5`, etc.) and, when possible, add filter predicates to prune the search space.
+## 6.4 Context Fusion
 
----
+Merge vector snippets and graph neighbors into a single prompt for the LLM, respecting a token budget.
 
-## 4. 🧩 Context Fusion — Merging Vector + Graph Results
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant V as Vector Index
+    participant G as Graph DB
+    participant L as LLM
+    
+    C->>V: query embedding, top-k
+    V-->>C: anchor docs + similarity
+    C->>G: bounded hops from anchors
+    G-->>C: connected entities / context
+    C->>C: fuse + truncate to token budget
+    C->>L: full context + question
+    L-->>C: grounded answer
+```
 
-The "context fusion" step combines the two result sets into a single payload sent to the LLM.
+## 6.5 Hybrid Retrieval Endpoint (Pseudo Code)
 
-### 4.1 Simple concatenation (rank‑by‑score)
-
-```ts
-type ContextEntry = {
-  source: 'vector' | 'graph';
-  title: string;
-  snippet: string;
-  score: number;   // lower is better for vector, any for graph
+```typescript
+// Pseudo code — hybrid GraphRAG service endpoint
+type HybridRequest = {
+  question: string;
+  topK?: number;        // vector anchors
+  maxHops?: number;     // graph expansion
 };
 
-function fuseContext(
-  vectorResults: ContextEntry[],
-  graphResults: ContextEntry[]
-): ContextEntry[] {
-  const merged = [...vectorResults, ...graphResults];
-  // sort by score ascending (vector) then by relevance for graph entries
-  return merged.sort((a, b) => a.score - b.score);
+type HybridResponse = {
+  answer: string;
+  anchors: any[];
+  graphContext: any[];
+};
+
+class GraphRAGRetriever {
+  constructor(
+    private driver: any,
+    private vectorIndex: string,
+    private embedding: (text: string) => Promise<number[]>
+  ) {}
+
+  async retrieve(req: HybridRequest): Promise<HybridResponse> {
+    const k = req.topK ?? 5;
+    const maxHops = req.maxHops ?? 2;
+
+    // 1. Embed question
+    const qEmbed = await this.embedding(req.question);
+
+    // 2. Vector search anchors
+    const anchors = await this.driver.executeQuery(
+      `
+      CALL db.index.vector.queryNodes($index, $k, $emb)
+      YIELD node AS doc, score
+      WHERE score >= 0.7
+      RETURN elementId(doc) AS docId, doc.title AS title, score
+      ORDER BY score DESC
+      `,
+      { index: this.vectorIndex, k, emb: qEmbed }
+    );
+
+    const docIds = anchors.records.map(r => r.get('docId'));
+
+    // 3. Bounded graph expansion
+    const graphCtx = await this.driver.executeQuery(
+      `
+      UNWIND $ids AS id
+      MATCH (d) WHERE elementId(d) = id
+      OPTIONAL MATCH (d)-[:MENTIONS|BELONGS_TO|REFERENCES*1..$hops]->(n)
+      RETURN d.title AS title, collect(DISTINCT n.name) AS neighbors
+      `,
+      { ids: docIds, hops: maxHops }
+    );
+
+    // 4. Fuse context for LLM
+    const fused = this.fuseContext(anchors.records, graphCtx.records);
+
+    // 5. Call LLM (external)
+    const answer = await this.completeLLM(fused, req.question);
+
+    return { answer, anchors: anchors.records, graphContext: graphCtx.records };
+  }
+
+  private fuseContext(anchors: any[], graphCtx: any[]): string {
+    const lines: string[] = [];
+    for (const a of anchors) {
+      lines.push(`[DOC ${a.get('title')} score=${a.get('score')}]`);
+    }
+    for (const g of graphCtx) {
+      const nbs = g.get('neighbors')?.filter(Boolean).join(', ');
+      lines.push(`[CTX ${g.get('title')} → ${nbs || 'none'}]`);
+    }
+    return lines.join('\n').slice(0, 4000); // token budget
+  }
+
+  private async completeLLM(context: string, question: string): Promise<string> {
+    // external call to LLM API
+    return '';
+  }
 }
 ```
 
-### 4.2 Weighted blend (optional)
+## 6.6 GraphRAG vs Vector RAG — Concrete Example
 
-You may want to give vector results a weight factor `α` and graph results `β`:
+**Question:** *"Which hotels in Paris did Alice's friends visit?"*
 
-```ts
-merged.sort((a, b) => {
-  const aScore = a.source === 'vector' ? a.score * ALPHA : a.score * BETA;
-  const bScore = b.source === 'vector' ? b.score * ALPHA : b.score * BETA;
-  return aScore - bScore;
-});
-```
+| Step | Vector-only RAG | GraphRAG |
+|------|-----------------|----------|
+| 1 | Embed question, retrieve similar chunks | Embed question, retrieve anchor docs |
+| 2 | Return text snippets | Retrieve anchor docs + traverse `Person -[:KNOWS]-> Person -[:STAYED]-> Hotel` |
+| 3 | LLM synthesizes snippets | LLM fuses vector snippets + graph path info |
+| 4 | May miss "friends" relation | Returns precise multi-hop facts |
 
-Typical values: `ALPHA = 0.6`, `BETA = 0.4`, tuned on a validation set.
+## 6.7 Common Mistakes
 
----
+| Mistake | Why | Fix |
+|---------|-----|-----|
+| Unbounded graph expansion | Full graph scan on dense neighborhoods | Bound hops `*1..2` |
+| Vector index dimension mismatch | `CREATE VECTOR INDEX` rejects wrong dims | Match dimension exactly |
+| No similarity threshold | Returns irrelevant low-score docs | `WHERE score >= 0.7` |
+| No fusion truncation | Exceeds LLM context window | Slice fused context to budget |
+| Querying graph before vector search | Loses semantic anchor points | Always vector first, graph after |
 
-## 5. 📤 GraphRAG Endpoint Sketch (Node.js + Express)
+## 6.8 Key Takeaways
 
-Below is a **minimal, non‑production** Express route that demonstrates the full pipeline: embed the user query, query the vector index, traverse one hop in the graph, fuse context, and ask an LLM.
-
-```ts
-// TS pseudo‑code – explanatory only
-import express from 'express';
-import { Neo4jDriver } from 'neo4j-driver';
-import { generateEmbedding } from './ai-utils';   // your embedding model
-
-const app = express();
-app.use(express.json());
-
-const driver = new Neo4jDriver(
-  process.env.NEO4J_URI!,
-  neo4j.auth.basic(process.env.NEO4J_USER!, process.env.NEO4J_PASS!)
-);
-
-app.post('/rag', async (req, res) => {
-  const question = req.body.question || '';
-  if (!question) return res.status(400).json({error: 'question required'});
-
-  // 1️⃣ Embed the question
-  const qEmbed = await generateEmbedding(question); // → number[1536]
-
-  // 2️⃣ Vector retrieval
-  const vecSession = driver.session({ database: 'neo4j' });
-  const vecResult = await vecSession.run(
-    `CALL db.index.vector.queryNodes($idx, $k, $emb)
-     YIELD node AS doc, score
-     RETURN doc.title AS title, doc.content AS content, score
-     ORDER BY score DESC
-     LIMIT 5`,
-    { idx: 'document_embeddings', k: 5, emb: qEmbed }
-  );
-  await vecSession.close();
-
-  // 3️⃣ Graph traversal from those docs (one hop)
-  const docTitles = vecResult.records.map(r => r.get('title'));
-  const graphSession = driver.session({ database: 'neo4j' });
-  const graphResult = await graphSession.run(
-    // Example: find authors/topics connected to any of the retrieved docs
-    `UNWIND $titles AS t
-     MATCH (doc:Document {title: t})
-     MATCH (doc)-[:WRITTEN_BY]->(author:User)
-     MATCH (doc)-[:ABOUT]->(topic:Topic)
-     RETURN DISTINCT author.name AS author, collect(DISTINCT topic.name) AS topics`,
-    { titles: docTitles }
-  );
-  await graphSession.close();
-
-  // 4️⃣ Fuse context (illustrative)
-  const vectorCtx = vecResult.records.map(r => ({
-    source: 'vector' as const,
-    title: r.get('title'),
-    snippet: r.get('content').slice(0, 120),
-    score: r.get('score')
-  }));
-  const graphCtx = graphResult.records.flatMap(r => [
-    { source: 'graph' as const, title: r.get('author'), snippet: `author: ${r.get('author')}`, score: 1 },
-    ...(r.get('topics')?.map((tok: string) => ({
-      source: 'graph' as const,
-      title: tok,
-      snippet: `topic: ${tok}`,
-      score: 1
-    })) || [])
-  ]);
-
-  const fused = [...vectorCtx, ...graphCtx].sort(
-    (a, b) => a.score - b.score
-  );
-
-  // 5️⃣ Send to LLM (placeholder)
-  const llmPrompt = `Answer the question using the context below.\n\nQuestion: ${question}\nContext: ${JSON.stringify(fused, null, 2)}`;
-  const llmAnswer = await callLLM(llmPrompt); // your LLM wrapper
-
-  res.json({ answer: llmAnswer });
-});
-
-app.listen(3000, () => console.log('GraphRAG service listening on :3000'));
-```
-
-> **Note:** This code is **not** meant to run out‑of‑the‑box; it shows the logical flow and wiring. Replace `callLLM`, `generateEmbedding`, and Neo4j credentials with your actual implementations.
+- GraphRAG = vector top-k anchors → bounded graph hops → context fusion → LLM.
+- Neo4j native vector indexes enable ANN search over `embedding` properties.
+- Always bound graph expansion: `*1..2` or `*1..3`.
+- Always set a similarity threshold (`score >= 0.7`) for quality anchors.
+- Fuse vector snippets + graph neighbors within a token budget for the LLM.
 
 ---
 
-## 6. 🛠️ Common Mistakes & Gotchas
-
-| Mistake | Why it hurts | Fix |
-|---------|--------------|-----|
-| **Unbounded variable‑length patterns** `(a)-[*]-(b)` | Explodes on dense graphs, may time‑out or return millions of rows. | Use bounded hops `(a)-[r*1..3]-(b)` and add filter predicates. |
-| **Ignoring index configuration** | Vector index missing or wrong similarity function → poor retrieval quality. | Verify `CREATE VECTOR INDEX` with correct dimensions & `cosine`/`l2`. |
-| **Fusing without score normalisation** | Vector scores (0‑1) mixed with arbitrary graph scores → noisy ranking. | Normalise or apply weighting factors (`ALPHA`, `BETA`). |
-| **Over‑traversing** | Each hop multiplies the result set; can blow up memory. | Limit hops, add `WHERE` clauses, use `DISTINCT`, and consider `SKIP`/`LIMIT`. |
-| **Assuming vector search alone is enough** | Misses domain relationships that answer the user’s question. | Always add at least one graph hop when the query asks “who”, “where”, “how”. |
-
----
-
-## 7. 📌 Key Takeaways
-
-1. **Hybrid = vector + graph.** Vector search gives semantic relevance; graph traversal gives connected context.
-2. **Neo4j vector indexes** are created with `CREATE VECTOR INDEX` and queried via `CALL db.index.vector.queryNodes`.
-3. **Bounded traversals** are essential for performance; avoid `*` without limits.
-4. **Context fusion** can be as simple as concatenating results or as sophisticated as weighted blending.
-5. **GraphRAG endpoints** follow a clear pipeline: embed → vector retrieve → graph hop → fuse → LLM prompt.
-6. **Avoid common pitfalls**: unbounded traversals, missing indexes, unnormalized scores.
-
----
-
-## 8. 🧠 Self‑Check Questions (you should be able to answer)
-
-1. How do you create a vector index on a `Document` node with 768‑dimensional embeddings using cosine similarity?  
-2. Write a Cypher snippet that, given a document title, returns the author’s name and all topics associated with that document.  
-3. What is the difference between `CALL db.index.vector.queryNodes(..., 3, $emb)` and `MATCH (d:Document) WHERE cosineSimilarity(d.embedding, $emb) > 0.8`?  
-4. Why is it important to bound variable‑length relationships in production GraphRAG?  
-5. In the fusion step, why might you apply a weight (`ALPHA`/`BETA`) to vector vs. graph scores?  
-6. Name two concrete risks of using unbounded `*` relationship patterns in Neo4j.  
-7. Sketch (in pseudo‑code or outline) the full GraphRAG request lifecycle from user question to LLM answer.  
-
---- 
-
-*End of chapter.*
+**Self-check questions:**
+16. Write the `CREATE VECTOR INDEX` statement for 1536-dim cosine embeddings on `Document.embedding`.
+17. Why is context fusion (vector + graph) better than vector-only for multi-hop questions?
+18. What is the danger of `MATCH (a)-[*]-(b)` without bounds?

@@ -1,1235 +1,262 @@
-# 🧠 05 — Advanced Graph Data Modeling, GraphRAG & AI Agent Memory Systems
+# Chapter 05 — Advanced Graph Modeling, GraphRAG & AI Agent Memory
 
-> **Goal:** Master advanced graph modeling, traversal concepts, knowledge graphs for AI agents, temporal and episodic memory, vector + graph retrieval, indexing, and Cypher performance profiling.
+## 5.1 Node vs Property Decision Framework
 
----
+Not every domain concept deserves its own node. Only promote to a node when the concept **participates in relationships** or is **shared across entities**.
 
-# 1. 📐 Graph Data Modeling Principles
+### Decision table
 
-The most important question when designing a graph is:
+| Question | Choose **Property** | Choose **Node** |
+|----------|---------------------|-----------------|
+| Is it a simple scalar owned by one entity? | ✅ | ❌ |
+| Is it shared / referenced by many entities? | ❌ | ✅ |
+| Does it have its own properties / relationships? | ❌ | ✅ |
+| Do you traverse *through* it in queries? | ❌ | ✅ |
+| Is it a domain concept with identity? | ❌ | ✅ |
 
-> **Should this information be a property, or should it become a separate node connected by a relationship?**
+### Example: Address
 
-For example, consider a user's country.
-
-### Option A — Country as a Property
-
-```text
-(:User {
-  name: "Alice",
-  country: "France"
-})
+```mermaid
+graph LR
+    subgraph Bad: Address as property
+    A[User {address: "123 Main St"}] 
+    B[Company {address: "123 Main St"}]
+    end
+    
+    subgraph Good: Address as node
+    C[User] -->|LIVES_AT| D[Address {street: "123 Main St"}]
+    E[Company] -->|LOCATED_AT| D
+    end
+    
+    style Bad fill:#fcc,stroke:#999
+    style Good fill:#cfc,stroke:#333
 ```
 
-### Option B — Country as a Node
+## 5.2 BFS vs DFS — Conceptual, Not Hard-Coded
 
-```text
-(:User {name: "Alice"})
-        │
-        │ LIVES_IN
-        ▼
-(:Country {name: "France"})
+Neo4j does **not** hard-code BFS/DFS for every traversal. The Cypher planner picks operators (index seek, expand, filter) based on cost estimates.
+
+```mermaid
+graph TD
+    Q[Query: (a)-[:KNOWS*1..3]->(b)] --> P[Planner]
+    P --> S1[BFS-like expand]:::exp
+    P --> S2[DFS-like expand]:::exp
+    P --> S3[Filter by WHERE]:::flt
+    P --> S4[Index Seek on label]:::idx
+    classDef exp fill:#ffd,stroke:#333
+    classDef flt fill:#aaf,stroke:#333
+    classDef idx fill:#afa,stroke:#333
 ```
 
-Both designs are valid.
+**Misconception:** “Neo4j uses BFS for this query” — it may use a mix of operators depending on indices, predicates, and data shape.
 
-The correct choice depends on **how the data will be used**.
-
----
-
-## 🏷️ When should something be a Property?
-
-Use a property when the value is:
-
-* Simple
-* Usually scalar
-* Owned by one entity
-* Not commonly traversed as an entity
-* Not shared as an independent domain object
-
-Examples:
-
-```text
-User
- ├── name
- ├── age
- ├── email
- └── createdAt
-```
+## 5.3 Shortest Path & All Shortest Paths
 
 ```cypher
-CREATE (u:User {
-  name: "Alice",
-  age: 30,
-  email: "alice@example.com"
-})
+// Single shortest path
+MATCH p = shortestPath((a:User {id: "u1"})-[:KNOWS*]-(b:User {id: "u2"}))
+RETURN p;
+
+// All shortest paths (multiple equal length)
+MATCH p = allShortestPaths((a:User {id: "u1"})-[:KNOWS*]-(b:User {id: "u2"}))
+RETURN p;
 ```
 
----
+Use `shortestPath` when you need minimal hops (recommendation, routing). Use `allShortestPaths` for tie-breaking.
 
-## 🔗 When should something become a Node?
+## 5.4 Temporal / Versioned Memory Edges
 
-Use a node when the concept:
-
-* Represents a meaningful domain entity
-* Is shared by many entities
-* Has its own properties
-* Has relationships with other entities
-* Is frequently used for traversal
-
-Examples:
-
-```text
-User ──WORKS_AT──> Company
-User ──HAS_SKILL──> Skill
-Document ──ABOUT──> Topic
-Hotel ──LOCATED_IN──> City
-```
-
-For example:
-
-```text
-(:User {name: "Alice"})
-   │
-   ├── HAS_SKILL ──> (:Skill {name: "Python"})
-   │
-   └── LIVES_IN ──> (:Country {name: "France"})
-```
-
----
-
-# 2. 🧠 Property vs Node — Decision Framework
-
-A useful mental model:
-
-```text
-                     Is it an independent concept?
-                               │
-                     ┌─────────┴─────────┐
-                    NO                   YES
-                     │                    │
-                     ▼                    ▼
-                Use Property        Is it shared /
-                                   traversed / related?
-                                         │
-                                   ┌─────┴─────┐
-                                  NO          YES
-                                  │            │
-                                  ▼            ▼
-                              Property         Node
-```
-
-### Example
-
-Consider:
-
-```text
-User
- ├── age
- ├── email
- ├── country
- └── skills
-```
-
-If you only display the user's country:
-
-```text
-country = "France"
-```
-
-may be enough.
-
-But if you want queries such as:
-
-> "Find all users who live in countries where our company operates."
-
-then modeling:
-
-```text
-User ──LIVES_IN──> Country
-```
-
-may be more useful.
-
-### Key principle
-
-> **Model according to access patterns and domain meaning, not according to a rigid rule that everything must become a node.**
-
----
-
-# 3. ⚡ Graph Traversal Concepts — BFS vs DFS
-
-BFS and DFS are fundamental graph traversal algorithms.
-
-## BFS — Breadth-First Search
-
-BFS explores nodes level by level.
-
-```text
-             Alice
-           /       \
-        Bob        Charlie
-       /   \          \
-    David  Emma       Frank
-```
-
-BFS from Alice:
-
-```text
-Level 0
-   Alice
-
-Level 1
-   Bob
-   Charlie
-
-Level 2
-   David
-   Emma
-   Frank
-```
-
-Conceptually:
-
-```text
-0-hop → Alice
-
-1-hop → Bob, Charlie
-
-2-hop → David, Emma, Frank
-```
-
-### Typical uses
-
-* Shortest-path search in unweighted graphs
-* Degree-based neighborhood exploration
-* Finding nearby nodes
-* Level-by-level exploration
-
----
-
-# 4. 🌊 DFS — Depth-First Search
-
-DFS follows one branch deeply before backtracking.
-
-Example:
-
-```text
-Alice
-  │
-  └── Bob
-       │
-       └── David
-            │
-            └── Company X
-```
-
-Conceptually:
-
-```text
-Alice
-  ↓
-Bob
-  ↓
-David
-  ↓
-Company X
-```
-
-Then it backtracks and explores another branch.
-
-### Typical uses
-
-* Exploring connected structures
-* Tree/hierarchy traversal
-* Path exploration
-* Recursive graph algorithms
-
----
-
-# 5. ⚠️ Important Neo4j Clarification
-
-It is tempting to say:
-
-> "Neo4j uses BFS for this query and DFS for that query."
-
-That is too simplistic.
-
-Neo4j's Cypher execution engine uses **query planning and execution operators**. The exact internal traversal strategy depends on the query, planner, runtime, predicates, indexes, path semantics, and other factors.
-
-So:
-
-```text
-BFS / DFS
-```
-
-are useful **graph algorithm concepts**, but they should not be treated as a direct description of how every Cypher query executes internally.
-
-### Better mental model
-
-```text
-Cypher Query
-     │
-     ▼
-Query Planner
-     │
-     ▼
-Execution Plan
-     │
-     ▼
-Operators
-     │
-     ├── Index lookup
-     ├── Node scan
-     ├── Relationship traversal
-     ├── Filtering
-     └── Aggregation
-```
-
-Use `EXPLAIN` and `PROFILE` when you need to understand what Neo4j actually plans and executes.
-
----
-
-# 6. 🛣️ Shortest Paths in Cypher
-
-Neo4j provides path functions and path patterns for finding shortest paths.
-
-Example:
+Preferences and facts change over time. Model this with **temporal edges** carrying `validFrom` and `validTo`.
 
 ```cypher
-MATCH (a:User {name: "Alice"}),
-      (b:User {name: "David"})
+// Add preference valid from a date
+MATCH (u:User {id: $uid})
+MERGE (p:Preference {key: "theme", value: "dark"})
+MERGE (u)-[r:HAS_PREF {validFrom: datetime("2025-01-15"), validTo: null}]->(p);
 
-MATCH path = shortestPath(
-  (a)-[*..5]-(b)
-)
-
-RETURN path, length(path);
+// Query preference at a point in time
+MATCH (u:User {id: $uid})-[r:HAS_PREF {key: "theme"}]->(p)
+WHERE r.validFrom <= $at AND (r.validTo IS NULL OR r.validTo > $at)
+RETURN p.value;
 ```
 
-Conceptually:
-
-```text
-Alice
-  │
-  ▼
-Bob
-  │
-  ▼
-Charlie
-  │
-  ▼
-David
-
-Path length = 3
+```mermaid
+graph TD
+    U[User] -.->|HAS_PREF {validFrom:2025-01-15}| P1[Preference: dark]
+    U -.->|HAS_PREF {validFrom:2024-01-01, validTo:2025-01-15}| P2[Preference: light]
+    
+    style P1 fill:#cfc,stroke:#333
+    style P2 fill:#f9f,stroke:#333
 ```
 
-### Important
+## 5.5 Episodic Memory — Immutable Event Log
 
-Don't treat:
+Episodic memory stores *what happened, when, with whom*. Events are append-only; relationships link to entities.
 
 ```cypher
-shortestPath()
+// Create an event node
+CREATE (e:Event {
+  id: "evt_123",
+  type: "HOTEL_VISIT",
+  ts: datetime("2025-03-10T14:30:00Z"),
+  summary: "Alice stayed at Grand Plaza"
+})
+CREATE (p:Person {id: "p1", name: "Alice"})
+CREATE (h:Hotel {id: "h1", name: "Grand Plaza"})
+CREATE (e)-[:INVOLVES]->(p)
+CREATE (e)-[:INVOLVES]->(h);
 ```
 
-as a general-purpose performance optimization for every deep traversal.
-
-The query still needs suitable bounds and predicates.
-
-For production workloads, avoid unnecessarily broad variable-length patterns such as:
+Query all events involving Alice:
 
 ```cypher
-(a)-[*]-(b)
+MATCH (e:Event)-[:INVOLVES]->(p:Person {name: "Alice"})
+RETURN e.ts, e.type, e.summary
+ORDER BY e.ts DESC;
 ```
 
-because unrestricted traversal can become expensive on highly connected graphs.
+## 5.6 Hybrid GraphRAG Retrieval Overview
 
----
+GraphRAG = **vector search** (entry point) + **bounded graph expansion** (context enrichment).
 
-# 7. 🤖 Knowledge Graphs for AI Agents
-
-Graphs can act as a **structured long-term memory layer** for AI systems.
-
-Instead of storing only raw text, an agent can store entities and relationships.
-
-Example:
-
-```text
-              ┌───────────────┐
-              │     Alice     │
-              │     User      │
-              └───────┬───────┘
-                      │
-              PREFERS │
-                      ▼
-              ┌───────────────┐
-              │   Dark Mode   │
-              │   Preference  │
-              └───────────────┘
-
-                      │
-
-              EMPLOYED_BY
-                      │
-                      ▼
-              ┌───────────────┐
-              │  Acme Corp    │
-              │   Company     │
-              └───────────────┘
+```mermaid
+flowchart LR
+    A[User Query] --> B[Embed Query]
+    B --> C[Vector Index Search]
+    C --> D[Top-k Anchor Nodes]
+    D --> E[Bounded Graph Traversal\n(hops ≤ 3)]
+    E --> F[Context Fusion]
+    F --> G[LLM Generation]
+    
+    style A fill:#f9f,stroke:#333
+    style C fill:#aaf,stroke:#333
+    style E fill:#ffa,stroke:#333
+    style F fill:#cfc,stroke:#333
+    style G fill:#faa,stroke:#333
 ```
 
-The graph captures **relationships between facts**.
-
----
-
-# 8. 🧠 Factual Memory vs Episodic Memory
-
-AI agents often need different kinds of memory.
-
-## Factual / Semantic Memory
-
-Stores relatively stable information.
-
-Examples:
-
-```text
-Alice → WORKS_AT → Acme Corp
-Alice → PREFERS → Dark Mode
-Alice → HAS_SKILL → Python
-```
-
-This answers:
-
-> "What do I know about Alice?"
-
----
-
-## Episodic Memory
-
-Stores events or experiences.
-
-Example:
-
-```text
-Session #101
-     │
-     ├── DISCUSSED ──> Neo4j
-     ├── DISCUSSED ──> GraphRAG
-     └── TRIGGERED ──> Send Email
-```
-
-This answers:
-
-> "What happened during a previous interaction?"
-
----
-
-# 9. ⏳ Temporal Memory
-
-Memory often needs timestamps.
-
-For example:
-
-```text
-Alice
-  │
-  │ PREFERS
-  ▼
-Dark Mode
-
-Valid From: 2026-05-10
-```
-
-Later:
-
-```text
-Alice
-  │
-  │ PREFERS
-  ▼
-Light Mode
-
-Valid From: 2026-08-20
-```
-
-This allows the system to reason about **how information changes over time**.
-
----
-
-## Example
+### Why bounded hops?
 
 ```cypher
-CREATE (s:Session {
-  id: "sess_402",
-  timestamp: datetime()
-})
+// From vector anchor, expand 1-2 hops
+MATCH (d:Document)-[:BELONGS_TO]->(c:Category)
+WHERE d.id IN $anchorIds
+OPTIONAL MATCH (c)-[:HAS_TAG]->(t:Tag)
+RETURN d.title, c.name, collect(t.name) AS tags;
+```
 
-CREATE (u:User {
-  name: "Alice"
-})
+Without bounds, you traverse the whole graph.
 
-CREATE (t:Topic {
-  name: "Neo4j Cypher"
-})
+## 5.7 JS/TS Pseudo Code — Hybrid Retrieval Service
 
-CREATE (u)-[:HAD_SESSION]->(s)
+```typescript
+// Pseudo code — GraphRAG hybrid retrieval
+interface RetrievalConfig {
+  vectorIndex: string;
+  topK: number;
+  maxHops: number;
+  similarityThreshold: number;
+}
 
-CREATE (s)-[
-  :DISCUSSED {
-    confidence: 0.95
+interface HybridResult {
+  anchor: any;
+  expandedContext: any[];
+  fusedContext: string;
+}
+
+class GraphRAGService {
+  constructor(
+    private driver: any,
+    private config: RetrievalConfig
+  ) {}
+
+  async hybridRetrieve(query: string): Promise<HybridResult> {
+    // 1. Embed query (external embedding service)
+    const queryEmbedding = await this.embed(query);
+
+    // 2. Vector search for anchors
+    const vectorCypher = `
+      CALL db.index.vector.queryNodes($index, $k, $emb)
+      YIELD node AS anchor, score
+      WHERE score >= $threshold
+      RETURN anchor, score
+      ORDER BY score DESC
+    `;
+    const anchors = await this.driver.executeQuery(vectorCypher, {
+      index: this.config.vectorIndex,
+      k: this.config.topK,
+      emb: queryEmbedding,
+      threshold: this.config.similarityThreshold,
+    });
+
+    const anchorIds = anchors.records.map(r => r.get('anchor').elementId);
+
+    // 3. Bounded graph expansion from anchors
+    const expandCypher = `
+      UNWIND $ids AS id
+      MATCH (anchor) WHERE elementId(anchor) = id
+      CALL apoc.path.subgraphAll(anchor, {
+        relationshipFilter: "BELONGS_TO|HAS_TAG|MENTIONS|REFERENCES",
+        maxLevel: $maxHops
+      })
+      YIELD nodes, relationships
+      RETURN nodes, relationships
+    `;
+    const expanded = await this.driver.executeQuery(expandCypher, {
+      ids: anchorIds,
+      maxHops: this.config.maxHops,
+    });
+
+    // 4. Fuse into single context string (truncate to token limit)
+    const fused = this.fuseContext(anchors.records, expanded.records);
+
+    return { anchor: anchors.records, expandedContext: expanded.records, fusedContext: fused };
   }
-]->(t);
-```
 
-Graph:
-
-```text
-(:User {name: "Alice"})
-       │
-       │ HAD_SESSION
-       ▼
-(:Session {
-   id: "sess_402",
-   timestamp: ...
-})
-       │
-       │ DISCUSSED
-       ▼
-(:Topic {
-   name: "Neo4j Cypher"
-})
-```
-
----
-
-# 10. 🧩 Memory Is More Than a Graph
-
-A production AI memory system often combines multiple storage/retrieval mechanisms.
-
-```text
-                 AI Agent
-                    │
-         ┌──────────┼──────────┐
-         ▼          ▼          ▼
-      Graph       Vector      Cache
-     Memory       Store       / DB
-         │          │
-         ▼          ▼
-Relationships   Semantic
-& entities      similarity
-```
-
-### Graph is good at:
-
-> "What is connected to what?"
-
-### Vector search is good at:
-
-> "What content is semantically similar?"
-
-### Together:
-
-```text
-Graph + Vector
-      ↓
-Hybrid Retrieval
-      ↓
-GraphRAG
-```
-
----
-
-# 11. 🔀 Hybrid Retrieval — Vector + Graph
-
-Modern Neo4j versions support vector indexes, allowing embeddings to be stored and searched inside Neo4j.
-
-A simplified architecture:
-
-```text
-User Question
-      │
-      ▼
-Generate Embedding
-      │
-      ▼
-Vector Search
-      │
-      ▼
-Relevant Documents
-      │
-      ▼
-Graph Traversal
-      │
-      ▼
-Related Entities
-      │
-      ▼
-Context
-      │
-      ▼
-LLM
-      │
-      ▼
-Answer
-```
-
----
-
-# 12. 🧮 Creating a Vector Index
-
-Example:
-
-```cypher
-CREATE VECTOR INDEX document_embeddings IF NOT EXISTS
-FOR (d:Document) ON (d.embedding)
-OPTIONS {
-  indexConfig: {
-    `vector.dimensions`: 1536,
-    `vector.similarity_function`: 'cosine'
+  private fuseContext(anchors: any[], expanded: any[]): string {
+    // Build a single text context for LLM
+    const parts: string[] = [];
+    for (const a of anchors) {
+      const node = a.get('anchor');
+      parts.push(`[ANCHOR ${node.labels.join(':')} ${node.properties.title}]`);
+    }
+    for (const e of expanded) {
+      for (const n of e.get('nodes')) {
+        parts.push(`[CTX ${n.labels.join(':')} ${JSON.stringify(n.properties)}]`);
+      }
+    }
+    return parts.slice(0, 50).join('\n'); // Cap context
   }
-};
+
+  private async embed(text: string): Promise<number[]> {
+    // External call to embedding service (OpenAI, Cohere, etc.)
+    // Return float[]
+    return [];
+  }
+}
 ```
 
-Here:
+## 5.8 Common Mistakes
 
-```text
-Document
-   │
-   └── embedding → [0.12, -0.34, 0.88, ...]
-```
+| Mistake | Why it's wrong | Fix |
+|---------|----------------|-----|
+| Making every noun a node | Blows up graph size & traversal cost | Only nodes that are traversed/shared |
+| Using unbounded `*` traversals | Combinatorial explosion | Always bound `*1..3` |
+| Forgetting temporal edges for changing facts | Query returns stale/current mix | Use `validFrom`/`validTo` on rels |
+| No index on anchor lookup property | Full label scan for vector anchor | Index the property used in `WHERE` |
+| Single embedding dimension mismatch | Vector index creation fails | Match dimension in code & schema |
 
-The vector represents the semantic meaning of the document.
+## 5.9 Key Takeaways
 
----
-
-# 13. 🔎 Vector + Graph Retrieval
-
-A conceptual query can combine vector retrieval with graph traversal.
-
-```cypher
-CALL db.index.vector.queryNodes(
-  'document_embeddings',
-  5,
-  $queryEmbedding
-)
-YIELD node AS doc, score
-
-MATCH (doc)-[:BELONGS_TO]->(c:Category)
-      <-[:INTERESTED_IN]-
-      (u:User {name: "Alice"})
-
-RETURN
-  doc.title,
-  c.name,
-  score
-
-ORDER BY score DESC;
-```
-
-Conceptually:
-
-```text
-Query
- │
- ▼
-Embedding
- │
- ▼
-Vector Index
- │
- ▼
-Top 5 Documents
- │
- ▼
-Graph Traversal
- │
- ├── Category
- │
- └── User Interests
- │
- ▼
-Filtered / Enriched Context
-```
-
-This is one of the foundations of **GraphRAG**.
+- Promote to node only when concept is shared, traversed, or has own properties.
+- Neo4j planner is cost-based, not hard-coded BFS/DFS.
+- Temporal edges (`validFrom`/`validTo`) model time-varying facts.
+- Episodic memory = immutable `Event` nodes linked via `INVOLVES`.
+- GraphRAG: vector top-k → bounded hop expansion → fuse → LLM.
 
 ---
 
-# 14. 🧠 Vector Search vs Graph Search
-
-| Feature        | Vector Search                         | Graph Search                   |
-| -------------- | ------------------------------------- | ------------------------------ |
-| Main strength  | Semantic similarity                   | Relationships                  |
-| Input          | Embedding                             | Entities/patterns              |
-| Question       | "What is similar?"                    | "What is connected?"           |
-| Great for      | Documents, chunks, semantic retrieval | Knowledge graphs, dependencies |
-| Example        | Similar documents                     | People → Company → Skill       |
-| Main structure | Vectors                               | Nodes + relationships          |
-
-### Hybrid approach
-
-```text
-Vector Search
-      +
-Graph Traversal
-      =
-Rich Retrieval Context
-```
-
----
-
-# 15. 📚 GraphRAG Architecture
-
-A practical GraphRAG system may look like:
-
-```text
-                 User Query
-                     │
-                     ▼
-              Query Processing
-                     │
-             ┌───────┴────────┐
-             ▼                ▼
-       Vector Retrieval   Graph Retrieval
-             │                │
-             ▼                ▼
-       Relevant Chunks    Related Entities
-             │                │
-             └───────┬────────┘
-                     ▼
-                 Context Fusion
-                     │
-                     ▼
-                    LLM
-                     │
-                     ▼
-                 Final Answer
-```
-
-The graph doesn't necessarily replace vector search.
-
-Instead, the two can complement each other.
-
----
-
-# 16. 📚 Database Indexes
-
-Indexes help Neo4j find nodes efficiently based on indexed properties.
-
-Example:
-
-```cypher
-CREATE INDEX user_name_idx IF NOT EXISTS
-FOR (u:User) ON (u.name);
-```
-
-Now a query such as:
-
-```cypher
-MATCH (u:User {name: "Alice"})
-RETURN u;
-```
-
-may benefit from the index when the planner chooses an appropriate index-backed lookup.
-
----
-
-# 17. 🧩 Composite Indexes
-
-You can also index multiple properties.
-
-Example:
-
-```cypher
-CREATE INDEX hotel_city_rating_idx IF NOT EXISTS
-FOR (h:Hotel) ON (h.city, h.rating);
-```
-
-This can be useful when your query patterns commonly filter on the indexed property combination.
-
-However, index design should follow your **actual query workload**.
-
----
-
-# 18. ⚠️ Don't "Always Create Indexes"
-
-A common beginner rule is:
-
-> "Always create indexes on every property used in MATCH."
-
-That's too broad.
-
-Indexes have costs:
-
-* Additional storage
-* Write/update overhead
-* Maintenance cost
-* More schema complexity
-
-Instead:
-
-```text
-Identify important queries
-        ↓
-Inspect execution plans
-        ↓
-Find expensive anchor lookups
-        ↓
-Create appropriate indexes
-        ↓
-PROFILE again
-```
-
-### Better principle
-
-> **Create indexes based on access patterns and measured performance, not automatically on every property.**
-
----
-
-# 19. 🔬 `EXPLAIN` vs `PROFILE`
-
-These are essential tools for Cypher performance analysis.
-
----
-
-## `EXPLAIN`
-
-```cypher
-EXPLAIN
-MATCH (u:User {name: "Alice"})
-      -[:LIKES]->(h:Hotel)
-
-RETURN h.businessName;
-```
-
-`EXPLAIN` shows the planned execution strategy **without actually executing the query**.
-
-Useful when:
-
-* Designing queries
-* Checking whether an index is considered
-* Inspecting the execution plan
-
----
-
-# 20. 📊 `PROFILE`
-
-```cypher
-PROFILE
-MATCH (u:User {name: "Alice"})
-      -[:LIKES]->(h:Hotel)
-
-RETURN h.businessName;
-```
-
-`PROFILE` executes the query and provides runtime statistics for the operators.
-
-You can inspect information such as:
-
-* Rows
-* Database hits
-* Operator execution statistics
-* Other runtime metrics shown by the plan
-
-Conceptually:
-
-```text
-PROFILE
-   │
-   ▼
-Execute Query
-   │
-   ▼
-Execution Plan + Runtime Statistics
-```
-
----
-
-# 21. 🔍 Reading an Execution Plan
-
-Conceptually, you might see:
-
-```text
-NodeIndexSeek
-      │
-      ▼
-Expand
-      │
-      ▼
-Filter
-      │
-      ▼
-Projection
-      │
-      ▼
-Result
-```
-
-Think of it as:
-
-```text
-Find starting node
-        ↓
-Follow relationships
-        ↓
-Filter results
-        ↓
-Select returned fields
-```
-
-The actual operators depend on the query and Neo4j version/runtime.
-
----
-
-# 22. 🏗️ Production Graph Modeling Workflow
-
-A good modeling process is:
-
-```text
-1. Understand the domain
-        ↓
-2. Identify entities
-        ↓
-3. Identify relationships
-        ↓
-4. Identify properties
-        ↓
-5. Identify common queries
-        ↓
-6. Add constraints/indexes where appropriate
-        ↓
-7. Test with realistic data
-        ↓
-8. PROFILE important queries
-        ↓
-9. Optimize
-```
-
-Don't design a graph only from the data structure.
-
-Design it around:
-
-> **Domain + relationships + access patterns.**
-
----
-
-# 23. 🤖 AI Agent Memory Architecture
-
-A more complete AI memory system can look like:
-
-```text
-                     AI Agent
-                        │
-              ┌─────────┼─────────┐
-              │         │         │
-              ▼         ▼         ▼
-          Working    Long-Term   Semantic
-          Memory      Memory     Retrieval
-              │         │         │
-              │         ▼         ▼
-              │       Graph     Vector DB
-              │       Memory
-              │         │
-              └─────────┼─────────┘
-                        ▼
-                    Context Builder
-                        │
-                        ▼
-                       LLM
-```
-
-### Working memory
-
-Information relevant to the current task.
-
-### Episodic memory
-
-Past interactions/events.
-
-### Semantic/factual memory
-
-Known facts and concepts.
-
-### Vector memory
-
-Semantically similar content.
-
-A production agent can combine all of these.
-
----
-
-# 24. 🔥 Master Mental Model
-
-Remember the entire topic using this pipeline:
-
-```text
-                 GRAPH DATA MODEL
-                      │
-           ┌──────────┴──────────┐
-           ▼                     ▼
-       Entities                Properties
-           │
-           ▼
-    Relationships
-           │
-           ▼
-       Traversal
-      /          \
-    BFS          DFS
-      \          /
-       Query Planning
-             │
-             ▼
-        Neo4j Engine
-             │
-       ┌─────┴─────┐
-       ▼           ▼
-    Graph       Vector
-   Retrieval   Retrieval
-       │           │
-       └─────┬─────┘
-             ▼
-          GraphRAG
-             │
-             ▼
-         AI Agent
-             │
-             ▼
-        Memory System
-```
-
----
-
-# 25. 🎯 Master Best Practices
-
-### 1. Model the domain, not just the data
-
-Use nodes for meaningful entities and properties for simple attributes.
-
----
-
-### 2. Design around query patterns
-
-Ask:
-
-> "What questions will my application need to answer?"
-
-before finalizing the model.
-
----
-
-### 3. Don't assume BFS/DFS describes every Neo4j query
-
-They are fundamental traversal algorithms, but Neo4j uses a query planner and execution operators.
-
----
-
-### 4. Bound deep traversals
-
-Avoid unnecessarily broad variable-length patterns.
-
-```cypher
-(a)-[*]-(b)
-```
-
-can be dangerous on highly connected graphs.
-
-Prefer meaningful bounds and predicates.
-
----
-
-### 5. Combine graph + vector retrieval when appropriate
-
-```text
-Vector → semantic relevance
-
-Graph → relationships/context
-```
-
-Together they can create powerful GraphRAG systems.
-
----
-
-### 6. Use constraints for identity
-
-For example:
-
-```cypher
-CREATE CONSTRAINT user_email_unique
-FOR (u:User)
-REQUIRE u.email IS UNIQUE;
-```
-
-Constraints and indexes solve different schema/performance problems.
-
----
-
-### 7. Index based on workload
-
-Don't automatically index every property.
-
-Use:
-
-```text
-EXPLAIN
-    +
-PROFILE
-    +
-Real Query Workload
-```
-
-to guide optimization.
-
----
-
-### 8. Treat AI-generated queries as untrusted
-
-For AI agents:
-
-```text
-LLM
- ↓
-Generate Cypher
- ↓
-Validate
- ↓
-Restrict permissions
- ↓
-Execute
- ↓
-Verify results
-```
-
-Never assume generated Cypher is automatically safe or correct.
-
----
-
-# 🧾 Interview Quick Revision
-
-### Q1. Property vs Node?
-
-Use a **property** for simple attributes and a **node** for meaningful entities that may be shared, related, or traversed.
-
----
-
-### Q2. What is BFS?
-
-Breadth-First Search explores a graph level by level.
-
-```text
-0-hop
-  ↓
-1-hop
-  ↓
-2-hop
-  ↓
-3-hop
-```
-
----
-
-### Q3. What is DFS?
-
-Depth-First Search explores one branch deeply before backtracking.
-
----
-
-### Q4. Does Neo4j simply use BFS or DFS for every Cypher query?
-
-**No.**
-
-Cypher is compiled into an execution plan containing operators. Traversal behavior depends on the query and execution strategy.
-
----
-
-### Q5. What is GraphRAG?
-
-GraphRAG combines **graph-based retrieval** with **semantic/vector retrieval** to provide richer context to an LLM.
-
----
-
-### Q6. Why use vector search with a graph?
-
-Vector search finds semantically relevant information, while graph traversal reveals relationships and connected context.
-
----
-
-### Q7. What is episodic memory?
-
-Memory representing past events or interactions.
-
-Example:
-
-```text
-Session #101
-   ↓
-Discussed GraphRAG
-   ↓
-Triggered Action
-```
-
----
-
-### Q8. What is temporal memory?
-
-Memory that represents when information was valid, created, updated, or observed.
-
----
-
-### Q9. What does `EXPLAIN` do?
-
-It shows the planned execution strategy without executing the query.
-
----
-
-### Q10. What does `PROFILE` do?
-
-It executes the query and provides runtime statistics for the execution plan.
-
----
-
-### Q11. Should every property have an index?
-
-**No.**
-
-Indexes should be created based on important access patterns and performance requirements.
-
----
-
-### Q12. What is the main advantage of graph databases for AI memory?
-
-They make relationships between entities and events explicit and efficiently traversable, which can complement semantic/vector retrieval.
-
----
-
-# 🧠 Final Mental Shortcut
-
-Remember:
-
-```text
-MODEL
-  ↓
-Nodes = Entities
-Properties = Attributes
-Relationships = Connections
-  ↓
-TRAVERSE
-  ↓
-BFS / DFS = Graph Algorithm Concepts
-  ↓
-RETRIEVE
-  ↓
-Graph Search + Vector Search
-  ↓
-GraphRAG
-  ↓
-MEMORY
-  ↓
-Facts + Episodes + Time
-  ↓
-OPTIMIZE
-  ↓
-Indexes + EXPLAIN + PROFILE
-```
-
-> **Graph modeling defines what exists. Relationships define how things connect. Traversal finds connected information. Vector search finds semantic similarity. GraphRAG combines both. Memory systems use these capabilities to give AI agents structured, contextual, and time-aware knowledge.**
+**Self-check questions:**
+13. When should a concept become a separate `Node` instead of a `Property`?
+14. Explain why “Neo4j uses BFS for this query” is an oversimplification.
+15. How do you model a user preference that changed on 2025-01-15?

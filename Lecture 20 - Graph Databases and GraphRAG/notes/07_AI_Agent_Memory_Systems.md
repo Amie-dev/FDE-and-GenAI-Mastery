@@ -1,270 +1,206 @@
-# 🧠 07 — AI Agent Memory Systems on Graphs
+# Chapter 07 — AI Agent Memory Systems on Graphs
 
-> **Goal:** Model factual, episodic, and temporal memory for LLM agents as a property graph; perform entity resolution; build evolving user/agent profiles; and query the memory graph efficiently.
+## 7.1 Memory Taxonomy for AI Agents
 
----
-
-## 1. 🗂️ Memory Taxonomy for Agents
-
-| Memory Type | Lifetime | Example Nodes / Edges | Typical Query |
-|-------------|----------|------------------------|---------------|
-| **Working / Short‑term** | Current session / conversation window | `(Session) -[:HAS_MESSAGE]-> (Message)` | “What did the user say 3 turns ago?” |
-| **Episodic** | Past interactions, immutable events | `(Event {timestamp, type}) -[:INVOLVES]-> (Entity)` | “Show all events where Alice booked a flight.” |
-| **Semantic / Factual** | Long‑lived world knowledge | `(Person) -[:WORKS_AT]-> (Org)`<br>`(Concept) -[:RELATED_TO]-> (Concept)` | “What company does Alice work for?” |
-| **Temporal / Versioned** | Time‑varying facts | `(Person) -[:PREFERS {validFrom, validTo}]-> (Setting)` | “What was Alice’s theme preference in Jan 2025?” |
-| **Procedural / Skill** | Learned procedures | `(Agent) -[:HAS_SKILL]-> (Skill {code, version})` | “Retrieve the latest summarisation prompt.” |
-
-> **Design rule:** Choose the memory *type* first, then decide whether a concept is a **property** (simple, owned, rarely traversed) or a **node** (shared, multi‑hop, has its own properties/relationships).
-
----
-
-## 2. 🏗️ Graph Schema for Agent Memory
-
-Below is a **minimal, extensible** schema used in production‑grade agents.
+AI agents benefit from multiple memory systems, each with distinct graph constructs:
 
 ```mermaid
-erDiagram
-    Agent ||--o{ Session : "OWNS"
-    Session ||--o{ Message : "HAS_MESSAGE"
-    Message }|--|| User : "FROM"
-    Message }|--|| Agent : "TO"
-    Session }|--o{ Event : "TRIGGERS"
-    Event }|--o{ Entity : "INVOLVES"
-    Entity }|--o{ Entity : "RELATES_TO"
-    User }|--o{ Preference : "HAS_PREFERENCE"
-    Preference }|--|| Setting : "VALUE_OF"
-    Entity }|--o{ Observation : "OBSERVED_IN"
-    Observation }|--|| Session : "RECORDED_IN"
+graph LR
+    subgraph Working Memory
+    W[Working / STM] -->|Session → Message| WM[Recent messages]
+    W -->|TTL = 30 min| TTL[Auto-expire]
+    end
+    
+    subgraph Episodic Memory
+    E[Episodic] -->|Event node, immutable| EM[Event log]
+    E -->|TIMES| ET[timestamp]
+    E -->|RETRIEVE via query| ER[ replay audit ]
+    end
+    
+    subgraph Semantic Memory
+    S[Semantic / Factual] -->|Entity → Entity| SM[Facts/associations]
+    S -->|temporal rel validFrom/To| TEMP[Time-varying facts]
+    end
+    
+    subgraph Procedural Memory
+    P[Procedural / Skill] -->|Skill node, HAS_SKILL edge| PM[Skills + versions]
+    P -->|RUN prompt| RP[executable instruction]
+    end
+    
+    style Working Memory fill:#f9f,stroke:#333
+    style Episodic Memory fill:#ccf,stroke:#333
+    style Semantic Memory fill:#cfc,stroke:#333
+    style Procedural Memory fill:#cfd,stroke:#333
 ```
 
-### 2.1 Core Node Labels & Key Properties
+| Memory type | Node labels | Temporal edge? | TTL? | Typical query |
+|-------------|-------------|-----------------|------|----------------|
+| Working / STM | `Session → Message` | No | Yes (session TTL) | Last N messages of a session |
+| Episodic | `Event → Entity` | No (immutable timestamp) | No (immutable) | All events involving X |
+| Semantic / Factual | `Entity → Entity` | Optional | Possibly | "Company of Alice" |
+| Temporal / Versioned | `Preference` on `HAS_PREF` | Yes (`validFrom`, `validTo`) | Yes (date window) | Theme on date D |
+| Procedural / Skill | `Skill`, `HAS_SKILL` | Version on node | (reactive update) | Latest summarisation prompt |
 
-| Label | Key Properties | Notes |
-|-------|----------------|-------|
-| `Agent` | `id`, `name`, `version` | One row per deployed agent |
-| `User` | `id`, `externalId`, `createdAt` | Linked to auth system |
-| `Session` | `id`, `startedAt`, `endedAt`, `status` | `status ∈ {active, closed}` |
-| `Message` | `id`, `role` (user/assistant/system), `content`, `ts` | Ordered by `ts` |
-| `Event` | `id`, `type`, `payload`, `ts` | Immutable log |
-| `Entity` | `id`, `type` (Person, Org, Topic…), `name` | Canonicalised via entity resolution |
-| `Preference` | `key`, `value`, `validFrom`, `validTo` | Temporal factual memory |
-| `Skill` | `id`, `name`, `code`, `version` | Procedural memory |
-| `Observation` | `id`, `confidence`, `source` | Links `Entity` → `Session` |
+## 7.2 Entity Resolution — Canonicalising Surface Mentions
 
-### 2.2 Core Relationship Types
+Agents often mention ambiguous surface terms ("Apple", "AAPL", "acme"), and text contains noise. **Entity resolution** maps each mention to one canonical `Entity` node.
 
-| Type | Direction | When to Use |
-|------|-----------|-------------|
-| `OWNS` | Agent → Session | Session lifecycle |
-| `HAS_MESSAGE` | Session → Message | Conversation log |
-| `FROM` / `TO` | Message → User / Agent | Speaker / listener |
-| `TRIGGERS` | Session → Event | Side‑effects (tool calls, emails…) |
-| `INVOLVES` | Event → Entity | Who/what participated |
-| `RELATES_TO` | Entity ↔ Entity | Domain graph (knows, works_at…) |
-| `HAS_PREFERENCE` | User → Preference | Temporal key‑value facts |
-| `OBSERVED_IN` | Entity → Observation → Session | Provenance & confidence |
+```mermaid
+flowchart TD
+    A[Raw mention: "Apple"] --> B[Dedupe against known terms]
+    B --> C{Matches existing entity?}
+    C -->|Yes, same identifier| D[Reuse canonical entity E1]
+    C -->|No, new term| E[Create NEW Entity node]
+    C -->|Partial match| F[Clarify & possibly merge]
+    
+    style D fill:#cfc,stroke:#333
+    style E fill:#ccf,stroke:#9f9
+    style F fill:#ffd,stroke:#999
+```
 
----
+### Example: "AAPL" vs "Apple"
 
-## 3. 🔍 Entity Resolution (Canonicalisation)
+```cypher
+// During entity ingestion
+MERGE (e:Entity {name: "Apple"})  // canonical from longer term
+MERGE (p:Person {name: "Alice"})
+MATCH (p)-[r:WORKS_AT]->(e)
+SET r.surfaceTerms = ["AAPL"];   // record alternate mentions
+```
 
-Agents encounter the same real‑world entity under many surface forms (“Apple”, “Apple Inc.”, “AAPL”). Store a **canonical `Entity` node** and link mentions to it.
+The agent query resolves "AAPL" → canonical "Apple" first, then searches `Person -[:WORKS_AT]-> Entity`.
 
-### 3.1 Resolution Flow (pseudo‑code)
+### Common Mistakes
 
-```ts
-// TS pseudo‑code
-async function resolveEntity(driver, mention: string, type: string): Promise<string> {
-  // 1️⃣ Exact match on canonical name
-  const exact = await driver.executeQuery(
-    `MATCH (e:Entity {type: $type, name: $mention}) RETURN e.id`,
-    { type, mention }
-  );
-  if (exact.records.length) return exact.records[0].get('e.id');
+| Mistake | Why it breaks memory | Fix |
+|---------|---------------------|-----|
+| One node per distinct string ("Alice", "Alicia") | Duplicate working memory paths | Use alias table / canonical label |
+| No entity resolution on entry | Fragmented `Person -[:WORKS_AT]-> Company` pairs | Resolve before query |
+| Hard-coding entity lists | Miss new entities | Use fuzzy matching + DB constraints |
 
-  // 2️⃣ Fuzzy / embedding match (vector index on Entity.name)
-  const emb = await embed(mention);
-  const fuzzy = await driver.executeQuery(
-    `CALL db.index.vector.queryNodes('entity_name_idx', 1, $emb)
-     YIELD node AS e, score
-     WHERE score > 0.85 AND e.type = $type
-     RETURN e.id`,
-    { emb, type }
-  );
-  if (fuzzy.records.length) return fuzzy.records[0].get('e.id');
+## 7.3 Profile Building
 
-  // 3️⃣ Create new canonical entity
-  const created = await driver.executeQuery(
-    `CREATE (e:Entity {id: randomUUID(), type: $type, name: $mention})
-     RETURN e.id`,
-    { type, mention }
-  );
-  return created.records[0].get('e.id');
+A **profile** is a materialised, queryable view that summarises a person's observations (skills, interests, recent events). Build it incrementally via aggregation queries.
+
+```cypher
+// Summarise Alice's profile across semantic, episodic, procedural memory
+MATCH (p:Person {name: $name})
+OPTIONAL MATCH (p)-[:OWNS|TRIGGERS]->(f:Fact)
+OPTIONAL MATCH (f)-[:INVOLVES]->(e:Entity)
+OPTIONAL MATCH (p)-[:INVOLVES|HAPPENED_TO]->(ev:Event)
+RETURN collect(DISTINCT e.name) AS associations,
+       collect(DISTINCT ev.type) AS activities,
+       count(*) AS total_interactions;
+```
+
+```mermaid
+graph TD
+    P[Person: Alice] --> P2[Aggregates from all memory types]
+    P --> A1[Semantic facts]
+    P --> A2[Episodic events]
+    P --> A3[Procedural skills]
+    A1 --> P2
+    A2 --> P2
+    A3 --> P2
+    P2 --> Q[Profile: skills=3, tags=5, events=24]
+```
+
+Store the materialised profile on each refreshed session so subsequent queries are fast.
+
+## 7.4 Indexing Hot Paths
+
+Index the properties queried frequently by indexing their labels and properties together.
+
+```cypher
+CREATE INDEX idx_person_name FOR (p:Person) ON (p.name);
+CREATE INDEX idx_event_ts FOR (e:Event) ON (e.ts);
+CREATE INDEX idx_session_created FOR (s:Session) ON (s.createdAt);
+```
+
+Vector index on `Document.embedding` for GraphRAG anchors; unique constraint on `User.id`; full-scan-preventing indexes on hot label/property combos.
+
+## 7.5 JS/TS Pseudo Code — Memory Ingestion Service
+
+```typescript
+// Pseudo code — agent memory ingestion into graph
+interface IngestItem {
+  kind: 'fact' | 'event' | 'skill' | 'preference';
+  source?: 'ingestion' | 'user_message';
+  payload: Record<string, unknown>;
+}
+
+class MemoryIngestionService {
+  constructor(private driver: any) {}
+
+  async ingest(items: IngestItem[]): Promise<void> {
+    for (const item of items) {
+      switch (item.kind) {
+        case 'fact':
+          await this.writeFact(item);
+          break;
+        case 'event':
+          await this.writeEvent(item);
+          break;
+        case 'skill':
+          await this.upsertSkill(item);
+          break;
+        case 'preference':
+          await this.upsertPreference(item);
+          break;
+      }
+    }
+  }
+
+  async writeFact(item: IngestItem): Promise<void> {
+    const { subject, relation, object } = item.payload;
+    const pattern = `
+      MERGE (s:Entity {name: $subject})
+      MERGE (o:Entity {name: $object})
+      MERGE ()-[r:OWNS|TRIGGERS]{{ key }}->(e) SET r.*
+    `.replace(/r\.\*/, 'r').replace(/{ key }/, item.payload.key);
+    await this.driver.executeQuery(pattern, {
+      subject, object, key: item.payload.relation,
+    });
+  }
+
+  async upsertPreference(item: IngestItem): Promise<void> {
+    const prefs = JSON.parse(item.payload.data) as Array<{value: string; validFrom?: string; validTo?: string}>;
+    for (const p of prefs) {
+      const at = p.validFrom ?? new Date();
+      await this.driver.executeQuery(
+        `
+        MATCH (u:User {id: $uid})
+        MERGE (p:Preference {key: $key})
+        MERGE (u)-[:HAS_PREF {key: $key, validFrom: datetime($vfrom), validTo: datetime($vto)}]->(p)
+        `,
+        { uid: item.payload.userId, key: item.payload.key, vfrom: p.validFrom, vto: p.validTo ?? null }
+      );
+    }
+  }
 }
 ```
 
-### 3.2 Linking a Mention → Canonical Entity
+## 7.6 Common Mistakes
 
-```cypher
-// When a new Message mentions "Apple"
-MATCH (m:Message {id: $msgId})
-MERGE (e:Entity {id: $canonId})
-MERGE (m)-[:MENTIONS {confidence: $conf}]->(e);
-```
+| Mistake | Why it hurts | Fix |
+|---------|--------------|-----|
+| Distinct strings per node | Duplicate memory paths; bloated graph | Dedupe via entity resolution table |
+| No index on user/session lookups | Full label scan per request | Create indexes on `(label, property)` |
+| Profile rebuilt from scratch each time | Slow repeated aggregation | Cache + incremental update |
+| Ignoring time windows | Prefer current state over stale | Query with `validFrom <= @at AND validTo > @at` |
+| Indexing every node/relationship | Write latency, storage waste | Index only hot paths verified with PROFILE |
 
-> **Tip:** Keep a `Mention` node if you need fine‑grained provenance (`span`, `detector`, `confidence`).
+## 7.7 Key Takeaways
 
----
-
-## 4. ⏳ Temporal / Versioned Facts
-
-Preferences, roles, and addresses change over time. Model them with **valid‑time intervals** on the relationship.
-
-### 4.1 Schema Fragment
-
-```text
-(User)-[:HAS_PREFERENCE {validFrom: datetime, validTo: datetime?}]->(Preference)
-```
-
-### 4.2 Query: “What was Alice’s theme on 2025‑01‑15?”
-
-```cypher
-MATCH (u:User {id: 'alice'})-[:HAS_PREFERENCE {key: 'theme'}]->(p:Preference)
-WHERE p.validFrom <= datetime('2025-01-15')
-  AND (p.validTo IS NULL OR p.validTo > datetime('2025-01-15'))
-RETURN p.value;
-```
-
-### 4.3 Updating a Preference (closes old interval, opens new)
-
-```cypher
-MATCH (u:User {id: 'alice'})-[old:HAS_PREFERENCE {key: 'theme'}]->(p:Preference)
-WHERE old.validTo IS NULL
-SET old.validTo = datetime()          // close previous
-CREATE (u)-[:HAS_PREFERENCE {key: 'theme', validFrom: datetime()}]->(:Preference {value: 'dark'});
-```
+- Five memory types map naturally to five graph construct patterns (working, episodic, semantic, temporal, procedural).
+- Entity resolution canonicalises surface mentions before search.
+- Profiles materialise aggregations into an indexed lookup node.
+- Index the hot lookup paths; create vector index for GraphRAG.
+- Use temporal edges (`validFrom`/`validTo`) for facts that change over time.
 
 ---
 
-## 5. 🧱 Profile Building — Aggregating Observations into a User Profile
-
-A **profile** is a derived, query‑friendly view built from raw events/observations.
-
-### 5.1 Example: Skill Profile from Coding Sessions
-
-```cypher
-// Incremental view – run nightly or on‑demand
-MATCH (u:User)-[:OWNS]->(s:Session)-[:TRIGGERS]->(e:Event {type: 'code_commit'})
-      -[:INVOLVES]->(ent:Entity {type: 'Technology'})
-WITH u, ent.name AS tech, count(*) AS freq
-MERGE (u)-[r:HAS_SKILL {name: tech}]->(sk:Skill {name: tech})
-ON CREATE SET sk.frequency = freq, sk.lastSeen = datetime()
-ON MATCH  SET sk.frequency = sk.frequency + freq, sk.lastSeen = datetime();
-```
-
-### 5.2 Querying the Profile
-
-```cypher
-MATCH (u:User {id: 'alice'})-[h:HAS_SKILL]->(sk:Skill)
-WHERE h.frequency > 5
-RETURN sk.name, h.frequency, sk.lastSeen
-ORDER BY h.frequency DESC;
-```
-
----
-
-## 6. 📚 Retrieval Patterns for Agent Memory
-
-### 6.1 Recent Conversation Context (Working Memory)
-
-```cypher
-MATCH (s:Session {id: $sessId})-[:HAS_MESSAGE]->(m:Message)
-WHERE m.ts > datetime() - duration({minutes: 30})
-RETURN m.role, m.content, m.ts
-ORDER BY m.ts ASC
-LIMIT 20;
-```
-
-### 6.2 Episodic Recall – “All events where Alice interacted with *Project X*”
-
-```cypher
-MATCH (u:User {id: 'alice'})-[:OWNS]->(s:Session)-[:TRIGGERS]->(e:Event)
-      -[:INVOLVES]->(ent:Entity {name: 'Project X'})
-RETURN e.type, e.payload, e.ts
-ORDER BY e.ts DESC;
-```
-
-### 6.3 Semantic Fact Lookup – “Where does Alice work?”
-
-```cypher
-MATCH (u:User {id: 'alice'})-[:WORKS_AT]->(org:Org)
-RETURN org.name;
-```
-
-### 6.4 Hybrid Memory Retrieval (Vector + Graph)
-
-```cypher
-// 1️⃣ Embed the query
-// 2️⃣ Vector search over Message.content or Event.payload embeddings
-CALL db.index.vector.queryNodes('message_emb_idx', 5, $qEmb)
-YIELD node AS msg, score
-// 3️⃣ One‑hop graph expansion for context
-MATCH (msg)<-[:HAS_MESSAGE]-(s:Session)-[:TRIGGERS]->(e:Event)-[:INVOLVES]->(ent:Entity)
-RETURN msg.content, e.type, collect(DISTINCT ent.name) AS entities, score
-ORDER BY score DESC;
-```
-
----
-
-## 7. ⚙️ Indexing & Performance for Memory Graphs
-
-| Index | Purpose |
-|-------|---------|
-| `CREATE INDEX user_id_idx FOR (u:User) ON (u.id)` | Fast user anchor |
-| `CREATE INDEX session_user_idx FOR (s:Session) ON (s.userId)` | Session look‑up by user |
-| `CREATE INDEX message_ts_idx FOR (m:Message) ON (m.ts)` | Time‑window queries |
-| `CREATE VECTOR INDEX message_emb_idx FOR (m:Message) ON (m.embedding) OPTIONS {vector.dimensions: 1536, vector.similarity_function: 'cosine'}` | Semantic message search |
-| `CREATE VECTOR INDEX entity_name_idx FOR (e:Entity) ON (e.nameEmbedding) OPTIONS {...}` | Entity resolution |
-| `CREATE INDEX event_type_idx FOR (e:Event) ON (e.type)` | Filter events by type |
-
-> **Rule of thumb:** `PROFILE` every memory‑read query that runs in the hot path (context assembly, profile lookup).
-
----
-
-## 8. 🛑 Common Mistakes
-
-| Mistake | Symptom | Fix |
-|---------|---------|-----|
-| **Storing every token as a node** | Graph explodes, traversal too slow. | Keep raw text on `Message.content`; only extract *entities* as nodes. |
-| **No temporal validity on facts** | Stale preferences used forever. | Add `validFrom`/`validTo` on `HAS_PREFERENCE` and similar edges. |
-| **Skipping entity resolution** | Duplicate `Entity` nodes (“Apple” vs “Apple Inc.”). | Centralise canonicalisation (see §3). |
-| **Unbounded traversals in context assembly** | Latency spikes, OOM. | Bound hops (`*1..2`), add `WHERE`, use `LIMIT`. |
-| **Forgetting to index `Message.ts`** | “Last 30 min” queries scan all messages. | Add `CREATE INDEX message_ts_idx …`. |
-
----
-
-## 9. 📌 Key Takeaways
-
-1. **Separate memory types** (working, episodic, semantic, temporal, procedural) → distinct sub‑graphs.
-2. **Entity resolution** is mandatory; always map surface mentions → canonical `Entity` nodes.
-3. **Temporal facts** are modelled with `validFrom`/`validTo` on relationships, not by overwriting properties.
-4. **Profiles** are materialised views aggregated from raw events; refresh incrementally.
-5. **Hybrid retrieval** (vector + one‑hop graph) gives the best context for LLM answers.
-6. **Index hot paths**: `User.id`, `Session.userId`, `Message.ts`, plus vector indexes on embeddings.
-7. **Bound every traversal** and `PROFILE` memory‑read queries.
-
----
-
-## 10. 🧪 Self‑Check Questions
-
-1. Draw the mermaid ER diagram for the core agent‑memory schema (Agent, Session, Message, Event, Entity, Preference).  
-2. Write Cypher to close an old `HAS_PREFERENCE` interval and open a new one for user *alice* (theme → dark).  
-3. How would you implement “entity resolution” for a new mention “AAPL” → canonical `Entity` node?  
-4. What index would you create to make “recent 30‑minute messages” fast?  
-5. Explain the difference between *episodic* and *semantic* memory in graph terms.  
-6. Why is it dangerous to model every noun in a conversation as a separate `Entity` node?  
-7. Sketch a nightly job (pseudo‑code) that rebuilds a user’s `HAS_SKILL` profile from `code_commit` events.  
-
---- 
-
-*End of chapter.*
+**Self-check questions:**
+15. Sketch the entity-resolution flow for a new mention "AAPL".
+16. Which index makes “recent 30-min messages” fast?
+17. Difference between *episodic* and *semantic* memory in graph terms.

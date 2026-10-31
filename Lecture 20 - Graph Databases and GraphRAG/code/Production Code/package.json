@@ -1,0 +1,33 @@
+{
+  "name": "lecture-20-graphrag-production",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-hardened GraphRAG service with observability, retries, secrets, and security.",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "bootstrap": "tsx scripts/bootstrap.ts",
+    "test:integration": "tsx scripts/integration-test.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "neo4j-driver": "^5.19.0",
+    "winston": "^3.14.0",
+    "prom-client": "^15.1.3",
+    "p-retry": "^6.2.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.0",
+    "@types/winston": "^2.4.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.2",
+    "eslint": "^9.11.0"
+  }
+}
