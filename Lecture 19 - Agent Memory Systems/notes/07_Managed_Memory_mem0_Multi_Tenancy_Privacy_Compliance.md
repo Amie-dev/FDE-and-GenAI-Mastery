@@ -4,6 +4,8 @@
 
 Instead of building every memory operation from scratch, managed memory frameworks like **mem0** provide an abstraction layer that handles memory storage, retrieval, extraction, deduplication, and user isolation. This chapter covers mem0 integration patterns, multi-tenant memory isolation, privacy compliance, and data deletion requirements.
 
+---
+
 ## 1. The mem0 Managed Memory Framework
 
 ### 1.1 What is mem0?
@@ -68,7 +70,7 @@ sequenceDiagram
     participant Mem0 as mem0
     participant LLM as LLM
     participant VDB as Vector DB
-
+    
     App->>Mem0: memory.add(messages, {userId})
     Mem0->>LLM: Extract facts from messages
     LLM-->>Mem0: Extracted facts
@@ -117,6 +119,8 @@ const results = await memory.search(query, {
 | Graph memory | Custom | Optional |
 | Cost | Infrastructure only | API + infrastructure |
 
+---
+
 ## 2. Multi-tenant Memory Isolation
 
 ### 2.1 Why Isolation Matters
@@ -135,6 +139,8 @@ flowchart TD
     style C fill:#a6e3a1
     style F fill:#a6e3a1
 ```
+
+**Core Principle**: Every memory operation must be scoped to a specific user. No cross-user leakage is acceptable.
 
 ### 2.2 User-Level Isolation
 
@@ -193,6 +199,42 @@ flowchart TD
     style G fill:#a6e3a1
 ```
 
+### 2.5 Multi-Tenant Architecture Patterns
+
+```mermaid
+flowchart TB
+    subgraph "Pattern 1: Shared DB, Filtered Queries"
+        A1[App] --> B1[mem0 API]
+        B1 --> C1[Vector DB]
+        C1 --> D1[(Single Collection)]
+        D1 --> E1[Filter: userId = X]
+    end
+    
+    subgraph "Pattern 2: Sharded by User"
+        A2[App] --> B2[mem0 API]
+        B2 --> C2[Router]
+        C2 --> D2[Shard A-M]
+        C2 --> E2[Shard N-Z]
+        D2 --> F2[Isolated Collections]
+        E2 --> F2
+    end
+    
+    subgraph "Pattern 3: Dedicated per Customer (Enterprise)"
+        A3[App] --> B3[mem0 API]
+        B3 --> C3[Customer A DB]
+        B3 --> D3[Customer B DB]
+        B3 --> E3[Customer C DB]
+    end
+    
+    style E1 fill:#a6e3a1
+    style F2 fill:#a6e3a1
+    style C3 fill:#f9e2af
+    style D3 fill:#f9e2af
+    style E3 fill:#f9e2af
+```
+
+---
+
 ## 3. Privacy & Compliance
 
 ### 3.1 Data Types in Memory
@@ -223,7 +265,63 @@ const sanitized = sanitizeForMemory(userMessage);
 const facts = await extractFacts(sanitized);
 ```
 
-### 3.3 Data Deletion (Right to be Forgotten)
+### 3.3 Advanced PII Detection and Handling
+
+```mermaid
+flowchart TD
+    A["Raw User Message"] --> B["PII Detection"]
+    B -->|PII Found| C["Extract PII to Separate Store"]
+    B -->|No PII| D["Process Normally"]
+    C --> E["Sanitized Content"]
+    D --> E
+    E --> F["Fact Extraction"]
+    F --> G["Memory Storage"]
+    
+    C --> H["PII Vault (Encrypted)"]
+    H --> I["Access-Controlled Retrieval"]
+    
+    style C fill:#f38ba8
+    style H fill:#f38ba8
+    style I fill:#cba6f7
+```
+
+```javascript
+// Advanced PII handling with separate vault
+class PIIManager {
+  constructor() {
+    this.piiVault = new PIIVault();
+  }
+  
+  async processMessage(userId, message) {
+    // 1. Detect PII
+    const piiEntities = await this.detectPII(message);
+    
+    // 2. Store PII in secure vault
+    if (piiEntities.length > 0) {
+      await this.piiVault.store(userId, piiEntities);
+    }
+    
+    // 3. Sanitize message
+    const sanitized = this.sanitize(message, piiEntities);
+    
+    return {
+      sanitized,
+      hasPII: piiEntities.length > 0,
+      piiReferences: piiEntities.map(e => e.referenceId)
+    };
+  }
+  
+  async retrievePII(userId, referenceIds) {
+    // Verify user owns these PII references
+    const auth = await verifyOwnership(userId, referenceIds);
+    if (!auth) throw new ForbiddenError();
+    
+    return this.piiVault.retrieve(referenceIds);
+  }
+}
+```
+
+### 3.4 Data Deletion (Right to be Forgotten)
 
 ```javascript
 // Complete user memory deletion
@@ -241,7 +339,10 @@ async function deleteUserMemory(userId) {
   // 3. Delete from mem0
   await memory.deleteUser(userId);
   
-  // 4. Log for compliance
+  // 4. Delete PII vault
+  await piiVault.deleteUser(userId);
+  
+  // 5. Log for compliance
   await auditLog.write({
     event: "user_memory_deletion",
     userId,
@@ -253,7 +354,7 @@ async function deleteUserMemory(userId) {
 }
 ```
 
-### 3.4 Retention Policies
+### 3.5 Retention Policies
 
 ```javascript
 const RETENTION_POLICIES = {
@@ -287,7 +388,7 @@ async function runRetentionCleanup() {
 }
 ```
 
-### 3.5 Consent & Opt-Out
+### 3.6 Consent & Opt-Out
 
 ```javascript
 // Check user consent before storing memories
@@ -309,7 +410,42 @@ app.post("/api/privacy/memory", async (req, res) => {
   await userStore.update(req.user.id, { "consent.memoryEnabled": enabled });
   res.json({ success: true });
 });
+
+// Granular consent options
+const CONSENT_OPTIONS = {
+  memoryEnabled: true,           // Allow memory storage
+  factExtraction: true,          // Allow fact extraction
+  crossSessionMemory: true,      // Share memories across sessions
+  analytics: false,              // Use data for product analytics
+  thirdPartySharing: false       // Share with partners
+};
 ```
+
+### 3.7 Compliance Frameworks
+
+```mermaid
+flowchart LR
+    A["GDPR"] --> B["Right to Access"]
+    A --> C["Right to Deletion"]
+    A --> D["Data Portability"]
+    A --> E["Consent Required"]
+    
+    F["CCPA"] --> G["Right to Know"]
+    F --> H["Right to Delete"]
+    F --> I["Right to Opt-Out"]
+    F --> J["Non-Discrimination"]
+    
+    K["HIPAA"] --> L["PHI Protection"]
+    K --> M["Access Controls"]
+    K --> N["Audit Trails"]
+    K --> O["Encryption"]
+    
+    style A fill:#f9e2af
+    style F fill:#94e2d5
+    style K fill:#cba6f7
+```
+
+---
 
 ## 4. Encryption at Rest
 
@@ -376,6 +512,23 @@ async function getMemory(id) {
   };
 }
 ```
+
+### 4.3 Key Management
+
+```mermaid
+flowchart TB
+    A["Key Management System<br/>(AWS KMS / HashiCorp Vault)"] --> B["Master Key"]
+    B --> C["Data Encryption Keys<br/>(Per user / Per shard)"]
+    C --> D["Encrypted Memories"]
+    
+    E["Key Rotation"] -->|90 days| C
+    E --> F["Re-encryption Job"]
+    
+    style A fill:#a6e3a1
+    style E fill:#f9e2af
+```
+
+---
 
 ## 5. Caching for Latency Optimization
 
@@ -461,6 +614,43 @@ async function getCachedProfile(userId) {
 }
 ```
 
+### 5.4 Cache Invalidation Strategy
+
+```mermaid
+flowchart TD
+    A["Memory Updated"] --> B["Invalidate Cache"]
+    B --> C["Update Version"]
+    C --> D["New Cache Key"]
+    
+    A --> E["Write to DB"]
+    E --> F["Async Cache Warm"]
+    
+    style B fill:#f9e2af
+    style F fill:#a6e3a1
+```
+
+```javascript
+// Cache with versioned keys for proper invalidation
+class VersionedCache {
+  async get(key) {
+    const version = await this.getVersion(key);
+    const cached = await redis.get(`${key}:v${version}`);
+    return cached ? JSON.parse(cached) : null;
+  }
+  
+  async set(key, value) {
+    const version = await this.getVersion(key);
+    await redis.setex(`${key}:v${version}`, 300, JSON.stringify(value));
+  }
+  
+  async invalidate(key) {
+    await this.incrementVersion(key);
+  }
+}
+```
+
+---
+
 ## 6. Hit-Score Tracking & Agentic Retrieval
 
 ### 6.1 Memory Hit Tracking
@@ -533,6 +723,93 @@ async function prefetchMemories(userId, context) {
 }
 ```
 
+---
+
+## 7. mem0 Integration Patterns
+
+### 7.1 Local vs Cloud Mode
+
+```mermaid
+flowchart LR
+    A["Local Mode"] --> B["Self-hosted"]
+    A --> C["Full Control"]
+    A --> D["Lower Latency"]
+    A --> E["Higher Operational Cost"]
+    
+    F["Cloud Mode"] --> G["Managed Service"]
+    F --> H["Auto-scaling"]
+    F --> I["Lower Ops Burden"]
+    F --> J["Vendor Dependency"]
+    
+    style A fill:#f9e2af
+    style F fill:#94e2d5
+```
+
+### 7.2 Custom Embeddings with mem0
+
+```javascript
+// Use custom embedding model with mem0
+const memory = new Memory({
+  // Custom embedding function
+  embedder: async (texts) => {
+    const response = await fetch("https://api.custom-embeddings.com/embed", {
+      method: "POST",
+      body: JSON.stringify({ texts })
+    });
+    return response.json();
+  },
+  
+  // Custom vector store
+  vectorStore: {
+    type: "pinecone",
+    indexName: "memories",
+    namespace: "users"
+  }
+});
+```
+
+### 7.3 Graph Memory Extension
+
+```mermaid
+flowchart LR
+    A["User"] --> B["Likes"]
+    B --> C["TypeScript"]
+    A --> D["Works At"]
+    D --> E["Acme Corp"]
+    C --> F["Used For"]
+    F --> G["Web Development"]
+    E --> H["Industry"]
+    H --> I["SaaS"]
+    
+    style A fill:#a6e3a1
+    style C fill:#f9e2af
+    style E fill:#f9e2af
+    style G fill:#cba6f7
+    style I fill:#cba6f7
+```
+
+```javascript
+// Enable graph memory in mem0
+const memory = new Memory({
+  graph: {
+    enabled: true,
+    // Custom graph schema
+    schema: {
+      entities: ["User", "Technology", "Company", "Project"],
+      relations: ["LIKES", "WORKS_AT", "USED_FOR", "PART_OF"]
+    }
+  }
+});
+
+// Query graph
+const graphResults = await memory.searchGraph(query, {
+  userId: "user_123",
+  depth: 2  // 2-hop relationships
+});
+```
+
+---
+
 ## Common Mistakes
 
 | Mistake | Effect | Fix |
@@ -544,6 +821,9 @@ async function prefetchMemories(userId, context) {
 | No cache expiration | Stale memories | Implement TTL on all cached data |
 | Single-threaded dreaming | Blocked users | Use background job queues |
 | No audit logging | Compliance gaps | Log all memory operations |
+| Ignoring consent granularity | Over-collection | Provide per-feature consent options |
+
+---
 
 ## Key Takeaways
 
@@ -556,4 +836,12 @@ async function prefetchMemories(userId, context) {
 7. **Agentic retrieval handles complexity** — decompose queries for multi-step reasoning
 8. **Compliance is ongoing** — automated retention, deletion, and audit logging
 
+---
+
 Managed memory frameworks accelerate development while providing enterprise-grade features for isolation, privacy, and scalability.
+
+---
+
+## Preview: Chapter 8
+
+In the next chapter, we explore **Production Memory System Architecture** — covering the complete system architecture, data flow patterns, scaling considerations, and operational best practices for running agent memory at scale.

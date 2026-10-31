@@ -4,12 +4,14 @@
 
 A production-grade agent memory system requires careful architectural design across infrastructure, data flow, consistency models, and operational concerns. This chapter covers the complete system architecture, data flow patterns, scaling considerations, and operational best practices.
 
+---
+
 ## 1. Complete Memory System Architecture
 
 ### 1.1 High-Level Data Flow
 
 ```mermaid
-flowchart TD
+diagram LR
     subgraph FrontEnd["Frontend / API Layer"]
         FE["User Request"]
     end
@@ -56,7 +58,7 @@ flowchart TD
     
     LOG -.->|Append only| VDB
     LOG -.->|Append only| RDB
-
+    
     style MemoryLayer fill:#94e2d5
     style Background fill:#786cf7
     style Storage fill:#f9e2af
@@ -74,6 +76,8 @@ flowchart TD
 | **Dreaming Service** | Background memory cleanup |
 | **Eviction Service** | Memory aging, low-score removal |
 | **Indexing Service** | Fresh embeddings for new memories |
+
+---
 
 ## 2. Request Path: Synchronous Operations
 
@@ -128,6 +132,8 @@ sequenceDiagram
     API-->>User: Response (immediate)
 ```
 
+---
+
 ## 3. Token Budget Management
 
 ### 3.1 Dynamic Budget Allocation
@@ -147,6 +153,7 @@ flowchart LR
     style E fill:#f9e2af
     style F fill:#94e2d5
     style G fill:#a6e3a1
+    style H fill:#f9e2af
 ```
 
 ### 3.2 Budget Enforcement Logic
@@ -193,6 +200,8 @@ function buildBudgetedContext(options) {
 }
 ```
 
+---
+
 ## 4. Scaling Considerations
 
 ### 4.1 Horizontal Scaling
@@ -214,7 +223,7 @@ flowchart TD
     C1 --> E["Shared Cache Cluster"]
     C2 --> E
     C3 --> E
-
+    
     style D fill:#cba6f7
     style E fill:#786cf7
 ```
@@ -246,6 +255,8 @@ Each shard:
   - Can be scaled independently
 ```
 
+---
+
 ## 5. Consistency Models
 
 ### 5.1 Strong vs Eventual Consistency
@@ -274,6 +285,8 @@ flowchart LR
 | **Memory search** | Strong | Must find correct memories |
 | **Memory write** | Strong | Fact extraction must persist |
 | **Memory reflection** | Async | No user-facing impact |
+
+---
 
 ## 6. Monitoring & Observability
 
@@ -335,6 +348,8 @@ try {
 }
 ```
 
+---
+
 ## 7. Failure Modes & Resilience
 
 ### 7.1 Memory System Failure Scenarios
@@ -377,6 +392,8 @@ async function resilientChat(userId, userQuery) {
   }
 }
 ```
+
+---
 
 ## 8. Data Pipeline: Ingestion & Indexing
 
@@ -421,22 +438,30 @@ async function batchProcessMemories(messages) {
 }
 ```
 
+---
+
 ## 9. Operational Best Practices
 
 ### 9.1 Deployment Checklist
 
-- [ ] Authentication middleware for all memory endpoints
-- [ ] User isolation enforced at query level
-- [ ] Token budget limits configured
-- [ ] Cache TTL policies documented
-- [ ] Dreaming jobs queued with retries
-- [ ] Monitoring dashboards created
-- [ ] Alert thresholds configured
-- [ ] Privacy compliance checks verified
-- [ ] Data deletion procedures tested
-- [ ] Backup/restore procedures documented
+- [ ] **Authentication**: Verify user ownership of all memory operations
+- [ ] **Authorization**: Prevent cross-user data access
+- [ ] **Budget Management**: Enforce token limits at LLM layer
+- [ ] **Error Handling**: Graceful degradation for service failures
+- [ ] **Monitoring**: Track latency, cost, cache efficiency, error rates
+- [ ] **Debugging**: Trace context assembly and LLM calls
+- [ ] **Privacy**: Data sanitization and consent management
 
-### 9.2 Capacity Planning
+### 9.2 Production Checklist
+
+- [ ] **Scaling**: Horizontal scaling for high throughput
+- [ ] **High Availability**: Multi-zone deployment with failover
+- [ ] **Backup Strategy**: Regular data backups and restore testing
+- [ ] **Security**: Encryption at rest, TLS for all communications
+- [ ] **Compliance**: GDPR, CCPA, HIPAA requirements
+- [ ] **Disaster Recovery**: Business continuity planning
+
+### 9.3 Capacity Planning
 
 | User Scale | Vector DB | Cache | LLM Calls | Jobs/Day |
 |------------|-----------|-------|-----------|----------|
@@ -445,7 +470,7 @@ async function batchProcessMemories(messages) {
 | 100K users | 4 shards | 4GB | 1M | 100K |
 | 1M users | 8+ shards | 16GB | 10M | 1M |
 
-### 9.3 Cost Optimization
+### 9.4 Cost Optimization
 
 ```javascript
 // Track and optimize costs
@@ -468,6 +493,8 @@ function estimateCost(request) {
 }
 ```
 
+---
+
 ## Common Mistakes
 
 | Mistake | Effect | Fix |
@@ -480,6 +507,8 @@ function estimateCost(request) {
 | Weak authentication | Security breach | Add auth checks at every layer |
 | No backup strategy | Data loss | Implement regular backups and restore testing |
 
+---
+
 ## Key Takeaways
 
 1. **Architecture has 3 layers** — API layer (fast), Memory layer (core operations), Background layer (maintenance)
@@ -491,4 +520,12 @@ function estimateCost(request) {
 7. **Operationalize privacy** — encryption, deletion, consent, and audit trails are ongoing requirements
 8. **Cost is tied to token usage** — every feature (STM, LTM, dreaming) has a token cost that must be managed
 
+---
+
 A production memory system balances performance, reliability, privacy, and cost through thoughtful architectural design and operational discipline.
+
+---
+
+## Preview: Chapter 9
+
+In the next chapter, we explore **Memory System Monitoring & Optimization** — covering observability patterns, performance tuning, and cost management strategies for production memory systems.
