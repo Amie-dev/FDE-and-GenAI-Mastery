@@ -34,6 +34,7 @@
 | 📚 | [Lecture 22 — MCP Resources Prompts and Gateway](#-lecture-22-mcp-resources-prompts-and-gateway) | 9 | ✅ | ✅ | ✅ |
 | 📚 | [Lecture 23 — Claude Skills](#-lecture-23-claude-skills) | 6 | ✅ | ✅ | ✅ |
 | 📚 | [Lecture 24 — Multimodal AI](#-lecture-24-multimodal-ai) | 10 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 25 — vLLM and PagedAttention](#-lecture-25-vllm-and-pagedattention) | 8 | ✅ | ✅ | ✅ |
 
 --
 
@@ -1009,13 +1010,53 @@ flowchart LR
 
 --
 
+## 📚 Lecture 25 — vLLM and PagedAttention
+
+**8 chapters** + 1 consolidated document
+**Folder:** [📂 ./Lecture 25 - vLLM and PagedAttention/](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/) · [📄 Roadmap](./roadmap.md)
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **LLM Hardware Mechanics: GPU VRAM, HBM, Memory Hierarchy** | GPU VRAM stores weights and KV cache; HBM provides high bandwidth; memory hierarchy (Registers → SRAM → L2 → HBM → System RAM); data locality is critical — moving weights costs more than computing. | [📄 Chapter 01](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/01_LLM_Hardware_Mechanics.md) |
+| **02** | **Compute-Bound Training vs Memory-Bandwidth-Bound Inference** | Training is compute-bound (high arithmetic intensity); inference is memory-bandwidth bound (low arithmetic intensity); doubling GPU compute does not halve decode latency. | [📄 Chapter 02](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/02_Compute_Bound_vs_Memory_Bound.md) |
+| **03** | **Inference Engine Architecture: Prefill vs Decode Phases** | Inference engine manages queue, batching, KV cache, scheduling; Prefill = parallel prompt processing (compute-heavy); Decode = sequential token generation (memory-bandwidth sensitive). | [📄 Chapter 03](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/03_Inference_Engine_Architecture.md) |
+| **04** | **vLLM Architecture Overview** | High-throughput serving engine: API server, scheduler, continuous batching, chunked prefill, prefix caching, PagedAttention, quantization, optimized kernels, speculative decoding. | [📄 Chapter 04](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/04_vLLM_Architecture_Overview.md) |
+| **05** | **PagedAttention: Virtual Memory for KV Cache** | Virtual memory paging for KV cache — logical blocks mapped to physical GPU pages; eliminates fragmentation; memory waste <4%; dynamic allocation as sequence grows. | [📄 Chapter 05](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/05_PagedAttention.md) |
+| **06** | **Continuous Batching, Chunked Prefill, Prefix Caching** | Continuous batching: dynamic token-iteration scheduling; Chunked prefill: breaks large prompts into chunks; Prefix caching: reuses KV cache for shared system prompts. | [📄 Chapter 06](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/06_Continuous_Batching_Chunked_Prefill_Prefix_Caching.md) |
+| **07** | **Quantization, Optimized Kernels, MoE, Speculative Decoding** | Quantization (FP8/INT8/INT4/AWQ/GPTQ/GGUF) reduces memory 50-80%; FlashAttention/FlashInfer/Triton/CUTLASS kernels; MoE sparse routing; Speculative decoding: draft + verify. | [📄 Chapter 07](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/07_Quantization_Kernels_MoE_Speculative.md) |
+| **08** | **Serving Economics, Self-Hosting vs Managed APIs, Roofline Model** | Cost per 1M tokens: self-hosted ~$0.10-1.50 vs managed $2.50-30; GPU utilization target 70-80%; Roofline model shows inference is memory-bound. | [📄 Chapter 08](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/08_Serving_Economics_and_Roofline.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all 8 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
+
+👉 **[Lecture_25_Complete_Notes.md](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/Lecture_25_Complete_Notes.md)**
+
+### 🧩 Lecture artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/README.md) | ✅ |
+| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/code/Basic%20Code/) | ✅ |
+| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L25["Lecture 25 notes<br/>8 chapters"]
+    L25 --> CN["Lecture_25_Complete_Notes.md"]
+    IDX --> CODE["Lecture 25 - vLLM and PagedAttention/code/"]
+    IDX --> ASG["Lecture 25 - vLLM and PagedAttention/Assignment/task.md"]
+    IDX --> RM["roadmap.md"]
+```
+
+--
+
 ## 📥 Lectures in Progress (notes not yet written)
 
 The following lectures exist as folders but have no numbered chapter notes yet. They will be added to this index as notes are written:
 
 | Lecture | Title | Status |
 | :---: | :--- | :--- |
-| 25 | vLLM and PagedAttention | Notes not yet written |
 | 26 | Durable Execution with Inngest | Notes not yet written |
 | 27 | Full-Stack AI Platform | Notes not yet written |
 | 28 | Async Indexing and RAG Chat | Notes not yet written |

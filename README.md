@@ -567,6 +567,7 @@ Every lecture in this repository follows the same four-part contract, so you can
 | ✅ | **Lecture 15 code built** — [Basic Code](./Lecture%2015%20-%20Vector%20Databases%20and%20ANN/code/Basic%20Code/) as a **vector search API**: `POST /api/vectors` (store id + vector + payload), `POST /api/search` (cosine similarity top-K with optional metadata filter), `GET /api/vectors/count` across `config/` · `controllers/` · `routes/` · `services/` · `types/`, plus a 6-chapter implementation guide (00 → 05) and assignment with practice questions and completion gate |
 | ✅ | **Lecture 16 code built** — [Basic Code](./Lecture%2016%20-%20RAG/code/Basic%20Code/) as a **minimum RAG server**: `POST /api/ingest` (document → chunks → embed → upsert with content-addressed id), `POST /api/query` (embed question → tenant-filtered retrieval → grounded generation with `[n]` citations + refusal), `GET /api/health` across `config/` · `controllers/` · `router/` · `services/` · `types/`, plus a 10-chapter implementation guide (00 → 09) and assignment with practice questions and completion gate |
 | ✅ | **Lecture 22 notes written** — 9 chapters with consolidated notes, a chapter index and an assignment task.md |
+| ✅ | **Lecture 25 notes written** — 8 chapters with consolidated notes, a chapter index and an assignment task.md |
 | 🔜 | Your own chapter notes landing in each `notes/` folder as you progress |
 | 🔜 | Your rebuilt codebases landing in each `code/` folder as you progress |
 | 🔜 | The **capstone** system, with a metrics table and an incident/limitations statement |

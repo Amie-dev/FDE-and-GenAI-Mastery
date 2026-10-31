@@ -1313,7 +1313,7 @@ Copy this table into a scratch file (or tick it in your fork) as you go.
 | 22 | MCP Resources, Prompts & Gateway | ✅ | ✅ | ☐ |
 | 23 | Claude Skills | ☐ | ☐ | ☐ |
 | 24 | Multimodal AI | ✅ | ✅ | ✅ |
-| 25 | vLLM & PagedAttention | ☐ | ☐ | ☐ |
+| 25 | vLLM & PagedAttention | ✅ | ☐ | ☐ |
 | 26 | Durable Execution (Inngest) | ☐ | ☐ | ☐ |
 | 27 | Full-Stack AI Platform | ☐ | ☐ | ☐ |
 | 28 | Async Indexing & RAG Chat | ☐ | ☐ | ☐ |
