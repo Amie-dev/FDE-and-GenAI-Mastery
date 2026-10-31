@@ -1,0 +1,36 @@
+{
+  "name": "demo-data",
+  "version": "1.0.0",
+  "demos": {
+    "durable-pipeline": {
+      "name": "Durable Pipeline",
+      "description": "Demonstrates state checkpointing and resumption after crashes (Chapter 1-2)",
+      "keyFeatures": ["State preservation", "Crash recovery", "Zero duplicate work", "Exact resumption"],
+      "chapter": "01-02"
+    },
+    "parallel-agents": {
+      "name": "Parallel Multi-Agent Execution",
+      "description": "Demonstrates fan-out/fan-in pattern with independent agent execution (Chapter 5)",
+      "keyFeatures": ["Concurrent execution", "Critical path optimization", "Result aggregation"],
+      "chapter": "05"
+    },
+    "human-in-the-loop": {
+      "name": "Human-in-the-Loop Approval",
+      "description": "Demonstrates step.waitForEvent() for human approvals (Chapter 4)",
+      "keyFeatures": ["Durable pause", "Event-based approval", "Graceful timeout handling"],
+      "chapter": "04"
+    },
+    "concurrency-limits": {
+      "name": "Concurrency & Rate Limiting",
+      "description": "Demonstrates worker pool concurrency and throttling (Chapter 6)",
+      "keyFeatures": ["Per-worker limits", "Fairness controls", "Provider rate limits"],
+      "chapter": "06"
+    },
+    "failure-recovery": {
+      "name": "Failure Recovery & Retries",
+      "description": "Demonstrates exponential backoff, jitter and resilient error handling (Chapter 7)",
+      "keyFeatures": ["Retry configuration", "Exponential backoff", "Fallback providers"],
+      "chapter": "07"
+    }
+  }
+}
