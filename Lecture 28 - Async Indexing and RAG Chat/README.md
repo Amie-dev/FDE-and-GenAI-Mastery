@@ -1,44 +1,26 @@
-# Lecture 28 - Async Indexing and RAG Chat
+# Lecture 28 — Async Indexing and RAG Chat
 
-> **Phase:** 8 · Production Infra · **Level:** 🔴 Expert
-> **Source:** `GAC D10`
+## Lecture Overview
+- **Phase:** 8 — Production Infrastructure
+- **Level:** 🔴 Expert
+- **Source:** `GAC D10`
 
----
+## Topics Covered (8 Chapters)
+1. [01_Async-Indexing-Pipeline](./notes/01_Async_Indexing_Pipeline.md) — Async indexing pipeline with Inngest, sliding-window chunking, and Pinecone
+2. [02_Source-Processing-State-Machine](./notes/02_Source_Processing_State_Machine.md) — Source lifecycle state machine, re-processing, cleanup
+3. [03_Streaming-RAG-Chat](./notes/03_Streaming_RAG_Chat.md) — Streaming RAG chat with SSE, retrieval, system prompt construction
+4. [04_Interactive-Citations](./notes/04_Interactive_Citations.md) — Interactive citations, preview API, frontend integration
+5. [05_User-Memory-Web-Search](./notes/05_User_Memory_Web_Search.md) — Mem0 persistent memory, Tavily live web search
+6. [06_Learning-Artifacts](./notes/06_Learning_Artifacts.md) — Flashcards, quizzes, summaries, audio overviews
+7. [07_Job-Status-Partial-Failure-UX](./notes/07_Job_Status_Partial_Failure_UX.md) — Job status tracking, partial failure, dashboard
+8. [08_Re-indexing-Model-Migration-Ingestion](./notes/08_Re_indexing_Model_Migration_Ingestion.md) — Re-indexing, model migration, cost control, quotas
 
-## 📍 Where this lecture sits
+## Checklist
+- [ ] Read every source note listed in the roadmap for Lecture 28
+- [x] Write chapter notes in `notes/` ✅ (8 chapters completed)
+- [ ] Build / rebuild the code in `code/`
+- [ ] Pass the lecture's completion gate
 
-See **[../roadmap.md](../roadmap.md)** → *"Lecture 28 — ..."* for the **complete topic list**,
-the **goal**, the **build task** and the **completion gate**. This file is only a workspace stub —
-the roadmap is the single source of truth so that no topic is duplicated.
-
-## ✅ Checklist
-
-| Step | Status |
-| :--- | :---: |
-| Read every source note listed in the roadmap for Lecture 28 | ☐ |
-| Write my own chapter notes in `notes/` | ☐ |
-| Build / rebuild the code in `code/` | ☐ |
-| Pass the lecture's completion gate | ☐ |
-
-## 📁 Layout
-
-```text
-Lecture 28 - Async Indexing and RAG Chat/
-├── README.md          # this file — objectives · phase · level · source mapping · checklist
-├── index.md           # chapter index (filled by prompt.md → Block 6)
-├── prompt.md          # generation prompt (git-ignored) — change the chapter number, run it block by block
-├── .gitignore         # ignores prompt.md
-├── notes/             # chapter notes, written from the source notes
-├── code/              # the rebuilt codebase (Basic Code · Production Code + implementation guides)
-└── Assignment/
-    └── task.md        # the lecture assignment (filled by prompt.md → Block 5)
-```
-
-## 🧠 My notes
-
-<!-- Add chapter notes as separate files inside notes/ , e.g. notes/01-<topic>.md -->
-
-## 🔗 Source references
-
+## Source References
 `GAC D10` — see the roadmap for the exact file paths inside
 `Forward-Deployed-Engineer/` and `gen-ai-cohort/`.
