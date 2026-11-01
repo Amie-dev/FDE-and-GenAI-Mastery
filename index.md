@@ -35,8 +35,11 @@
 | 📚 | [Lecture 23 — Claude Skills](#-lecture-23-claude-skills) | 6 | ✅ | ✅ | ✅ |
 | 📚 | [Lecture 24 — Multimodal AI](#-lecture-24-multimodal-ai) | 10 | ✅ | ✅ | ✅ |
 | 📚 | [Lecture 25 — vLLM and PagedAttention](#-lecture-25-vllm-and-pagedattention) | 8 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 26 — Durable Execution with Inngest](#-lecture-26-durable-execution-with-inngest) | 8 | ✅ | ✅ | ✅ |
 | 📚 | [Lecture 28 — Async Indexing and RAG Chat](#-lecture-28-async-indexing-and-rag-chat) | 8 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 29 — GitHub PR Reviewer Bot](#-lecture-29-github-pr-reviewer-bot) | 4 | — | ✅ | ✅ |
 | 📚 | [Lecture 30 — Evals and Testing](#-lecture-30-evals-and-testing) | 9 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 31 — Security and Guardrails](#-lecture-31-security-and-guardrails) | 10 | ✅ | ✅ | ✅ |
 
 --
 
@@ -1052,6 +1055,45 @@ flowchart LR
 ```
 
 --
+
+## 📚 Lecture 26 — Durable Execution with Inngest
+
+**8 chapters** + 1 consolidated document
+**Folder:** [📂 ./Lecture 26 - Durable Execution with Inngest/](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/) · [📄 Roadmap](./roadmap.md)
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **Inngest Fundamentals & Async Architecture** | What Inngest is, why background workflow orchestration is useful for AI applications, the difference between synchronous and asynchronous architectures, and how durable execution helps workflows survive failures | [📄 Chapter 01](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/01-inngest-fundamentals-and-async-architecture.md) |
+| **02** | **Procedural Code vs Event-Driven Multi-Agent Orchestration** | How multi-agent AI pipelines are orchestrated, why a large procedural workflow can become difficult to recover and operate, and how event-driven durable execution provides reliable state, retries, and failure recovery | [📄 Chapter 02](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/02-procedural-code-vs-event-driven.md) |
+| **03** | **Traditional Queues (RabbitMQ / Redis + BullMQ) vs. Inngest** | Traditional message queues, worker-based background processing, and how workflow orchestration differs from simple job queuing | [📄 Chapter 03](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/03-traditional-queues-vs-inngest.md) |
+| **04** | **Inngest Durable Execution SDK & Steps API** | The Inngest Node.js/TypeScript SDK, client initialization and HTTP serving, and the major `step` primitives: `step.run()`, `step.sleep()`, `step.waitForEvent()`, `step.invoke()`, and `step.sendEvent()` | [📄 Chapter 04](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/04-inngest-sdk-steps-api.md) |
+| **05** | **Parallel Multi-Agent Workflows: Fan-Out / Fan-In** | How to run independent AI agents in parallel, aggregate their results safely, and identify the critical path in complex multi-step AI workflows | [📄 Chapter 05](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/05-parallel-multi-agent-fan-out-fan-in.md) |
+| **06** | **Concurrency, Throttling, and Rate Limiting** | The difference between concurrency and rate limiting, how to control workload characteristics, and trade-offs when applying limits to AI workloads | [📄 Chapter 06](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/06-concurrency-throttling-and-rate-limiting.md) |
+| **07** | **Error Resilience, Retries, Dead Letter, and Observability** | How Inngest handles errors, configure retries with exponential backoff and jitter, implement onFailure handlers, dead-letter flows, observability patterns | [📄 Chapter 07](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/07-error-resilience-observability.md) |
+| **08** | **Cron/Scheduled Workflows, Versioning, and Advanced Patterns** | How to run workflows on schedules, handle workflow versioning for deployed code changes, and advanced patterns for production-grade durable AI workflows | [📄 Chapter 08](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/08-cron-versioning-advanced.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all 8 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
+
+👉 **[Lecture_26_Complete_Notes.md](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/Lecture_26_Complete_Notes.md)**
+
+### 🧩 Lecture artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/README.md) | ✅ |
+| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/code/Basic%20Code/) | ✅ |
+| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L26["Lecture 26 notes<br/>8 chapters"]
+    L26 --> CN["Lecture_26_Complete_Notes.md"]
+    IDX --> CODE["Lecture 26 - Durable Execution with Inngest/code/"]
+    IDX --> ASG["Lecture 26 - Durable Execution with Inngest/Assignment/task.md"]
+    IDX --> RM["roadmap.md"]
+```
 ## 📚 Lecture 28 — Async Indexing and RAG Chat
 
 **8 chapters** + 1 consolidated document
@@ -1092,16 +1134,44 @@ flowchart LR
 ```
 
 
+## 📚 Lecture 29 — GitHub PR Reviewer Bot
+
+**4 chapters**
+**Folder:** [📂 ./Lecture 29 - GitHub PR Reviewer Bot/](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/) · [📄 Roadmap](./roadmap.md)
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **AI PR Reviewer Architecture & Inngest Workflow Engine** | The AI GitHub PR Reviewer Bot combines LLM Agent Intelligence, Octokit GitHub SDK, and Inngest Durable Execution to automate initial PR evaluations seamlessly | [📄 Chapter 01](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/notes/01-ai-pr-reviewer-architecture-and-inngest.md) |
+| **02** | **Octokit Integration & GitHub Diff Parsing** | Octokit client authentication and initialization, fetching PR metadata, paginated diff extraction, and token context window optimization | [📄 Chapter 02](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/notes/02-octokit-integration-and-diff-parsing.md) |
+| **03** | **OpenAI Agents SDK & Structured Code Review** | Using `@openai/agents` and Zod schema validation to convert unstructured Git diffs into actionable, high-value code reviews | [📄 Chapter 03](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/notes/03-openai-agents-and-structured-pr-review.md) |
+| **04** | **Inngest Durable PR Review Pipeline & Webhooks** | The step-by-step implementation of the durable workflow function, Express webhook endpoints, manual trigger routes, and production resilience features | [📄 Chapter 04](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/notes/04-inngest-durable-pr-review-pipeline.md) |
+
+### 🧩 Lecture artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/README.md) | ✅ |
+| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/code/Basic%20Code/) | ✅ |
+| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L29["Lecture 29 notes<br/>4 chapters"]
+    IDX --> CODE["Lecture 29 - GitHub PR Reviewer Bot/code/"]
+    IDX --> ASG["Lecture 29 - GitHub PR Reviewer Bot/Assignment/task.md"]
+    IDX --> RM["roadmap.md"]
+```
+
+--
+
+
 ## 📥 Lectures in Progress (notes not yet written)
 
 The following lectures exist as folders but have no numbered chapter notes yet. They will be added to this index as notes are written:
 
 | Lecture | Title | Status |
 | :---: | :--- | :--- |
-| 26 | Durable Execution with Inngest | Notes not yet written |
 | 27 | Full-Stack AI Platform | Notes not yet written |
-| 29 | GitHub PR Reviewer Bot | Notes not yet written |
-| 31 | Security and Guardrails | Notes not yet written |
 
 ---
 
@@ -1142,6 +1212,48 @@ flowchart LR
     L30 --> CN["Lecture_30_Complete_Notes.md"]
     IDX --> CODE["Lecture 30 - Evals and Testing/code/"]
     IDX --> ASG["Lecture 30 - Evals and Testing/Assignment/task.md"]
+    IDX --> RM["roadmap.md"]
+```
+
+
+## 📚 Lecture 31 — Security and Guardrails
+
+**10 chapters** + 1 consolidated document
+**Folder:** [📂 ./Lecture 31 - Security and Guardrails/](./Lecture%2031%20-%20Security%20and%20Guardrails/) · [📄 Roadmap](./roadmap.md)
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **Why GenAI Breaks Traditional Security** | Why traditional deterministic security breaks when an LLM is inserted — the model's output is untrusted, the backend must enforce, and no single filter fixes prompt injection | [📄 Chapter 01](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/01-Why-GenAI-Breaks-Traditional-Security.md) |
+| **02** | **Threat Modelling: Assets, Blast Radius & Trust Boundaries** | The five asset classes, the risk equation, reachability → blast radius → controls ordering, and the ShopX running example | [📄 Chapter 02](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/02-Threat-Modelling-Assets-Trust-Boundaries.md) |
+| **03** | **Prompt Injection & Jailbreaks: The Fundamental Problem** | Why prompt injection has no complete fix, the SQL-injection analogy, evasion families, jailbreak vs injection, and why the system prompt is not a security control | [📄 Chapter 03](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/03-Prompt-Injection-Jailbreaks-Fundamental-Problem.md) |
+| **04** | **Injection Delivery Channels: Direct, Indirect, MCP & Multimodal** | Direct vs indirect injection, four worked deliveries (chat, web page, email agent, MCP resource, multimodal), second-order and stored injection | [📄 Chapter 04](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/04-Injection-Delivery-Channels.md) |
+| **05** | **Safe Tools: Least Privilege, Capability Routing & Argument Validation** | How tool calling works, tool risk tiers, least privilege, per-call exposure, the router pattern, and capability routing implementation | [📄 Chapter 05](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/05-Safe-Tools-Least-Privilege-Capability-Routing.md) |
+| **06** | **Never Trust, Always Verify: Authorization, Confirmation & TOCTOU** | Validating tool arguments, authorization in code, high-risk action confirmation, TOCTOU protection, and atomic conditional updates | [📄 Chapter 06](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/06-Never-Trust-Always-Verify.md) |
+| **07** | **Guardrails as Layers: The Full Defense-in-Depth Architecture** | The four guardrail layers (input, semantic classifier, instruction, tool/action, output), the chain that saves you, moderation vs injection detection, and interceptors | [📄 Chapter 07](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/07-Guardrails-as-Layers-Defense-in-Depth.md) |
+| **08** | **PII Masking, Output Validation & Production Hardening** | PII masking before the AI pipeline, output guardrails, CRAG/groundedness checks, and production security architecture | [📄 Chapter 08](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/08-PII-Masking-Output-Validation.md) |
+| **09** | **Red Teaming, Adversarial Testing & Security Evaluation** | Why red teaming is not a one-time event, attack scenarios, red teaming methodology, automated fuzzing, adversarial prompt generation, and multi-turn attack testing | [📄 Chapter 09](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/09-Red-Teaming-Adversarial-Testing-Security-Evaluation.md) |
+| **10** | **Production Security Operations & Incident Response** | Monitoring and detection, alerting and incident triage, incident response lifecycle, audit logging, retention, compliance, and production security checklist | [📄 Chapter 10](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/10-Production-Security-Operations-Incident-Response.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all 10 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
+
+👉 **[Lecture_31_Complete_Notes.md](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/Lecture_31_Complete_Notes.md)**
+
+### 🧩 Lecture artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2031%20-%20Security%20and%20Guardrails/README.md) | ✅ |
+| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2031%20-%20Security%20and%20Guardrails/code/Basic%20Code/) | ✅ |
+| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2031%20-%20Security%20and%20Guardrails/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L31["Lecture 31 notes<br/>10 chapters"]
+    L31 --> CN["Lecture_31_Complete_Notes.md"]
+    IDX --> CODE["Lecture 31 - Security and Guardrails/code/"]
+    IDX --> ASG["Lecture 31 - Security and Guardrails/Assignment/task.md"]
     IDX --> RM["roadmap.md"]
 ```
 
