@@ -1,0 +1,27 @@
+{
+  "name": "fde-lecture-30-evals-testing",
+  "version": "1.0.0",
+  "description": "Basic Code — Evals and Testing Mastery (Lecture 30). Minimal Express + TypeScript deterministic eval runner: test input, expected behaviour, deterministic evaluators (string inclusion, JSON schema, tool calls), scoring and aggregation.",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "tsx src/index.ts"
+  },
+  "keywords": ["fde", "gen-ai", "evals", "testing", "lecture-30", "express", "typescript"],
+  "author": "FDE & GenAI Mastery",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
