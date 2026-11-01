@@ -143,7 +143,57 @@ flowchart LR
 
 ---
 
-## 9. Self-Check
+## 9. Beyond the Lecture — Guardrail Pipeline Implementation
+
+```js
+// PSEUDO CODE — TypeScript environment
+class GuardrailPipeline {
+  private layers: GuardrailLayer[] = []
+  
+  async process(request: GuardrailRequest): Promise<GuardrailResult> {
+    let current = request
+    
+    for (const layer of this.layers) {
+      const result = await layer.execute(current)
+      
+      if (!result.allowed) {
+        await this.auditLog.log({
+          layer: layer.name,
+          decision: 'DENY',
+          reason: result.reason,
+          input: current
+        })
+        
+        if (layer.failClosed) {
+          return { allowed: false, reason: result.reason, layer: layer.name }
+        }
+        // fail-open: continue to next layer
+      }
+      
+      current = result.modifiedInput ?? current
+    }
+    
+    return { allowed: true, input: current }
+  }
+  
+  // Ordered execution: deterministic first, probabilistic later
+  constructor() {
+    this.layers = [
+      new InputSizeGuardrail({ maxTokens: 4096, failClosed: true }),
+      new InputEncodingGuardrail({ flagEncodings: ['base64', 'rot13'], failClosed: true }),
+      new InputPatternGuardrail({ patterns: injectionPatterns, failClosed: true }),
+      new SemanticClassifierGuardrail({ threshold: 0.85, failClosed: false }),
+      new InstructionGuardrail({ failClosed: false }),  // prompt-level guidance
+      new ToolActionGuardrail({ failClosed: true }),
+      new OutputGuardrail({ failClosed: true }),
+    ]
+  }
+}
+```
+
+---
+
+## 10. Self-Check
 
 1. Name the four guardrail layers and say which one is deterministic and effect-adjacent.
 2. What does it mean to "fail closed", and where must you fail closed?

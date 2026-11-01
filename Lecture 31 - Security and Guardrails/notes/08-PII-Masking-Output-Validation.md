@@ -195,11 +195,9 @@ Retrieved Context:
 
 LLM:
   "Premium users receive 90 days of support."
-```
 
 Groundedness check:
 
-```text
 ❌ Unsupported claim
 ```
 
@@ -232,7 +230,7 @@ flowchart TD
 > **Think:**
 
 ```text
-                 DEFENSE IN DEPTH
+                  DEFENSE IN DEPTH
 
 User
   ↓
@@ -265,7 +263,21 @@ Every layer assumes that another layer **can fail**.
 
 ---
 
-## 6. Self-Check
+## 6. Beyond the Lecture — Production Hardening Checklist
+
+| Category | Hardening Measures |
+|---|---|
+| **Logging** | Never log raw PII; mask before logging; structured logging with PII filters |
+| **Metrics** | Track PII detection rate; false positive/negative rates; guardrail latency |
+| **Alerting** | Alert on PII leakage in production responses; alert on guardrail failures |
+| **Recovery** | Automated redaction pipeline; rollback capability if guardrail misfires |
+| **CI/CD** | Guardrail tests in pipeline; adversarial test cases; regression testing |
+| **Observability** | End-to-end tracing of data flow; guardrail decision boundaries; exception monitoring |
+| **Secrets Management** | Automated secret rotation; no secrets in prompts; encrypted storage |
+
+---
+
+## 7. Self-Check
 
 1. Why should PII be masked before external services?
 2. Explain the difference between masking and tokenization.

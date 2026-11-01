@@ -138,12 +138,12 @@ function chooseTools(intent: Intent): Tool[] {
 > **Don't tell the LLM:** *"You know about `executeShellCommand`, but please don't call it."*
 >
 > **Prefer:** *"For this request, `executeShellCommand` does not exist from the model's perspective."*
-
+>
 > **The pattern in one line: the model classifies; the application chooses capabilities.**
 
 ---
 
-## 9. Router Hygiene (Beyond the Lecture)
+## 9. Beyond the Lecture — Router Hygiene
 
 | Concern | Guidance |
 |---|---|
@@ -157,7 +157,72 @@ function chooseTools(intent: Intent): Tool[] {
 
 ---
 
-## 10. Self-Check
+## 10. Beyond the Lecture — Capability Routing Implementation
+
+```js
+// PSEUDO CODE — TypeScript environment
+class CapabilityRouter {
+  private toolRegistry: Map<string, ToolDefinition> = new Map();
+  
+  registerTool(name: string, definition: ToolDefinition): void {
+    this.toolRegistry.set(name, definition);
+  }
+  
+  async routeIntent(
+    userId: string,
+    sessionId: string,
+    question: string,
+    intent: Intent
+  ): Promise<Tool[]> {
+    // 1. Start with intent-based tools
+    const intentTools = this.toolsForIntent(intent);
+    
+    // 2. Intersect with user entitlements
+    const userEntitlements = await this.getUserTools(userId);
+    const entitled = intentTools.filter(tool => userEntitlements.includes(tool.name));
+    
+    // 3. Apply blast radius limits per session
+    const sessionTools = await this.getSessionTools(sessionId);
+    const allowed = entitled.filter(tool => sessionTools.includes(tool.name));
+    
+    return allowed;
+  }
+  
+  private toolsForIntent(intent: Intent): Tool[] {
+    switch (intent) {
+      case Intent.ORDER_STATUS:
+        return [getOrderStatus, getDeliveryEstimate];
+      case Intent.DELIVERY:
+        return [getOrder, getTrackingDetails];
+      case Intent.REFUND:
+        return [refundPayment];
+      case Intent.CANCELLATION:
+        return [cancelOrder];
+      default:
+        return [];
+    }
+  }
+  
+  // Validate tool request against allowed set
+  async validateToolRequest(
+    toolName: string,
+    args: Record<string, any>,
+    allowedTools: Tool[]
+  ): Promise<boolean> {
+    const tool = allowedTools.find(t => t.name === toolName);
+    if (!tool) {
+      await this.auditLogger.log(`Blocked tool request: ${toolName} not in allowed set`);
+      return false;
+    }
+    // Validate arguments against tool schema
+    return await this.validateArgsAgainstSchema(args, tool.schema);
+  }
+}
+```
+
+---
+
+## 11. Self-Check
 
 1. Describe the seven steps of tool calling and identify the security seam.
 2. Rewrite `refund(orderId, amount)` to remove model authority.

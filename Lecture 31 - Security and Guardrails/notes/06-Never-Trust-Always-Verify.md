@@ -14,6 +14,7 @@ Treat those arguments like: HTTP request parameters
 
 You would never trust `POST /refund amount=50000` without validation. **The fact that an LLM generated the number does not make it trustworthy.**
 
+### Pseudo-code Validation Function
 ```js
 // PSEUDO CODE — TypeScript environment
 function validateRefundRequest(orderId: string, amount: number): boolean {
@@ -35,23 +36,15 @@ function validateRefundRequest(orderId: string, amount: number): boolean {
 
 > **Even better:** *do not allow the model to choose the refund amount at all.* **Let the backend derive it from trusted data.**
 
-### The validation order
+### The Validation Order
 
-1. **Schema** — shape the model must produce
-2. **Normalise** — consistent representation
-3. **Format/pattern** — consistent with policies
-4. **Range** — numeric bounds
-5. **Enum** — allowed values
-6. **Length** — string size
-7. **Referential** — foreign key existence
-8. **Ownership** — does the user own the target?
-9. **Business rules** — policy logic
-10. **Monetary policy** — thresholds, caps, pricing models
-11. **Destination allowlist** — approved recipients
-12. **Rate limits** — velocity checks
-13. **Idempotency** — prevent duplicate execution
-14. **Derivation** — derive from trusted data (never model-supplied)
-15. **Field allowlist** — never execute fields you didn't expect
+```text
+1. Schema → 2. Normalise → 3. Format/pattern → 4. Range
+5. Enum → 6. Length → 7. Referential → 8. **Ownership**
+9. Business rules → 10. Monetary policy → 11. Destination
+12. Rate limits → 13. Idempotency → 14. **DERIVE**
+15. Field allowlist
+```
 
 > **Three-way rule:** *shape* may come from the model · *values* must be validated · *authority-bearing values* must be derived server-side.
 
@@ -68,8 +61,7 @@ The backend must verify:  Does USER-17 own ORD-101?
 Not:                      Does the LLM believe USER-17 owns ORD-101?
 ```
 
-> **Authentication and authorization are deterministic backend concerns.** Identity comes from the **session**, never from a model argument or the message text.
-
+### Pseudo-code Authorization Function
 ```js
 // PSEUDO CODE — TypeScript environment
 async function authorizeAction(userId: string, orderId: string, action: string): Promise<boolean> {
@@ -90,6 +82,8 @@ async function authorizeAction(userId: string, orderId: string, action: string):
 }
 ```
 
+> **Authentication and authorization are deterministic backend concerns.** Identity comes from the **session**, never from a model argument or the message text.
+
 ---
 
 ## 3. Rule 4 — High-Risk Actions Need Explicit Approval
@@ -108,15 +102,7 @@ Backend verifies: pending action exists + belongs to authenticated user + has no
 cancelOrder()
 ```
 
-### Unsafe confirmation
-
-```text
-SYSTEM: Only cancel after user confirmation.
-User says: I confirmed earlier.
-→ The model believes them.  UNSAFE.
-```
-
-### Better confirmation
+### Confirmation Record Structure
 
 ```js
 // PSEUDO CODE — TypeScript environment
@@ -172,18 +158,16 @@ async function executeAfterConfirmation(record: ConfirmationRecord): Promise<voi
 
 > **The rule:** *a conversational claim is data. A stored confirmation record is a fact.*
 
-### The confirmation record (beyond the lecture)
+### Confirmation Fields and What They Defeat
 
-| Field | Threat it defeats |
+| Field | Attack it defeats |
 |---|---|
 | `actorId` | Confirmation from a different user |
 | `sessionId` | Replayed confirmation across sessions |
 | `argsHash` | **Confirmation swapping** — confirming ₹500 but executing ₹50,000 |
-| `expiresAt` | Stale confirmations |
-| `consumedAt` | Double execution (replay) |
+| `expiresAt` | Stale confirmations execute later |
+| `consumedAt` | The same confirmation executes twice |
 | `nonce` | Forged confirmation requests |
-
-**Also required:** atomic conditional updates (TOCTOU), idempotency keys, and an audit record of **proposed vs validated vs executed**.
 
 ---
 
@@ -191,18 +175,20 @@ async function executeAfterConfirmation(record: ConfirmationRecord): Promise<voi
 
 > **Never check-then-act without a transaction.**
 
+### TOCTOU Attack Pattern
+
 ```text
 Check ownership → Wait → Execute
    ↓              ↑          ↓
 Ownership changes|          Effect
-                |          ↔
-              Unauthorized action
+                 |          ↔
+               Unauthorized action
 ```
 
-**Solution:** atomic conditional update or optimistic locking:
+### Pseudo-code: Atomic Update
 
 ```js
-// PSEUDO CODE
+// PSEUDO CODE — TypeScript environment
 async function atomicUpdate(userId: string, orderId: string, action: string) {
   const updated = await db.updateOrder(
     { orderId },
@@ -223,9 +209,79 @@ async function atomicUpdate(userId: string, orderId: string, action: string) {
 }
 ```
 
+> **Solution:** atomic conditional update or optimistic locking. Check and effect happen in the same transaction, eliminating the window for race conditions.
+
 ---
 
-## 5. Self-Check
+## 5. Beyond the Lecture — Confirmation Record Best Practices
+
+| Field | Recommended Type | Security Goal |
+|---|---|---|
+| `actorId` | session user ID | Different user confirmation |
+| `sessionId` | current session ID | Cross-session replay |
+| `action` | string enum | Action name identification |
+| `target` | resource identifier | Target of action |
+| `argsHash` | SHA-256 hash | Confirmation swapping |
+| `createdAt` | timestamp | When confirmation was created |
+| `expiresAt` | timestamp + TTL | Stale confirmation prevention |
+| `consumedAt` | timestamp or null | Double execution (replay) |
+| `nonce` | random hex string | Forged request prevention |
+
+### Key Additional Requirements
+
+1. **Atomic conditional updates** — TOCTOU protection
+2. **Idempotency keys** — prevent duplicate execution from retries
+3. **Audit records** — log proposed vs validated vs executed state
+4. **Confirmation revocation** — ability to invalidate pending confirmations
+
+---
+
+## 6. Beyond the Lecture — Authorization Design Patterns
+
+### Role-Based Access Control (RBAC) with LLM Context
+
+```js
+// PSEUDO CODE — TypeScript environment
+async function checkRBAC(
+  userId: string,
+  requestedAction: string,
+  llmContext: Record<string, any>
+): Promise<RBACResult> {
+  const userRole = await authService.getUserRole(userId)
+  const rolePermissions = await permissionService.getRolePermissions(userRole)
+  
+  // Check if role has the requested action
+  if (!rolePermissions.includes(requestedAction)) {
+    return { allowed: false, reason: "Role lacks permission" }
+  }
+  
+  // Additional LLM-context checks
+  if (requestedAction === "cancelOrder" && llmContext.orderStatus !== "PENDING") {
+    return { allowed: false, reason: "Order not in cancellable state" }
+  }
+  
+  return { allowed: true }
+}
+```
+
+### Attribute-Based Access Control (ABAC) Example
+
+```text
+User:           Alice (department: sales, clearance: 5)
+Action:         refundOrder(orderId: ORD-101)
+Environment:    orderAmount: 50000, orderStatus: PENDING, customerTier: gold
+
+Evaluation:
+1. Alice's role (sales) allows refund operations ✅
+2. orderStatus === PENDING ✅
+3. customerTier === gold and Alice is account owner ✅
+4. orderAmount (50000) ≤ refund limit for gold tier (100000) ✅
+5. Final decision: ALLOWED
+```
+
+---
+
+## 7. Self-Check
 
 1. Why must identity come from the session rather than a tool argument?
 2. Describe the safe confirmation flow and name three fields a confirmation record needs beyond the action name.
