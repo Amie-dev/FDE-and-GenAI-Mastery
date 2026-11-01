@@ -36,6 +36,7 @@
 | 📚 | [Lecture 24 — Multimodal AI](#-lecture-24-multimodal-ai) | 10 | ✅ | ✅ | ✅ |
 | 📚 | [Lecture 25 — vLLM and PagedAttention](#-lecture-25-vllm-and-pagedattention) | 8 | ✅ | ✅ | ✅ |
 | 📚 | [Lecture 28 — Async Indexing and RAG Chat](#-lecture-28-async-indexing-and-rag-chat) | 8 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 30 — Evals and Testing](#-lecture-30-evals-and-testing) | 9 | ✅ | ✅ | ✅ |
 
 --
 
@@ -1100,9 +1101,48 @@ The following lectures exist as folders but have no numbered chapter notes yet. 
 | 26 | Durable Execution with Inngest | Notes not yet written |
 | 27 | Full-Stack AI Platform | Notes not yet written |
 | 29 | GitHub PR Reviewer Bot | Notes not yet written |
-| 30 | Evals and Testing | Notes not yet written |
 | 31 | Security and Guardrails | Notes not yet written |
 
 ---
+
+## 📚 Lecture 30 — Evals and Testing
+
+**9 chapters** + 1 consolidated document
+**Folder:** [📂 ./Lecture 30 - Evals and Testing/](./Lecture%2030%20-%20Evals%20and%20Testing/) · [📄 Roadmap](./roadmap.md)
+
+| # | Chapter | One-line summary | Notes |
+| :-- | :--- | :--- | :--- |
+| **01** | **Why AI Needs Evals** | Why `Expected == Actual` breaks for AI and why evals are the regression-testing layer of an AI application. | [📄 Chapter 01](./Lecture%2030%20-%20Evals%20and%20Testing/notes/01_Why_AI_Needs_Evals.md) |
+| **02** | **Anatomy of an Eval** | The four required components — Test Input, Expected Behaviour, Evaluator, Score — and evaluating the whole system (prompt + retrieval + tools + model). | [📄 Chapter 02](./Lecture%2030%20-%20Evals%20and%20Testing/notes/02_Anatomy_Of_An_Eval.md) |
+| **03** | **Evaluation Datasets and Golden Data** | Building versioned test cases with metadata slicing; golden data for correctness vs evaluation data for consistency. | [📄 Chapter 03](./Lecture%2030%20-%20Evals%20and%20Testing/notes/03_Evaluation_Datasets_And_Golden_Data.md) |
+| **04** | **Deterministic Evaluation** | Code checks that run instantly: string/regex inclusion, JSON schema, tool call verification, latency/token budget. | [📄 Chapter 04](./Lecture%2030%20-%20Evals%20and%20Testing/notes/04_Deterministic_Evaluation.md) |
+| **05** | **AI Quality Metrics** | Semantic quality metrics — relevance, correctness, faithfulness, completeness, tone, citation, safety — judged by LLM or human. | [📄 Chapter 05](./Lecture%2030%20-%20Evals%20and%20Testing/notes/05_AI_Quality_Metrics.md) |
+| **06** | **LLM-as-a-Judge** | Prompting another model to score outputs with a rubric; structured output, `temperature = 0`, calibration, cost control. | [📄 Chapter 06](./Lecture%2030%20-%20Evals%20and%20Testing/notes/06_LLM_as_a_Judge.md) |
+| **07** | **Rubrics, Pointwise vs Pairwise, Human Evaluation** | Rubric anchors, pointwise vs pairwise scoring, in-house vs crowd annotators, inter-rater agreement calibration. | [📄 Chapter 07](./Lecture%2030%20-%20Evals%20and%20Testing/notes/07_Rubrics_Pointwise_Pairwise_Human.md) |
+| **08** | **RAG and System-Level Evaluation** | Pipeline decomposition — retrieval/generation/tool/component evals — and the four-layer pipeline with RAG thresholds. | [📄 Chapter 08](./Lecture%2030%20-%20Evals%20and%20Testing/notes/08_RAG_and_System-Level_Evaluation.md) |
+| **09** | **Offline and Online Evaluation** | CI gates on every PR plus production monitoring, drift detection, sampling, alerting and rollback. | [📄 Chapter 09](./Lecture%2030%20-%20Evals%20and%20Testing/notes/09_Offline_and_Online_Evaluation.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all 9 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
+
+👉 **[Lecture_30_Complete_Notes.md](./Lecture%2030%20-%20Evals%20and%20Testing/notes/Lecture_30_Complete_Notes.md)**
+
+### 🧩 Lecture artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2030%20-%20Evals%20and%20Testing/README.md) | ✅ |
+| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2030%20-%20Evals%20and%20Testing/code/Basic%20Code/) | ✅ |
+| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2030%20-%20Evals%20and%20Testing/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L30["Lecture 30 notes<br/>9 chapters"]
+    L30 --> CN["Lecture_30_Complete_Notes.md"]
+    IDX --> CODE["Lecture 30 - Evals and Testing/code/"]
+    IDX --> ASG["Lecture 30 - Evals and Testing/Assignment/task.md"]
+    IDX --> RM["roadmap.md"]
+```
 
 *Built from the actual `notes/` files in each lecture folder. Chapters are listed in reading order and link directly to each note file.*

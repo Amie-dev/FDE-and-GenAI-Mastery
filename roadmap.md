@@ -33,7 +33,7 @@ Copy this table into a scratch file (or tick it in your fork) as you go.
 | 27 | Full-Stack AI Platform | ☐ | ☐ | ☐ |
 | 28 | Async Indexing & RAG Chat | ✅ | ✅ | ☐ |
 | 29 | GitHub PR Reviewer Bot | ☐ | ☐ | ☐ |
-| 30 | Evals & Testing | ☐ | ☐ | ☐ |
+| 30 | Evals & Testing | ✅ | ✅ | ☐ |
 | 31 | Security & Guardrails | ☐ | ☐ | ☐ |
 | ★ | Capstone | ☐ | ☐ | ☐ |
 
