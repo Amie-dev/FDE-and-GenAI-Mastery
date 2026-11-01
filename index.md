@@ -35,6 +35,7 @@
 | 📚 | [Lecture 23 — Claude Skills](#-lecture-23-claude-skills) | 6 | ✅ | ✅ | ✅ |
 | 📚 | [Lecture 24 — Multimodal AI](#-lecture-24-multimodal-ai) | 10 | ✅ | ✅ | ✅ |
 | 📚 | [Lecture 25 — vLLM and PagedAttention](#-lecture-25-vllm-and-pagedattention) | 8 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 28 — Async Indexing and RAG Chat](#-lecture-28-async-indexing-and-rag-chat) | 8 | ✅ | ✅ | ✅ |
 
 --
 
@@ -1050,6 +1051,45 @@ flowchart LR
 ```
 
 --
+## 📚 Lecture 28 — Async Indexing and RAG Chat
+
+**8 chapters** + 1 consolidated document
+**Folder:** [📂 ./Lecture 28 - Async Indexing and RAG Chat/](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/) · [📄 Roadmap](./roadmap.md)
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **Async Indexing Pipeline** | Inngest background jobs, sliding-window chunking, OpenAI embeddings and Pinecone upserts turn raw sources into searchable vectors without blocking the API. | [📄 Chapter 01](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/notes/01_Async_Indexing_Pipeline.md) |
+| **02** | **Source Processing & State Machine** | Source lifecycle PENDING→PROCESSING→READY/FAILED, content extraction per source type, re-processing with Pinecone cleanup, and chunk inspection API. | [📄 Chapter 02](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/notes/02_Source_Processing_State_Machine.md) |
+| **03** | **Streaming RAG Chat** | SSE streaming chat with Pinecone RAG retrieval (topK=6), system prompt construction with numbered citations, Mem0 memory, and per-message citation tracking. | [📄 Chapter 03](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/notes/03_Streaming_RAG_Chat.md) |
+| **04** | **Interactive Citations** | Workspace (RAG) and web (Tavily) citations attached to assistant messages, plus a source-chunk preview API with hover/click frontend integration and authorization checks. | [📄 Chapter 04](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/notes/04_Interactive_Citations.md) |
+| **05** | **User Memory & Web Search** | Mem0 persistent per-user memory with similarity search, Tavily live web search, and both folded into the RAG system prompt with retention and privacy scoping. | [📄 Chapter 05](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/notes/05_User_Memory_Web_Search.md) |
+| **06** | **Learning Artifacts** | Flashcards, quizzes, summaries and audio overviews generated from conversations and stored as searchable per-conversation artifacts. | [📄 Chapter 06](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/notes/06_Learning_Artifacts.md) |
+| **07** | **Job Status, Partial Failure & UX** | SSE job status tracking (PENDING→RUNNING→COMPLETED/FAILED), progress indicators, partial-failure isolation, retry with backoff, and a workspace job dashboard. | [📄 Chapter 07](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/notes/07_Job_Status_Partial_Failure_UX.md) |
+| **08** | **Re-indexing, Model Migration & Ingestion** | Re-index triggers, single/bulk source reprocessing with vector cleanup, model migration with dimension/namespace handling, cost control and quota enforcement. | [📄 Chapter 08](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/notes/08_Re_indexing_Model_Migration_Ingestion.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all 8 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
+
+👉 **[Lecture_28_Complete_Notes.md](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/Lecture_28_Complete_Notes.md)**
+
+### 🧩 Lecture artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/README.md) | ✅ |
+| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/code/Basic%20Code/) | ✅ |
+| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L28["Lecture 28 notes<br/>8 chapters"]
+    L28 --> CN["Lecture_28_Complete_Notes.md"]
+    IDX --> CODE["Lecture 28 - Async Indexing and RAG Chat/code/"]
+    IDX --> ASG["Lecture 28 - Async Indexing and RAG Chat/Assignment/task.md"]
+    IDX --> RM["roadmap.md"]
+```
+
 
 ## 📥 Lectures in Progress (notes not yet written)
 
@@ -1059,7 +1099,6 @@ The following lectures exist as folders but have no numbered chapter notes yet. 
 | :---: | :--- | :--- |
 | 26 | Durable Execution with Inngest | Notes not yet written |
 | 27 | Full-Stack AI Platform | Notes not yet written |
-| 28 | Async Indexing and RAG Chat | Notes not yet written |
 | 29 | GitHub PR Reviewer Bot | Notes not yet written |
 | 30 | Evals and Testing | Notes not yet written |
 | 31 | Security and Guardrails | Notes not yet written |

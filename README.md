@@ -140,7 +140,7 @@ Follow the phases **in order** — each one assumes only the phase before it. Co
 | **25** | 🟦 vLLM and PagedAttention | 8 | 🔴 | [📂](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/) | [📄](./roadmap.md#lecture-25--high-performance-inference-gpu-mechanics-vllm--pagedattention) |
 | **26** | 🟦 Durable Execution with Inngest | 8 | 🟠 | [📂](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/) | [📄](./roadmap.md#lecture-26--durable-execution--event-driven-multi-agent-workflows-inngest) |
 | **27** | 🟦 Full-Stack AI Platform | 8 | 🔴 | [📂](./Lecture%2027%20-%20Full-Stack%20AI%20Platform/) | [📄](./roadmap.md#lecture-27--enterprise-full-stack-ai-platform-architecture-db-auth--ingestion) |
-| **28** | 🟦 Async Indexing and RAG Chat | 8 | 🔴 | [📂](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/) | [📄](./roadmap.md#lecture-28--async-vector-indexing-streaming-rag-chat--learning-artifacts) |
+| **28** | ✅ Async Indexing and RAG Chat | 8 | 🔴 | [📂](./Lecture 28%20-%20Async%20Indexing%20and%20RAG%20Chat/) | [📄](./roadmap.md#lecture-28--async-vector-indexing-streaming-rag-chat--learning-artifacts) |
 | **29** | 🟦 GitHub PR Reviewer Bot | 8 | 🟠 | [📂](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/) | [📄](./roadmap.md#lecture-29--hands-on-autonomous-github-pr-reviewer-bot) |
 | **30** | 🟥 Evals and Testing | 9 | 🟠 | [📂](./Lecture%2030%20-%20Evals%20and%20Testing/) | [📄](./roadmap.md#lecture-30--genai-evaluation--testing-golden-data-deterministic-evals--llm-as-a-judge) |
 | **31** | 🟥 Security and Guardrails | 9 | 🔴 | [📂](./Lecture%2031%20-%20Security%20and%20Guardrails/) | [📄](./roadmap.md#lecture-31--genai-security--guardrails-prompt-injection-jailbreaks--safe-tool-use) |

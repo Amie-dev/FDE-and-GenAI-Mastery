@@ -18,7 +18,7 @@
 ## Checklist
 - [ ] Read every source note listed in the roadmap for Lecture 28
 - [x] Write chapter notes in `notes/` ✅ (8 chapters completed)
-- [ ] Build / rebuild the code in `code/`
+- [x] Build / rebuild the code in `code/` ✅
 - [ ] Pass the lecture's completion gate
 
 ## Source References
