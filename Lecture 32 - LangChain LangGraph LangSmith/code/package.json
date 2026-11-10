@@ -1,0 +1,47 @@
+{
+  "name": "lecture-32-langchain-langgraph-langsmith",
+  "version": "1.0.0",
+  "description": "Lecture 32 — LangChain provider delivery, LangGraph orchestration, LangSmith observability in TypeScript / JavaScript",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "providers": "tsx src/providers.ts",
+    "langgraph": "tsx src/langgraph.ts",
+    "langsmith": "tsx src/langsmith.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aestheticsuraj234/langchain_langgraph.git"
+  },
+  "keywords": [
+    "langchain",
+    "langgraph",
+    "langsmith",
+    "typescript",
+    "ai-agents"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Aestheticsuraj234/langchain_langgraph/issues"
+  },
+  "homepage": "https://github.com/Aestheticsuraj234/langchain_langgraph#readme",
+  "dependencies": {
+    "@langchain/core": "^1.2.12",
+    "@langchain/langgraph": "^1.4.17",
+    "@langchain/openai": "^1.5.13",
+    "@langchain/tavily": "^1.2.0",
+    "@tavily/core": "^0.7.13",
+    "dotenv": "^18.0.2",
+    "langchain": "^1.5.12",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}

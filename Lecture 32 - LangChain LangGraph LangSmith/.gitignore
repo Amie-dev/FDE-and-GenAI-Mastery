@@ -1,0 +1,7 @@
+prompt.md
+node_modules/
+.env
+.env.local
+dist/
+build/
+*.log
