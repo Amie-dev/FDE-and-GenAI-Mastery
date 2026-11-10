@@ -40,6 +40,7 @@
 | 📚 | [Lecture 29 — GitHub PR Reviewer Bot](#-lecture-29-github-pr-reviewer-bot) | 4 | — | ✅ | ✅ |
 | 📚 | [Lecture 30 — Evals and Testing](#-lecture-30-evals-and-testing) | 9 | ✅ | ✅ | ✅ |
 | 📚 | [Lecture 31 — Security and Guardrails](#-lecture-31-security-and-guardrails) | 10 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 32 — LangChain LangGraph LangSmith](#-lecture-32-langchain-langgraph-langsmith) | 3 | ✅ | ✅ | ✅ |
 
 --
 
@@ -1254,6 +1255,41 @@ flowchart LR
     L31 --> CN["Lecture_31_Complete_Notes.md"]
     IDX --> CODE["Lecture 31 - Security and Guardrails/code/"]
     IDX --> ASG["Lecture 31 - Security and Guardrails/Assignment/task.md"]
+    IDX --> RM["roadmap.md"]
+```
+
+
+## 📚 Lecture 32 — LangChain LangGraph LangSmith
+
+**3 chapters** + 1 consolidated document
+**Folder:** [📂 ./Lecture 32 - LangChain LangGraph LangSmith/](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/) · [📄 Roadmap](./roadmap.md)
+
+| # | Chapter | One-line summary | Notes |
+| :---: | :--- | :--- | :--- |
+| **01** | **LangChain Architecture, Harness & Provider Delivery** | $\text{Agent} = \text{Model} + \text{Harness}$; universal provider delivery (`initChatModel`), message protocols (`SystemMessage`, `HumanMessage`, `AIMessage`, `ToolMessage`), typed tool calling (`tool()`), token streaming, and Zod structured outputs | [📄 Chapter 01](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/01_langchain_providers_ts.md) |
+| **02** | **LangGraph Stateful Orchestration & Workflows** | Low-level stateful graph runtime (`StateGraph`, `StateSchema`, channel reducers, Pregel super-steps, checkpointers, conditional routing, Notion & Calendar workflows) | [📄 Chapter 02](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/02_langgraph_ts.md) |
+| **03** | **LangSmith Observability, Tracing & Evaluation** | Zero-code tracing, trace run trees, state mutation diffs, custom spans with `traceable`, golden datasets, and automated LLM-as-a-judge offline evaluations | [📄 Chapter 03](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/03_langsmith_ts.md) |
+
+### 📄 Consolidated notes
+
+A single document combining all 3 chapters — architecture flowcharts, universal comparative matrix, complete code templates, and self-check questions, with links back into the chapters for detail:
+
+👉 **[Lecture_32_Complete_Notes.md](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/Lecture_32_Complete_Notes.md)**
+
+### 🧩 Lecture artefacts
+
+| Artefact | Link | Status |
+| :--- | :--- | :---: |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/README.md) | ✅ |
+| Code — the lecture's runnable codebase | [📂 code/src](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/code/src/) | ✅ |
+| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/Assignment/task.md) | ✅ |
+
+```mermaid
+flowchart LR
+    IDX["index.md<br/>this file"] --> L32["Lecture 32 notes<br/>3 chapters"]
+    L32 --> CN["Lecture_32_Complete_Notes.md"]
+    IDX --> CODE["Lecture 32 - LangChain LangGraph LangSmith/code/"]
+    IDX --> ASG["Lecture 32 - LangChain LangGraph LangSmith/Assignment/task.md"]
     IDX --> RM["roadmap.md"]
 ```
 

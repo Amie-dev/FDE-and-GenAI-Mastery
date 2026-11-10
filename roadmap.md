@@ -34,7 +34,8 @@ Copy this table into a scratch file (or tick it in your fork) as you go.
 | 28 | Async Indexing & RAG Chat | ✅ | ✅ | ☐ |
 | 29 | GitHub PR Reviewer Bot | ☐ | ☐ | ☐ |
 | 30 | Evals & Testing | ✅ | ✅ | ☐ |
-| 31 | Security & Guardrails | ☐ | ☐ | ☐ |
+| 31 | Security & Guardrails | ✅ | ✅ | ☐ |
+| 32 | LangChain, LangGraph & LangSmith | ✅ | ✅ | ☐ |
 | ★ | Capstone | ☐ | ☐ | ☐ |
 
 ---

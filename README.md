@@ -6,7 +6,7 @@
 
 *Forward Deployed Engineering · LLM internals · Agents &amp; Tools · RAG &amp; Knowledge Systems · MCP · Multimodal · Evals · Security*
 
-[![Lectures](https://img.shields.io/badge/Lectures-31-blueviolet?style=for-the-badge)](#-curriculum-navigation)
+[![Lectures](https://img.shields.io/badge/Lectures-32-blueviolet?style=for-the-badge)](#-curriculum-navigation)
 [![Phases](https://img.shields.io/badge/Phases-10-2ea44f?style=for-the-badge)](#-learning-path)
 [![Source Lectures Merged](https://img.shields.io/badge/Source_Lectures_Merged-35-orange?style=for-the-badge)](#-where-this-came-from)
 [![Topic Coverage](https://img.shields.io/badge/Topic_Coverage-35%2F35-success?style=for-the-badge)](#-verification-appendices)
@@ -36,7 +36,7 @@
 | 🎯 | **[Repository Overview](#-repository-overview)** | What this repository is and who it is for |
 | 📊 | **[Repository at a Glance](#-repository-at-a-glance)** | Hard numbers: lectures, phases, topics, files, coverage |
 | 🗺️ | **[Learning Path](#-learning-path)** | The ten-phase route, from foundations to security |
-| 📚 | **[Curriculum Navigation](#-curriculum-navigation)** | All 31 lectures with folder links, level and phase |
+| 📚 | **[Curriculum Navigation](#-curriculum-navigation)** | All 32 lectures with folder links, level and phase |
 | 📑 | **[Chapter Index](./index.md)** | Every written lecture's chapters — number, title, one-line summary and a link to each `notes/` file |
 | 📖 | **[Phase Highlights](#-phase-highlights)** | Collapsible deep-dive per phase, with topic chips |
 | 🔀 | **[Where This Came From](#-where-this-came-from)** | The two source repositories and how they were merged |
@@ -72,12 +72,12 @@ This repository is a **single merged learning path** built by reading, comparing
 
 | Metric | Value |
 | :--- | ---: |
-| 🎓 Merged lectures | **31** |
+| 🎓 Merged lectures | **32** |
 | 🧭 Learning phases | **10** (Phase 0 → 9) |
 | 📚 Source lectures/days merged | **35** (19 `Forward-Deployed-Engineer` + 16 `gen-ai-cohort`) |
 | 📓 Source note files mapped | **235** (152 FDE chapters + 83 cohort note files) |
 | 🧾 Indexed sub-topics | **454+** |
-| 🗂️ Lecture workspace folders | **31** (each with `notes/` + `code/`) |
+| 🗂️ Lecture workspace folders | **32** (each with `notes/` + `code/`) |
 | ✍️ Roadmap volume | **1,467 lines** |
 | ✅ Source coverage | **35 / 35** lectures &amp; days mapped |
 | 🔁 Duplicated topics | **0** |
@@ -100,7 +100,7 @@ Follow the phases **in order** — each one assumes only the phase before it. Co
 | **3 · Agency &amp; Contracts** | 08 · 09 · 10 · 11 | 🟨 | Give a model typed tools, sandbox it, add human-in-the-loop, enforce schema contracts, and build the agent runtime yourself |
 | **4 · Embeddings** | 12 · 13 · 14 · 15 | 🟧 | Represent meaning as vectors, then store and search billions of them with ANN indexes — and know the internals |
 | **5 · RAG &amp; Knowledge** | 16 · 17 · 18 · 19 · 20 | 🟥 | Build grounded answering end to end, then prove which control fixes a wrong answer — including vectorless retrieval, agent memory and graphs |
-| **6 · Integration** | 21 · 22 · 23 | 🟪 | Give a program standard access to the outside world through MCP, with all three primitives under the right owner, then package workflow knowledge as a skill |
+| **6 · Integration &amp; Orchestration** | 21 · 22 · 23 · 32 | 🟪 | Give a program standard access to the outside world through MCP, package skills, and build stateful multi-agent workflows with LangChain, LangGraph &amp; LangSmith |
 | **7 · Multimodality** | 24 | 🟫 | Let a model read an image — and decide between OCR and an MLLM on cost evidence |
 | **8 · Production Infrastructure** | 25 · 26 · 27 · 28 · 29 | 🟦 | Run inference economically, orchestrate durable workflows, ship a full-stack multi-tenant AI product, and deploy an autonomous bot |
 | **9 · Quality &amp; Safety** | 30 · 31 | 🟥 | **Prove** the system works with a release gate — and **survive being attacked**, naming the layer that stopped each attack |
@@ -144,6 +144,7 @@ Follow the phases **in order** — each one assumes only the phase before it. Co
 | **29** | 🟦 GitHub PR Reviewer Bot | 8 | 🟠 | [📂](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/) | [📄](./roadmap.md#lecture-29--hands-on-autonomous-github-pr-reviewer-bot) |
 | **30** | ✅ Evals and Testing | 9 | 🟢 | [📂](./Lecture%2030%20-%20Evals%20and%20Testing/) | [📄](./roadmap.md#lecture-30--genai-evaluation--testing-golden-data-deterministic-evals--llm-as-a-judge) |
 | **31** | 🟥 Security and Guardrails | 9 | 🔴 | [📂](./Lecture%2031%20-%20Security%20and%20Guardrails/) | [📄](./roadmap.md#lecture-31--genai-security--guardrails-prompt-injection-jailbreaks--safe-tool-use) |
+| **32** | 🟪 LangChain, LangGraph &amp; LangSmith | 6 | 🟡 | [📂](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/) | [📄](./roadmap.md#-appendix-d--progress-tracker) |
 | **★** | 🏁 Capstone | — | 🔴 | ➖ | [📄](./roadmap.md#-capstone--prove-the-whole-path) |
 
 **Legend:** 🟢 Beginner · 🟡 Intermediate · 🟠 Advanced · 🔴 Expert
@@ -302,9 +303,9 @@ Each phase below is summarised twice: a one-line thesis and a lecture chip list 
 
 ### 🟪 Phase 6 — Integration &amp; Interoperability
 
-> **Thesis** — Replace N×M bespoke integrations with one open protocol — then package *workflow knowledge*, not connectivity, as a portable skill.
+> **Thesis** — Replace N×M bespoke integrations with one open protocol — then package *workflow knowledge*, not connectivity, as a portable skill, and orchestrate cyclic stateful multi-actor agent graphs.
 
-`Lecture 21 — MCP Core` · `Lecture 22 — MCP Resources, Prompts &amp; Gateway` · `Lecture 23 — Claude Skills`
+`Lecture 21 — MCP Core` · `Lecture 22 — MCP Resources, Prompts &amp; Gateway` · `Lecture 23 — Claude Skills` · `Lecture 32 — LangChain, LangGraph &amp; LangSmith`
 
 <details>
 <summary><b>🔎 What this phase teaches</b></summary>
@@ -317,9 +318,11 @@ Each phase below is summarised twice: a one-line thesis and a lecture chip list 
 
 **23 · Claude Skills &amp; the Agent Skills Open Standard** — Skills vs MCP (connectivity vs workflow knowledge); **progressive disclosure** (frontmatter → body → resources); the `SKILL.md` spec (YAML frontmatter, description formulas, security rules); `assets/`, `references/` and `scripts/`; **deterministic code execution** over probabilistic instructions; the testing spectrum (manual · CLI · API · `skill-creator`); validation and packaging; distribution and the `/v1/skills` API.
 
+**32 · LangChain, LangGraph &amp; LangSmith** — $\text{Agent} = \text{Model} + \text{Harness}$; universal provider delivery model (`initChatModel`); message protocols (`SystemMessage`, `HumanMessage`, `AIMessage`, `ToolMessage`); typed tool calling with Zod &amp; Tavily; token streaming; structured output strategies; stateful cyclic graph orchestration with `StateGraph`, `StateSchema`, and channel reducers; Pregel super-step execution; checkpointers (`MemorySaver`, thread persistence); human-in-the-loop breakpoints; production case studies (automated Notion study notes &amp; Google Calendar meeting scheduler); zero-code observability, trace waterfalls, state inspection, custom spans with `traceable`, and golden dataset offline evals with `evaluate()`.
+
 </details>
 
-**[📂 Lecture 21](./Lecture%2021%20-%20MCP%20Core/)** · **[📂 Lecture 22](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/)** · **[📂 Lecture 23](./Lecture%2023%20-%20Claude%20Skills/)** · **[📄 Roadmap: Phase 6](./roadmap.md#-phase-6--integration--interoperability)**
+**[📂 Lecture 21](./Lecture%2021%20-%20MCP%20Core/)** · **[📂 Lecture 22](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/)** · **[📂 Lecture 23](./Lecture%2023%20-%20Claude%20Skills/)** · **[📂 Lecture 32](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/)** · **[📄 Roadmap: Phase 6](./roadmap.md#-phase-6--integration--interoperability)**
 
 ---
 
@@ -434,7 +437,7 @@ Six artefacts inside **[`roadmap.md`](./roadmap.md)** exist purely so you can *v
 | **A — De-duplication Map** | How each source lecture merged or split, so nothing is taught twice | [📄](./roadmap.md#-appendix-a--de-duplication-map) |
 | **B — Coverage Checklist** | **19/19** FDE lectures + **16/16** cohort days mapped ✅ | [📄](./roadmap.md#-appendix-b--full-source-coverage-checklist) |
 | **C — Tech Stack, Prerequisites &amp; Study Plan** | What tooling you need, what you must already know, and a 32-week schedule | [📄](./roadmap.md#-appendix-c--tech-stack-prerequisites--study-plan) |
-| **D — Progress Tracker** | Tick-off table for all 31 lectures + the capstone | [📄](./roadmap.md#-appendix-d--progress-tracker) |
+| **D — Progress Tracker** | Tick-off table for all 32 lectures + the capstone | [📄](./roadmap.md#-appendix-d--progress-tracker) |
 | **E — Structural Learning Design** | The prerequisite → objective → unlocks chain, plus the capability ladder (which phase maps to which job title) | [📄](./roadmap.md#-appendix-e--structural-learning-design) |
 | **F — Source Chapter Coverage Ledger** | **Every chapter file of every source lecture**, mapped to its target lecture | [📄](./roadmap.md#-appendix-f--source-chapter-coverage-ledger) |
 
@@ -463,7 +466,7 @@ Six artefacts inside **[`roadmap.md`](./roadmap.md)** exist purely so you can *v
 ### 1 · Reading the roadmap (no setup required)
 
 ```text
-1. Open  roadmap.md                              → the master map: 31 lectures · 10 phases
+1. Open  roadmap.md                              → the master map: 32 lectures · 10 phases
 2. Open  roadmap.md → "Lecture NN — …"           → goal · topics · build · source · gate
 3. Open  Lecture NN - <Title>/README.md          → that lecture's workspace stub
 4. Open  Forward-Deployed-Engineer/ or gen-ai-cohort/  → the source notes listed under "Source"
@@ -500,8 +503,8 @@ FDE-and-GenAI-Mastery/
 ├── README.md                     # ← you are here (orientation, navigation, verification)
 ├── index.md                      # 📚 chapter index — every written lecture's chapters + notes links
 ├── roadmap.md                    # ⭐ THE MASTER MAP
-│   ├── Design rules · How to use · 31 lectures at a glance · Phase graph
-│   ├── Detailed breakdown        # 31 lecture cards: Goal · Topics · Build · Source · Gate
+│   ├── Design rules · How to use · 32 lectures at a glance · Phase graph
+│   ├── Detailed breakdown        # 32 lecture cards: Goal · Topics · Build · Source · Gate
 │   ├── Capstone brief
 │   └── Appendices A → F          # de-duplication · coverage · stack · tracker · sequence · ledger
 │
@@ -517,7 +520,8 @@ FDE-and-GenAI-Mastery/
 ├── Lecture 02 - LLM Foundations/
 ├── Lecture 03 - Attention and Decoding/
 ├── …
-└── Lecture 31 - Security and Guardrails/
+├── Lecture 31 - Security and Guardrails/
+└── Lecture 32 - LangChain LangGraph LangSmith/
 
 Forward-Deployed-Engineer/        # source repository 1  (19 lectures · 152 chapter notes)
 gen-ai-cohort/                    # source repository 2  (16 days · 83 note files)
@@ -525,7 +529,7 @@ gen-ai-cohort/                    # source repository 2  (16 days · 83 note fil
 
 > 🛠️ **Every lecture ships a `prompt.md`** — the generation prompt for that lecture. Open it, change only the **chapter number** in Block 1, and run the blocks in order: chapters → complete notes → basic code → production code → assignment → index. `prompt.md` is **git-ignored** (it is your personal working file), and the generated output lands in `notes/`, `code/`, `index.md` and `Assignment/task.md`.
 
-> 📌 The two source repositories sit **beside** this folder — they are the *inputs*, never edited here. All 31 lecture folders are your **workspaces**.
+> 📌 The two source repositories sit **beside** this folder — they are the *inputs*, never edited here. All 32 lecture folders are your **workspaces**.
 
 ---
 
@@ -546,8 +550,8 @@ Every lecture in this repository follows the same four-part contract, so you can
 
 | Status | Item |
 | :---: | :--- |
-| ✅ | All **31 lectures** defined across **10 phases**, ordered basic → advanced |
-| ✅ | **31 workspace folders** scaffolded with `README.md` + `notes/` + `code/` |
+| ✅ | All **32 lectures** defined across **10 phases**, ordered basic → advanced |
+| ✅ | **32 workspace folders** scaffolded with `README.md` + `notes/` + `code/` |
 | ✅ | Master roadmap with per-lecture **Goal · Topics · Build · Source · Gate** |
 | ✅ | **6 verification appendices** (de-duplication · coverage · stack · tracker · sequence · ledger) |
 | ✅ | **35/35** source lectures/days and **235** source note files mapped — **0 duplicates** |
