@@ -2,6 +2,7 @@
 
 | # | Chapter | File | One-line summary |
 |---|---------|------|------------------|
-| 1 | LangChain provider delivery (TS/JS) | `notes/01_langchain_providers_ts.md` | One unified API (`initChatModel`, `@langchain/openai`) to call any model provider. |
-| 2 | LangGraph orchestration (TS/JS) | `notes/02_langgraph_ts.md` | Stateful agent graphs (`StateGraph`, nodes, edges, compile, invoke/stream). |
-| 3 | LangSmith tracing (TS/JS) | `notes/03_langsmith_ts.md` | Observability via `LANGSMITH_TRACING`, `LANGSMITH_API_KEY`, `LANGSMITH_PROJECT`. |
+| 1 | LangChain architecture, harness & provider delivery | [`notes/01_langchain_providers_ts.md`](file:///home/aminul/development/learn/GEN%20AI/FDE-and-GenAI-Mastery/Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/01_langchain_providers_ts.md) | Agent = Model + Harness; universal provider delivery (`initChatModel`), message protocols, tool calling (`tool()`), token streaming, and Zod structured outputs. |
+| 2 | LangGraph stateful orchestration & workflows | [`notes/02_langgraph_ts.md`](file:///home/aminul/development/learn/GEN%20AI/FDE-and-GenAI-Mastery/Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/02_langgraph_ts.md) | Stateful cyclic agent graphs (`StateGraph`, `StateSchema`, Pregel super-steps, checkpointers, conditional routing, Notion & Calendar production workflows). |
+| 3 | LangSmith observability, tracing & evaluation | [`notes/03_langsmith_ts.md`](file:///home/aminul/development/learn/GEN%20AI/FDE-and-GenAI-Mastery/Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/03_langsmith_ts.md) | Zero-overhead tracing, trace run trees, state inspection, custom spans with `traceable`, golden datasets, and automated LLM-as-a-judge offline evals. |
+| ★ | Complete Consolidated Notes (Master Reference) | [`notes/Lecture_32_Complete_Notes.md`](file:///home/aminul/development/learn/GEN%20AI/FDE-and-GenAI-Mastery/Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/Lecture_32_Complete_Notes.md) | Full consolidated reference synthesizing the entire lecture, architectural diagrams, real-world case studies, comparison matrix, and self-check questions. |
