@@ -39,9 +39,21 @@ Lecture 32 - LangChain LangGraph LangSmith/
 ├── prompt.md          # generation prompt (git-ignored)
 ├── .gitignore         # ignores prompt.md, node_modules, .env
 ├── notes/
-│   ├── 01_langchain_providers_ts.md   # LangChain architecture, harness & provider delivery
-│   ├── 02_langgraph_ts.md             # LangGraph stateful orchestration & workflows
-│   ├── 03_langsmith_ts.md             # LangSmith observability, tracing & evaluation
+│   ├── 01_What_is_AI_and_LLM.md
+│   ├── 02_What_is_an_AI_Agent_Model_and_Harness.md
+│   ├── 03_What_is_a_Harness_Deep_Dive.md
+│   ├── 04_Introduction_to_LangChain.md
+│   ├── 05_Build_a_CLI_Chat_Agent_System_Prompt.md
+│   ├── 06_Message_Objects_Roles_Content_Metadata.md
+│   ├── 07_Tool_Calling_Web_Search_and_Extraction.md
+│   ├── 08_Streaming_Output_Tokens_and_Updates.md
+│   ├── 09_Structured_Output_with_Zod.md
+│   ├── 10_What_is_LangGraph_and_Why_Use_It.md
+│   ├── 11_StateGraph_StateSchema_and_Channels.md
+│   ├── 12_Nodes_Edges_and_Conditional_Routing.md
+│   ├── 13_Checkpointers_Persistence_and_HITL.md
+│   ├── 14_Production_Workflows_Notion_and_Google_Calendar.md
+│   ├── 15_LangSmith_Observability_Tracing_and_Evals.md
 │   └── Lecture_32_Complete_Notes.md   # Complete consolidated master notes
 ├── code/
 │   ├── package.json          # deps from reference repo (@langchain/*)

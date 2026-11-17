@@ -40,7 +40,7 @@
 | 📚 | [Lecture 29 — GitHub PR Reviewer Bot](#-lecture-29-github-pr-reviewer-bot) | 4 | — | ✅ | ✅ |
 | 📚 | [Lecture 30 — Evals and Testing](#-lecture-30-evals-and-testing) | 9 | ✅ | ✅ | ✅ |
 | 📚 | [Lecture 31 — Security and Guardrails](#-lecture-31-security-and-guardrails) | 10 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 32 — LangChain LangGraph LangSmith](#-lecture-32-langchain-langgraph-langsmith) | 3 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 32 — LangChain LangGraph LangSmith](#-lecture-32-langchain-langgraph-langsmith) | 15 | ✅ | ✅ | ✅ |
 
 --
 
@@ -1261,18 +1261,30 @@ flowchart LR
 
 ## 📚 Lecture 32 — LangChain LangGraph LangSmith
 
-**3 chapters** + 1 consolidated document
+**15 chapters** + 1 consolidated document
 **Folder:** [📂 ./Lecture 32 - LangChain LangGraph LangSmith/](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/) · [📄 Roadmap](./roadmap.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
-| **01** | **LangChain Architecture, Harness & Provider Delivery** | $\text{Agent} = \text{Model} + \text{Harness}$; universal provider delivery (`initChatModel`), message protocols (`SystemMessage`, `HumanMessage`, `AIMessage`, `ToolMessage`), typed tool calling (`tool()`), token streaming, and Zod structured outputs | [📄 Chapter 01](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/01_langchain_providers_ts.md) |
-| **02** | **LangGraph Stateful Orchestration & Workflows** | Low-level stateful graph runtime (`StateGraph`, `StateSchema`, channel reducers, Pregel super-steps, checkpointers, conditional routing, Notion & Calendar workflows) | [📄 Chapter 02](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/02_langgraph_ts.md) |
-| **03** | **LangSmith Observability, Tracing & Evaluation** | Zero-code tracing, trace run trees, state mutation diffs, custom spans with `traceable`, golden datasets, and automated LLM-as-a-judge offline evaluations | [📄 Chapter 03](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/03_langsmith_ts.md) |
+| **01** | **What is AI and LLM?** | First principles of AI, ML, Transformers, next-token prediction, statelessness, and foundation model limitations | [📄 Chapter 01](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/01_What_is_AI_and_LLM.md) |
+| **02** | **What is an AI Agent? (Model + Harness)** | The core formula $\text{Agent} = \text{Model} + \text{Harness}$; Chatbot vs Agent comparison matrix; ReAct loop mechanics | [📄 Chapter 02](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/02_What_is_an_AI_Agent_Model_and_Harness.md) |
+| **03** | **What is a Harness? (Deep Dive)** | The 5 pillars of a harness (prompt, tools, messages, memory, middleware); 5 categories of middleware; harness levels | [📄 Chapter 03](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/03_What_is_a_Harness_Deep_Dive.md) |
+| **04** | **Introduction to LangChain** | Framework architecture; the problem LangChain solves; `createAgent()` abstraction; LangChain vs LangGraph vs Deep Agents | [📄 Chapter 04](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/04_Introduction_to_LangChain.md) |
+| **05** | **Build a CLI Chat Agent (System Prompt)** | Interactive terminal chat loop with `node:readline/promises`; system prompt engineering; behavioral steering and constraints | [📄 Chapter 05](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/05_Build_a_CLI_Chat_Agent_System_Prompt.md) |
+| **06** | **Message Objects: Roles, Content & Metadata** | `SystemMessage`, `HumanMessage`, `AIMessage` (with `tool_calls`), `ToolMessage` (with `tool_call_id`), metadata, token tracking | [📄 Chapter 06](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/06_Message_Objects_Roles_Content_Metadata.md) |
+| **07** | **Tool Calling, Web Search & Extraction** | Defining tools with `tool()` and Zod schemas; Tavily live search & page extraction; the ReAct tool execution cycle | [📄 Chapter 07](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/07_Tool_Calling_Web_Search_and_Extraction.md) |
+| **08** | **Streaming Output: Tokens, Updates & Events** | Why stream; streaming modes (`messages`, `updates`, `custom`); token-by-token terminal output; streaming with memory | [📄 Chapter 08](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/08_Streaming_Output_Tokens_and_Updates.md) |
+| **09** | **Structured Output with Zod Schemas** | Guaranteed typed responses with `responseFormat`; provider strategy vs tool strategy; combining tools with structured output | [📄 Chapter 09](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/09_Structured_Output_with_Zod.md) |
+| **10** | **What is LangGraph and Why Use It?** | Low-level state-machine runtime; framework vs runtime; limitations of fixed ReAct loops; 5 superpowers of LangGraph | [📄 Chapter 10](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/10_What_is_LangGraph_and_Why_Use_It.md) |
+| **11** | **StateGraph, StateSchema & Channel Reducers** | 4-step graph build lifecycle; channel types; `MessagesValue` & `ReducedValue` reducers; why `.compile()` is mandatory | [📄 Chapter 11](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/11_StateGraph_StateSchema_and_Channels.md) |
+| **12** | **Nodes, Edges & Conditional Routing** | Deterministic vs AI nodes; normal edges; conditional edges (`addConditionalEdges`); entry routing; parallel nodes; `Command` | [📄 Chapter 12](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/12_Nodes_Edges_and_Conditional_Routing.md) |
+| **13** | **Checkpointers, Persistence & Human-in-the-Loop** | Durable execution; `MemorySaver`; session retention via `thread_id`; `interruptBefore` breakpoints; state editing & resume | [📄 Chapter 13](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/13_Checkpointers_Persistence_and_HITL.md) |
+| **14** | **Production Workflows: Notion & Google Calendar** | Study notes to Notion pipeline (Tavily + 2000-char block chunking); Notion + Calendar meeting scheduler with early exits | [📄 Chapter 14](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/14_Production_Workflows_Notion_and_Google_Calendar.md) |
+| **15** | **LangSmith Observability, Tracing & Evals** | Zero-code tracing; run trees; state diff inspection; custom spans with `@traceable`; golden datasets & offline LLM-as-a-judge evals | [📄 Chapter 15](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/15_LangSmith_Observability_Tracing_and_Evals.md) |
 
 ### 📄 Consolidated notes
 
-A single document combining all 3 chapters — architecture flowcharts, universal comparative matrix, complete code templates, and self-check questions, with links back into the chapters for detail:
+A single document combining all 15 chapters — architecture flowcharts, universal comparative matrix, complete code templates, and self-check questions, with links back into the chapters for detail:
 
 👉 **[Lecture_32_Complete_Notes.md](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/notes/Lecture_32_Complete_Notes.md)**
 
@@ -1286,7 +1298,7 @@ A single document combining all 3 chapters — architecture flowcharts, universa
 
 ```mermaid
 flowchart LR
-    IDX["index.md<br/>this file"] --> L32["Lecture 32 notes<br/>3 chapters"]
+    IDX["index.md<br/>this file"] --> L32["Lecture 32 notes<br/>15 chapters"]
     L32 --> CN["Lecture_32_Complete_Notes.md"]
     IDX --> CODE["Lecture 32 - LangChain LangGraph LangSmith/code/"]
     IDX --> ASG["Lecture 32 - LangChain LangGraph LangSmith/Assignment/task.md"]
