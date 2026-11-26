@@ -35,9 +35,9 @@
 | :---: | :--- | :--- |
 | 🎯 | **[Repository Overview](#-repository-overview)** | What this repository is and who it is for |
 | 📊 | **[Repository at a Glance](#-repository-at-a-glance)** | Hard numbers: lectures, phases, topics, files, coverage |
-| 🗺️ | **[Learning Path](#-learning-path)** | The ten-phase route, from foundations to security |
-| 📚 | **[Curriculum Navigation](#-curriculum-navigation)** | All 32 lectures with folder links, level and phase |
-| 📑 | **[Chapter Index](./index.md)** | Every written lecture's chapters — number, title, one-line summary and a link to each `notes/` file |
+| 🗺️ | **[Learning Path](#-learning-path)** | The 11-phase route across 3 Macro Stages (Build → Connect → Ship) |
+| 📚 | **[Curriculum Navigation](#-curriculum-navigation)** | All 45 lectures with folder links, stage, level and phase |
+| 📑 | **[Chapter Index](./index%20v1.md)** | Every written lecture's chapters — number, title, one-line summary and a link to each `notes/` file |
 | 📖 | **[Phase Highlights](#-phase-highlights)** | Collapsible deep-dive per phase, with topic chips |
 | 🔀 | **[Where This Came From](#-where-this-came-from)** | The two source repositories and how they were merged |
 | ✅ | **[Verification Appendices](#-verification-appendices)** | The six artefacts that prove completeness |
@@ -77,14 +77,14 @@ This repository is a **single merged learning path** built by reading, comparing
 | 📚 Source lectures/days merged | **35** (19 `Forward-Deployed-Engineer` + 16 `gen-ai-cohort`) |
 | 📓 Source note files mapped | **235** (152 FDE chapters + 83 cohort note files) |
 | 🧾 Indexed sub-topics | **454+** |
-| 🗂️ Lecture workspace folders | **32** (each with `notes/` + `code/`) |
-| ✍️ Roadmap volume | **1,467 lines** |
-| ✅ Source coverage | **35 / 35** lectures &amp; days mapped |
+| 🗂️ Lecture workspace folders | **45** (each with `notes/` + `code/` + `Assignment/`) |
+| ✍️ Roadmap volume | **649 lines** (`roadmap-v1.md`) |
+| ✅ Source coverage | **35 / 35** lectures &amp; days mapped + **24 / 24** FDE sessions + Code Mode |
 | 🔁 Duplicated topics | **0** |
-| 🧩 Verification appendices | **6** (A → F) |
+| 🧩 Verification appendices | **5** (A → E in `roadmap-v1.md`) |
 | 🏁 Capstone | **1** end-to-end system brief |
 
-> 💡 Every number above is derived from the repository contents — the lecture count and topic count come from `roadmap.md`, and the coverage figures come from [Appendix B](./roadmap.md#-appendix-b--full-source-coverage-checklist) and [Appendix F](./roadmap.md#-appendix-f--source-chapter-coverage-ledger).
+> 💡 Every number above is derived from the repository contents — the 45-lecture curriculum and topic map live in [`roadmap-v1.md`](./roadmap-v1.md), and the chapter index lives in [`index v1.md`](./index%20v1.md).
 
 ---
 
@@ -92,20 +92,21 @@ This repository is a **single merged learning path** built by reading, comparing
 
 Follow the phases **in order** — each one assumes only the phase before it. Colour squares match the **[Phase Highlights](#-phase-highlights)** below.
 
-| Phase | Lectures | Colour | You leave able to… |
-| :---: | :--- | :---: | :--- |
-| **0 · Orientation** | 01 | ⬜ | Discover the *real* business problem, and narrate rules → ML → n-grams → RNN → Transformer |
-| **1 · Foundations** | 02 · 03 | 🟦 | Explain how an LLM actually produces a token: tokens → vectors → attention → logits → sampling |
-| **2 · Application Layer** | 04 · 05 · 06 · 07 | 🟩 | Call a model from a real service, engineer a prompt, budget tokens, and stream to a browser correctly |
-| **3 · Agency &amp; Contracts** | 08 · 09 · 10 · 11 | 🟨 | Give a model typed tools, sandbox it, add human-in-the-loop, enforce schema contracts, and build the agent runtime yourself |
-| **4 · Embeddings** | 12 · 13 · 14 · 15 | 🟧 | Represent meaning as vectors, then store and search billions of them with ANN indexes — and know the internals |
-| **5 · RAG &amp; Knowledge** | 16 · 17 · 18 · 19 · 20 | 🟥 | Build grounded answering end to end, then prove which control fixes a wrong answer — including vectorless retrieval, agent memory and graphs |
-| **6 · Integration &amp; Orchestration** | 21 · 22 · 23 · 32 | 🟪 | Give a program standard access to the outside world through MCP, package skills, and build stateful multi-agent workflows with LangChain, LangGraph &amp; LangSmith |
-| **7 · Multimodality** | 24 | 🟫 | Let a model read an image — and decide between OCR and an MLLM on cost evidence |
-| **8 · Production Infrastructure** | 25 · 26 · 27 · 28 · 29 | 🟦 | Run inference economically, orchestrate durable workflows, ship a full-stack multi-tenant AI product, and deploy an autonomous bot |
-| **9 · Quality &amp; Safety** | 30 · 31 | 🟥 | **Prove** the system works with a release gate — and **survive being attacked**, naming the layer that stopped each attack |
+| Phase | Stage | Lectures | Colour | You leave able to… |
+| :---: | :---: | :--- | :---: | :--- |
+| **0 · Orientation** | Build | 01 | ⬜ | Discover the *real* business problem, and narrate rules → ML → n-grams → RNN → Transformer |
+| **1 · Foundations** | Build | 02 · 03 | 🟦 | Explain how an LLM actually produces a token: tokens → vectors → attention → logits → sampling |
+| **2 · Application Layer &amp; Harness** | Build | 04 · 05 · 06 · 07 · 08 | 🟩 | Call models across SDKs, engineer prompts, budget tokens, stream SSE, route dynamically, and govern coding harnesses (`AGENTS.md`, `Pi`, SDD/TDD) |
+| **3 · Agency, Graphs &amp; Loops** | Build | 09 · 10 · 11 · 12 · 13 · 14 | 🟨 | Give a model typed tools, sandbox it, add HITL, enforce Zod schemas, build an Agent SDK, orchestrate LangGraph/LangSmith, and run bounded Plan-Act-Verify &amp; A2A loops |
+| **4 · Embeddings &amp; ANN** | Build | 15 · 16 · 17 · 18 | 🟧 | Represent meaning as vectors, then store and search billions of them with ANN indexes (IVF, HNSW, PQ, DiskANN) |
+| **5 · RAG, Memory &amp; Graphs** | Build | 19 · 20 · 21 · 22 · 23 | 🟥 | Build grounded RAG end-to-end, prove retrieval quality, add vectorless trees, agent memory with poisoning defence, and ontology-driven temporal GraphRAG |
+| **6 · Enterprise Data &amp; SQL** | Connect | 24 · 25 · 26 | 🟣 | Map enterprise data catalogues &amp; Apache Ossie, enforce AI data contracts &amp; GDPR cascades, and run AST-validated semantic Text-to-SQL + sandboxed Python |
+| **7 · Connectors, Code Mode &amp; CDC** | Connect | 27 · 28 · 29 · 30 · 31 · 32 | 🟪 | Connect systems via MCP &amp; Gateways, package Skills, adapt OpenAPI-to-MCP, collapse 2,500+ APIs with Cloudflare Code Mode, and sync via Inngest + CDC/DLQ |
+| **8 · Multimodality &amp; Agent Apps** | Ship | 33 · 34 · 35 · 36 · 37 | 🟫 | Parse multimodal docs, ship full-stack RAG &amp; PR reviewer apps, stream `AG-UI` / `MCP Apps`, and scale isolated workers on Kubernetes + KEDA |
+| **9 · Distributed &amp; Sovereign Inference** | Ship | 38 · 39 | 🟦 | Serve models economically with vLLM, quantization &amp; Indic/sovereign models, and scale multi-node disaggregated prefill/decode (`SGLang`, `llm-d`, `Dynamo`) |
+| **10 · Quality, FinOps, Identity &amp; Security** | Ship | 40 · 41 · 42 · 43 · 44 · 45 | 🟥 | Gate releases with evals, Z3 neuro-symbolic invariants, OTel/FOCUS FinOps, `flagd` canaries, OIDC/SCIM/ReBAC identity, OWASP Agentic/MCP guardrails &amp; AI BOM |
 
-> 🧭 **Cross-cutting note:** Phase 9 is not "last" in spirit — security and evaluation apply to every system you build from Phase 2 onwards. Read Phase 9 as the **certification layer**.
+> 🧭 **Cross-cutting note:** Phase 10 is not "last" in spirit — security, identity, observability and evaluation apply to every system you build from Phase 2 onwards. Read Phase 10 as the **certification layer**.
 
 ---
 
@@ -113,9 +114,9 @@ Follow the phases **in order** — each one assumes only the phase before it. Co
 
 | # | Lecture | Stage / Phase | Level | Workspace | Roadmap |
 | :---: | :--- | :---: | :---: | :---: | :---: |
-| **01** | ⬜ Introduction to FDE and AI History | Build · 0 | 🟢 | [📂](./Lecture%2001%20-%20Introduction%20to%20FDE%20and%20AI%20History/) | [📄](./roadmap-v1.md#-phase-0--orientation) |
-| **02** | 🟦 LLM Foundations | Build · 1 | 🟢 | [📂](./Lecture%2002%20-%20LLM%20Foundations/) | [📄](./roadmap-v1.md#-phase-1--llm-foundations) |
-| **03** | 🟦 Attention and Decoding | Build · 1 | 🟢 | [📂](./Lecture%2003%20-%20Attention%20and%20Decoding/) | [📄](./roadmap-v1.md#-phase-1--llm-foundations) |
+| **01** | ⬜ Introduction to FDE and AI History | Build · 0 | 🟢 | [📂](./Lecture%2001%20-%20Introduction%20to%20FDE%20and%20AI%20History/) | [📄](./roadmap-v1.md#-phase-0--orientation-stage-1-build) |
+| **02** | 🟦 LLM Foundations | Build · 1 | 🟢 | [📂](./Lecture%2002%20-%20LLM%20Foundations/) | [📄](./roadmap-v1.md#-phase-1--llm-foundations-stage-1-build) |
+| **03** | 🟦 Attention and Decoding | Build · 1 | 🟢 | [📂](./Lecture%2003%20-%20Attention%20and%20Decoding/) | [📄](./roadmap-v1.md#-phase-1--llm-foundations-stage-1-build) |
 | **04** | 🟩 LLM APIs, Multi-SDK, Caching &amp; Reasoning Models | Build · 2 | 🟢 | [📂](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/) | [📄](./roadmap-v1.md#-phase-2--application-layer--harness-velocity-stage-1-build) |
 | **05** | 🟩 Prompt Engineering | Build · 2 | 🟢 | [📂](./Lecture%2005%20-%20Prompt%20Engineering/) | [📄](./roadmap-v1.md#-phase-2--application-layer--harness-velocity-stage-1-build) |
 | **06** | 🟩 Chatbots, Context Budgeting &amp; Compaction | Build · 2 | 🟡 | [📂](./Lecture%2006%20-%20Chatbots%20and%20Context/) | [📄](./roadmap-v1.md#-phase-2--application-layer--harness-velocity-stage-1-build) |
@@ -139,30 +140,30 @@ Follow the phases **in order** — each one assumes only the phase before it. Co
 | **24** | 🟣 Enterprise Data Discovery &amp; Apache Ossie | Connect · 6 | 🟠 | [📂](./Lecture%2024%20-%20Enterprise%20Data%20Discovery%20and%20Apache%20Ossie/) | [📄](./roadmap-v1.md#-phase-6--enterprise-data-semantics--sql-stage-2-connect) |
 | **25** | 🟣 AI Data Contracts &amp; Lakehouse Lifecycle | Connect · 6 | 🟠 | [📂](./Lecture%2025%20-%20AI%20Data%20Contracts%20and%20Lakehouse%20Lifecycle/) | [📄](./roadmap-v1.md#-phase-6--enterprise-data-semantics--sql-stage-2-connect) |
 | **26** | 🟣 Semantic Text-to-SQL &amp; Analytical Python | Connect · 6 | 🔴 | [📂](./Lecture%2026%20-%20Semantic%20Text-to-SQL%20and%20Analytical%20Python/) | [📄](./roadmap-v1.md#-phase-6--enterprise-data-semantics--sql-stage-2-connect) |
-| **27** | 🟪 MCP Core | Connect · 7 | 🟡 | [📂](./Lecture%2027%20-%20MCP%20Core/) | [📄](./roadmap-v1.md#-phase-7--mcp-code-mode--proactive-workflows-stage-2-connect) |
-| **28** | 🟪 MCP Resources, Prompts and Gateway | Connect · 7 | 🟠 | [📂](./Lecture%2028%20-%20MCP%20Resources%20Prompts%20and%20Gateway/) | [📄](./roadmap-v1.md#-phase-7--mcp-code-mode--proactive-workflows-stage-2-connect) |
-| **29** | 🟪 Claude Skills | Connect · 7 | 🟠 | [📂](./Lecture%2029%20-%20Claude%20Skills/) | [📄](./roadmap-v1.md#-phase-7--mcp-code-mode--proactive-workflows-stage-2-connect) |
-| **30** | 🟪 Enterprise APIs, OpenAPI-to-MCP &amp; Computer-Use | Connect · 7 | 🟠 | [📂](./Lecture%2030%20-%20Enterprise%20APIs%20OpenAPI-to-MCP%20and%20Computer-Use/) | [📄](./roadmap-v1.md#-phase-7--mcp-code-mode--proactive-workflows-stage-2-connect) |
-| **31** | 🟪 Cloudflare Code Mode MCP | Connect · 7 | 🟠 | [📂](./Lecture%2031%20-%20Cloudflare%20Code%20Mode%20MCP/) | [📄](./roadmap-v1.md#-phase-7--mcp-code-mode--proactive-workflows-stage-2-connect) |
-| **32** | 🟪 Durable Execution (Inngest) &amp; CDC Workflows | Connect · 7 | 🟠 | [📂](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/) | [📄](./roadmap-v1.md#-phase-7--mcp-code-mode--proactive-workflows-stage-2-connect) |
-| **33** | 🟫 Multimodal AI | Ship · 8 | 🟠 | [📂](./Lecture%2033%20-%20Multimodal%20AI/) | [📄](./roadmap-v1.md#-phase-8--multimodal-full-stack-agent-uis--k8s-stage-3-ship) |
-| **34** | 🟫 Full-Stack AI Platform | Ship · 8 | 🔴 | [📂](./Lecture%2034%20-%20Full-Stack%20AI%20Platform/) | [📄](./roadmap-v1.md#-phase-8--multimodal-full-stack-agent-uis--k8s-stage-3-ship) |
-| **35** | 🟫 Async Indexing and RAG Chat | Ship · 8 | 🔴 | [📂](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/) | [📄](./roadmap-v1.md#-phase-8--multimodal-full-stack-agent-uis--k8s-stage-3-ship) |
-| **36** | 🟫 GitHub PR Reviewer Bot | Ship · 8 | 🟠 | [📂](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/) | [📄](./roadmap-v1.md#-phase-8--multimodal-full-stack-agent-uis--k8s-stage-3-ship) |
-| **37** | 🟫 Agent UIs (`AG-UI`, `MCP Apps`), K8s &amp; KEDA | Ship · 8 | 🔴 | [📂](./Lecture%2037%20-%20Agent%20UIs%20K8s%20and%20KEDA%20Scaling/) | [📄](./roadmap-v1.md#-phase-8--multimodal-full-stack-agent-uis--k8s-stage-3-ship) |
+| **27** | 🟪 MCP Core | Connect · 7 | 🟡 | [📂](./Lecture%2027%20-%20MCP%20Core/) | [📄](./roadmap-v1.md#-phase-7--connectors-code-mode--proactive-workflows-stage-2-connect) |
+| **28** | 🟪 MCP Resources, Prompts and Gateway | Connect · 7 | 🟠 | [📂](./Lecture%2028%20-%20MCP%20Resources%20Prompts%20and%20Gateway/) | [📄](./roadmap-v1.md#-phase-7--connectors-code-mode--proactive-workflows-stage-2-connect) |
+| **29** | 🟪 Claude Skills | Connect · 7 | 🟠 | [📂](./Lecture%2029%20-%20Claude%20Skills/) | [📄](./roadmap-v1.md#-phase-7--connectors-code-mode--proactive-workflows-stage-2-connect) |
+| **30** | 🟪 Enterprise APIs, OpenAPI-to-MCP &amp; Computer-Use | Connect · 7 | 🟠 | [📂](./Lecture%2030%20-%20Enterprise%20APIs%20OpenAPI-to-MCP%20and%20Computer-Use/) | [📄](./roadmap-v1.md#-phase-7--connectors-code-mode--proactive-workflows-stage-2-connect) |
+| **31** | 🟪 Cloudflare Code Mode MCP | Connect · 7 | 🟠 | [📂](./Lecture%2031%20-%20Cloudflare%20Code%20Mode%20MCP/) | [📄](./roadmap-v1.md#-phase-7--connectors-code-mode--proactive-workflows-stage-2-connect) |
+| **32** | 🟪 Durable Execution (Inngest) &amp; CDC Workflows | Connect · 7 | 🟠 | [📂](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/) | [📄](./roadmap-v1.md#-phase-7--connectors-code-mode--proactive-workflows-stage-2-connect) |
+| **33** | 🟫 Multimodal AI | Ship · 8 | 🟠 | [📂](./Lecture%2033%20-%20Multimodal%20AI/) | [📄](./roadmap-v1.md#-phase-8--multimodality-full-stack-apps--agent-scaling-stage-3-ship) |
+| **34** | 🟫 Full-Stack AI Platform | Ship · 8 | 🔴 | [📂](./Lecture%2034%20-%20Full-Stack%20AI%20Platform/) | [📄](./roadmap-v1.md#-phase-8--multimodality-full-stack-apps--agent-scaling-stage-3-ship) |
+| **35** | 🟫 Async Indexing and RAG Chat | Ship · 8 | 🔴 | [📂](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/) | [📄](./roadmap-v1.md#-phase-8--multimodality-full-stack-apps--agent-scaling-stage-3-ship) |
+| **36** | 🟫 GitHub PR Reviewer Bot | Ship · 8 | 🟠 | [📂](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/) | [📄](./roadmap-v1.md#-phase-8--multimodality-full-stack-apps--agent-scaling-stage-3-ship) |
+| **37** | 🟫 Agent UIs (`AG-UI`, `MCP Apps`), K8s &amp; KEDA | Ship · 8 | 🔴 | [📂](./Lecture%2037%20-%20Agent%20UIs%20K8s%20and%20KEDA%20Scaling/) | [📄](./roadmap-v1.md#-phase-8--multimodality-full-stack-apps--agent-scaling-stage-3-ship) |
 | **38** | 🟦 vLLM, PagedAttention, Quantization &amp; Indic Models | Ship · 9 | 🔴 | [📂](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/) | [📄](./roadmap-v1.md#-phase-9--distributed--sovereign-inference-stage-3-ship) |
 | **39** | 🟦 Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) | Ship · 9 | 🔴 | [📂](./Lecture%2039%20-%20Distributed%20Inference%20SGLang%20llm-d%20and%20Dynamo/) | [📄](./roadmap-v1.md#-phase-9--distributed--sovereign-inference-stage-3-ship) |
-| **40** | 🟥 Evals and Testing | Ship · 10 | 🟡 | [📂](./Lecture%2040%20-%20Evals%20and%20Testing/) | [📄](./roadmap-v1.md#-phase-10--evals-finops-identity--security-stage-3-ship) |
-| **41** | 🟥 Neuro-Symbolic Verification (`Z3`, `GEPA`) | Ship · 10 | 🔴 | [📂](./Lecture%2041%20-%20Neuro-Symbolic%20Verification%20Z3%20and%20GEPA/) | [📄](./roadmap-v1.md#-phase-10--evals-finops-identity--security-stage-3-ship) |
-| **42** | 🟥 AI Observability (`OTel`, `OpenObserve`) &amp; FOCUS FinOps | Ship · 10 | 🟠 | [📂](./Lecture%2042%20-%20AI%20Observability%20OTel%20and%20FOCUS%20FinOps/) | [📄](./roadmap-v1.md#-phase-10--evals-finops-identity--security-stage-3-ship) |
-| **43** | 🟥 Progressive Autonomy (`flagd`) &amp; Safe Releases | Ship · 10 | 🟠 | [📂](./Lecture%2043%20-%20Progressive%20Autonomy%20flagd%20and%20Safe%20Releases/) | [📄](./roadmap-v1.md#-phase-10--evals-finops-identity--security-stage-3-ship) |
-| **44** | 🟥 Enterprise Identity (`OIDC`, `SCIM`, `authentik`, `ReBAC`) | Ship · 10 | 🔴 | [📂](./Lecture%2044%20-%20Enterprise%20Identity%20OIDC%20SCIM%20and%20ReBAC/) | [📄](./roadmap-v1.md#-phase-10--evals-finops-identity--security-stage-3-ship) |
-| **45** | 🟥 Security, Guardrails, OWASP Agentic/MCP &amp; AI BOM | Ship · 10 | 🔴 | [📂](./Lecture%2045%20-%20Security%20and%20Guardrails/) | [📄](./roadmap-v1.md#-phase-10--evals-finops-identity--security-stage-3-ship) |
+| **40** | 🟥 Evals and Testing | Ship · 10 | 🟡 | [📂](./Lecture%2040%20-%20Evals%20and%20Testing/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
+| **41** | 🟥 Neuro-Symbolic Verification (`Z3`, `GEPA`) | Ship · 10 | 🔴 | [📂](./Lecture%2041%20-%20Neuro-Symbolic%20Verification%20Z3%20and%20GEPA/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
+| **42** | 🟥 AI Observability (`OTel`, `OpenObserve`) &amp; FOCUS FinOps | Ship · 10 | 🟠 | [📂](./Lecture%2042%20-%20AI%20Observability%20OTel%20and%20FOCUS%20FinOps/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
+| **43** | 🟥 Progressive Autonomy (`flagd`) &amp; Safe Releases | Ship · 10 | 🟠 | [📂](./Lecture%2043%20-%20Progressive%20Autonomy%20flagd%20and%20Safe%20Releases/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
+| **44** | 🟥 Enterprise Identity (`OIDC`, `SCIM`, `authentik`, `ReBAC`) | Ship · 10 | 🔴 | [📂](./Lecture%2044%20-%20Enterprise%20Identity%20OIDC%20SCIM%20and%20ReBAC/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
+| **45** | 🟥 Security, Guardrails, OWASP Agentic/MCP &amp; AI BOM | Ship · 10 | 🔴 | [📂](./Lecture%2045%20-%20Security%20and%20Guardrails/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
 | **★** | 🏁 Single-Engagement Capstone | All | 🔴 | ➖ | [📄](./roadmap-v1.md#-capstone--single-engagement-proving-ground) |
 
 **Legend:** 🟢 Beginner · 🟡 Intermediate · 🟠 Advanced · 🔴 Expert
 
-> 🧭 **Every workspace folder follows the same layout:** `README.md` (objectives · phase · level · source mapping · checklist) · `notes/` (your own notes) · `code/` (your rebuild). The **complete topic list, build task and gate** for each lecture live in **[`roadmap.md`](./roadmap.md)** — the single source of truth, so no topic is ever duplicated.
+> 🧭 **Every workspace folder follows the same layout:** `README.md` (objectives · phase · level · source mapping · checklist) · `notes/` (your own notes) · `code/` (your rebuild) · `Assignment/task.md`. The **complete topic list, build task and gate** for each lecture live in **[`roadmap-v1.md`](./roadmap-v1.md)** — the single source of truth, so no topic is ever duplicated.
 
 ---
 
@@ -172,7 +173,7 @@ Each phase below is summarised twice: a one-line thesis and a lecture chip list 
 
 ---
 
-### ⬜ Phase 0 — Orientation
+### ⬜ Phase 0 — Orientation *(Stage 1: Build)*
 
 > **Thesis** — The job is not to build the chatbot the client asked for; it is to find the business problem underneath it, and the history of AI explains why today's tools look the way they do.
 
@@ -187,11 +188,11 @@ Each phase below is summarised twice: a one-line thesis and a lecture chip list 
 
 </details>
 
-**[📂 Lecture 01 workspace](./Lecture%2001%20-%20Introduction%20to%20FDE%20and%20AI%20History/)** · **[📄 Roadmap: Phase 0](./roadmap.md#-phase-0--orientation)**
+**[📂 Lecture 01 workspace](./Lecture%2001%20-%20Introduction%20to%20FDE%20and%20AI%20History/)** · **[📄 Roadmap: Phase 0](./roadmap-v1.md#-phase-0--orientation-stage-1-build)**
 
 ---
 
-### 🟦 Phase 1 — Foundations: How LLMs Actually Work
+### 🟦 Phase 1 — LLM Foundations *(Stage 1: Build)*
 
 > **Thesis** — An LLM is a next-token probability machine: text → tokens → vectors → attention → logits → softmax → one token, appended and repeated.
 
@@ -208,213 +209,256 @@ Each phase below is summarised twice: a one-line thesis and a lecture chip list 
 
 </details>
 
-**[📂 Lecture 02 workspace](./Lecture%2002%20-%20LLM%20Foundations/)** · **[📂 Lecture 03 workspace](./Lecture%2003%20-%20Attention%20and%20Decoding/)** · **[📄 Roadmap: Phase 1](./roadmap.md#-phase-1--foundations-how-llms-actually-work)**
+**[📂 Lecture 02](./Lecture%2002%20-%20LLM%20Foundations/)** · **[📂 Lecture 03](./Lecture%2003%20-%20Attention%20and%20Decoding/)** · **[📄 Roadmap: Phase 1](./roadmap-v1.md#-phase-1--llm-foundations-stage-1-build)**
 
 ---
 
-### 🟩 Phase 2 — The Application Layer: Talking to Models
+### 🟩 Phase 2 — Application Layer &amp; Harness Velocity *(Stage 1: Build)*
 
-> **Thesis** — A raw model is an engine, not a car: your application supplies the keys, the dashboard, the fuel budget and the guardrails — and the browser is part of the system.
+> **Thesis** — A raw model is an engine, not a car: your application supplies the keys, the dashboard, the fuel budget, dynamic model routing, and an `AGENTS.md` + SDD/TDD harness.
 
-`Lecture 04 — LLM APIs &amp; Multi-SDK` · `Lecture 05 — Prompt Engineering` · `Lecture 06 — Chatbots &amp; Context` · `Lecture 07 — AI Streaming`
+`Lecture 04 — LLM APIs &amp; Multi-SDK` · `Lecture 05 — Prompt Engineering` · `Lecture 06 — Chatbots &amp; Context` · `Lecture 07 — AI Streaming` · `Lecture 08 — Model Routing &amp; Harness Velocity`
 
 <details>
 <summary><b>🔎 What this phase teaches</b></summary>
 
 <br>
 
-**04 · LLM APIs and Multi-SDK** — GenAI apps vs raw LLMs; the 4 invariant request components; chat roles; token economics and `usage` metadata; rate limits and throttling; **OpenAI · Gemini · Groq · Mistral · Claude · Ollama** in one interface; SDK vs direct REST; Node + Express + TypeScript + Zod setup; client singletons; telemetry and audit; API-key hygiene; **AI slop** and model collapse.
+**04 · LLM APIs, Multi-SDK, Prompt Caching &amp; Reasoning Models** — GenAI apps vs raw LLMs; the 4 invariant request components; chat roles; token economics, `usage` metadata and **prompt caching**; **reasoning models**; rate limits and throttling; **OpenAI · Gemini · Groq · Mistral · Claude · Ollama** in one interface; SDK vs direct REST; Node + Express + TypeScript + Zod setup; client singletons; telemetry and audit; API-key hygiene; **AI slop** and model collapse.
 
 **05 · Prompt Engineering** — zero-shot, few-shot and in-context learning; Chain-of-Thought and when it *hurts*; role-play/persona; model-specific formats (**ChatML · Alpaca · INST · FLAN-T5**); prompt hygiene and delimiters; GIGO; direct vs indirect prompt injection (first contact); distillation and extraction attacks; moderation APIs; prompt versioning.
 
-**06 · Chatbots and Context** — statelessness as an application problem; context-window budget; $O(N^2)$ token accumulation; lost-in-the-middle; sliding window and rolling summaries; parametric vs in-context working memory; hallucination mechanics; **sycophancy**; calibrated refusal engineering; the 7-layer defence-in-depth architecture.
+**06 · Chatbots, Context Budgeting &amp; Compaction** — statelessness as an application problem; context-window budget; $O(N^2)$ token accumulation; lost-in-the-middle; sliding window, compaction and rolling summaries; parametric vs in-context working memory; hallucination mechanics; **sycophancy**; calibrated refusal engineering; the 7-layer defence-in-depth architecture.
 
 **07 · AI Streaming** — generation vs delivery; TTFT and ITL; token/chunk/byte granularity; chunked encoding, **SSE** and WebSockets; the 7 pipeline invariants; backpressure and flow control; `Flux`-style operators; history buffering during a stream; `fetch` + `ReadableStream` + `TextDecoder` on the client; cancellation; production hardening.
 
+**08 · Model Routing &amp; Agent Harness Velocity** — complexity-based dynamic **model routing** between fast and deliberative models; the **`AGENTS.md`** repository instruction standard; the **`Pi`** coding harness; **`Superpowers`** composable skills; **Spec-Driven Development (SDD)** &amp; **Test-Driven Development (TDD)** for AI coding; independent automated review loops; sandboxed execution.
+
 </details>
 
-**[📂 Lecture 04](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/)** · **[📂 Lecture 05](./Lecture%2005%20-%20Prompt%20Engineering/)** · **[📂 Lecture 06](./Lecture%2006%20-%20Chatbots%20and%20Context/)** · **[📂 Lecture 07](./Lecture%2007%20-%20AI%20Streaming/)** · **[📄 Roadmap: Phase 2](./roadmap.md#-phase-2--the-application-layer-talking-to-models)**
+**[📂 Lecture 04](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/)** · **[📂 Lecture 05](./Lecture%2005%20-%20Prompt%20Engineering/)** · **[📂 Lecture 06](./Lecture%2006%20-%20Chatbots%20and%20Context/)** · **[📂 Lecture 07](./Lecture%2007%20-%20AI%20Streaming/)** · **[📂 Lecture 08](./Lecture%2008%20-%20Model%20Routing%20and%20Harness%20Velocity/)** · **[📄 Roadmap: Phase 2](./roadmap-v1.md#-phase-2--application-layer--harness-velocity-stage-1-build)**
 
 ---
 
-### 🟨 Phase 3 — Agency: Tools, Agents &amp; Output Contracts
+### 🟨 Phase 3 — Agency, Graphs &amp; Loop Engineering *(Stage 1: Build)*
 
-> **Thesis** — A tool call is a *proposal* from an untrusted party, not an instruction to the runtime. The architecture **is** the seam between them.
+> **Thesis** — A tool call is an untrusted proposal, not an instruction. Bound the loop, verify schemas, isolate sandboxes, and orchestrate stateful graphs with explicit recovery paths.
 
-`Lecture 08 — Tool Calling` · `Lecture 09 — Agents, Sandboxing &amp; HITL` · `Lecture 10 — Structured Outputs` · `Lecture 11 — Agent SDK from Scratch`
+`Lecture 09 — Tool Calling` · `Lecture 10 — Agents, Sandboxing &amp; HITL` · `Lecture 11 — Structured Outputs` · `Lecture 12 — Agent SDK from Scratch` · `Lecture 13 — LangChain, LangGraph &amp; LangSmith` · `Lecture 14 — Loop Engineering &amp; A2A`
 
 <details>
 <summary><b>🔎 What this phase teaches</b></summary>
 
 <br>
 
-**08 · Tool Calling &amp; Function Execution Loops** — from token prediction to tool augmentation; tool definitions as an **OpenAPI / JSON Schema contract**; the 5-step HTTP wire-protocol lifecycle; multi-step chaining and **double-turn** tool calling; multi-tool routing and `tool_choice`; the **ReAct** paradigm; self-healing error recovery; token accumulation and the economic ledger; tool = capability + permission.
+**09 · Tool Calling &amp; Function Execution Loops** — from token prediction to tool augmentation; tool definitions as an **OpenAPI / JSON Schema contract**; the 5-step HTTP wire-protocol lifecycle; multi-step chaining and **double-turn** tool calling; multi-tool routing and `tool_choice`; the **ReAct** paradigm; self-healing error recovery; token accumulation and the economic ledger; tool = capability + permission.
 
-**09 · AI Agents from First Principles: Agency, Sandboxing &amp; HITL** — the agency spectrum (4 progressive levels); the 6-component agent model (LLM + memory + tools + guardrails + planning); loop and harness engineering; threat modelling for filesystem agents; the hierarchy of isolation tiers; workspace sandboxing; the **3-tier tool authorization policy matrix**; asynchronous durable pause/resume; enterprise agent patterns.
+**10 · AI Agents from First Principles: Agency, Sandboxing &amp; HITL** — the agency spectrum (4 progressive levels); the 6-component agent model (LLM + memory + tools + guardrails + planning); loop and harness engineering; threat modelling for filesystem agents; the hierarchy of isolation tiers; workspace sandboxing; the **3-tier tool authorization policy matrix**; asynchronous durable pause/resume; enterprise agent patterns.
 
-**10 · Structured Outputs: Schema, Enforcement, Validation &amp; Repair** — the integration gap; "a schema is a form the application writes and the model fills"; why "just ask for JSON" fails; JSON Schema design for LLMs; the strict-mode subset and its silent limits; the three layers of enforcement (prompt → decoder → validation); **Outlines / Guidance** and grammar compilation; structural vs semantic validation; `block` vs `review` severities; repair loops and the fallback ladder; first-pass validity and issue distribution.
+**11 · Structured Outputs: Schema, Enforcement, Validation &amp; Repair** — the integration gap; "a schema is a form the application writes and the model fills"; why "just ask for JSON" fails; JSON Schema design for LLMs; the strict-mode subset and its silent limits; the three layers of enforcement (prompt → decoder → validation); **Outlines / Guidance** and grammar compilation; structural vs semantic validation; `block` vs `review` severities; repair loops and the fallback ladder; first-pass validity and issue distribution.
 
-**11 · Building an Agent SDK from Scratch** — stateful SDK vs stateless API; the core triad; the fluent `AgentBuilder` pattern; harness prompting and the 5-stage ReAct pipeline (`INITIAL → THINK → TOOL_REQUEST → ANALYSE → OUTPUT`); `ITool` and dynamic schema auto-generation; the tool registry; stateful `messageHistory`; the event-driven interceptor pattern; `MAX_LOOP` bounds; multi-agent swarms; packaging for OpenAI and Gemini.
+**12 · Building an Agent SDK from Scratch** — stateful SDK vs stateless API; the core triad; the fluent `AgentBuilder` pattern; harness prompting and the 5-stage ReAct pipeline (`INITIAL → THINK → TOOL_REQUEST → ANALYSE → OUTPUT`); `ITool` and dynamic schema auto-generation; the tool registry; stateful `messageHistory`; the event-driven interceptor pattern; `MAX_LOOP` bounds; multi-agent swarms; packaging for OpenAI and Gemini.
+
+**13 · LangChain, LangGraph &amp; LangSmith** — $\text{Agent} = \text{Model} + \text{Harness}$; universal provider delivery model (`initChatModel`); message protocols (`SystemMessage`, `HumanMessage`, `AIMessage`, `ToolMessage`); typed tool calling with Zod &amp; Tavily; token streaming; structured output strategies; stateful cyclic graph orchestration with `StateGraph`, `StateSchema`, and channel reducers; Pregel super-step execution; checkpointers (`MemorySaver`, thread persistence); human-in-the-loop breakpoints; production case studies (automated Notion study notes &amp; Google Calendar meeting scheduler); zero-code observability, trace waterfalls, state inspection, custom spans with `traceable`, and golden dataset offline evals with `evaluate()`.
+
+**14 · Advanced Loop Engineering, Adaptive Topologies &amp; A2A Protocol** — **Plan-Act-Verify** loops; bounded goal loops; **heartbeat**, schedule, and event triggers; tool permission boundaries &amp; budget caps; **stuck detection**, **retry**, **pivot**, and **escalation**; static vs. **adaptive graphs**; **A2A (Agent-to-Agent)** discovery, Agent Cards, and parallel peer delegation.
 
 </details>
 
-**[📂 Lecture 08](./Lecture%2008%20-%20Tool%20Calling/)** · **[📂 Lecture 09](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/)** · **[📂 Lecture 10](./Lecture%2010%20-%20Structured%20Outputs/)** · **[📂 Lecture 11](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/)** · **[📄 Roadmap: Phase 3](./roadmap.md#-phase-3--agency-tools-agents--output-contracts)**
+**[📂 Lecture 09](./Lecture%2009%20-%20Tool%20Calling/)** · **[📂 Lecture 10](./Lecture%2010%20-%20AI%20Agents%20and%20HITL/)** · **[📂 Lecture 11](./Lecture%2011%20-%20Structured%20Outputs/)** · **[📂 Lecture 12](./Lecture%2012%20-%20Agent%20SDK%20from%20Scratch/)** · **[📂 Lecture 13](./Lecture%2013%20-%20LangChain%20LangGraph%20LangSmith/)** · **[📂 Lecture 14](./Lecture%2014%20-%20Loop%20Engineering%20and%20A2A%20Protocol/)** · **[📄 Roadmap: Phase 3](./roadmap-v1.md#-phase-3--agency-graphs--loop-engineering-stage-1-build)**
 
 ---
 
-### 🟧 Phase 4 — Meaning &amp; Retrieval: Embeddings
+### 🟧 Phase 4 — Vector Meaning &amp; ANN Retrieval *(Stage 1: Build)*
 
 > **Thesis** — Represent → store → compare → rank. Meaning becomes geometry, and scale turns geometry into an engineering bargain.
 
-`Lecture 12 — Vector Embeddings` · `Lecture 13 — Semantic Search Project` · `Lecture 14 — Vector Search &amp; Storage` · `Lecture 15 — Vector Databases &amp; ANN`
+`Lecture 15 — Vector Embeddings` · `Lecture 16 — Semantic Search Project` · `Lecture 17 — Vector Search &amp; Storage` · `Lecture 18 — Vector Databases &amp; ANN`
 
 <details>
 <summary><b>🔎 What this phase teaches</b></summary>
 
 <br>
 
-**12 · Vector Embeddings from First Principles** — the problem of meaning in computers; why numbers at all; **cosine, dot product, Euclidean and Manhattan** similarity; why direction sometimes matters more than distance; the failure of hand-crafted features (one-hot, bag-of-words, TF-IDF); what embeddings actually learn; identity matching vs semantic similarity; embedding model vs generative LLM; the interpretability trap.
+**15 · Vector Embeddings from First Principles** — the problem of meaning in computers; why numbers at all; **cosine, dot product, Euclidean and Manhattan** similarity; why direction sometimes matters more than distance; the failure of hand-crafted features (one-hot, bag-of-words, TF-IDF); what embeddings actually learn; identity matching vs semantic similarity; embedding model vs generative LLM; the interpretability trap.
 
-**13 · Embeddings Project: Semantic Search &amp; Movie Recommendation** — why not just use an LLM (cost, latency, determinism, scale); **precomputation** as the key insight; the REPRESENT–STORE–COMPARE–RANK mental model; cosine similarity and normalisation in practice; a complete system design with catalog build, index, query, rank and respond.
+**16 · Embeddings Project: Semantic Search &amp; Movie Recommendation** — why not just use an LLM (cost, latency, determinism, scale); **precomputation** as the key insight; the REPRESENT–STORE–COMPARE–RANK mental model; cosine similarity and normalisation in practice; a complete system design with catalog build, index, query, rank and respond.
 
-**14 · Vector Search &amp; Storage** — the scale wall; why relational databases are not enough (and when they *are*); brute-force KNN as the correct baseline; why scalar indexes fail for vectors; the curse of dimensionality; the **ANN family tree**; the recall/latency/memory/cost spectrum; when you do not need ANN.
+**17 · Vector Search &amp; Storage** — the scale wall; why relational databases are not enough (and when they *are*); brute-force KNN as the correct baseline; why scalar indexes fail for vectors; the curse of dimensionality; the **ANN family tree**; the recall/latency/memory/cost spectrum; when you do not need ANN.
 
-**15 · Vector Databases &amp; ANN Algorithms** — **IVF** (centroids, `nlist`/`nprobe`, IVF-Flat/PQ/SQ); **HNSW** (`M`/`M0`/`efConstruction`/`efSearch`, layer sampling, tombstones, filtered-search weakness); **Product Quantization** (codebooks, ADC, rescoring); **DiskANN** and the disk-resident family; the five layers of a vector database; hybrid search and RRF; **Qdrant** and **pgvector** hands-on; the wider vendor landscape; sharding, replication, pruning and selectivity; re-indexing, versioning and model migration with rollback.
+**18 · Vector Databases &amp; ANN Algorithms** — **IVF** (centroids, `nlist`/`nprobe`, IVF-Flat/PQ/SQ); **HNSW** (`M`/`M0`/`efConstruction`/`efSearch`, layer sampling, tombstones, filtered-search weakness); **Product Quantization** (codebooks, ADC, rescoring); **DiskANN** and the disk-resident family; the five layers of a vector database; hybrid search and RRF; **Qdrant** and **pgvector** hands-on; the wider vendor landscape; sharding, replication, pruning and selectivity; re-indexing, versioning and model migration with rollback.
 
 </details>
 
-**[📂 Lecture 12](./Lecture%2012%20-%20Vector%20Embeddings/)** · **[📂 Lecture 13](./Lecture%2013%20-%20Semantic%20Search%20Project/)** · **[📂 Lecture 14](./Lecture%2014%20-%20Vector%20Search%20and%20Storage/)** · **[📂 Lecture 15](./Lecture%2015%20-%20Vector%20Databases%20and%20ANN/)** · **[📄 Roadmap: Phase 4](./roadmap.md#-phase-4--meaning--retrieval-embeddings)**
+**[📂 Lecture 15](./Lecture%2015%20-%20Vector%20Embeddings/)** · **[📂 Lecture 16](./Lecture%2016%20-%20Semantic%20Search%20Project/)** · **[📂 Lecture 17](./Lecture%2017%20-%20Vector%20Search%20and%20Storage/)** · **[📂 Lecture 18](./Lecture%2018%20-%20Vector%20Databases%20and%20ANN/)** · **[📄 Roadmap: Phase 4](./roadmap-v1.md#-phase-4--vector-meaning--ann-retrieval-stage-1-build)**
 
 ---
 
-### 🟥 Phase 5 — RAG &amp; Knowledge Systems
+### 🟥 Phase 5 — RAG, Memory &amp; Knowledge Graphs *(Stage 1: Build)*
 
-> **Thesis** — Retrieval sets the ceiling; the prompt can only use what arrived. A wrong answer is never just "the model".
+> **Thesis** — Retrieval sets the ceiling; the prompt can only use what arrived. Ground every answer with provenance, defend agent memory against poisoning, and track bitemporal graph facts.
 
-`Lecture 16 — RAG` · `Lecture 17 — Advanced RAG` · `Lecture 18 — Vectorless RAG &amp; LLM Wiki` · `Lecture 19 — Agent Memory` · `Lecture 20 — Graphs &amp; GraphRAG`
+`Lecture 19 — RAG` · `Lecture 20 — Advanced RAG` · `Lecture 21 — Vectorless RAG &amp; LLM Wiki` · `Lecture 22 — Agent Memory` · `Lecture 23 — Graphs &amp; Temporal GraphRAG`
 
 <details>
 <summary><b>🔎 What this phase teaches</b></summary>
 
 <br>
 
-**16 · RAG: The Open-Book Architecture** — parametric vs non-parametric memory; the two pipelines (offline ingestion, online serving); PDF extraction hazards, cleaning, chunking, metadata and deterministic ids; embeddings at query time (Matryoshka dimensions, symmetric vs asymmetric encoding); the vector index (namespaces, score calibration, top-K, filters, MMR); grounded generation (four-clause contract, the exact refusal sentence, U-shaped attention, citation markers); conversation state and query condensation; evaluation and debugging (recall@K, MRR, nDCG, faithfulness, citation validity, the retrieval-vs-generation 2×2).
+**19 · RAG: The Open-Book Architecture** — parametric vs non-parametric memory; the two pipelines (offline ingestion, online serving); PDF extraction hazards, cleaning, chunking, metadata and deterministic ids; embeddings at query time (Matryoshka dimensions, symmetric vs asymmetric encoding); the vector index (namespaces, score calibration, top-K, filters, MMR); grounded generation (four-clause contract, the exact refusal sentence, U-shaped attention, citation markers); conversation state and query condensation; evaluation and debugging (recall@K, MRR, nDCG, faithfulness, citation validity, the retrieval-vs-generation 2×2).
 
-**17 · Advanced RAG** — why basic RAG breaks (query mismatch, distance mismatch); three families of chunking; fixed-size overlap arithmetic; structural, semantic and parent-child chunking; text splitters; score floors calibrated per model and corpus; metadata filtering; hybrid search with **RRF** and **BM25/lexical** retrieval; cross-encoder **rerankers** vs bi-encoders; query translation (rewriting, step-back, sub-queries, **HyDE**); intent routing and multi-source adapters (Postgres · Qdrant · MongoDB · S3); **CRAG** self-reflective evaluation; context engineering; PII masking and jailbreak defence; BullMQ + Redis async indexing.
+**20 · Advanced RAG (+ Provenance &amp; Abstention)** — why basic RAG breaks; three families of chunking; fixed-size overlap arithmetic; structural, semantic and parent-child chunking; score floors calibrated per model and corpus; metadata filtering; hybrid search with **RRF** and **BM25/lexical** retrieval; cross-encoder **rerankers** vs bi-encoders; query translation (rewriting, step-back, sub-queries, **HyDE**); intent routing and multi-source adapters (Postgres · Qdrant · MongoDB · S3); **CRAG** self-reflective evaluation; **provenance tracking &amp; calibrated abstention**; PII masking and jailbreak defence; BullMQ + Redis async indexing.
 
-**18 · Vectorless RAG, Hierarchical Tree Indexing &amp; LLM Wiki Engines** — the abrupt-chunking problem; $\text{Vector Similarity} \neq \text{Relevance}$; tree-structured indexing (the **PageIndex** model); `Root → Chapter → Section → Page` node summaries; AlphaGo-inspired agentic tree traversal; Karpathy's **LLM Wiki** vault paradigm; two-pass retrieval with lazy loading; the four-way architecture comparison.
+**21 · Vectorless RAG, Hierarchical Tree Indexing &amp; LLM Wiki Engines** — the abrupt-chunking problem; $\text{Vector Similarity} \neq \text{Relevance}$; tree-structured indexing (the **PageIndex** model); `Root → Chapter → Section → Page` node summaries; AlphaGo-inspired agentic tree traversal; Karpathy's **LLM Wiki** vault paradigm; two-pass retrieval with lazy loading; the four-way architecture comparison.
 
-**19 · Agent Memory Systems** — context-window failure points; **STM** sliding windows; **LTM taxonomy** (semantic · episodic · temporal · graph); dynamic context assembly $\text{STM} + \text{LTM\_RAG} + \text{Query}$; fact extraction; eviction, deduplication and contradiction resolution; **memory dreaming**; `mem0`; eager loading and hit-score tracking; context inflation; multi-tenant isolation and deletion.
+**22 · Agent Memory Systems (+ TTL &amp; Poisoning Defence)** — context-window failure points; **STM** sliding windows; **LTM taxonomy** (working · episodic · semantic · procedural · graph); dynamic context assembly $\text{STM} + \text{LTM\_RAG} + \text{Query}$; fact extraction; eviction, **TTL/retention policies**, deduplication and contradiction resolution; **memory dreaming**; `mem0`; **memory poisoning defence &amp; provenance verification**; multi-tenant isolation and deletion.
 
-**20 · Graph Databases, Cypher, Neo4j &amp; GraphRAG** — nodes, edges, properties, labels; the cognitive-memory model; SQL (junction tables) vs NoSQL (embedded refs) vs native graph (**index-free adjacency**); property-graph schema design; **Cypher** syntax and CRUD; variable-length paths (BFS vs DFS); Neo4j architecture and the **Bolt** protocol; the Node.js `neo4j-driver`; **GraphRAG** and text-to-Cypher.
+**23 · Graph Databases, Cypher, Neo4j, Ontologies &amp; Temporal GraphRAG** — nodes, edges, properties, labels; SQL vs NoSQL vs native graph (**index-free adjacency**); **formal ontology engineering** (schema-first domain ontologies, type constraints &amp; cardinality vs unconstrained LLM extraction); **bitemporal knowledge graphs** (`valid_from`, `valid_to`, `transaction_time`); **point-in-time multi-hop Cypher queries**; Neo4j architecture and **Bolt** protocol; Node.js `neo4j-driver`; **temporal GraphRAG** and text-to-Cypher.
 
 </details>
 
-**[📂 Lecture 16](./Lecture%2016%20-%20RAG/)** · **[📂 Lecture 17](./Lecture%2017%20-%20Advanced%20RAG/)** · **[📂 Lecture 18](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/)** · **[📂 Lecture 19](./Lecture%2019%20-%20Agent%20Memory%20Systems/)** · **[📂 Lecture 20](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/)** · **[📄 Roadmap: Phase 5](./roadmap.md#-phase-5--rag--knowledge-systems)**
+**[📂 Lecture 19](./Lecture%2019%20-%20RAG/)** · **[📂 Lecture 20](./Lecture%2020%20-%20Advanced%20RAG/)** · **[📂 Lecture 21](./Lecture%2021%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/)** · **[📂 Lecture 22](./Lecture%2022%20-%20Agent%20Memory%20Systems/)** · **[📂 Lecture 23](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/)** · **[📄 Roadmap: Phase 5](./roadmap-v1.md#-phase-5--rag-memory--knowledge-graphs-stage-1-build)**
 
 ---
 
-### 🟪 Phase 6 — Integration &amp; Interoperability
+### 🟣 Phase 6 — Enterprise Data, Semantics &amp; SQL *(Stage 2: Connect)*
 
-> **Thesis** — Replace N×M bespoke integrations with one open protocol — then package *workflow knowledge*, not connectivity, as a portable skill, and orchestrate cyclic stateful multi-actor agent graphs.
+> **Thesis** — Enterprise AI fails when agents guess table names or metric definitions. Ground agents in data catalogues, canonical ontologies, AI data contracts, semantic-layer SQL, and sandboxed Python.
 
-`Lecture 21 — MCP Core` · `Lecture 22 — MCP Resources, Prompts &amp; Gateway` · `Lecture 23 — Claude Skills` · `Lecture 32 — LangChain, LangGraph &amp; LangSmith`
+`Lecture 24 — Enterprise Data Discovery &amp; Apache Ossie` · `Lecture 25 — AI Data Contracts &amp; Lakehouse Lifecycle` · `Lecture 26 — Semantic Text-to-SQL &amp; Analytical Python`
 
 <details>
 <summary><b>🔎 What this phase teaches</b></summary>
 
 <br>
 
-**21 · MCP from First Principles** — the integration problem and why standards win; what MCP is (protocol, server, standard interface); MCP vs tool calling as complementary layers; **host / client / server**; the Tools primitive; discovery, invocation and lifecycle; **JSON-RPC 2.0**; **STDIO** vs **HTTP streaming / SSE / streamable HTTP**; tool context poisoning; gateway architecture; anatomy of a resource; the six questions every integration must answer; one host → many servers.
+**24 · Enterprise Data Discovery, Ontologies &amp; Apache Ossie** — data estates, metadata discovery, ownership, lineage, and data catalogues; synthetic data environments; **canonical entities** &amp; cross-system identity mapping; business vocabularies &amp; semantic metrics; source-of-truth precedence &amp; knowledge provenance; **Apache Ossie** &amp; metadata-aware AI.
 
-**22 · MCP: Resources, Prompts &amp; Production Gateway Architecture** — the three primitives and the **control model** (who decides: model, application or user); why resources are a first-class primitive; resource discovery, reading and anatomy (URIs, MIME types, templates); static · dynamic · templated resources; application-chosen context; **MCP Prompts** as reusable interaction templates; prompt arguments and client wiring; gateway filtering, routing, auth and audit; the rule that *discovery is not permission*.
+**25 · AI Data Contracts, Lakehouse Storage &amp; Knowledge Lifecycle** — LLM extraction/enrichment + deterministic transforms; **AI data contracts** (schema, exception queues, freshness SLAs); **deletion propagation** (GDPR cascade across SQL/vector/graph); **lakehouse &amp; warehouse integration**; tenant-aware filtering; **zero-downtime re-embedding**, knowledge versioning, retention &amp; safe migrations.
 
-**23 · Claude Skills &amp; the Agent Skills Open Standard** — Skills vs MCP (connectivity vs workflow knowledge); **progressive disclosure** (frontmatter → body → resources); the `SKILL.md` spec (YAML frontmatter, description formulas, security rules); `assets/`, `references/` and `scripts/`; **deterministic code execution** over probabilistic instructions; the testing spectrum (manual · CLI · API · `skill-creator`); validation and packaging; distribution and the `/v1/skills` API.
-
-**32 · LangChain, LangGraph &amp; LangSmith** — $\text{Agent} = \text{Model} + \text{Harness}$; universal provider delivery model (`initChatModel`); message protocols (`SystemMessage`, `HumanMessage`, `AIMessage`, `ToolMessage`); typed tool calling with Zod &amp; Tavily; token streaming; structured output strategies; stateful cyclic graph orchestration with `StateGraph`, `StateSchema`, and channel reducers; Pregel super-step execution; checkpointers (`MemorySaver`, thread persistence); human-in-the-loop breakpoints; production case studies (automated Notion study notes &amp; Google Calendar meeting scheduler); zero-code observability, trace waterfalls, state inspection, custom spans with `traceable`, and golden dataset offline evals with `evaluate()`.
+**26 · Semantic-Layer Text-to-SQL &amp; Analytical Intelligence** — metadata-guided schema discovery; semantic metric definitions; query decomposition; **SQL AST validation**; schema &amp; column-level authorization; read-only execution &amp; query cost budgets; execution-accuracy evals; multi-step analytical planning; **sandboxed Python** computation; cross-modal (SQL + Vector + Graph) reasoning; **numerical reconciliation**.
 
 </details>
 
-**[📂 Lecture 21](./Lecture%2021%20-%20MCP%20Core/)** · **[📂 Lecture 22](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/)** · **[📂 Lecture 23](./Lecture%2023%20-%20Claude%20Skills/)** · **[📂 Lecture 32](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/)** · **[📄 Roadmap: Phase 6](./roadmap.md#-phase-6--integration--interoperability)**
+**[📂 Lecture 24](./Lecture%2024%20-%20Enterprise%20Data%20Discovery%20and%20Apache%20Ossie/)** · **[📂 Lecture 25](./Lecture%2025%20-%20AI%20Data%20Contracts%20and%20Lakehouse%20Lifecycle/)** · **[📂 Lecture 26](./Lecture%2026%20-%20Semantic%20Text-to-SQL%20and%20Analytical%20Python/)** · **[📄 Roadmap: Phase 6](./roadmap-v1.md#-phase-6--enterprise-data-semantics--sql-stage-2-connect)**
 
 ---
 
-### 🟫 Phase 7 — Multimodality
+### 🟪 Phase 7 — Connectors, Code Mode &amp; Proactive Workflows *(Stage 2: Connect)*
 
-> **Thesis** — Images are numbers too: pixels → patches → visual embeddings → projection → language.
+> **Thesis** — Replace $N \times M$ bespoke integrations with MCP, compress 2,500-endpoint APIs into ~1,000 tokens with Cloudflare Code Mode, and drive continuous freshness via CDC and Inngest.
 
-`Lecture 24 — Multimodal AI`
+`Lecture 27 — MCP Core` · `Lecture 28 — MCP Resources, Prompts &amp; Gateway` · `Lecture 29 — Claude Skills` · `Lecture 30 — Enterprise APIs &amp; Computer-Use` · `Lecture 31 — Cloudflare Code Mode MCP` · `Lecture 32 — Durable Execution &amp; CDC`
 
 <details>
 <summary><b>🔎 What this phase teaches</b></summary>
 
 <br>
 
-**24 · Multimodal AI: How LLMs Understand Images** — why text-only AI is not enough; what multimodal models understand; **OCR vs MLLM** and when OCR still wins; the text pipeline revisited; pixels, patches and visual embeddings; connecting vision to language (projection layers, positional handling, cross-attention); how models learn **vision–language alignment**; the end-to-end multimodal pipeline; **multimodal vs multi-model**; what a *modality* is and the combinations you will meet; multimodal data ingestion (audio, video, PDF, images, web); screenshots and UI understanding; production concerns — cost, latency, security and evaluation; multimodal RAG.
+**27 · MCP Core: Host, Client, Server &amp; Tools** — the integration problem and why standards win; **host / client / server**; the Tools primitive; discovery, invocation and lifecycle; **JSON-RPC 2.0**; **STDIO** vs **Streamable HTTP / SSE**; tool context poisoning; one host → many servers.
+
+**28 · MCP: Resources, Prompts &amp; Production Gateway Architecture** — the three primitives and the **control model** (model, application or user); resource discovery, reading and anatomy (URIs, MIME types, templates); static · dynamic · templated resources; **MCP Prompts** as reusable interaction templates; gateway filtering, routing, auth and audit; the rule that *discovery is not permission*.
+
+**29 · Claude Skills &amp; the Agent Skills Open Standard** — Skills vs MCP (connectivity vs workflow knowledge); **progressive disclosure** (`frontmatter` → `body` → `resources`); the `SKILL.md` spec; `assets/`, `references/` and `scripts/`; **deterministic code execution** over prose; validation, packaging, and the `/v1/skills` API.
+
+**30 · Enterprise APIs, OpenAPI-to-MCP, Idempotency &amp; Computer-Use Fallback** — automated **OpenAPI-to-MCP** adaptation; typed tool contracts; scoped permissions &amp; approval-bound mutations; **idempotency keys** on `POST`/`PATCH` actions; connector governance; **browser &amp; computer-use fallback** (Playwright) for legacy UI-only systems.
+
+**31 · Cloudflare Code Mode &amp; Isolated Code-Execution MCP (`@cloudflare/codemode`)** — solving the tool-schema scaling wall (2M+ tokens → ~1,000 tokens); `codeMcpServer()` and the `codemode` namespace; `openApiMcpServer()` (`search()` + `execute()` over 2,500+ endpoints); **Dynamic Workers** &amp; sandbox isolation; **OAuth 2.1** &amp; scoped delegated execution; `createLegacyMcpHandler` on Cloudflare Workers.
+
+**32 · Durable Execution (Inngest) &amp; Event-Driven CDC Workflows** — async vs sync multi-agent architectures; **durable execution** and **state checkpointing** (`step.run`, `sleep`, `waitForEvent`, `invoke`, `sendEvent`); **Change Data Capture (CDC)** pipelines (Debezium / Postgres WAL) for continuous knowledge freshness; **duplicate-event idempotency** &amp; event ordering; **Dead-Letter Queue (DLQ)** inspection, poison-pill isolation &amp; safe replay workflows.
 
 </details>
 
-**[📂 Lecture 24 workspace](./Lecture%2024%20-%20Multimodal%20AI/)** · **[📄 Roadmap: Phase 7](./roadmap.md#-phase-7--multimodality)**
+**[📂 Lecture 27](./Lecture%2027%20-%20MCP%20Core/)** · **[📂 Lecture 28](./Lecture%2028%20-%20MCP%20Resources%20Prompts%20and%20Gateway/)** · **[📂 Lecture 29](./Lecture%2029%20-%20Claude%20Skills/)** · **[📂 Lecture 30](./Lecture%2030%20-%20Enterprise%20APIs%20OpenAPI-to-MCP%20and%20Computer-Use/)** · **[📂 Lecture 31](./Lecture%2031%20-%20Cloudflare%20Code%20Mode%20MCP/)** · **[📂 Lecture 32](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/)** · **[📄 Roadmap: Phase 7](./roadmap-v1.md#-phase-7--connectors-code-mode--proactive-workflows-stage-2-connect)**
 
 ---
 
-### 🟦 Phase 8 — Production Infrastructure
+### 🟫 Phase 8 — Multimodality, Full-Stack Apps &amp; Agent Scaling *(Stage 3: Ship)*
 
-> **Thesis** — Inference is memory-bandwidth-bound, long AI work must be durable, and a real product needs a database, auth and a release process.
+> **Thesis** — Images are numbers too, full-stack products need durable pipelines and auth, and real-time agent UX (`AG-UI`, `MCP Apps`) scales elastically on Kubernetes + KEDA.
 
-`Lecture 25 — vLLM &amp; PagedAttention` · `Lecture 26 — Durable Execution` · `Lecture 27 — Full-Stack Platform` · `Lecture 28 — Async Indexing &amp; RAG Chat` · `Lecture 29 — PR Reviewer Bot`
+`Lecture 33 — Multimodal AI` · `Lecture 34 — Full-Stack AI Platform` · `Lecture 35 — Async Indexing &amp; RAG Chat` · `Lecture 36 — GitHub PR Reviewer Bot` · `Lecture 37 — Agent UIs, K8s &amp; KEDA`
 
 <details>
 <summary><b>🔎 What this phase teaches</b></summary>
 
 <br>
 
-**25 · High-Performance Inference: GPU Mechanics, vLLM &amp; PagedAttention** — GPU VRAM and HBM; **compute-bound training vs memory-bandwidth-bound inference**; the inference engine as "the Nginx of LLMs"; **prefill vs decode**; UC Berkeley **vLLM**; **PagedAttention** and KV-cache fragmentation; continuous batching; prefix caching; chunked prefill; MoE kernels; data locality; speculative decoding and quantization families (GGUF/GPTQ/AWQ); the roofline view; self-hosting vs managed APIs.
+**33 · Multimodal AI: How LLMs Understand Images** — **OCR vs MLLM** and when OCR still wins; pixels, patches and visual embeddings; connecting vision to language (projection layers, positional handling, cross-attention); **vision–language alignment**; **multimodal vs multi-model**; multimodal data ingestion (audio, video, PDF, images, web); screenshots and UI understanding; multimodal RAG.
 
-**26 · Durable Execution &amp; Event-Driven Multi-Agent Workflows (Inngest)** — async vs sync multi-agent architectures; the failure modes of long AI work (gateway timeouts, duplicate tokens, partial writes, crashes); **durable execution** and **state checkpointing**; traditional queues (RabbitMQ · Redis · BullMQ) vs serverless durable engines; the Steps API (`step.run` · `sleep` · `waitForEvent` · `invoke` · `sendEvent`); memoisation and deterministic replay; fan-out/fan-in; concurrency control and rate limiting; `onFailure` and dead-letter flows; workflow versioning.
+**34 · Enterprise Full-Stack AI Platform** — client/server separation and REST + SSE API design; Express + TypeScript ESM and Next.js App Router; PostgreSQL + Prisma schema design; **Better Auth** (sessions, Google OAuth); multi-layer workspaces CRUD and access control; **multi-channel ingestion** (text, markdown, Firecrawl, YouTube transcripts, Cloudinary PDFs); source lifecycle and idempotent re-ingestion.
 
-**27 · Enterprise Full-Stack AI Platform** — client/server separation and REST + SSE API design; Express + TypeScript ESM and Next.js App Router; PostgreSQL + Prisma schema design; **Better Auth** (sessions, Google OAuth); multi-layer workspaces CRUD and access control; **multi-channel ingestion** (text, markdown, Firecrawl, YouTube transcripts, Cloudinary PDFs); source lifecycle and idempotent re-ingestion; monorepo layout and shared types.
+**35 · Async Vector Indexing, Streaming RAG Chat &amp; Learning Artifacts** — Inngest background indexing; sliding-window chunking and embeddings; **Pinecone** upserts and namespaces; streaming RAG chat with **interactive citations**; `mem0` memory across a workspace; **Tavily** live web search; structured **learning artifacts** (flashcards, quizzes, summaries, audio overviews); cost control and quotas.
 
-**28 · Async Vector Indexing, Streaming RAG Chat &amp; Learning Artifacts** — Inngest background indexing; sliding-window chunking and embeddings; **Pinecone** upserts and namespaces; streaming RAG chat with **interactive citations**; `mem0` memory across a workspace; **Tavily** live web search; structured **learning artifacts** (flashcards, quizzes, summaries, audio overviews); job status and partial-failure UX; cost control and quotas; re-indexing and model migration for live workspaces.
+**36 · Hands-On: Autonomous GitHub PR Reviewer Bot** — bot architecture and the Inngest event pipeline; **Octokit** REST integration and PAT auth; paginated PR diffs; diff token-window optimisation (filtering lockfiles, minified and binary files); structured review output with the OpenAI Agents SDK + Zod; webhook signature verification; rate limits and abuse protection.
 
-**29 · Hands-On: Autonomous GitHub PR Reviewer Bot** — bot architecture and the Inngest event pipeline; **Octokit** REST integration and PAT auth; paginated PR diffs; diff token-window optimisation (filtering lockfiles, minified and binary files); structured review output with the OpenAI Agents SDK + Zod; prompt design for review (severity, file/line anchoring); webhook routes and signature verification; posting reviews back; rate limits and abuse protection.
+**37 · Agent-to-User UIs (`AG-UI`, `MCP Apps`), Kubernetes &amp; KEDA Scaling** — **`AG-UI`** (Agent-User Interaction protocol); **`MCP Apps`** (interactive UI widgets inside MCP hosts); stateless services vs durable worker state; **Kubernetes** pods &amp; queues; **KEDA** event-driven autoscaling; microVM/gVisor **sandbox isolation** &amp; resource limits; managed vs self-hosted runtimes.
 
 </details>
 
-**[📂 25](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/)** · **[📂 26](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/)** · **[📂 27](./Lecture%2027%20-%20Full-Stack%20AI%20Platform/)** · **[📂 28](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/)** · **[📂 29](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/)** · **[📄 Roadmap: Phase 8](./roadmap.md#-phase-8--production-infrastructure)**
+**[📂 Lecture 33](./Lecture%2033%20-%20Multimodal%20AI/)** · **[📂 Lecture 34](./Lecture%2034%20-%20Full-Stack%20AI%20Platform/)** · **[📂 Lecture 35](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/)** · **[📂 Lecture 36](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/)** · **[📂 Lecture 37](./Lecture%2037%20-%20Agent%20UIs%20K8s%20and%20KEDA%20Scaling/)** · **[📄 Roadmap: Phase 8](./roadmap-v1.md#-phase-8--multimodality-full-stack-apps--agent-scaling-stage-3-ship)**
 
 ---
 
-### 🟥 Phase 9 — Quality, Evaluation &amp; Safety
+### 🟦 Phase 9 — Distributed &amp; Sovereign Inference *(Stage 3: Ship)*
 
-> **Thesis** — Assume the model **will** be persuaded, and make persuasion insufficient to move anything that matters. Then prove it with a gate that can block a release.
+> **Thesis** — Inference is memory-bandwidth-bound. Serve models economically with vLLM, quantization, sovereign/Indic models, KV-cache reuse, and disaggregated prefill/decode (`SGLang`, `llm-d`, `Dynamo`).
 
-`Lecture 30 — Evals &amp; Testing` · `Lecture 31 — Security &amp; Guardrails`
+`Lecture 38 — vLLM, Quantization &amp; Indic Models` · `Lecture 39 — Distributed Inference (SGLang, llm-d, Dynamo)`
 
 <details>
 <summary><b>🔎 What this phase teaches</b></summary>
 
 <br>
 
-**30 · GenAI Evaluation &amp; Testing** — why AI testing is different; the **attribution problem** (an app is a pipeline, not a function); traditional testing vs AI evaluation; why a satisfying answer is not evidence; the anatomy of an eval; observability as the data layer (`AgentResponse` as the second output, `traceId`, `promptVersion`); golden datasets and the six coverage classes; a dataset is a **versioned file, not a generator**; **deterministic evaluation** (JSON validity, schema conformance, tool selection and arguments, refusal behaviour, required facts, forbidden claims, latency/cost budgets); quality as a **vector not a scalar**; **LLM-as-a-judge** and its biases; rubrics, pointwise vs pairwise, human calibration; RAG and system-level metrics (hit · recall@k · precision@k · MRR · nDCG) and the attribution classifier; offline vs online evaluation and the promotion loop; the four-layer pipeline and release gating; component vs end-to-end evals; dataset contamination and regression bugs.
+**38 · High-Performance Inference: vLLM, Quantization &amp; Sovereign / Indic Models** — GPU VRAM and HBM; **compute-bound training vs memory-bandwidth-bound inference**; **prefill vs decode**; **PagedAttention** &amp; continuous batching; **quantization** (AWQ, GPTQ, FP8, INT4) and VRAM-vs-accuracy benchmarks; **hosted vs self-hosted TCO &amp; break-even math**; **RAG vs fine-tuning** decision framework; **sovereign &amp; Indian-language models** (Sarvam, BharatGPT, Krutrim, Airavata) and Indic tokenization/eval considerations.
 
-**31 · GenAI Security &amp; Guardrails** — why GenAI breaks traditional security; threat modelling (assets, trust boundaries, blast radius); the **risk equation**; "an LLM is not business logic"; **prompt injection** as a fundamental problem; delivery channels; jailbreaks and why prompts are not controls; why tools change the risk model; **least privilege and capability routing**; never trust, always verify; **guardrails as layers** (input · instruction · **action** · output) that **fail closed**; why filters are not controls; approval **fingerprints**; bidirectional **PII masking** and pseudonymisation; moderation APIs; RBAC at the agent boundary; red-teaming and security regression suites; audit ledger, governance and incident triage.
+**39 · Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) &amp; Capacity Engineering** — model-aware routing; **KV cache reuse &amp; offloading** (LMCache / Mooncake); **disaggregated prefill/decode inference**; **SGLang** (RadixAttention), **`llm-d`**, and **NVIDIA Dynamo**; data **residency**, high availability, and TTFT/TPOT cost-capacity engineering.
 
 </details>
 
-**[📂 Lecture 30](./Lecture%2030%20-%20Evals%20and%20Testing/)** · **[📂 Lecture 31](./Lecture%2031%20-%20Security%20and%20Guardrails/)** · **[📄 Roadmap: Phase 9](./roadmap.md#-phase-9--quality-evaluation--safety)**
+**[📂 Lecture 38](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/)** · **[📂 Lecture 39](./Lecture%2039%20-%20Distributed%20Inference%20SGLang%20llm-d%20and%20Dynamo/)** · **[📄 Roadmap: Phase 9](./roadmap-v1.md#-phase-9--distributed--sovereign-inference-stage-3-ship)**
 
 ---
 
-### 🏁 Capstone — Prove the Whole Path
+### 🟥 Phase 10 — Quality, FinOps, Identity &amp; Security *(Stage 3: Ship)*
 
-> **Thesis** — One system, every phase, with numbers attached.
+> **Thesis** — Never ship an autonomous system without trajectory evals, Z3 invariants, OTel/FOCUS FinOps, `flagd` progressive releases, delegated OIDC/ReBAC identity, and an AI BOM security gate.
 
-Build **one** system that exercises all ten phases: multi-provider client with token accounting · streaming chat with correct UTF-8 framing · typed tools with a sandboxed loop and HITL approval · hybrid retrieval with rerank · agent memory plus a graph entity store · an MCP server with a gateway · multimodal ingestion · durable background indexing · a golden dataset with deterministic checks, an LLM judge and a CI release gate · a threat model, capability routing, canary check and red-team suite.
+`Lecture 40 — Evals &amp; Testing` · `Lecture 41 — Neuro-Symbolic Verification (Z3, GEPA)` · `Lecture 42 — AI Observability &amp; FOCUS FinOps` · `Lecture 43 — Progressive Autonomy (flagd)` · `Lecture 44 — Enterprise Identity (OIDC, SCIM, ReBAC)` · `Lecture 45 — Security, OWASP Agentic/MCP &amp; AI BOM`
 
-**Deliverable:** a public repo, an architecture diagram, a metrics table (recall@k · faithfulness · p95 latency · cost per 1k requests) and a one-page incident/limitations statement.
+<details>
+<summary><b>🔎 What this phase teaches</b></summary>
 
-**[📄 Roadmap: Capstone brief](./roadmap.md#-capstone--prove-the-whole-path)**
+<br>
+
+**40 · GenAI Evaluation &amp; Testing** — the **attribution problem**; observability as the data layer (`AgentResponse`, `traceId`, `promptVersion`); versioned **golden datasets**; **deterministic evaluation**; quality as a **vector not a scalar**; **LLM-as-a-judge** and its biases; RAG metrics (hit · recall@k · precision@k · MRR · nDCG); offline vs online evaluation and CI release gates.
+
+**41 · Neuro-Symbolic Verification, Trajectory Evals, Z3 Constraints &amp; GEPA** — **trajectory evaluation** (step-by-step path &amp; tool-action correctness); **property-based testing**; **neuro-symbolic verification** &amp; deterministic invariants; **Z3 SMT solver constraints** for pre-execution plan/policy validation; evaluation-driven prompt optimization (**GEPA**).
+
+**42 · AI Observability (`OpenTelemetry`, `OpenObserve`) &amp; FOCUS FinOps** — **OpenTelemetry (OTel)** GenAI semantic conventions; **OpenObserve** traces, metrics &amp; logs; quality drift &amp; SLOs; **cost per successful task**; tenant &amp; feature attribution; budgets; **FOCUS-aligned** AI cost reporting.
+
+**43 · Progressive Autonomy, Feature Flags (`OpenFeature`/`flagd`) &amp; Safe Releases** — progressive autonomy (**Shadow → Human-Approved → Scoped Autonomous**); **OpenFeature &amp; `flagd`**; evaluation-based **canaries**; prompt/model/skill versioning; **release manifests**; **technical UAT**; instant rollback &amp; incident recovery.
+
+**44 · Enterprise Identity &amp; Agent Authorization (`OIDC`, `SAML`, `SCIM`, `authentik`, `ReBAC`)** — **OIDC, SAML &amp; SCIM**; **`authentik`** identity provider; scoped &amp; **delegated credentials** (On-Behalf-Of); user-to-tool attribution; **MCP Authorization** spec; **RBAC vs ReBAC** (Relationship-Based Access Control); gateway policy controls.
+
+**45 · GenAI Security, Guardrails, OWASP Agentic/MCP Top 10 &amp; AI Supply Chain (AI BOM)** — threat modelling &amp; blast radius; prompt injection &amp; jailbreaks; **OWASP Top 10 for LLM, Agentic AI &amp; MCP** (tool poisoning, confused deputy, excessive agency); **AI supply chain security** (scanning malicious skills/plugins, model provenance, capability registries); **AI Bills of Materials (AI BOM / CycloneDX ML-BOM)** in CI/CD; fail-closed layered guardrails; bidirectional **PII masking**; red-teaming suites.
+
+</details>
+
+**[📂 Lecture 40](./Lecture%2040%20-%20Evals%20and%20Testing/)** · **[📂 Lecture 41](./Lecture%2041%20-%20Neuro-Symbolic%20Verification%20Z3%20and%20GEPA/)** · **[📂 Lecture 42](./Lecture%2042%20-%20AI%20Observability%20OTel%20and%20FOCUS%20FinOps/)** · **[📂 Lecture 43](./Lecture%2043%20-%20Progressive%20Autonomy%20flagd%20and%20Safe%20Releases/)** · **[📂 Lecture 44](./Lecture%2044%20-%20Enterprise%20Identity%20OIDC%20SCIM%20and%20ReBAC/)** · **[📂 Lecture 45](./Lecture%2045%20-%20Security%20and%20Guardrails/)** · **[📄 Roadmap: Phase 10](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship)**
+
+---
+
+### 🏁 Capstone — Single-Engagement Proving Ground
+
+> **Thesis** — One customer engagement. Every layer of delivery (`Build → Connect → Ship`). From discovery brief to tested deployment, UAT sign-off, FOCUS FinOps report, and handover.
+
+Build **one** system that exercises all eleven phases: multi-provider client with dynamic routing and token accounting · streaming chat with correct UTF-8 framing · typed tools with a sandboxed loop, HITL approval, and `StateGraph` orchestration · hybrid retrieval with rerank, agent memory, and bitemporal GraphRAG · enterprise data contracts, semantic Text-to-SQL, MCP gateway, Cloudflare Code Mode, and Inngest CDC workflows · multimodal ingestion, `AG-UI` / `MCP Apps`, and vLLM / distributed inference · trajectory + Z3 evals, OTel/FOCUS FinOps, `flagd` progressive rollout, OIDC/ReBAC identity, OWASP Agentic/MCP guardrails, and an AI BOM gate.
+
+**Deliverable:** a public repo, an architecture diagram, a metrics table (recall@k · faithfulness · p95 latency · FOCUS cost per successful task) and a one-page incident/limitations statement.
+
+**[📄 Roadmap: Capstone brief](./roadmap-v1.md#-capstone--single-engagement-proving-ground)**
 
 ---
 

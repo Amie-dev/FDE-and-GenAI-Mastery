@@ -20,6 +20,7 @@ prompt.local.md
 *.local.md
 scratch/
 scratchpad/
+task.md
 
 
 # ── 2 · Node.js dependencies ──────────────────────────────────────────────────
