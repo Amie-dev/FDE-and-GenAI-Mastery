@@ -1,0 +1,26 @@
+{
+  "name": "lecture-14-loop-engineering-a2a",
+  "version": "1.0.0",
+  "description": "Lecture 14 Basic Code — Plan-Act-Verify Loop, Stuck Detection, Proactive Triggers & A2A Delegation",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "test": "tsx --test src/release-gate.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "plan-act-verify",
+    "stuck-detection",
+    "a2a-protocol",
+    "agent-loops",
+    "typescript"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
+
