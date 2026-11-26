@@ -1,0 +1,27 @@
+{
+  "name": "lecture-30-openapi-to-mcp-computer-use",
+  "version": "1.0.0",
+  "description": "Lecture 30 Basic Code — OpenAPI-to-MCP Adapter, Idempotency Keys, Approval Gate & Playwright Fallback",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "test": "tsx --test src/release-gate.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "openapi",
+    "mcp",
+    "idempotency",
+    "playwright",
+    "computer-use",
+    "typescript"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
+

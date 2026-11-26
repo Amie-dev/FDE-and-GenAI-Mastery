@@ -12,7 +12,7 @@
 - [x] **Lecture 24** — Enterprise Data Discovery, Ontologies & Apache Ossie
 - [x] **Lecture 25** — AI Data Contracts, Lakehouse Storage & Knowledge Lifecycle
 - [x] **Lecture 26** — Semantic-Layer Text-to-SQL & Analytical Intelligence
-- [ ] **Lecture 30** — Enterprise APIs, OpenAPI-to-MCP, Idempotency & Computer-Use Fallback
+- [x] **Lecture 30** — Enterprise APIs, OpenAPI-to-MCP, Idempotency & Computer-Use Fallback
 - [ ] **Lecture 31** — Cloudflare Code Mode & Isolated Code-Execution MCP (`@cloudflare/codemode`)
 - [ ] **Lecture 37** — Agent-to-User UIs (`AG-UI`, `MCP Apps`), Kubernetes & KEDA Scaling
 - [ ] **Lecture 39** — Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) & Capacity Engineering
