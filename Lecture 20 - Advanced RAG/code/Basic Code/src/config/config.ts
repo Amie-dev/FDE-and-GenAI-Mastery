@@ -24,4 +24,7 @@ export const config = {
   // Chapter 07: Context Engineering defaults
   maxContextTokens: 3000,
   maxChunks: 5,
+
+  // Chapter 09: Calibrated Abstention threshold
+  abstentionThreshold: Number(process.env.ABSTENTION_THRESHOLD) || 0.45,
 } as const;

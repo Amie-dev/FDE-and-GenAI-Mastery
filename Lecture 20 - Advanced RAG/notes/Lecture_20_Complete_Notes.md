@@ -1,6 +1,6 @@
 # Lecture 20 — Advanced RAG: Complete Consolidated Notes
 
-> **This is the one-page map.** For detail, read the corresponding chapter in `notes/`. Total chapters: **8** (within the 5–10 range).
+> **This is the one-page map.** For detail, read the corresponding chapter in `notes/`. Total chapters: **9** (within the 5–10 range).
 
 ---
 
@@ -158,6 +158,8 @@ flowchart TD
 | **Fingerprint** | Version tuple (corpus, chunking, embedder, retrieval, reranker, prompt, llm) |
 | **Refusal correctness** | System refuses unanswerable queries correctly |
 | **Token efficiency** | Correct answers per 1k prompt tokens |
+| **Chunk provenance** | Audit envelope (`sourceUri`, `pageNumber`, `lineStart`/`lineEnd`, `contentHash`) linking each chunk to its source |
+| **Calibrated abstention** | Confidence-gated refusal (`topScore < abstentionThreshold` or failed citation check) enforcing zero fabrication |
 
 ---
 
@@ -183,6 +185,8 @@ flowchart TD
 18. Which control does L0→L5 stop at for a 50-page internal tool corpus?
 19. What produces an invalid citation marker, and what is fixed by validation?
 20. If reducing K_ctx halves generation cost and improves accuracy, is the cost decision correct?
+21. Why does naive PDF text extraction fail on two-column layouts and tables, and when should you route a page to a Multimodal VLM? *(Chapter 09)*
+22. What five fields belong in a chunk's provenance envelope, and why must the abstention gate run *before* generation when `topScore < abstentionThreshold`? *(Chapter 09)*
 
 ---
 
@@ -200,3 +204,4 @@ For full detail, see the chapter files in `notes/`:
 | `06_Query_Processing.md` | Translation, decomposition, HyDE, routing | Clean up the question before retrieval |
 | `07_Context_Engineering.md` | Ordering, labels, precedence, budget | Make the right fact the most salient |
 | `08_Production_RAG.md` | Guardrails, latency, golden set, runbook | Operate a defendable system |
+| `09_Document_AI_Provenance_and_Calibrated_Abstention.md` | Document AI, provenance, abstention | Parse layouts cleanly, prove citations, refuse below confidence floor |

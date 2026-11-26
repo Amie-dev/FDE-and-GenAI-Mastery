@@ -77,6 +77,13 @@
 31. **Add a jailbreak blocker.** Write an input guardrail that detects common jailbreak patterns ("ignore previous instructions", "you are now DAN", etc.) and blocks them.
 32. **Add a "confidence score"** to the CRAG evaluation. Map `groundedness` and `completeness` to a 0-1 score. If below 0.5, always refuse (even if `sufficient = true`).
 
+### H. Provenance & Calibrated Abstention (Chapter 09 — S03 Gate)
+33. **Audit chunk provenance.** Inspect `response.provenance` on a `POST /rag/query` response and verify every retrieved chunk includes `chunkId`, `sourceUri`, `pageNumber`, `lineStart`/`lineEnd`, and a `sha256:` `contentHash`.
+34. **Zero-fabrication abstention test (`roadmap-v1.md` S03 gate).** Send an out-of-domain query (e.g. `"What is the CEO's favorite espresso roast?"`) to `POST /rag/query` and verify:
+    - `abstention.abstained === true`
+    - `abstention.topScore < abstention.threshold` (or `!crag.sufficient`)
+    - `answer` equals the exact abstention message (`"Insufficient evidence in the knowledge base to answer without fabrication."`) with **0 fabricated claims or citations**.
+
 ---
 
 ## Part 3 — Capstone: Build the complete pipeline
@@ -94,6 +101,7 @@
 ## Completion Gate
 To complete this assignment, you must:
 - [ ] Rewrite all code files so `npx tsc --noEmit` passes with zero errors
+- [ ] Pass the **S03 abstention test** (Task 34): out-of-domain query returns `abstention.abstained === true` with 0% hallucination rate below `abstentionThreshold`
 - [ ] Add at least 5 of the Part 2 tasks to the codebase (with tests or demonstration commands)
 - [ ] Complete at least 3 of the Part 3/4 tasks
 - [ ] Write a 300-word reflection in `notes/09_self_review.md` covering: (a) your biggest bug, (b) what you learned, (c) what to do next

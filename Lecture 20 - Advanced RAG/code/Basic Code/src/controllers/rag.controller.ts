@@ -16,6 +16,15 @@ import { hybridSearch, type HybridRequest } from "../services/hybrid-search.serv
 import { rerank, type RerankResult } from "../services/rerank.service";
 import { assembleContext, type AssembledContext } from "../services/context-engineering.service";
 import { evaluate, type CRAGEvaluation } from "../services/crag.service";
+import {
+  buildProvenance,
+  checkAbstention,
+  verifyCitations,
+  ABSTENTION_MESSAGE,
+  type AbstentionDecision,
+  type ChunkProvenance,
+  type CitationVerificationResult,
+} from "../services/provenance.service";
 import { config } from "../config/config";
 
 export interface RagResponse {
@@ -25,6 +34,9 @@ export interface RagResponse {
   rerank: RerankResult;
   context: AssembledContext;
   crag: CRAGEvaluation;
+  provenance: ChunkProvenance[];
+  citationCheck: CitationVerificationResult;
+  abstention: AbstentionDecision;
   guardrails: { input: GuardrailResult; output: GuardrailResult };
 }
 
@@ -71,17 +83,33 @@ export async function ragQuery(req: Request, res: Response): Promise<void> {
     maxChunks: config.maxChunks,
   });
 
-  // --- Chapter 01/08: Generation + CRAG Evaluation ---
+  // --- Chapter 01/08/09: CRAG + Provenance + Calibrated Abstention ---
   const crag = evaluate(translation.rewritten, rerankResult.candidates);
+  const provenance = rerankResult.candidates.map(buildProvenance);
+  let abstention = checkAbstention(rerankResult.candidates, crag, config.abstentionThreshold);
 
   let answer: string;
-  if (crag.sufficient) {
-    // Build a simple grounded answer from context
-    answer = `Based on the retrieved context: ${rerankResult.candidates
-      .map((c) => c.text)
-      .join(" ")}`;
+  let citationCheck: CitationVerificationResult;
+
+  if (abstention.abstained) {
+    answer = abstention.message ?? ABSTENTION_MESSAGE;
+    citationCheck = { ok: true, citedIndices: [], danglingCitations: [], reason: "Abstained — no claims emitted" };
   } else {
-    answer = "I cannot answer that confidently from the available evidence.";
+    const citedSnippets = rerankResult.candidates
+      .map((c, idx) => `[${idx + 1}] ${c.text}`)
+      .join(" ");
+    answer = `Based on the retrieved context: ${citedSnippets}`;
+    citationCheck = verifyCitations(answer, rerankResult.candidates);
+    if (!citationCheck.ok) {
+      abstention = {
+        abstained: true,
+        topScore: abstention.topScore,
+        threshold: abstention.threshold,
+        reason: citationCheck.reason ?? "Citation verification failed",
+        message: ABSTENTION_MESSAGE,
+      };
+      answer = ABSTENTION_MESSAGE;
+    }
   }
 
   // --- Chapter 08: Output Guardrails ---
@@ -94,6 +122,9 @@ export async function ragQuery(req: Request, res: Response): Promise<void> {
     rerank: rerankResult,
     context,
     crag,
+    provenance,
+    citationCheck,
+    abstention,
     guardrails: { input, output },
   };
 
