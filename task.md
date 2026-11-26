@@ -9,7 +9,7 @@
 ### Part 1 — 13 Brand-New Lectures (`notes/`, `index.md`, `code/`, `Assignment/task.md`)
 - [x] **Lecture 08** — Model Routing & Harness Velocity (`AGENTS.md`, `Pi`, `Superpowers`, SDD/TDD)
 - [x] **Lecture 14** — Loop Engineering (`Plan-Act-Verify`, Stuck Detection, Heartbeat) & A2A Protocol
-- [ ] **Lecture 24** — Enterprise Data Discovery, Ontologies & Apache Ossie
+- [x] **Lecture 24** — Enterprise Data Discovery, Ontologies & Apache Ossie
 - [ ] **Lecture 25** — AI Data Contracts, Lakehouse Storage & Knowledge Lifecycle
 - [ ] **Lecture 26** — Semantic-Layer Text-to-SQL & Analytical Intelligence
 - [ ] **Lecture 30** — Enterprise APIs, OpenAPI-to-MCP, Idempotency & Computer-Use Fallback
