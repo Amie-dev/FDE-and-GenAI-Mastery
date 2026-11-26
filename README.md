@@ -6,9 +6,9 @@
 
 *Forward Deployed Engineering · LLM internals · Agents &amp; Tools · RAG &amp; Knowledge Systems · MCP · Multimodal · Evals · Security*
 
-[![Lectures](https://img.shields.io/badge/Lectures-32-blueviolet?style=for-the-badge)](#-curriculum-navigation)
-[![Phases](https://img.shields.io/badge/Phases-10-2ea44f?style=for-the-badge)](#-learning-path)
-[![Source Lectures Merged](https://img.shields.io/badge/Source_Lectures_Merged-35-orange?style=for-the-badge)](#-where-this-came-from)
+[![Lectures](https://img.shields.io/badge/Lectures-45-blueviolet?style=for-the-badge)](#-curriculum-navigation)
+[![Phases](https://img.shields.io/badge/Phases-11_(Build_%E2%86%92_Connect_%E2%86%92_Ship)-2ea44f?style=for-the-badge)](#-learning-path)
+[![Source Lectures Merged](https://img.shields.io/badge/FDE_Sessions_Covered-24%2F24_%2B_Code_Mode-orange?style=for-the-badge)](#-where-this-came-from)
 [![Topic Coverage](https://img.shields.io/badge/Topic_Coverage-35%2F35-success?style=for-the-badge)](#-verification-appendices)
 [![Duplicates](https://img.shields.io/badge/Duplicated_Topics-0-critical?style=for-the-badge)](#-verification-appendices)
 
@@ -23,7 +23,7 @@
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Aminul-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/aminul-dev/)
 [![Twitter](https://img.shields.io/badge/Twitter-@AminulIsla65775-000000?style=for-the-badge&logo=x)](https://x.com/AminulIsla65775)
 
-**[📖 Start the Curriculum](#-curriculum-navigation)** · **[🗺️ Learning Path](#-learning-path)** · **[🚀 Quick Start](#-quick-start)** · **[📑 Master Roadmap](./roadmap.md)** · **[📚 Chapter Index](./index.md)** · **[✅ Verification](#-verification-appendices)**
+**[📖 Start the Curriculum](#-curriculum-navigation)** · **[🗺️ Learning Path](#-learning-path)** · **[🚀 Quick Start](#-quick-start)** · **[📑 Master Roadmap v1](./roadmap-v1.md)** · **[📚 Chapter Index](./index%20v1.md)** · **[✅ Verification](#-verification-appendices)**
 
 </div>
 
@@ -72,8 +72,8 @@ This repository is a **single merged learning path** built by reading, comparing
 
 | Metric | Value |
 | :--- | ---: |
-| 🎓 Merged lectures | **32** |
-| 🧭 Learning phases | **10** (Phase 0 → 9) |
+| 🎓 Merged lectures | **45** (`Build: L01–L23` · `Connect: L24–L32` · `Ship: L33–L45`) |
+| 🧭 Learning phases | **11** (Phase 0 → 10 across 3 Macro Stages) |
 | 📚 Source lectures/days merged | **35** (19 `Forward-Deployed-Engineer` + 16 `gen-ai-cohort`) |
 | 📓 Source note files mapped | **235** (152 FDE chapters + 83 cohort note files) |
 | 🧾 Indexed sub-topics | **454+** |
@@ -111,41 +111,54 @@ Follow the phases **in order** — each one assumes only the phase before it. Co
 
 ## 📚 Curriculum Navigation
 
-| # | Lecture | Phase | Level | Workspace | Roadmap |
+| # | Lecture | Stage / Phase | Level | Workspace | Roadmap |
 | :---: | :--- | :---: | :---: | :---: | :---: |
-| **01** | ⬜ Introduction to FDE and AI History | 0 | 🟢 | [📂](./Lecture%2001%20-%20Introduction%20to%20FDE%20and%20AI%20History/) | [📄](./roadmap.md#lecture-01--introduction-to-forward-deployed-engineering--the-history-of-ai) |
-| **02** | 🟦 LLM Foundations | 1 | 🟢 | [📂](./Lecture%2002%20-%20LLM%20Foundations/) | [📄](./roadmap.md#lecture-02--llm-foundations-next-token-prediction-tokenization--embeddings) |
-| **03** | 🟦 Attention and Decoding | 1 | 🟢 | [📂](./Lecture%2003%20-%20Attention%20and%20Decoding/) | [📄](./roadmap.md#lecture-03--attention-transformer-architecture--decoding-strategies) |
-| **04** | 🟩 LLM APIs and Multi-SDK | 2 | 🟢 | [📂](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/) | [📄](./roadmap.md#lecture-04--calling-llms-from-your-application-apis-multi-sdk--token-economics) |
-| **05** | 🟩 Prompt Engineering | 2 | 🟢 | [📂](./Lecture%2005%20-%20Prompt%20Engineering/) | [📄](./roadmap.md#lecture-05--prompt-engineering-zerofew-shot-cot-persona--prompt-hygiene) |
-| **06** | 🟩 Chatbots and Context | 2 | 🟡 | [📂](./Lecture%2006%20-%20Chatbots%20and%20Context/) | [📄](./roadmap.md#lecture-06--chatbots-statelessness-context-memory--hallucination) |
-| **07** | 🟩 AI Streaming | 2 | 🟡 | [📂](./Lecture%2007%20-%20AI%20Streaming/) | [📄](./roadmap.md#lecture-07--ai-streaming-from-llm-tokens-to-a-live-chat-experience) |
-| **08** | 🟨 Tool Calling | 3 | 🟡 | [📂](./Lecture%2008%20-%20Tool%20Calling/) | [📄](./roadmap.md#lecture-08--tool-calling--function-execution-loops) |
-| **09** | 🟨 AI Agents and HITL | 3 | 🟡 | [📂](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/) | [📄](./roadmap.md#lecture-09--ai-agents-from-first-principles-agency-sandboxing--hitl) |
-| **10** | 🟨 Structured Outputs | 3 | 🟡 | [📂](./Lecture%2010%20-%20Structured%20Outputs/) | [📄](./roadmap.md#lecture-10--structured-outputs-schema-enforcement-validation--repair) |
-| **11** | 🟨 Agent SDK from Scratch | 3 | 🟠 | [📂](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/) | [📄](./roadmap.md#lecture-11--building-an-agent-sdk-from-scratch-harness--builder--react-loop) |
-| **12** | 🟧 Vector Embeddings | 4 | 🟢 | [📂](./Lecture%2012%20-%20Vector%20Embeddings/) | [📄](./roadmap.md#lecture-12--vector-embeddings-from-first-principles) |
-| **13** | 🟧 Semantic Search Project | 4 | 🟡 | [📂](./Lecture%2013%20-%20Semantic%20Search%20Project/) | [📄](./roadmap.md#lecture-13--embeddings-project-semantic-search--movie-recommendation) |
-| **14** | 🟧 Vector Search and Storage | 4 | 🟡 | [📂](./Lecture%2014%20-%20Vector%20Search%20and%20Storage/) | [📄](./roadmap.md#lecture-14--vector-search--storage-scale-knn--the-curse-of-dimensionality) |
-| **15** | 🟧 Vector Databases and ANN | 4 | 🟠 | [📂](./Lecture%2015%20-%20Vector%20Databases%20and%20ANN/) | [📄](./roadmap.md#lecture-15--vector-databases--ann-algorithms-ivf-hnsw--product-quantization) |
-| **16** | 🟥 RAG | 5 | 🟡 | [📂](./Lecture%2016%20-%20RAG/) | [📄](./roadmap.md#lecture-16--rag-the-open-book-architecture-ingestion--grounded-generation) |
-| **17** | 🟥 Advanced RAG | 5 | 🟠 | [📂](./Lecture%2017%20-%20Advanced%20RAG/) | [📄](./roadmap.md#lecture-17--advanced-rag-chunking-hybrid-retrieval-reranking--context-engineering) |
-| **18** | 🟥 Vectorless RAG and LLM Wiki | 5 | 🟠 | [📂](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/) | [📄](./roadmap.md#lecture-18--vectorless-rag-hierarchical-tree-indexing--llm-wiki-engines) |
-| **19** | 🟥 Agent Memory Systems | 5 | 🟠 | [📂](./Lecture%2019%20-%20Agent%20Memory%20Systems/) | [📄](./roadmap.md#lecture-19--agent-memory-systems-stm-ltm-graph-memory-dreaming--mem0) |
-| **20** | ✅ Graph Databases and GraphRAG | 5 | 🟠 | [📂](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/) | [📄](./roadmap.md#lecture-20--graph-databases-cypher-neo4j--graphrag) |
-| **21** | 🟪 MCP Core | 6 | 🟡 | [📂](./Lecture%2021%20-%20MCP%20Core/) | [📄](./roadmap.md#lecture-21--mcp-from-first-principles-host-client-server--tools) |
-| **22** | 🟪 MCP Resources Prompts and Gateway | 6 | 🟠 | [📂](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/) | [📄](./roadmap.md#lecture-22--mcp-resources-prompts--production-gateway-architecture) |
-| **23** | 🟪 Claude Skills | 6 | 🟠 | [📂](./Lecture%2023%20-%20Claude%20Skills/) | [📄](./roadmap.md#lecture-23--claude-skills--the-agent-skills-open-standard) |
-| **24** | ✅ Multimodal AI | 7 | 🟠 | [📂](./Lecture%2024%20-%20Multimodal%20AI/) | [📄](./roadmap.md#lecture-24--multimodal-ai-how-llms-understand-images) |
-| **25** | 🟦 vLLM and PagedAttention | 8 | 🔴 | [📂](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/) | [📄](./roadmap.md#lecture-25--high-performance-inference-gpu-mechanics-vllm--pagedattention) |
-| **26** | 🟦 Durable Execution with Inngest | 8 | 🟠 | [📂](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/) | [📄](./roadmap.md#lecture-26--durable-execution--event-driven-multi-agent-workflows-inngest) |
-| **27** | 🟦 Full-Stack AI Platform | 8 | 🔴 | [📂](./Lecture%2027%20-%20Full-Stack%20AI%20Platform/) | [📄](./roadmap.md#lecture-27--enterprise-full-stack-ai-platform-architecture-db-auth--ingestion) |
-| **28** | ✅ Async Indexing and RAG Chat | 8 | 🔴 | [📂](./Lecture 28%20-%20Async%20Indexing%20and%20RAG%20Chat/) | [📄](./roadmap.md#lecture-28--async-vector-indexing-streaming-rag-chat--learning-artifacts) |
-| **29** | 🟦 GitHub PR Reviewer Bot | 8 | 🟠 | [📂](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/) | [📄](./roadmap.md#lecture-29--hands-on-autonomous-github-pr-reviewer-bot) |
-| **30** | ✅ Evals and Testing | 9 | 🟢 | [📂](./Lecture%2030%20-%20Evals%20and%20Testing/) | [📄](./roadmap.md#lecture-30--genai-evaluation--testing-golden-data-deterministic-evals--llm-as-a-judge) |
-| **31** | 🟥 Security and Guardrails | 9 | 🔴 | [📂](./Lecture%2031%20-%20Security%20and%20Guardrails/) | [📄](./roadmap.md#lecture-31--genai-security--guardrails-prompt-injection-jailbreaks--safe-tool-use) |
-| **32** | 🟪 LangChain, LangGraph &amp; LangSmith | 6 | 🟡 | [📂](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/) | [📄](./roadmap.md#-appendix-d--progress-tracker) |
-| **★** | 🏁 Capstone | — | 🔴 | ➖ | [📄](./roadmap.md#-capstone--prove-the-whole-path) |
+| **01** | ⬜ Introduction to FDE and AI History | Build · 0 | 🟢 | [📂](./Lecture%2001%20-%20Introduction%20to%20FDE%20and%20AI%20History/) | [📄](./roadmap-v1.md#-phase-0--orientation) |
+| **02** | 🟦 LLM Foundations | Build · 1 | 🟢 | [📂](./Lecture%2002%20-%20LLM%20Foundations/) | [📄](./roadmap-v1.md#-phase-1--llm-foundations) |
+| **03** | 🟦 Attention and Decoding | Build · 1 | 🟢 | [📂](./Lecture%2003%20-%20Attention%20and%20Decoding/) | [📄](./roadmap-v1.md#-phase-1--llm-foundations) |
+| **04** | 🟩 LLM APIs, Multi-SDK, Caching &amp; Reasoning Models | Build · 2 | 🟢 | [📂](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/) | [📄](./roadmap-v1.md#-phase-2--application-layer--harness-velocity-stage-1-build) |
+| **05** | 🟩 Prompt Engineering | Build · 2 | 🟢 | [📂](./Lecture%2005%20-%20Prompt%20Engineering/) | [📄](./roadmap-v1.md#-phase-2--application-layer--harness-velocity-stage-1-build) |
+| **06** | 🟩 Chatbots, Context Budgeting &amp; Compaction | Build · 2 | 🟡 | [📂](./Lecture%2006%20-%20Chatbots%20and%20Context/) | [📄](./roadmap-v1.md#-phase-2--application-layer--harness-velocity-stage-1-build) |
+| **07** | 🟩 AI Streaming | Build · 2 | 🟡 | [📂](./Lecture%2007%20-%20AI%20Streaming/) | [📄](./roadmap-v1.md#-phase-2--application-layer--harness-velocity-stage-1-build) |
+| **08** | 🟩 Model Routing &amp; Agent Harness Velocity (`AGENTS.md`, SDD/TDD) | Build · 2 | 🟡 | [📂](./Lecture%2008%20-%20Model%20Routing%20and%20Harness%20Velocity/) | [📄](./roadmap-v1.md#-phase-2--application-layer--harness-velocity-stage-1-build) |
+| **09** | 🟨 Tool Calling | Build · 3 | 🟡 | [📂](./Lecture%2009%20-%20Tool%20Calling/) | [📄](./roadmap-v1.md#-phase-3--agency-graphs--loop-engineering-stage-1-build) |
+| **10** | 🟨 AI Agents, Sandboxing &amp; HITL | Build · 3 | 🟡 | [📂](./Lecture%2010%20-%20AI%20Agents%20and%20HITL/) | [📄](./roadmap-v1.md#-phase-3--agency-graphs--loop-engineering-stage-1-build) |
+| **11** | 🟨 Structured Outputs | Build · 3 | 🟡 | [📂](./Lecture%2011%20-%20Structured%20Outputs/) | [📄](./roadmap-v1.md#-phase-3--agency-graphs--loop-engineering-stage-1-build) |
+| **12** | 🟨 Agent SDK from Scratch | Build · 3 | 🟠 | [📂](./Lecture%2012%20-%20Agent%20SDK%20from%20Scratch/) | [📄](./roadmap-v1.md#-phase-3--agency-graphs--loop-engineering-stage-1-build) |
+| **13** | 🟨 LangChain, LangGraph &amp; LangSmith | Build · 3 | 🟡 | [📂](./Lecture%2013%20-%20LangChain%20LangGraph%20LangSmith/) | [📄](./roadmap-v1.md#-phase-3--agency-graphs--loop-engineering-stage-1-build) |
+| **14** | 🟨 Loop Engineering &amp; A2A Protocol | Build · 3 | 🟠 | [📂](./Lecture%2014%20-%20Loop%20Engineering%20and%20A2A%20Protocol/) | [📄](./roadmap-v1.md#-phase-3--agency-graphs--loop-engineering-stage-1-build) |
+| **15** | 🟧 Vector Embeddings | Build · 4 | 🟢 | [📂](./Lecture%2015%20-%20Vector%20Embeddings/) | [📄](./roadmap-v1.md#-phase-4--vector-meaning--ann-retrieval-stage-1-build) |
+| **16** | 🟧 Semantic Search Project | Build · 4 | 🟡 | [📂](./Lecture%2016%20-%20Semantic%20Search%20Project/) | [📄](./roadmap-v1.md#-phase-4--vector-meaning--ann-retrieval-stage-1-build) |
+| **17** | 🟧 Vector Search and Storage | Build · 4 | 🟡 | [📂](./Lecture%2017%20-%20Vector%20Search%20and%20Storage/) | [📄](./roadmap-v1.md#-phase-4--vector-meaning--ann-retrieval-stage-1-build) |
+| **18** | 🟧 Vector Databases and ANN | Build · 4 | 🟠 | [📂](./Lecture%2018%20-%20Vector%20Databases%20and%20ANN/) | [📄](./roadmap-v1.md#-phase-4--vector-meaning--ann-retrieval-stage-1-build) |
+| **19** | 🟥 RAG | Build · 5 | 🟡 | [📂](./Lecture%2019%20-%20RAG/) | [📄](./roadmap-v1.md#-phase-5--rag-memory--knowledge-graphs-stage-1-build) |
+| **20** | 🟥 Advanced RAG *(+ Provenance &amp; Abstention)* | Build · 5 | 🟠 | [📂](./Lecture%2020%20-%20Advanced%20RAG/) | [📄](./roadmap-v1.md#-phase-5--rag-memory--knowledge-graphs-stage-1-build) |
+| **21** | 🟥 Vectorless RAG and LLM Wiki | Build · 5 | 🟠 | [📂](./Lecture%2021%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/) | [📄](./roadmap-v1.md#-phase-5--rag-memory--knowledge-graphs-stage-1-build) |
+| **22** | 🟥 Agent Memory Systems *(+ TTL &amp; Poisoning Defence)* | Build · 5 | 🟠 | [📂](./Lecture%2022%20-%20Agent%20Memory%20Systems/) | [📄](./roadmap-v1.md#-phase-5--rag-memory--knowledge-graphs-stage-1-build) |
+| **23** | 🟥 Graph Databases &amp; Temporal GraphRAG | Build · 5 | 🟠 | [📂](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/) | [📄](./roadmap-v1.md#-phase-5--rag-memory--knowledge-graphs-stage-1-build) |
+| **24** | 🟣 Enterprise Data Discovery &amp; Apache Ossie | Connect · 6 | 🟠 | [📂](./Lecture%2024%20-%20Enterprise%20Data%20Discovery%20and%20Apache%20Ossie/) | [📄](./roadmap-v1.md#-phase-6--enterprise-data-semantics--sql-stage-2-connect) |
+| **25** | 🟣 AI Data Contracts &amp; Lakehouse Lifecycle | Connect · 6 | 🟠 | [📂](./Lecture%2025%20-%20AI%20Data%20Contracts%20and%20Lakehouse%20Lifecycle/) | [📄](./roadmap-v1.md#-phase-6--enterprise-data-semantics--sql-stage-2-connect) |
+| **26** | 🟣 Semantic Text-to-SQL &amp; Analytical Python | Connect · 6 | 🔴 | [📂](./Lecture%2026%20-%20Semantic%20Text-to-SQL%20and%20Analytical%20Python/) | [📄](./roadmap-v1.md#-phase-6--enterprise-data-semantics--sql-stage-2-connect) |
+| **27** | 🟪 MCP Core | Connect · 7 | 🟡 | [📂](./Lecture%2027%20-%20MCP%20Core/) | [📄](./roadmap-v1.md#-phase-7--mcp-code-mode--proactive-workflows-stage-2-connect) |
+| **28** | 🟪 MCP Resources, Prompts and Gateway | Connect · 7 | 🟠 | [📂](./Lecture%2028%20-%20MCP%20Resources%20Prompts%20and%20Gateway/) | [📄](./roadmap-v1.md#-phase-7--mcp-code-mode--proactive-workflows-stage-2-connect) |
+| **29** | 🟪 Claude Skills | Connect · 7 | 🟠 | [📂](./Lecture%2029%20-%20Claude%20Skills/) | [📄](./roadmap-v1.md#-phase-7--mcp-code-mode--proactive-workflows-stage-2-connect) |
+| **30** | 🟪 Enterprise APIs, OpenAPI-to-MCP &amp; Computer-Use | Connect · 7 | 🟠 | [📂](./Lecture%2030%20-%20Enterprise%20APIs%20OpenAPI-to-MCP%20and%20Computer-Use/) | [📄](./roadmap-v1.md#-phase-7--mcp-code-mode--proactive-workflows-stage-2-connect) |
+| **31** | 🟪 Cloudflare Code Mode MCP | Connect · 7 | 🟠 | [📂](./Lecture%2031%20-%20Cloudflare%20Code%20Mode%20MCP/) | [📄](./roadmap-v1.md#-phase-7--mcp-code-mode--proactive-workflows-stage-2-connect) |
+| **32** | 🟪 Durable Execution (Inngest) &amp; CDC Workflows | Connect · 7 | 🟠 | [📂](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/) | [📄](./roadmap-v1.md#-phase-7--mcp-code-mode--proactive-workflows-stage-2-connect) |
+| **33** | 🟫 Multimodal AI | Ship · 8 | 🟠 | [📂](./Lecture%2033%20-%20Multimodal%20AI/) | [📄](./roadmap-v1.md#-phase-8--multimodal-full-stack-agent-uis--k8s-stage-3-ship) |
+| **34** | 🟫 Full-Stack AI Platform | Ship · 8 | 🔴 | [📂](./Lecture%2034%20-%20Full-Stack%20AI%20Platform/) | [📄](./roadmap-v1.md#-phase-8--multimodal-full-stack-agent-uis--k8s-stage-3-ship) |
+| **35** | 🟫 Async Indexing and RAG Chat | Ship · 8 | 🔴 | [📂](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/) | [📄](./roadmap-v1.md#-phase-8--multimodal-full-stack-agent-uis--k8s-stage-3-ship) |
+| **36** | 🟫 GitHub PR Reviewer Bot | Ship · 8 | 🟠 | [📂](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/) | [📄](./roadmap-v1.md#-phase-8--multimodal-full-stack-agent-uis--k8s-stage-3-ship) |
+| **37** | 🟫 Agent UIs (`AG-UI`, `MCP Apps`), K8s &amp; KEDA | Ship · 8 | 🔴 | [📂](./Lecture%2037%20-%20Agent%20UIs%20K8s%20and%20KEDA%20Scaling/) | [📄](./roadmap-v1.md#-phase-8--multimodal-full-stack-agent-uis--k8s-stage-3-ship) |
+| **38** | 🟦 vLLM, PagedAttention, Quantization &amp; Indic Models | Ship · 9 | 🔴 | [📂](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/) | [📄](./roadmap-v1.md#-phase-9--distributed--sovereign-inference-stage-3-ship) |
+| **39** | 🟦 Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) | Ship · 9 | 🔴 | [📂](./Lecture%2039%20-%20Distributed%20Inference%20SGLang%20llm-d%20and%20Dynamo/) | [📄](./roadmap-v1.md#-phase-9--distributed--sovereign-inference-stage-3-ship) |
+| **40** | 🟥 Evals and Testing | Ship · 10 | 🟡 | [📂](./Lecture%2040%20-%20Evals%20and%20Testing/) | [📄](./roadmap-v1.md#-phase-10--evals-finops-identity--security-stage-3-ship) |
+| **41** | 🟥 Neuro-Symbolic Verification (`Z3`, `GEPA`) | Ship · 10 | 🔴 | [📂](./Lecture%2041%20-%20Neuro-Symbolic%20Verification%20Z3%20and%20GEPA/) | [📄](./roadmap-v1.md#-phase-10--evals-finops-identity--security-stage-3-ship) |
+| **42** | 🟥 AI Observability (`OTel`, `OpenObserve`) &amp; FOCUS FinOps | Ship · 10 | 🟠 | [📂](./Lecture%2042%20-%20AI%20Observability%20OTel%20and%20FOCUS%20FinOps/) | [📄](./roadmap-v1.md#-phase-10--evals-finops-identity--security-stage-3-ship) |
+| **43** | 🟥 Progressive Autonomy (`flagd`) &amp; Safe Releases | Ship · 10 | 🟠 | [📂](./Lecture%2043%20-%20Progressive%20Autonomy%20flagd%20and%20Safe%20Releases/) | [📄](./roadmap-v1.md#-phase-10--evals-finops-identity--security-stage-3-ship) |
+| **44** | 🟥 Enterprise Identity (`OIDC`, `SCIM`, `authentik`, `ReBAC`) | Ship · 10 | 🔴 | [📂](./Lecture%2044%20-%20Enterprise%20Identity%20OIDC%20SCIM%20and%20ReBAC/) | [📄](./roadmap-v1.md#-phase-10--evals-finops-identity--security-stage-3-ship) |
+| **45** | 🟥 Security, Guardrails, OWASP Agentic/MCP &amp; AI BOM | Ship · 10 | 🔴 | [📂](./Lecture%2045%20-%20Security%20and%20Guardrails/) | [📄](./roadmap-v1.md#-phase-10--evals-finops-identity--security-stage-3-ship) |
+| **★** | 🏁 Single-Engagement Capstone | All | 🔴 | ➖ | [📄](./roadmap-v1.md#-capstone--single-engagement-proving-ground) |
 
 **Legend:** 🟢 Beginner · 🟡 Intermediate · 🟠 Advanced · 🔴 Expert
 

@@ -4,11 +4,11 @@
 
 [![Version](https://img.shields.io/badge/Roadmap-v1.0_(45_Lectures)-blueviolet?style=for-the-badge&logo=googlegemini&logoColor=white)](#-phase-graph)
 [![Delivery Model](https://img.shields.io/badge/Delivery-Build_%E2%86%92_Connect_%E2%86%92_Ship-10b981?style=for-the-badge&logo=bookstack&logoColor=white)](#-macro-delivery-phases)
-[![Status](https://img.shields.io/badge/Status-32_Existing_%2B_13_New_Modules-orange?style=for-the-badge&logo=target&logoColor=white)](#-appendix-d--progress-tracker)
+[![Status](https://img.shields.io/badge/Status-45%2F45_Modules_Built-success?style=for-the-badge&logo=target&logoColor=white)](#-appendix-d--progress-tracker)
 [![Codebase](https://img.shields.io/badge/Stack-TypeScript_%7C_Python_%7C_Cloudflare_%7C_K8s-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](#-appendix-c--tech-stack-prerequisites--study-plan)
 
 ```text
-███████████████████████░░░░░░░░░  32 / 45 Lectures Built (71.1%) · 13 Enterprise FDE Modules Queued
+████████████████████████████████  45 / 45 Lectures Built (100.0%) · 32 Existing/Upgraded + 13 New FDE Modules Complete
 ```
 
 **[🗺️ Phase Graph](#-phase-graph)** • **[🪜 Career Ladder](#-the-career-capability-ladder)** • **[📚 45 Lecture Cards](#-phase-0--orientation)** • **[📈 Progress Tracker](#-appendix-d--progress-tracker)** • **[🏁 Capstone](#-capstone--single-engagement-proving-ground)** • **[🗂️ Appendices](#-appendix-a--re-numbering--de-duplication-map)**
@@ -578,48 +578,48 @@ flowchart LR
 | **01** | `01` | FDE Introduction & AI History | Build | 🟢 | ✅ | ✅ | ☐ |
 | **02** | `02` | LLM Foundations | Build | 🟢 | ✅ | ✅ | ☐ |
 | **03** | `03` | Attention & Decoding | Build | 🟢 | ✅ | ✅ | ☐ |
-| **04** | `04` | APIs, Multi-SDK, Caching & Reasoning Models | Build | 🟢 | 🔼 | 🔼 | ☐ |
+| **04** | `04` | APIs, Multi-SDK, Caching & Reasoning Models | Build | 🟢 | ✅ | ✅ | ☐ |
 | **05** | `05` | Prompt Engineering | Build | 🟢 | ✅ | ✅ | ☐ |
 | **06** | `06` | Chatbots, Context & Compaction | Build | 🟡 | ✅ | ✅ | ☐ |
 | **07** | `07` | AI Streaming | Build | 🟡 | ✅ | ✅ | ☐ |
-| **08** | — | **Model Routing & Harness Velocity (`AGENTS.md`, SDD/TDD)** | Build | 🟡 | ☐ | ☐ | ☐ |
+| **08** | — | **Model Routing & Harness Velocity (`AGENTS.md`, SDD/TDD)** | Build | 🟡 | ✅ | ✅ | ☐ |
 | **09** | `08` | Tool Calling | Build | 🟡 | ✅ | ✅ | ☐ |
 | **10** | `09` | Agents, Sandboxing & HITL | Build | 🟡 | ✅ | ✅ | ☐ |
 | **11** | `10` | Structured Outputs | Build | 🟡 | ✅ | ✅ | ☐ |
 | **12** | `11` | Agent SDK from Scratch | Build | 🟠 | ✅ | ✅ | ☐ |
 | **13** | `32` | LangChain, LangGraph & LangSmith | Build | 🟡 | ✅ | ✅ | ☐ |
-| **14** | — | **Loop Engineering (Plan-Act-Verify) & A2A Protocol** | Build | 🟠 | ☐ | ☐ | ☐ |
+| **14** | — | **Loop Engineering (Plan-Act-Verify) & A2A Protocol** | Build | 🟠 | ✅ | ✅ | ☐ |
 | **15** | `12` | Embeddings First Principles | Build | 🟢 | ✅ | ✅ | ☐ |
 | **16** | `13` | Semantic Search Project | Build | 🟡 | ✅ | ✅ | ☐ |
 | **17** | `14` | Vector Search & Storage | Build | 🟡 | ✅ | ✅ | ☐ |
 | **18** | `15` | Vector DBs & ANN | Build | 🟠 | ✅ | ✅ | ☐ |
 | **19** | `16` | RAG Open-Book Architecture | Build | 🟡 | ✅ | ✅ | ☐ |
-| **20** | `17` | Advanced RAG *(+ Provenance & Abstention)* | Build | 🟠 | 🔼 | 🔼 | ☐ |
+| **20** | `17` | Advanced RAG *(+ Provenance & Abstention)* | Build | 🟠 | ✅ | ✅ | ☐ |
 | **21** | `18` | Vectorless RAG & LLM Wiki | Build | 🟠 | ✅ | ✅ | ☐ |
-| **22** | `19` | Agent Memory Systems *(+ Expiry & Poisoning Defence)* | Build | 🟠 | 🔼 | 🔼 | ☐ |
-| **23** | `20` | Graph DB, Cypher, Neo4j & GraphRAG *(+ Ontologies & Temporal)* | Build | 🟠 | 🔼 | 🔼 | ✅ |
-| **24** | — | **Enterprise Data Discovery, Ontologies & Apache Ossie** | Connect | 🟠 | ☐ | ☐ | ☐ |
-| **25** | — | **AI Data Contracts, Lakehouse & Knowledge Lifecycle** | Connect | 🟠 | ☐ | ☐ | ☐ |
-| **26** | — | **Semantic-Layer Text-to-SQL & Analytical Python** | Connect | 🔴 | ☐ | ☐ | ☐ |
+| **22** | `19` | Agent Memory Systems *(+ Expiry & Poisoning Defence)* | Build | 🟠 | ✅ | ✅ | ☐ |
+| **23** | `20` | Graph DB, Cypher, Neo4j & GraphRAG *(+ Ontologies & Temporal)* | Build | 🟠 | ✅ | ✅ | ✅ |
+| **24** | — | **Enterprise Data Discovery, Ontologies & Apache Ossie** | Connect | 🟠 | ✅ | ✅ | ☐ |
+| **25** | — | **AI Data Contracts, Lakehouse & Knowledge Lifecycle** | Connect | 🟠 | ✅ | ✅ | ☐ |
+| **26** | — | **Semantic-Layer Text-to-SQL & Analytical Python** | Connect | 🔴 | ✅ | ✅ | ☐ |
 | **27** | `21` | MCP Core | Connect | 🟡 | ✅ | ✅ | ✅ |
 | **28** | `22` | MCP Resources, Prompts & Gateway | Connect | 🟠 | ✅ | ✅ | ☐ |
 | **29** | `23` | Claude Skills | Connect | 🟠 | ✅ | ✅ | ☐ |
-| **30** | — | **Enterprise APIs, OpenAPI-to-MCP & Computer-Use** | Connect | 🟠 | ☐ | ☐ | ☐ |
-| **31** | — | **Cloudflare Code Mode & Dynamic Worker MCP** | Connect | 🟠 | ☐ | ☐ | ☐ |
-| **32** | `26` | Durable Execution (Inngest) & CDC Workflows | Connect | 🟠 | 🔼 | 🔼 | ☐ |
+| **30** | — | **Enterprise APIs, OpenAPI-to-MCP & Computer-Use** | Connect | 🟠 | ✅ | ✅ | ☐ |
+| **31** | — | **Cloudflare Code Mode & Dynamic Worker MCP** | Connect | 🟠 | ✅ | ✅ | ☐ |
+| **32** | `26` | Durable Execution (Inngest) & CDC Workflows | Connect | 🟠 | ✅ | ✅ | ☐ |
 | **33** | `24` | Multimodal AI | Ship | 🟠 | ✅ | ✅ | ✅ |
-| **34** | `27` | Full-Stack AI Platform | Ship | 🔴 | ✅ | ✅ | ☐ |
+| **34** | `27` | Full-Stack AI Platform | Ship | 🔴 | ☐ | ✅ | ☐ |
 | **35** | `28` | Async Indexing & RAG Chat | Ship | 🔴 | ✅ | ✅ | ☐ |
 | **36** | `29` | GitHub PR Reviewer Bot | Ship | 🟠 | ✅ | ✅ | ☐ |
-| **37** | — | **Agent UIs (`AG-UI`, `MCP Apps`), Kubernetes & KEDA** | Ship | 🔴 | ☐ | ☐ | ☐ |
-| **38** | `25` | vLLM, Quantization & Sovereign / Indic Models | Ship | 🔴 | 🔼 | 🔼 | ☐ |
-| **39** | — | **Distributed Inference (`SGLang`, `llm-d`, `Dynamo`)** | Ship | 🔴 | ☐ | ☐ | ☐ |
+| **37** | — | **Agent UIs (`AG-UI`, `MCP Apps`), Kubernetes & KEDA** | Ship | 🔴 | ✅ | ✅ | ☐ |
+| **38** | `25` | vLLM, Quantization & Sovereign / Indic Models | Ship | 🔴 | ✅ | ✅ | ☐ |
+| **39** | — | **Distributed Inference (`SGLang`, `llm-d`, `Dynamo`)** | Ship | 🔴 | ✅ | ✅ | ☐ |
 | **40** | `30` | Evals & Testing | Ship | 🟡 | ✅ | ✅ | ☐ |
-| **41** | — | **Neuro-Symbolic Verification, Z3 & GEPA** | Ship | 🔴 | ☐ | ☐ | ☐ |
-| **42** | — | **AI Observability (`OTel`, `OpenObserve`) & FOCUS FinOps** | Ship | 🟠 | ☐ | ☐ | ☐ |
-| **43** | — | **Progressive Autonomy, `flagd` & Safe Releases** | Ship | 🟠 | ☐ | ☐ | ☐ |
-| **44** | — | **Enterprise Identity (`OIDC`, `SCIM`, `authentik`, `ReBAC`)** | Ship | 🔴 | ☐ | ☐ | ☐ |
-| **45** | `31` | Security, Guardrails, OWASP Agentic/MCP & AI BOM | Ship | 🔴 | 🔼 | 🔼 | ☐ |
+| **41** | — | **Neuro-Symbolic Verification, Z3 & GEPA** | Ship | 🔴 | ✅ | ✅ | ☐ |
+| **42** | — | **AI Observability (`OTel`, `OpenObserve`) & FOCUS FinOps** | Ship | 🟠 | ✅ | ✅ | ☐ |
+| **43** | — | **Progressive Autonomy, `flagd` & Safe Releases** | Ship | 🟠 | ✅ | ✅ | ☐ |
+| **44** | — | **Enterprise Identity (`OIDC`, `SCIM`, `authentik`, `ReBAC`)** | Ship | 🔴 | ✅ | ✅ | ☐ |
+| **45** | `31` | Security, Guardrails, OWASP Agentic/MCP & AI BOM | Ship | 🔴 | ✅ | ✅ | ☐ |
 | **★** | `★` | **Single-Engagement Capstone** | All | 🔴 | ☐ | ☐ | ☐ |
 
 ---

@@ -2,45 +2,59 @@
 
 > **What this file is:** the chapter index for every lecture that has notes written. Each section lists the lecture's chapters with a number, a title, a one-line summary and a direct link to the file in that lecture's `notes/` folder — plus links to the lecture's `code/` and `Assignment/task.md`.
 
-> **What this file is not:** the curriculum plan. For the topic list, goal, build task, gate and progress tracker of each lecture, use **[README.md](./README.md)** and **[roadmap.md](./roadmap.md)** — they are the single source of truth, so no topic is duplicated here.
+> **What this file is not:** the curriculum plan. For the topic list, goal, build task, gate and progress tracker of each lecture, use **[README.md](./README.md)** and **[roadmap-v1.md](./roadmap-v1.md)** — they are the single source of truth, so no topic is duplicated here.
 
-**Repository navigation:** [README](./README.md) · [Roadmap](./roadmap.md) · [Progress Tracker (Appendix D)](./roadmap.md#-appendix-d--progress-tracker)
+**Repository navigation:** [README](./README.md) · [Roadmap v1](./roadmap-v1.md) · [Progress Tracker (Appendix D)](./roadmap-v1.md#-appendix-d--progress-tracker)
 
-## 📖 Quick Navigation
+## 📖 Quick Navigation (All 45 Lectures)
 
 | | Lecture | Chapters | Consolidated Notes | Code | Assignment |
 | :---: | :--- | :---: | :---: | :---: | :---: |
-| 📚 | [Lecture 01 — Introduction to FDE and AI History](#-lecture-01-introduction-to-fde-and-ai-history) | 8 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 02 — LLM Foundations](#-lecture-02-llm-foundations) | 8 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 03 — Attention and Decoding](#-lecture-03-attention-and-decoding) | 9 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 04 — LLM APIs and Multi-SDK](#-lecture-04-llm-apis-and-multi-sdk) | 9 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 05 — Prompt Engineering](#-lecture-05-prompt-engineering) | 9 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 06 — Chatbots and Context](#-lecture-06-chatbots-and-context) | 8 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 07 — AI Streaming](#-lecture-07-ai-streaming) | 9 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 08 — Tool Calling](#-lecture-08-tool-calling) | 8 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 09 — AI Agents and HITL](#-lecture-09-ai-agents-and-hitl) | 9 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 10 — Structured Outputs](#-lecture-10-structured-outputs) | 9 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 11 — Agent SDK from Scratch](#-lecture-11-agent-sdk-from-scratch) | 8 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 12 — Vector Embeddings](#-lecture-12-vector-embeddings) | 7 | — | ✅ | ✅ |
-| 📚 | [Lecture 13 — Semantic Search Project](#-lecture-13-semantic-search-project) | 6 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 14 — Vector Search and Storage](#-lecture-14-vector-search-and-storage) | 8 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 15 — Vector Databases and ANN](#-lecture-15-vector-databases-and-ann) | 5 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 16 — RAG](#-lecture-16-rag) | 9 | — | ✅ | ✅ |
-| 📚 | [Lecture 17 — Advanced RAG](#-lecture-17-advanced-rag) | 8 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 18 — Vectorless RAG and LLM Wiki](#-lecture-18-vectorless-rag-and-llm-wiki) | 7 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 19 — Agent Memory Systems](#-lecture-19-agent-memory-systems) | 8 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 20 — Graph Databases and GraphRAG](#-lecture-20-graph-databases-and-graphrag) | 8 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 21 — MCP Core](#-lecture-21-mcp-core) | 8 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 22 — MCP Resources Prompts and Gateway](#-lecture-22-mcp-resources-prompts-and-gateway) | 9 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 23 — Claude Skills](#-lecture-23-claude-skills) | 6 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 24 — Multimodal AI](#-lecture-24-multimodal-ai) | 10 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 25 — vLLM and PagedAttention](#-lecture-25-vllm-and-pagedattention) | 8 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 26 — Durable Execution with Inngest](#-lecture-26-durable-execution-with-inngest) | 8 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 28 — Async Indexing and RAG Chat](#-lecture-28-async-indexing-and-rag-chat) | 8 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 29 — GitHub PR Reviewer Bot](#-lecture-29-github-pr-reviewer-bot) | 4 | — | ✅ | ✅ |
-| 📚 | [Lecture 30 — Evals and Testing](#-lecture-30-evals-and-testing) | 9 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 31 — Security and Guardrails](#-lecture-31-security-and-guardrails) | 10 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 32 — LangChain LangGraph LangSmith](#-lecture-32-langchain-langgraph-langsmith) | 15 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 01 — Introduction to FDE and AI History](./Lecture%2001%20-%20Introduction%20to%20FDE%20and%20AI%20History/index.md) | 8 | ✅ | — | ✅ |
+| 📚 | [Lecture 02 — LLM Foundations](./Lecture%2002%20-%20LLM%20Foundations/index.md) | 8 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 03 — Attention and Decoding](./Lecture%2003%20-%20Attention%20and%20Decoding/index.md) | 9 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 04 — LLM APIs and Multi-SDK](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/index.md) | 10 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 05 — Prompt Engineering](./Lecture%2005%20-%20Prompt%20Engineering/index.md) | 9 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 06 — Chatbots and Context](./Lecture%2006%20-%20Chatbots%20and%20Context/index.md) | 9 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 07 — AI Streaming](./Lecture%2007%20-%20AI%20Streaming/index.md) | 9 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 08 — Model Routing and Harness Velocity](./Lecture%2008%20-%20Model%20Routing%20and%20Harness%20Velocity/index.md) | 7 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 09 — Tool Calling](./Lecture%2009%20-%20Tool%20Calling/index.md) | 8 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 10 — AI Agents and HITL](./Lecture%2010%20-%20AI%20Agents%20and%20HITL/index.md) | 9 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 11 — Structured Outputs](./Lecture%2011%20-%20Structured%20Outputs/index.md) | 9 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 12 — Agent SDK from Scratch](./Lecture%2012%20-%20Agent%20SDK%20from%20Scratch/index.md) | 8 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 13 — LangChain LangGraph LangSmith](./Lecture%2013%20-%20LangChain%20LangGraph%20LangSmith/index.md) | 16 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 14 — Loop Engineering and A2A Protocol](./Lecture%2014%20-%20Loop%20Engineering%20and%20A2A%20Protocol/index.md) | 7 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 15 — Vector Embeddings](./Lecture%2015%20-%20Vector%20Embeddings/index.md) | 7 | — | ✅ | ✅ |
+| 📚 | [Lecture 16 — Semantic Search Project](./Lecture%2016%20-%20Semantic%20Search%20Project/index.md) | 6 | ✅ | ✅ | — |
+| 📚 | [Lecture 17 — Vector Search and Storage](./Lecture%2017%20-%20Vector%20Search%20and%20Storage/index.md) | 8 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 18 — Vector Databases and ANN](./Lecture%2018%20-%20Vector%20Databases%20and%20ANN/index.md) | 5 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 19 — RAG](./Lecture%2019%20-%20RAG/index.md) | 10 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 20 — Advanced RAG](./Lecture%2020%20-%20Advanced%20RAG/index.md) | 9 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 21 — Vectorless RAG and LLM Wiki](./Lecture%2021%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/index.md) | 8 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 22 — Agent Memory Systems](./Lecture%2022%20-%20Agent%20Memory%20Systems/index.md) | 9 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 23 — Graph Databases and GraphRAG](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/index.md) | 9 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 24 — Enterprise Data Discovery and Apache Ossie](./Lecture%2024%20-%20Enterprise%20Data%20Discovery%20and%20Apache%20Ossie/index.md) | 7 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 25 — AI Data Contracts and Lakehouse Lifecycle](./Lecture%2025%20-%20AI%20Data%20Contracts%20and%20Lakehouse%20Lifecycle/index.md) | 7 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 26 — Semantic Text-to-SQL and Analytical Python](./Lecture%2026%20-%20Semantic%20Text-to-SQL%20and%20Analytical%20Python/index.md) | 8 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 27 — MCP Core](./Lecture%2027%20-%20MCP%20Core/index.md) | 8 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 28 — MCP Resources Prompts and Gateway](./Lecture%2028%20-%20MCP%20Resources%20Prompts%20and%20Gateway/index.md) | 9 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 29 — Claude Skills](./Lecture%2029%20-%20Claude%20Skills/index.md) | 8 | ✅ | ✅ | — |
+| 📚 | [Lecture 30 — Enterprise APIs OpenAPI-to-MCP and Computer-Use](./Lecture%2030%20-%20Enterprise%20APIs%20OpenAPI-to-MCP%20and%20Computer-Use/index.md) | 7 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 31 — Cloudflare Code Mode MCP](./Lecture%2031%20-%20Cloudflare%20Code%20Mode%20MCP/index.md) | 8 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 32 — Durable Execution with Inngest](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/index.md) | 9 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 33 — Multimodal AI](./Lecture%2033%20-%20Multimodal%20AI/index.md) | 10 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 34 — Full-Stack AI Platform](./Lecture%2034%20-%20Full-Stack%20AI%20Platform/README.md) | — | — | ✅ | — |
+| 📚 | [Lecture 35 — Async Indexing and RAG Chat](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/index.md) | 8 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 36 — GitHub PR Reviewer Bot](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/index.md) | 8 | — | ✅ | — |
+| 📚 | [Lecture 37 — Agent UIs K8s and KEDA Scaling](./Lecture%2037%20-%20Agent%20UIs%20K8s%20and%20KEDA%20Scaling/index.md) | 7 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 38 — vLLM and PagedAttention](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/index.md) | 9 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 39 — Distributed Inference SGLang llm-d and Dynamo](./Lecture%2039%20-%20Distributed%20Inference%20SGLang%20llm-d%20and%20Dynamo/index.md) | 7 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 40 — Evals and Testing](./Lecture%2040%20-%20Evals%20and%20Testing/index.md) | 9 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 41 — Neuro-Symbolic Verification Z3 and GEPA](./Lecture%2041%20-%20Neuro-Symbolic%20Verification%20Z3%20and%20GEPA/index.md) | 7 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 42 — AI Observability OTel and FOCUS FinOps](./Lecture%2042%20-%20AI%20Observability%20OTel%20and%20FOCUS%20FinOps/index.md) | 7 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 43 — Progressive Autonomy flagd and Safe Releases](./Lecture%2043%20-%20Progressive%20Autonomy%20flagd%20and%20Safe%20Releases/index.md) | 6 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 44 — Enterprise Identity OIDC SCIM and ReBAC](./Lecture%2044%20-%20Enterprise%20Identity%20OIDC%20SCIM%20and%20ReBAC/index.md) | 7 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 45 — Security and Guardrails](./Lecture%2045%20-%20Security%20and%20Guardrails/index.md) | 11 | ✅ | ✅ | ✅ |
 
 --
 
