@@ -1,4 +1,4 @@
-/** Shared types for the Lecture 20 (Graph Databases and GraphRAG) basic code.
+/** Shared types for the Lecture 23 (Graph Databases and GraphRAG) basic code.
  * Kept in one file so every service and controller agrees on the shapes.
  */
 

@@ -1,4 +1,4 @@
-# Production Code — Lecture 20
+# Production Code — Lecture 23
 
 Hardened production GraphRAG service with observability, retries, secrets validation, and security middleware.
 

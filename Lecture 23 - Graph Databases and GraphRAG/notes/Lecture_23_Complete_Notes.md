@@ -1,4 +1,4 @@
-# 📘 Lecture 20 — Graph Databases, Cypher, Neo4j & GraphRAG — Complete Notes
+# 📘 Lecture 23 — Graph Databases, Cypher, Neo4j & GraphRAG — Complete Notes
 
 > **Lecture level:** 🟠 Advanced  
 > **Prerequisites:** Lectures 15–16, 19 (RAG basics, vector search, agent memory)  
@@ -132,6 +132,7 @@
 | 06 | `notes/06_GraphRAG_Hybrid_Retrieval.md` | Vector index, bounded graph hops, fusion, endpoint sketch |
 | 07 | `notes/07_AI_Agent_Memory_Systems.md` | Memory taxonomy, entity resolution, profiles, indexing |
 | 08 | `notes/08_End_to_End_Cognitive_Memory_App.md` | Repo layout, migrations, typed query lib, tests, Docker, prod checklist |
+| 09 | `notes/09_Formal_Ontologies_and_Temporal_GraphRAG.md` | Schema-first ontologies, bitemporal (`valid_from`/`valid_to`/`transaction_time`) graphs, 3-hop point-in-time Cypher |
 
 ---
 
@@ -143,12 +144,12 @@
 
 ---
 
-## ✅ Lecture 20 Checklist (from `README.md`)
+## ✅ Lecture 23 Checklist (from `README.md`)
 
 | Step | Status |
 |------|--------|
-| Read every source note listed in the roadmap for Lecture 20 | ✅ |
-| Write my own chapter notes in `notes/` | ✅ (01-08) |
+| Read every source note listed in the roadmap for Lecture 23 | ✅ |
+| Write my own chapter notes in `notes/` | ✅ (01-09) |
 | Build / rebuild the code in `code/` | ☐ (pending) |
 | Pass the lecture's completion gate | ☐ (run integration test) |
 

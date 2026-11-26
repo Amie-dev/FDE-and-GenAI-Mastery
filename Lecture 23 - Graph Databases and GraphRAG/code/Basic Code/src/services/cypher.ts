@@ -56,4 +56,42 @@ export class CypherService {
       await session.close();
     }
   }
+
+  /**
+   * Chapter 09 — 3-hop point-in-time historical query across time-bounded fact edges.
+   * Resolves (Organization)<-[HOLDS_ROLE]-(Person)-[APPROVED]->(Change)-[TARGETS]->(System)
+   * active at ISO timestamp `asOf`.
+   */
+  async pointInTimeLeadershipChain(
+    orgId: string,
+    asOf: string,
+    role = "CTO"
+  ): Promise<{ leader: string; changeId: string; systemName: string; since: string }[]> {
+    const session = this.driver.session({ database: config.neo4jDatabase });
+    try {
+      const result = await session.run(
+        `MATCH (org:Organization {id: $orgId})
+               <-[r1:HOLDS_ROLE]-(person:Person)
+               -[r2:APPROVED]->(chg:Change)
+               -[r3:TARGETS]->(sys:System)
+         WHERE r1.role = $role
+           AND r1.valid_from <= datetime($asOf) AND (r1.valid_to IS NULL OR r1.valid_to >= datetime($asOf))
+           AND r2.valid_from <= datetime($asOf) AND (r2.valid_to IS NULL OR r2.valid_to >= datetime($asOf))
+           AND r3.valid_from <= datetime($asOf) AND (r3.valid_to IS NULL OR r3.valid_to >= datetime($asOf))
+         RETURN person.name AS leader,
+                chg.id AS changeId,
+                sys.name AS systemName,
+                toString(r1.valid_from) AS since`,
+        { orgId, asOf, role }
+      );
+      return result.records.map((r) => ({
+        leader: r.get("leader"),
+        changeId: r.get("changeId"),
+        systemName: r.get("systemName"),
+        since: r.get("since"),
+      }));
+    } finally {
+      await session.close();
+    }
+  }
 }

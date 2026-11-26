@@ -1,4 +1,4 @@
-# Lecture 20 — Chapter Index
+# Lecture 23 — Chapter Index
 
 | # | File | One-Line Summary |
 |---|------|------------------|
@@ -10,12 +10,13 @@
 | 06 | `notes/06_GraphRAG_Hybrid_Retrieval.md` | Vector index, bounded graph hops, context fusion, endpoint sketch |
 | 07 | `notes/07_AI_Agent_Memory_Systems.md` | Memory taxonomy, entity resolution, profiles, indexing |
 | 08 | `notes/08_End_to_End_Cognitive_Memory_App.md` | Repo layout, migrations, typed query lib, tests, Docker, prod checklist |
+| 09 | `notes/09_Formal_Ontologies_and_Temporal_GraphRAG.md` | Schema-first ontologies, bitemporal (`valid_from`/`valid_to`/`transaction_time`) graphs, 3-hop point-in-time Cypher |
 
 ## Combined Notes
 
 | File | Description |
 |------|-------------|
-| `notes/Lecture_20_Complete_Notes.md` | Executive summary, cheat sheet, decision tables, misconceptions, glossary, 20 self-check questions |
+| `notes/Lecture_23_Complete_Notes.md` | Executive summary, cheat sheet, decision tables, misconceptions, glossary, 20 self-check questions |
 
 ## Code & Implementation
 

@@ -1,6 +1,6 @@
-# Lecture 20 — Graph Databases, Cypher, Neo4j & GraphRAG — Assignment
+# Lecture 23 — Graph Databases, Cypher, Neo4j & GraphRAG — Assignment
 
-> **Source:** `../roadmap.md` → "Lecture 20" → **Build** and **Gate**
+> **Source:** `../roadmap.md` → "Lecture 23" → **Build** and **Gate**
 
 ---
 
@@ -95,11 +95,12 @@ Build a **cognitive-memory GraphRAG application** that combines vector similarit
 | 1 | **LLM integration** | Replace the placeholder prompt in `graphrag.ts` with a real OpenAI/Anthropic call and return the actual answer. |
 | 2 | **Entity resolution** | Implement `resolveEntity(mention)` that maps surface forms to canonical `Entity` nodes using the vector index on `Entity.nameEmbedding`. |
 | 3 | **Temporal preference** | Add `POST /memory/preference` that stores/queries `HAS_PREFERENCE` edges with `validFrom`/`validTo` (temporal memory). |
+| 4 | **S04 Point-in-time 3-hop gate** | Seed `schema.cypher` + `seed.cypher` and call `pointInTimeLeadershipChain('org-acme', '2022-05-15T00:00:00Z')` vs. `'2024-03-01T00:00:00Z'` — verify `2022` returns `Alice Chen` (`chg-2022-01`) and `2024` returns `Bob Patel` (`chg-2024-01`). |
 
 ---
 
 ## 📚 References
 
 - **Notes:** `../notes/01…08_*.md`
-- **Roadmap Build/Gate:** `../roadmap.md` → "Lecture 20"
+- **Roadmap Build/Gate:** `../roadmap.md` → "Lecture 23"
 - **Implementation guide:** `../code/Basic Code/implementations guide/`
