@@ -46,4 +46,16 @@ export function listSessions(): Session[] {
   return Array.from(sessions.values());
 }
 
+/** Chapter 09 — GDPR cascade delete for all STM sessions owned by `userId`. */
+export function deleteUserSessions(userId: string): number {
+  let deleted = 0;
+  for (const [id, session] of sessions.entries()) {
+    if (session.userId === userId) {
+      sessions.delete(id);
+      deleted++;
+    }
+  }
+  return deleted;
+}
+
 export { config as stmConfig };

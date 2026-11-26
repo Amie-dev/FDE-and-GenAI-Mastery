@@ -1,21 +1,21 @@
-# Lecture 19 - Agent Memory Systems
+# Lecture 22 - Agent Memory Systems: Working, Episodic, Semantic, Procedural & Poisoning Defence
 
 > **Phase:** 5 · RAG & Knowledge · **Level:** 🟠 Advanced
-> **Source:** `GAC D07 · FDE L11 (ch7)`
+> **Source:** `GAC D07 · FDE L11 (ch7) · roadmap-v1.md (S07 · Moved from Old L19)`
 
 ---
 
 ## 📍 Where this lecture sits
 
-See **[../roadmap.md](../roadmap.md)** → *"Lecture 19 — ..."* for the **complete topic list**,
-the **goal**, the **build task** and the **completion gate**. This file is only a workspace stub —
+See **[../roadmap-v1.md](../roadmap-v1.md)** → *"Lecture 22 — Agent Memory Systems: Working, Episodic, Semantic, Procedural & Poisoning Defence"* for the **complete topic list**,
+the **goal**, the **build task** and the **release gate**. This file is only a workspace stub —
 the roadmap is the single source of truth so that no topic is duplicated.
 
 ## ✅ Checklist
 
 | Step | Status |
 | :--- | :---: |
-| Read every source note listed in the roadmap for Lecture 19 | ☑ |
+| Read every source note listed in the roadmap for Lecture 22 | ☑ |
 | Write my own chapter notes in `notes/` | ☑ |
 | Build / rebuild the code in `code/` | ☑ |
 | Pass the lecture's completion gate | ☐ |
@@ -23,7 +23,7 @@ the roadmap is the single source of truth so that no topic is duplicated.
 ## 📁 Layout
 
 ```text
-Lecture 19 - Agent Memory Systems/
+Lecture 22 - Agent Memory Systems/
 ├── README.md          # this file — objectives · phase · level · source mapping · checklist
 ├── index.md           # chapter index (filled by prompt.md → Block 6)
 ├── prompt.md          # generation prompt (git-ignored) — change the chapter number, run it block by block
@@ -48,10 +48,11 @@ Lecture 19 - Agent Memory Systems/
 | 06 | Claude-Style Memory Dreaming & Background Reflection | [notes/06_Claude_Style_Memory_Dreaming_and_Background_Reflection.md](notes/06_Claude_Style_Memory_Dreaming_and_Background_Reflection.md) |
 | 07 | Managed Memory (mem0) + Multi-tenancy, Privacy & Compliance | [notes/07_Managed_Memory_mem0_Multi_Tenancy_Privacy_Compliance.md](notes/07_Managed_Memory_mem0_Multi_Tenancy_Privacy_Compliance.md) |
 | 08 | Production Memory System Architecture | [notes/08_Production_Memory_System_Architecture.md](notes/08_Production_Memory_System_Architecture.md) |
+| 09 | Memory Expiry (TTL), GDPR Cascade Deletion & Poisoning Defence | [notes/09_Memory_TTL_GDPR_Deletion_and_Poisoning_Defence.md](notes/09_Memory_TTL_GDPR_Deletion_and_Poisoning_Defence.md) |
 
 ### Complete Notes
 
-- [Lecture_19_Complete_Notes.md](notes/Lecture_19_Complete_Notes.md) — Combined reference with executive summary, cheat sheets, decision tables, and self-check questions
+- [Lecture_22_Complete_Notes.md](notes/Lecture_22_Complete_Notes.md) — Combined reference with executive summary, cheat sheets, decision tables, and self-check questions
 
 ## 🔗 Source references
 

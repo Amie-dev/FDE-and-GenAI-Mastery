@@ -1,4 +1,4 @@
-/** Shared types for the Lecture 19 (Agent Memory Systems) basic code.
+/** Shared types for the Lecture 22 (Agent Memory Systems) basic code.
  * Kept in one file so every service and controller agrees on the shapes.
  */
 
@@ -16,6 +16,9 @@ export interface Session {
   updatedAt: string;
 }
 
+export type MemorySourceType = "user_explicit" | "assistant_inferred" | "external_tool";
+export type MemoryStatus = "active" | "superseded" | "expired";
+
 export interface Memory {
   id: string;
   userId: string;
@@ -23,10 +26,15 @@ export interface Memory {
   createdAt: string;
   updatedAt: string;
   lastAccessedAt: string;
+  expiresAt?: string;
   hitCount: number;
   version: number;
+  status: MemoryStatus;
+  supersedesId?: string;
   confidence: number;
   source: string;
+  sourceType: MemorySourceType;
+  trustScore: number;
 }
 
 export interface MemorySearchResult {

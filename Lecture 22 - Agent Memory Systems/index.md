@@ -1,4 +1,4 @@
-# Lecture 19 — Agent Memory Systems: Chapter Index
+# Lecture 22 — Agent Memory Systems: Chapter Index
 
 ## Chapter Notes
 
@@ -11,11 +11,12 @@
 | 5 | Memory Eviction, Contradiction Resolution & Decay | [05_Memory_Eviction_Contradiction_Resolution_and_Decay.md](05_Memory_Eviction_Contradiction_Resolution_and_Decay.md) | Scoring memories, detecting duplicates, resolving contradictions, and managing memory decay |
 | 6 | Claude-Style Memory Dreaming & Background Reflection | [06_Claude_Style_Memory_Dreaming_and_Background_Reflection.md](06_Claude_Style_Memory_Dreaming_and_Background_Reflection.md) | Background memory cleanup process using LLM-based reflection |
 | 7 | Managed Memory (mem0) + Multi-tenancy, Privacy & Compliance | [07_Managed_Memory_mem0_Multi_Tenancy_Privacy_Compliance.md](07_Managed_Memory_mem0_Multi_Tenancy_Privacy_Compliance.md) | Using mem0 framework, user isolation, encryption, and data privacy |
-| 8 | Production Memory System Architecture | [08_Production_Memory_System_Architecture.md](08_Production_Memory_System_Architecture.md) | Complete system design, scaling, monitoring, and operational best practices |
+| 8 | Production Memory System Architecture | [08_Production_Memory_System_Architecture.md](notes/08_Production_Memory_System_Architecture.md) | Complete system design, scaling, monitoring, and operational best practices |
+| 9 | Memory Expiry (TTL), GDPR Cascade Deletion & Poisoning Defence | [09_Memory_TTL_GDPR_Deletion_and_Poisoning_Defence.md](notes/09_Memory_TTL_GDPR_Deletion_and_Poisoning_Defence.md) | TTL policies, revision histories, GDPR cascade deletion across stores, and write-time poisoning validation |
 
 ## Complete Notes
 
-- **[Lecture_19_Complete_Notes.md](Lecture_19_Complete_Notes.md)** — Executive summary, cheat sheets, decision tables, misconceptions, glossary, and 20 self-check questions
+- **[Lecture_22_Complete_Notes.md](notes/Lecture_22_Complete_Notes.md)** — Executive summary, cheat sheets, decision tables, misconceptions, glossary, and self-check questions
 
 ## Code
 

@@ -4,8 +4,15 @@ import {
   loadSession,
   appendMessage,
   getRecentMessages,
+  deleteUserSessions,
 } from "../services/stm";
-import { searchMemories } from "../services/ltm";
+import {
+  addMemoryChecked,
+  deleteUserMemories,
+  purgeExpiredMemories,
+  searchMemories,
+} from "../services/ltm";
+import type { MemorySourceType } from "../types";
 import { extractAndStoreFacts } from "../services/extraction";
 import { assembleContext } from "../services/context";
 import { runDream } from "../services/dream";
@@ -103,6 +110,54 @@ export function dream(req: Request, res: Response): void {
   }
   const result = runDream(userId);
   res.status(200).json({ ok: true, ...result });
+}
+
+/** POST /api/memory — write a fact with TTL + poisoning validation (Chapter 09). */
+export function writeMemory(req: Request, res: Response): void {
+  const { userId, content, ttlSeconds, sourceType, supersedesId } = req.body as {
+    userId?: string;
+    content?: string;
+    ttlSeconds?: number;
+    sourceType?: MemorySourceType;
+    supersedesId?: string;
+  };
+  if (!userId || !content) {
+    res.status(400).json({ error: "userId and content are required" });
+    return;
+  }
+  const result = addMemoryChecked({
+    userId,
+    content,
+    confidence: 0.9,
+    source: "api_memory",
+    sourceType,
+    ttlSeconds,
+    supersedesId,
+  });
+  if (result.blocked) {
+    res.status(403).json({ ok: false, blocked: true, reason: result.reason });
+    return;
+  }
+  res.status(201).json({ ok: true, memory: result.memory });
+}
+
+/** DELETE /api/memory/:userId — GDPR cascade erasure across STM + LTM (Chapter 09). */
+export function eraseUserMemory(req: Request, res: Response): void {
+  const userId = String(req.params.userId ?? "");
+  if (!userId) {
+    res.status(400).json({ error: "userId is required" });
+    return;
+  }
+  purgeExpiredMemories(userId);
+  const stmDeleted = deleteUserSessions(userId);
+  const ltmDeleted = deleteUserMemories(userId);
+  res.status(200).json({
+    ok: true,
+    userId,
+    stmDeleted,
+    ltmDeleted,
+    deletedAt: new Date().toISOString(),
+  });
 }
 
 /** GET /api/health — liveness check. */

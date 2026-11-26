@@ -1,8 +1,8 @@
-# Lecture 19 Complete Notes: Agent Memory Systems
+# Lecture 22 Complete Notes: Agent Memory Systems
 
 ## Executive Summary
 
-Lecture 19 covers **Agent Memory Systems** — the architecture and implementation of durable memory for AI agents that survives sessions without poisoning LLM context windows. This lecture transforms stateless LLM APIs into stateful agents through three complementary memory layers: **Short-Term Memory (STM)** for immediate context, **Long-Term Memory (LTM)** for persistent facts, and **Memory Dreaming** for self-maintenance.
+Lecture 22 covers **Agent Memory Systems** — the architecture and implementation of durable memory for AI agents that survives sessions without poisoning LLM context windows. This lecture transforms stateless LLM APIs into stateful agents through three complementary memory layers: **Short-Term Memory (STM)** for immediate context, **Long-Term Memory (LTM)** for persistent facts, and **Memory Dreaming** for self-maintenance.
 
 **Key Question**: How do you give an agent durable memory while managing token costs, attention dilution, and operational complexity?
 
@@ -1152,7 +1152,7 @@ flowchart TD
 
 ## Summary
 
-These Lecture 19 notes provide a comprehensive guide to building **Agent Memory Systems** — the critical layer that transforms stateless LLM APIs into stateful, conversational agents. The system combines:
+These Lecture 22 notes provide a comprehensive guide to building **Agent Memory Systems** — the critical layer that transforms stateless LLM APIs into stateful, conversational agents. The system combines:
 
 - **STM (Short-Term Memory)**: Sliding window of recent conversation turns in a relational database
 - **LTM (Long-Term Memory)**: Persistent facts stored as vector embeddings with semantic search
@@ -1162,6 +1162,7 @@ These Lecture 19 notes provide a comprehensive guide to building **Agent Memory 
 - **Memory Dreaming**: Background LLM reflection for deduplication, contradiction resolution, and decay
 - **Managed Frameworks**: mem0 abstraction for multi-tenant isolation, privacy, and compliance
 - **Production Architecture**: Three-layer design (API/Memory/Background) with scaling, monitoring, and graceful degradation
+- **Lifecycle & Security (Chapter 09)**: Tiered TTL expiry, explicit revision chains (`supersedesId`), GDPR cascade deletion across STM/LTM/caches, and write-time poisoning validation (`validateMemoryWrite`, trust scoring, provenance tags)
 
 The production architecture balances **performance** (sub-2s response times), **cost** (token budgeting), **reliability** (graceful degradation), **privacy** (encryption, PII minimization, deletion), and **observability** (comprehensive metrics) to provide a robust foundation for agent applications.
 
@@ -1169,4 +1170,4 @@ The key insight is that **memory is not storage** — it's a **budgeted resource
 
 ---
 
-*This document combines notes from 8 chapters covering all aspects of Agent Memory Systems.
+*This document combines notes from 9 chapters covering all aspects of Agent Memory Systems.*

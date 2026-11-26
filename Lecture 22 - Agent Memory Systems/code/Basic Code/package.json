@@ -1,5 +1,5 @@
 {
-  "name": "lecture-19-agent-memory-basic-code",
+  "name": "lecture-22-agent-memory-basic-code",
   "version": "1.0.0",
   "private": true,
   "description": "Minimum Express + TypeScript agent memory: STM sliding window, LTM facts, context assembly, eviction, dreaming.",

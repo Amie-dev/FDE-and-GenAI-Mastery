@@ -1,4 +1,4 @@
-import type { Memory, MemorySearchResult } from "../types";
+import type { Memory, MemorySearchResult, MemorySourceType } from "../types";
 import { config } from "../config/config";
 
 function uid(): string {
@@ -52,19 +52,96 @@ const memories: Memory[] = [];
  * prompt stays small instead of loading everything every request.
  */
 
-/** Add one memory, skipping exact duplicates already stored for this user. */
-export function addMemory(input: {
+const POISON_PATTERNS: RegExp[] = [
+  /ignore\s+(all\s+)?(previous|prior)\s+instructions/i,
+  /system\s+prompt/i,
+  /always\s+(send|forward|exfiltrate|post)\b/i,
+  /\bexfiltrate\b/i,
+  /<\/?system>/i,
+  /\boverride\s+(policy|rules|safety)\b/i,
+];
+
+const SOURCE_TRUST: Record<MemorySourceType, number> = {
+  user_explicit: 0.95,
+  assistant_inferred: 0.75,
+  external_tool: 0.3,
+};
+
+/**
+ * Chapter 09 — write-validation guard against memory poisoning.
+ * Blocks prompt-injected instructions and low-trust external tool writes before LTM consolidation.
+ */
+export function validateMemoryWrite(
+  content: string,
+  sourceType: MemorySourceType = "user_explicit"
+): { ok: boolean; reason?: string; trustScore: number } {
+  const trustScore = SOURCE_TRUST[sourceType];
+  if (sourceType === "external_tool" || trustScore < 0.5) {
+    return {
+      ok: false,
+      reason: `Untrusted sourceType '${sourceType}' (trustScore=${trustScore}) cannot write directly to LTM`,
+      trustScore,
+    };
+  }
+
+  for (const pattern of POISON_PATTERNS) {
+    if (pattern.test(content)) {
+      return {
+        ok: false,
+        reason: `Poisoned memory write blocked (matched ${pattern.source})`,
+        trustScore,
+      };
+    }
+  }
+
+  return { ok: true, trustScore };
+}
+
+export function isExpired(memory: Memory, nowMs: number = Date.now()): boolean {
+  if (memory.status !== "active") return true;
+  if (!memory.expiresAt) return false;
+  return new Date(memory.expiresAt).getTime() <= nowMs;
+}
+
+/** Checked write with poisoning validation, TTL expiry, and optional revision link. */
+export function addMemoryChecked(input: {
   userId: string;
   content: string;
   confidence: number;
   source: string;
-}): Memory | null {
+  sourceType?: MemorySourceType;
+  ttlSeconds?: number;
+  supersedesId?: string;
+}): { memory: Memory | null; blocked: boolean; reason?: string } {
+  const sourceType = input.sourceType ?? "user_explicit";
+  const check = validateMemoryWrite(input.content, sourceType);
+  if (!check.ok) {
+    return { memory: null, blocked: true, reason: check.reason };
+  }
+
+  const nowMs = Date.now();
   const exists = memories.find(
     (m) =>
       m.userId === input.userId &&
+      !isExpired(m, nowMs) &&
       m.content.toLowerCase() === input.content.toLowerCase()
   );
-  if (exists) return null;
+  if (exists) return { memory: null, blocked: false, reason: "Duplicate active memory" };
+
+  let version = 1;
+  if (input.supersedesId) {
+    const prev = memories.find((m) => m.id === input.supersedesId && m.userId === input.userId);
+    if (prev) {
+      prev.status = "superseded";
+      prev.updatedAt = now();
+      version = prev.version + 1;
+    }
+  }
+
+  const expiresAt =
+    typeof input.ttlSeconds === "number" && input.ttlSeconds > 0
+      ? new Date(nowMs + input.ttlSeconds * 1000).toISOString()
+      : undefined;
 
   const memory: Memory = {
     id: uid(),
@@ -73,13 +150,31 @@ export function addMemory(input: {
     createdAt: now(),
     updatedAt: now(),
     lastAccessedAt: now(),
+    expiresAt,
     hitCount: 0,
-    version: 1,
+    version,
+    status: "active",
+    supersedesId: input.supersedesId,
     confidence: input.confidence,
     source: input.source,
+    sourceType,
+    trustScore: check.trustScore,
   };
   memories.push(memory);
-  return memory;
+  return { memory, blocked: false };
+}
+
+/** Add one memory, skipping duplicates and blocking poisoned writes. */
+export function addMemory(input: {
+  userId: string;
+  content: string;
+  confidence: number;
+  source: string;
+  sourceType?: MemorySourceType;
+  ttlSeconds?: number;
+  supersedesId?: string;
+}): Memory | null {
+  return addMemoryChecked(input).memory;
 }
 
 /** Search memories for a user. Simple semantic-style ranking via vector
@@ -91,8 +186,9 @@ export function searchMemories(
   topK: number
 ): MemorySearchResult[] {
   const queryVec = embed(query);
+  const nowMs = Date.now();
   const scored = memories
-    .filter((m) => m.userId === userId)
+    .filter((m) => m.userId === userId && !isExpired(m, nowMs))
     .map((m) => ({
       memory: m,
       score: cosine(queryVec, embed(m.content)),
@@ -137,9 +233,38 @@ export function deleteMemory(memoryId: string): boolean {
   return true;
 }
 
-/** All memories for a user (used by background reflection). */
+/** All active memories for a user (used by background reflection). */
 export function getMemories(userId: string): Memory[] {
-  return memories.filter((m) => m.userId === userId);
+  const nowMs = Date.now();
+  return memories.filter((m) => m.userId === userId && !isExpired(m, nowMs));
+}
+
+/** Chapter 09 — purge expired memories (TTL sweep). */
+export function purgeExpiredMemories(userId?: string): number {
+  const nowMs = Date.now();
+  let purged = 0;
+  for (let i = memories.length - 1; i >= 0; i--) {
+    const m = memories[i]!;
+    if (userId && m.userId !== userId) continue;
+    if (m.expiresAt && new Date(m.expiresAt).getTime() <= nowMs) {
+      m.status = "expired";
+      memories.splice(i, 1);
+      purged++;
+    }
+  }
+  return purged;
+}
+
+/** Chapter 09 — GDPR cascade delete for all LTM records owned by `userId`. */
+export function deleteUserMemories(userId: string): number {
+  let deleted = 0;
+  for (let i = memories.length - 1; i >= 0; i--) {
+    if (memories[i]!.userId === userId) {
+      memories.splice(i, 1);
+      deleted++;
+    }
+  }
+  return deleted;
 }
 
 export { embed };
