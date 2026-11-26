@@ -1,4 +1,4 @@
-# Lecture 25 — vLLM and PagedAttention: Complete Notes
+# Lecture 38 — vLLM and PagedAttention: Complete Notes
 
 > **Phase:** 8 · Production Infrastructure · **Level:** 🔴 Expert
 > **Source:** `GAC D07`
@@ -18,12 +18,13 @@
 | 06 | Continuous Batching, Chunked Prefill, Prefix Caching | [06_Continuous_Batching_Chunked_Prefill_Prefix_Caching.md](06_Continuous_Batching_Chunked_Prefill_Prefix_Caching.md) |
 | 07 | Quantization, Optimized Kernels, MoE, Speculative Decoding | [07_Quantization_Kernels_MoE_Speculative.md](07_Quantization_Kernels_MoE_Speculative.md) |
 | 08 | Serving Economics, Self-Hosting vs Managed APIs, Roofline Model | [08_Serving_Economics_and_Roofline.md](08_Serving_Economics_and_Roofline.md) |
+| 09 | Quantization, TCO, RAG vs. Fine-Tuning & Sovereign / Indic Models | [09_Quantization_TCO_RAG_vs_FT_and_Sovereign_Indic_Models.md](09_Quantization_TCO_RAG_vs_FT_and_Sovereign_Indic_Models.md) |
 
 ---
 
 ## Executive Summary
 
-Lecture 25 explores high-performance inference for LLMs, focusing on hardware mechanics, the vLLM serving engine, and its core innovations including PagedAttention. The key insight is that **inference is memory-bandwidth-bound, not compute-bound** — meaning that raw GPU compute power alone doesn't solve throughput issues. Efficient data movement, KV cache management, and dynamic scheduling are what matter.
+Lecture 38 explores high-performance inference for LLMs, focusing on hardware mechanics, the vLLM serving engine, and its core innovations including PagedAttention. The key insight is that **inference is memory-bandwidth-bound, not compute-bound** — meaning that raw GPU compute power alone doesn't solve throughput issues. Efficient data movement, KV cache management, and dynamic scheduling are what matter.
 
 For full details on each topic, see the linked chapter notes.
 
@@ -327,7 +328,7 @@ For detailed economic analysis and decision framework, see **[Chapter 08](08_Ser
 
 ---
 
-## How Lecture 25 Connects to Other Lectures
+## How Lecture 38 Connects to Other Lectures
 
 | Connected Lecture | Connection |
 |-------------------|-----------|
