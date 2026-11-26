@@ -18,7 +18,7 @@
 - [x] **Lecture 39** — Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) & Capacity Engineering
 - [x] **Lecture 41** — Neuro-Symbolic Verification, Trajectory Evals, Z3 Constraints & GEPA
 - [x] **Lecture 42** — AI Observability (`OpenTelemetry`, `OpenObserve`) & FOCUS FinOps
-- [ ] **Lecture 43** — Progressive Autonomy, Feature Flags (`OpenFeature`/`flagd`) & Safe Releases
+- [x] **Lecture 43** — Progressive Autonomy, Feature Flags (`OpenFeature`/`flagd`) & Safe Releases
 - [ ] **Lecture 44** — Enterprise Identity & Agent Authorization (`OIDC`, `SAML`, `SCIM`, `authentik`, `ReBAC`)
 
 ### Part 2 — 9 Upgraded Existing Lectures (Add Missing Topics & Sync New Numbers)

@@ -1,0 +1,20 @@
+{
+  "name": "lecture-43-progressive-autonomy-flagd",
+  "version": "1.0.0",
+  "description": "Lecture 43: Progressive autonomy, OpenFeature + flagd runtime routing, shadow mode, eval-gated canary rollback, and signed release manifests.",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "start": "tsx src/index.ts",
+    "test": "tsx --test src/release-gate.test.ts"
+  },
+  "dependencies": {
+    "@openfeature/server-sdk": "^1.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
+

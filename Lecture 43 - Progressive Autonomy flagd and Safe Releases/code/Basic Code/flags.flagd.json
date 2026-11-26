@@ -1,0 +1,51 @@
+{
+  "$schema": "https://flagd.dev/schema/v0/flags.json",
+  "flags": {
+    "active_model": {
+      "state": "ENABLED",
+      "variants": {
+        "baseline": "gpt-4o-2024-11-20",
+        "canary": "claude-3-5-sonnet-20241022",
+        "budget": "gpt-4o-mini"
+      },
+      "defaultVariant": "baseline"
+    },
+    "autonomy_mode": {
+      "state": "ENABLED",
+      "variants": {
+        "shadow": "shadow",
+        "human": "human_approved",
+        "auto": "autonomous"
+      },
+      "defaultVariant": "human"
+    },
+    "shadow_enabled": {
+      "state": "ENABLED",
+      "variants": {
+        "on": true,
+        "off": false
+      },
+      "defaultVariant": "on"
+    },
+    "canary_weight_pct": {
+      "state": "ENABLED",
+      "variants": {
+        "zero": 0,
+        "one": 1,
+        "ten": 10,
+        "fifty": 50,
+        "hundred": 100
+      },
+      "defaultVariant": "ten"
+    },
+    "max_auto_refund_usd": {
+      "state": "ENABLED",
+      "variants": {
+        "conservative": 25,
+        "expanded": 75
+      },
+      "defaultVariant": "conservative"
+    }
+  }
+}
+
