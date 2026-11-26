@@ -27,7 +27,7 @@ app.use('/chat', router);
 app.use(outputGuardrail);
 
 app.listen(config.port, () => {
-  console.log(`Lecture 31 basic server running on http://localhost:${config.port}`);
+  console.log(`Lecture 45 basic server running on http://localhost:${config.port}`);
 });
 ```
 
@@ -72,7 +72,7 @@ Expected behavior (verified):
 - The tool ran and `owner` came from the session `userId`.
 - Sending an unrecognized intent (e.g. "delete everything") returns `intent: "GENERAL"`, `result: null` — fail closed.
 
-## Summary of security features implemented (from Lecture 31 notes only)
+## Summary of security features implemented (from Lecture 45 notes only)
 | Feature | Where | Note |
 |---------|-------|------|
 | PII masking (input) | `guardrail.middleware.ts` | masks email before app/logs |
@@ -83,4 +83,4 @@ Expected behavior (verified):
 | Argument validation | `tool.service.ts` | model args treated as untrusted |
 | Identity from session | `chat.controller.ts` | `userId` not from model argument |
 
-Only features mentioned in the Lecture 31 notes are implemented. Nothing complex was added.
+Only features mentioned in the Lecture 45 notes are implemented. Nothing complex was added.

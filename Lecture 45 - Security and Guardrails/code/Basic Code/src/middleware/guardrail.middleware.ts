@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 /**
- * Guardrail Middleware (Lecture 31 — Ch. 07 & Ch. 08)
+ * Guardrail Middleware (Lecture 45 — Ch. 07 & Ch. 08)
  *
  * Defense-in-depth layers:
  * 1. Input guardrail — mask PII before it reaches the app/logs/LLM.

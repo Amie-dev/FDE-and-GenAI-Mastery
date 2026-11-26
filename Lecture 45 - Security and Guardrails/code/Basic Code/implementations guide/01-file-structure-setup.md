@@ -3,7 +3,7 @@
 This chapter explains the overall file structure of the Basic Code and how to install/run it.
 
 ## Purpose
-A minimal Express + TypeScript app that implements only the security features mentioned in Lecture 31 notes:
+A minimal Express + TypeScript app that implements only the security features mentioned in Lecture 45 notes:
 - PII masking (input guardrail)
 - Output redaction (output guardrail)
 - Safe tools / capability routing / argument validation / fail-closed
@@ -45,7 +45,7 @@ npm run dev
 npm start
 ```
 
-## Key rules followed (from Lecture 31 notes)
+## Key rules followed (from Lecture 45 notes)
 - TypeScript + Express only.
 - One relevant file per folder (`config`, `routes`, `controllers`, `services`, `middleware`, `types`).
 - Minimum code — only features the notes mention. No extra libraries.

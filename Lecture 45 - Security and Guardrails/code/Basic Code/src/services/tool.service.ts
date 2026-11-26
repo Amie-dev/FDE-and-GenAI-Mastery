@@ -1,5 +1,5 @@
 /**
- * Safe Tool Service (Lecture 31 — Ch. 05 & Ch. 06)
+ * Safe Tool Service (Lecture 45 — Ch. 05 & Ch. 06)
  *
  * Security rules implemented here:
  * 1. The model only PROPOSES a tool; the backend EXECUTES it.

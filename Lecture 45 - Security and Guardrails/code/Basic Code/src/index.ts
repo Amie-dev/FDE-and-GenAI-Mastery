@@ -17,5 +17,5 @@ app.use('/chat', router);
 app.use(outputGuardrail);
 
 app.listen(config.port, () => {
-  console.log(`Lecture 31 basic server running on http://localhost:${config.port}`);
+  console.log(`Lecture 45 basic server running on http://localhost:${config.port}`);
 });

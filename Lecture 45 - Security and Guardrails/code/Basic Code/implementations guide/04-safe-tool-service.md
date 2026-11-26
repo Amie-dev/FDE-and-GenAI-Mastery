@@ -2,7 +2,7 @@
 
 ## 4.1 `src/services/tool.service.ts`
 
-**File details:** Implements the safe tool execution layer from Lecture 31 notes (Ch. 05 & Ch. 06). The model only *proposes* a tool; this service *executes* it only after validation.
+**File details:** Implements the safe tool execution layer from Lecture 45 notes (Ch. 05 & Ch. 06). The model only *proposes* a tool; this service *executes* it only after validation.
 
 **Command:** none (instantiated in `src/controllers/chat.controller.ts`).
 

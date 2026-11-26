@@ -1,7 +1,7 @@
 {
-  "name": "lecture-31-security-guardrails",
+  "name": "lecture-45-security-guardrails",
   "version": "1.0.0",
-  "description": "Basic Security & Guardrails code for Lecture 31 (TypeScript + Express)",
+  "description": "Basic Security & Guardrails code for Lecture 45 (TypeScript + Express)",
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node src/index.ts",

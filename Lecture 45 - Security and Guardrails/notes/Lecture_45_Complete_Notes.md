@@ -1,4 +1,4 @@
-# Lecture 31 — Security & Guardrails: Complete Consolidated Notes
+# Lecture 45 — Security & Guardrails: Complete Consolidated Notes
 
 ## The Whole Lecture on One Reference
 
@@ -747,6 +747,7 @@ flowchart TD
 | [08](./notes/08-PII-Masking-Output-Validation.md) | PII Masking, Output Validation & Production Hardening |
 | [09](./notes/09-Red-Teaming-Adversarial-Testing-Security-Evaluation.md) | Red Teaming, Adversarial Testing & Security Evaluation |
 | [10](./notes/10-Production-Security-Operations-Incident-Response.md) | Production Security Operations & Incident Response |
+| [11](./notes/11-OWASP-Agentic-MCP-Supply-Chain-and-AI-BOM.md) | OWASP LLM / Agentic / MCP Top 10, AI Supply Chain & AI BOM |
 
 ---
 

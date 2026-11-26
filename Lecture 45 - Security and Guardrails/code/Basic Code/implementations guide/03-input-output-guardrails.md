@@ -2,7 +2,7 @@
 
 ## 3.1 `src/middleware/guardrail.middleware.ts`
 
-**File details:** Express middleware implementing the two guardrail layers from Lecture 31 notes (Ch. 07 & Ch. 08):
+**File details:** Express middleware implementing the two guardrail layers from Lecture 45 notes (Ch. 07 & Ch. 08):
 1. **Input guardrail** — masks PII (email) in the request body before it reaches the app/logs.
 2. **Output guardrail** — redacts any PII that leaks in the response before it reaches the user.
 
