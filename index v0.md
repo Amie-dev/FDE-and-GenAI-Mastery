@@ -771,39 +771,39 @@ flowchart LR
 ## 📚 Lecture 19 — Agent Memory Systems
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 19 - Agent Memory Systems/](./Lecture%2019%20-%20Agent%20Memory%20Systems/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 22 - Agent Memory Systems/](./Lecture%2022%20-%20Agent%20Memory%20Systems/) · [📄 Roadmap](./roadmap.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
-| **01** | **Stateless LLM Apis and Context Window Limitations** | LLM APIs are stateless; the application must store, manage and selectively send conversation context with every request. | [📄 Chapter 01](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/01_Stateless_LLM_APIs_and_Context_Window_Limitations.md) |
-| **02** | **Short Term Memory and Sliding Windows** | Sliding windows keep only the last N turns so context stays bounded while preserving conversational continuity. | [📄 Chapter 02](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/02_Short_Term_Memory_and_Sliding_Windows.md) |
-| **03** | **Long Term Memory Taxonomy and Fact Extraction** | Semantic, episodic and graph memory store persistent facts; an LLM-based extraction pipeline turns raw conversation into curated memories. | [📄 Chapter 03](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/03_Long_Term_Memory_Taxonomy_and_Fact_Extraction.md) |
-| **04** | **Dynamic Context Assembly Stm Ltm RAG Query** | Combines STM, retrieved LTM facts and the current Query into one LLM prompt inside a token budget. | [📄 Chapter 04](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/04_Dynamic_Context_Assembly_Stm_Ltm_Rag_Query.md) |
-| **05** | **Memory Eviction Contradiction Resolution and Decay** | Memory scoring (frequency + recency) identifies eviction candidates; contradiction resolution keeps newer/high-confidence facts. | [📄 Chapter 05](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/05_Memory_Eviction_Contradiction_Resolution_and_Decay.md) |
-| **06** | **Claude Style Memory Dreaming and Background Reflection** | A background reflection process cleans duplicates, contradictions and stale memories without blocking the user request path. | [📄 Chapter 06](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/06_Claude_Style_Memory_Dreaming_and_Background_Reflection.md) |
-| **07** | **Managed Memory Mem0 Multi Tenancy Privacy Compliance** | mem0 abstracts memory storage/retrieval; every operation enforces userId isolation, encryption, consent and deletion. | [📄 Chapter 07](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/07_Managed_Memory_mem0_Multi_Tenancy_Privacy_Compliance.md) |
-| **08** | **Production Memory System Architecture** | Three-layer design (API / Memory / Background) with token budgeting, caching, monitoring and operational best practices. | [📄 Chapter 08](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/08_Production_Memory_System_Architecture.md) |
+| **01** | **Stateless LLM Apis and Context Window Limitations** | LLM APIs are stateless; the application must store, manage and selectively send conversation context with every request. | [📄 Chapter 01](./Lecture%2022%20-%20Agent%20Memory%20Systems/notes/01_Stateless_LLM_APIs_and_Context_Window_Limitations.md) |
+| **02** | **Short Term Memory and Sliding Windows** | Sliding windows keep only the last N turns so context stays bounded while preserving conversational continuity. | [📄 Chapter 02](./Lecture%2022%20-%20Agent%20Memory%20Systems/notes/02_Short_Term_Memory_and_Sliding_Windows.md) |
+| **03** | **Long Term Memory Taxonomy and Fact Extraction** | Semantic, episodic and graph memory store persistent facts; an LLM-based extraction pipeline turns raw conversation into curated memories. | [📄 Chapter 03](./Lecture%2022%20-%20Agent%20Memory%20Systems/notes/03_Long_Term_Memory_Taxonomy_and_Fact_Extraction.md) |
+| **04** | **Dynamic Context Assembly Stm Ltm RAG Query** | Combines STM, retrieved LTM facts and the current Query into one LLM prompt inside a token budget. | [📄 Chapter 04](./Lecture%2022%20-%20Agent%20Memory%20Systems/notes/04_Dynamic_Context_Assembly_Stm_Ltm_Rag_Query.md) |
+| **05** | **Memory Eviction Contradiction Resolution and Decay** | Memory scoring (frequency + recency) identifies eviction candidates; contradiction resolution keeps newer/high-confidence facts. | [📄 Chapter 05](./Lecture%2022%20-%20Agent%20Memory%20Systems/notes/05_Memory_Eviction_Contradiction_Resolution_and_Decay.md) |
+| **06** | **Claude Style Memory Dreaming and Background Reflection** | A background reflection process cleans duplicates, contradictions and stale memories without blocking the user request path. | [📄 Chapter 06](./Lecture%2022%20-%20Agent%20Memory%20Systems/notes/06_Claude_Style_Memory_Dreaming_and_Background_Reflection.md) |
+| **07** | **Managed Memory Mem0 Multi Tenancy Privacy Compliance** | mem0 abstracts memory storage/retrieval; every operation enforces userId isolation, encryption, consent and deletion. | [📄 Chapter 07](./Lecture%2022%20-%20Agent%20Memory%20Systems/notes/07_Managed_Memory_mem0_Multi_Tenancy_Privacy_Compliance.md) |
+| **08** | **Production Memory System Architecture** | Three-layer design (API / Memory / Background) with token budgeting, caching, monitoring and operational best practices. | [📄 Chapter 08](./Lecture%2022%20-%20Agent%20Memory%20Systems/notes/08_Production_Memory_System_Architecture.md) |
 
 ### 📄 Consolidated notes
 
 A single document combining all 8 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
 
-👉 **[Lecture_19_Complete_Notes.md](./Lecture%2019%20-%20Agent%20Memory%20Systems/notes/Lecture_19_Complete_Notes.md)**
+👉 **[Lecture_22_Complete_Notes.md](./Lecture%2022%20-%20Agent%20Memory%20Systems/notes/Lecture_22_Complete_Notes.md)**
 
 ### 🧩 Lecture artefacts
 
 | Artefact | Link | Status |
 | :--- | :--- | :---: |
-| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2019%20-%20Agent%20Memory%20Systems/README.md) | ✅ |
-| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2019%20-%20Agent%20Memory%20Systems/code/Basic%20Code/) | ✅ |
-| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2019%20-%20Agent%20Memory%20Systems/Assignment/task.md) | ✅ |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2022%20-%20Agent%20Memory%20Systems/README.md) | ✅ |
+| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2022%20-%20Agent%20Memory%20Systems/code/Basic%20Code/) | ✅ |
+| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2022%20-%20Agent%20Memory%20Systems/Assignment/task.md) | ✅ |
 
 ```mermaid
 flowchart LR
     IDX["index.md<br/>this file"] --> L19["Lecture 19 notes<br/>8 chapters"]
-    L19 --> CN["Lecture_19_Complete_Notes.md"]
-    IDX --> CODE["Lecture 19 - Agent Memory Systems/code/"]
-    IDX --> ASG["Lecture 19 - Agent Memory Systems/Assignment/task.md"]
+    L19 --> CN["Lecture_22_Complete_Notes.md"]
+    IDX --> CODE["Lecture 22 - Agent Memory Systems/code/"]
+    IDX --> ASG["Lecture 22 - Agent Memory Systems/Assignment/task.md"]
     IDX --> RM["roadmap.md"]
 ```
 
@@ -812,39 +812,39 @@ flowchart LR
 ## 📚 Lecture 20 — Graph Databases and GraphRAG
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 20 - Graph Databases and GraphRAG/](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 23 - Graph Databases and GraphRAG/](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/) · [📄 Roadmap](./roadmap.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
-| **01** | **Graph Database Fundamentals** | Nodes, relationships, properties and the property graph model. | [📄 Chapter 01](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/notes/01_Graph_Database_Fundamentals.md) |
-| **02** | **Cypher Query Language** | Reading and writing graph data with Cypher patterns and clauses. | [📄 Chapter 02](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/notes/02_Cypher_Query_Language.md) |
-| **03** | **NEO4J Architecture Deployment LLM Cypher** | Neo4j internals and generating Cypher from LLMs. | [📄 Chapter 03](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/notes/03_Neo4j_Architecture_Deployment_LLM_Cypher.md) |
-| **04** | **NEO4J NODEJS Driver** | Connecting a Node.js/TypeScript app to Neo4j and executing queries. | [📄 Chapter 04](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/notes/04_Neo4j_NodeJS_Driver.md) |
-| **05** | **Advanced Graph Modeling Graphrag Memory** | Modeling entities and relations for retrieval-augmented generation. | [📄 Chapter 05](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/notes/05_Advanced_Graph_Modeling_GraphRAG_Memory.md) |
-| **06** | **Graphrag Hybrid Retrieval** | Combining graph traversal with vector and lexical search. | [📄 Chapter 06](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/notes/06_GraphRAG_Hybrid_Retrieval.md) |
-| **07** | **AI Agent Memory Systems** | Using graphs as long-term, structured agent memory. | [📄 Chapter 07](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/notes/07_AI_Agent_Memory_Systems.md) |
-| **08** | **End to End Cognitive Memory App** | A full graph-based cognitive memory application. | [📄 Chapter 08](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/notes/08_End_to_End_Cognitive_Memory_App.md) |
+| **01** | **Graph Database Fundamentals** | Nodes, relationships, properties and the property graph model. | [📄 Chapter 01](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/notes/01_Graph_Database_Fundamentals.md) |
+| **02** | **Cypher Query Language** | Reading and writing graph data with Cypher patterns and clauses. | [📄 Chapter 02](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/notes/02_Cypher_Query_Language.md) |
+| **03** | **NEO4J Architecture Deployment LLM Cypher** | Neo4j internals and generating Cypher from LLMs. | [📄 Chapter 03](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/notes/03_Neo4j_Architecture_Deployment_LLM_Cypher.md) |
+| **04** | **NEO4J NODEJS Driver** | Connecting a Node.js/TypeScript app to Neo4j and executing queries. | [📄 Chapter 04](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/notes/04_Neo4j_NodeJS_Driver.md) |
+| **05** | **Advanced Graph Modeling Graphrag Memory** | Modeling entities and relations for retrieval-augmented generation. | [📄 Chapter 05](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/notes/05_Advanced_Graph_Modeling_GraphRAG_Memory.md) |
+| **06** | **Graphrag Hybrid Retrieval** | Combining graph traversal with vector and lexical search. | [📄 Chapter 06](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/notes/06_GraphRAG_Hybrid_Retrieval.md) |
+| **07** | **AI Agent Memory Systems** | Using graphs as long-term, structured agent memory. | [📄 Chapter 07](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/notes/07_AI_Agent_Memory_Systems.md) |
+| **08** | **End to End Cognitive Memory App** | A full graph-based cognitive memory application. | [📄 Chapter 08](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/notes/08_End_to_End_Cognitive_Memory_App.md) |
 
 ### 📄 Consolidated notes
 
 A single document combining all 8 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
 
-👉 **[Lecture_20_Complete_Notes.md](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/notes/Lecture_20_Complete_Notes.md)**
+👉 **[Lecture_23_Complete_Notes.md](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/notes/Lecture_23_Complete_Notes.md)**
 
 ### 🧩 Lecture artefacts
 
 | Artefact | Link | Status |
 | :--- | :--- | :---: |
-| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/README.md) | ✅ |
-| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/code/Basic%20Code/) | ✅ |
-| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/Assignment/task.md) | ✅ |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/README.md) | ✅ |
+| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/code/Basic%20Code/) | ✅ |
+| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/Assignment/task.md) | ✅ |
 
 ```mermaid
 flowchart LR
     IDX["index.md<br/>this file"] --> L20["Lecture 20 notes<br/>8 chapters"]
-    L20 --> CN["Lecture_20_Complete_Notes.md"]
-    IDX --> CODE["Lecture 20 - Graph Databases and GraphRAG/code/"]
-    IDX --> ASG["Lecture 20 - Graph Databases and GraphRAG/Assignment/task.md"]
+    L20 --> CN["Lecture_23_Complete_Notes.md"]
+    IDX --> CODE["Lecture 23 - Graph Databases and GraphRAG/code/"]
+    IDX --> ASG["Lecture 23 - Graph Databases and GraphRAG/Assignment/task.md"]
     IDX --> RM["roadmap.md"]
 ```
 
@@ -1019,39 +1019,39 @@ flowchart LR
 ## 📚 Lecture 25 — vLLM and PagedAttention
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 25 - vLLM and PagedAttention/](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 38 - vLLM and PagedAttention/](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/) · [📄 Roadmap](./roadmap.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
-| **01** | **LLM Hardware Mechanics: GPU VRAM, HBM, Memory Hierarchy** | GPU VRAM stores weights and KV cache; HBM provides high bandwidth; memory hierarchy (Registers → SRAM → L2 → HBM → System RAM); data locality is critical — moving weights costs more than computing. | [📄 Chapter 01](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/01_LLM_Hardware_Mechanics.md) |
-| **02** | **Compute-Bound Training vs Memory-Bandwidth-Bound Inference** | Training is compute-bound (high arithmetic intensity); inference is memory-bandwidth bound (low arithmetic intensity); doubling GPU compute does not halve decode latency. | [📄 Chapter 02](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/02_Compute_Bound_vs_Memory_Bound.md) |
-| **03** | **Inference Engine Architecture: Prefill vs Decode Phases** | Inference engine manages queue, batching, KV cache, scheduling; Prefill = parallel prompt processing (compute-heavy); Decode = sequential token generation (memory-bandwidth sensitive). | [📄 Chapter 03](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/03_Inference_Engine_Architecture.md) |
-| **04** | **vLLM Architecture Overview** | High-throughput serving engine: API server, scheduler, continuous batching, chunked prefill, prefix caching, PagedAttention, quantization, optimized kernels, speculative decoding. | [📄 Chapter 04](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/04_vLLM_Architecture_Overview.md) |
-| **05** | **PagedAttention: Virtual Memory for KV Cache** | Virtual memory paging for KV cache — logical blocks mapped to physical GPU pages; eliminates fragmentation; memory waste <4%; dynamic allocation as sequence grows. | [📄 Chapter 05](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/05_PagedAttention.md) |
-| **06** | **Continuous Batching, Chunked Prefill, Prefix Caching** | Continuous batching: dynamic token-iteration scheduling; Chunked prefill: breaks large prompts into chunks; Prefix caching: reuses KV cache for shared system prompts. | [📄 Chapter 06](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/06_Continuous_Batching_Chunked_Prefill_Prefix_Caching.md) |
-| **07** | **Quantization, Optimized Kernels, MoE, Speculative Decoding** | Quantization (FP8/INT8/INT4/AWQ/GPTQ/GGUF) reduces memory 50-80%; FlashAttention/FlashInfer/Triton/CUTLASS kernels; MoE sparse routing; Speculative decoding: draft + verify. | [📄 Chapter 07](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/07_Quantization_Kernels_MoE_Speculative.md) |
-| **08** | **Serving Economics, Self-Hosting vs Managed APIs, Roofline Model** | Cost per 1M tokens: self-hosted ~$0.10-1.50 vs managed $2.50-30; GPU utilization target 70-80%; Roofline model shows inference is memory-bound. | [📄 Chapter 08](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/08_Serving_Economics_and_Roofline.md) |
+| **01** | **LLM Hardware Mechanics: GPU VRAM, HBM, Memory Hierarchy** | GPU VRAM stores weights and KV cache; HBM provides high bandwidth; memory hierarchy (Registers → SRAM → L2 → HBM → System RAM); data locality is critical — moving weights costs more than computing. | [📄 Chapter 01](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/notes/01_LLM_Hardware_Mechanics.md) |
+| **02** | **Compute-Bound Training vs Memory-Bandwidth-Bound Inference** | Training is compute-bound (high arithmetic intensity); inference is memory-bandwidth bound (low arithmetic intensity); doubling GPU compute does not halve decode latency. | [📄 Chapter 02](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/notes/02_Compute_Bound_vs_Memory_Bound.md) |
+| **03** | **Inference Engine Architecture: Prefill vs Decode Phases** | Inference engine manages queue, batching, KV cache, scheduling; Prefill = parallel prompt processing (compute-heavy); Decode = sequential token generation (memory-bandwidth sensitive). | [📄 Chapter 03](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/notes/03_Inference_Engine_Architecture.md) |
+| **04** | **vLLM Architecture Overview** | High-throughput serving engine: API server, scheduler, continuous batching, chunked prefill, prefix caching, PagedAttention, quantization, optimized kernels, speculative decoding. | [📄 Chapter 04](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/notes/04_vLLM_Architecture_Overview.md) |
+| **05** | **PagedAttention: Virtual Memory for KV Cache** | Virtual memory paging for KV cache — logical blocks mapped to physical GPU pages; eliminates fragmentation; memory waste <4%; dynamic allocation as sequence grows. | [📄 Chapter 05](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/notes/05_PagedAttention.md) |
+| **06** | **Continuous Batching, Chunked Prefill, Prefix Caching** | Continuous batching: dynamic token-iteration scheduling; Chunked prefill: breaks large prompts into chunks; Prefix caching: reuses KV cache for shared system prompts. | [📄 Chapter 06](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/notes/06_Continuous_Batching_Chunked_Prefill_Prefix_Caching.md) |
+| **07** | **Quantization, Optimized Kernels, MoE, Speculative Decoding** | Quantization (FP8/INT8/INT4/AWQ/GPTQ/GGUF) reduces memory 50-80%; FlashAttention/FlashInfer/Triton/CUTLASS kernels; MoE sparse routing; Speculative decoding: draft + verify. | [📄 Chapter 07](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/notes/07_Quantization_Kernels_MoE_Speculative.md) |
+| **08** | **Serving Economics, Self-Hosting vs Managed APIs, Roofline Model** | Cost per 1M tokens: self-hosted ~$0.10-1.50 vs managed $2.50-30; GPU utilization target 70-80%; Roofline model shows inference is memory-bound. | [📄 Chapter 08](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/notes/08_Serving_Economics_and_Roofline.md) |
 
 ### 📄 Consolidated notes
 
 A single document combining all 8 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
 
-👉 **[Lecture_25_Complete_Notes.md](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/notes/Lecture_25_Complete_Notes.md)**
+👉 **[Lecture_38_Complete_Notes.md](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/notes/Lecture_38_Complete_Notes.md)**
 
 ### 🧩 Lecture artefacts
 
 | Artefact | Link | Status |
 | :--- | :--- | :---: |
-| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/README.md) | ✅ |
-| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/code/Basic%20Code/) | ✅ |
-| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/Assignment/task.md) | ✅ |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/README.md) | ✅ |
+| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/code/Basic%20Code/) | ✅ |
+| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/Assignment/task.md) | ✅ |
 
 ```mermaid
 flowchart LR
     IDX["index.md<br/>this file"] --> L25["Lecture 25 notes<br/>8 chapters"]
-    L25 --> CN["Lecture_25_Complete_Notes.md"]
-    IDX --> CODE["Lecture 25 - vLLM and PagedAttention/code/"]
-    IDX --> ASG["Lecture 25 - vLLM and PagedAttention/Assignment/task.md"]
+    L25 --> CN["Lecture_38_Complete_Notes.md"]
+    IDX --> CODE["Lecture 38 - vLLM and PagedAttention/code/"]
+    IDX --> ASG["Lecture 38 - vLLM and PagedAttention/Assignment/task.md"]
     IDX --> RM["roadmap.md"]
 ```
 
@@ -1060,39 +1060,39 @@ flowchart LR
 ## 📚 Lecture 26 — Durable Execution with Inngest
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 26 - Durable Execution with Inngest/](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 32 - Durable Execution with Inngest/](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/) · [📄 Roadmap](./roadmap.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
-| **01** | **Inngest Fundamentals & Async Architecture** | What Inngest is, why background workflow orchestration is useful for AI applications, the difference between synchronous and asynchronous architectures, and how durable execution helps workflows survive failures | [📄 Chapter 01](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/01-inngest-fundamentals-and-async-architecture.md) |
-| **02** | **Procedural Code vs Event-Driven Multi-Agent Orchestration** | How multi-agent AI pipelines are orchestrated, why a large procedural workflow can become difficult to recover and operate, and how event-driven durable execution provides reliable state, retries, and failure recovery | [📄 Chapter 02](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/02-procedural-code-vs-event-driven.md) |
-| **03** | **Traditional Queues (RabbitMQ / Redis + BullMQ) vs. Inngest** | Traditional message queues, worker-based background processing, and how workflow orchestration differs from simple job queuing | [📄 Chapter 03](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/03-traditional-queues-vs-inngest.md) |
-| **04** | **Inngest Durable Execution SDK & Steps API** | The Inngest Node.js/TypeScript SDK, client initialization and HTTP serving, and the major `step` primitives: `step.run()`, `step.sleep()`, `step.waitForEvent()`, `step.invoke()`, and `step.sendEvent()` | [📄 Chapter 04](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/04-inngest-sdk-steps-api.md) |
-| **05** | **Parallel Multi-Agent Workflows: Fan-Out / Fan-In** | How to run independent AI agents in parallel, aggregate their results safely, and identify the critical path in complex multi-step AI workflows | [📄 Chapter 05](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/05-parallel-multi-agent-fan-out-fan-in.md) |
-| **06** | **Concurrency, Throttling, and Rate Limiting** | The difference between concurrency and rate limiting, how to control workload characteristics, and trade-offs when applying limits to AI workloads | [📄 Chapter 06](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/06-concurrency-throttling-and-rate-limiting.md) |
-| **07** | **Error Resilience, Retries, Dead Letter, and Observability** | How Inngest handles errors, configure retries with exponential backoff and jitter, implement onFailure handlers, dead-letter flows, observability patterns | [📄 Chapter 07](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/07-error-resilience-observability.md) |
-| **08** | **Cron/Scheduled Workflows, Versioning, and Advanced Patterns** | How to run workflows on schedules, handle workflow versioning for deployed code changes, and advanced patterns for production-grade durable AI workflows | [📄 Chapter 08](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/08-cron-versioning-advanced.md) |
+| **01** | **Inngest Fundamentals & Async Architecture** | What Inngest is, why background workflow orchestration is useful for AI applications, the difference between synchronous and asynchronous architectures, and how durable execution helps workflows survive failures | [📄 Chapter 01](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/notes/01-inngest-fundamentals-and-async-architecture.md) |
+| **02** | **Procedural Code vs Event-Driven Multi-Agent Orchestration** | How multi-agent AI pipelines are orchestrated, why a large procedural workflow can become difficult to recover and operate, and how event-driven durable execution provides reliable state, retries, and failure recovery | [📄 Chapter 02](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/notes/02-procedural-code-vs-event-driven.md) |
+| **03** | **Traditional Queues (RabbitMQ / Redis + BullMQ) vs. Inngest** | Traditional message queues, worker-based background processing, and how workflow orchestration differs from simple job queuing | [📄 Chapter 03](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/notes/03-traditional-queues-vs-inngest.md) |
+| **04** | **Inngest Durable Execution SDK & Steps API** | The Inngest Node.js/TypeScript SDK, client initialization and HTTP serving, and the major `step` primitives: `step.run()`, `step.sleep()`, `step.waitForEvent()`, `step.invoke()`, and `step.sendEvent()` | [📄 Chapter 04](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/notes/04-inngest-sdk-steps-api.md) |
+| **05** | **Parallel Multi-Agent Workflows: Fan-Out / Fan-In** | How to run independent AI agents in parallel, aggregate their results safely, and identify the critical path in complex multi-step AI workflows | [📄 Chapter 05](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/notes/05-parallel-multi-agent-fan-out-fan-in.md) |
+| **06** | **Concurrency, Throttling, and Rate Limiting** | The difference between concurrency and rate limiting, how to control workload characteristics, and trade-offs when applying limits to AI workloads | [📄 Chapter 06](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/notes/06-concurrency-throttling-and-rate-limiting.md) |
+| **07** | **Error Resilience, Retries, Dead Letter, and Observability** | How Inngest handles errors, configure retries with exponential backoff and jitter, implement onFailure handlers, dead-letter flows, observability patterns | [📄 Chapter 07](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/notes/07-error-resilience-observability.md) |
+| **08** | **Cron/Scheduled Workflows, Versioning, and Advanced Patterns** | How to run workflows on schedules, handle workflow versioning for deployed code changes, and advanced patterns for production-grade durable AI workflows | [📄 Chapter 08](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/notes/08-cron-versioning-advanced.md) |
 
 ### 📄 Consolidated notes
 
 A single document combining all 8 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
 
-👉 **[Lecture_26_Complete_Notes.md](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/notes/Lecture_26_Complete_Notes.md)**
+👉 **[Lecture_32_Complete_Notes.md](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/notes/Lecture_32_Complete_Notes.md)**
 
 ### 🧩 Lecture artefacts
 
 | Artefact | Link | Status |
 | :--- | :--- | :---: |
-| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/README.md) | ✅ |
-| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/code/Basic%20Code/) | ✅ |
-| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/Assignment/task.md) | ✅ |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/README.md) | ✅ |
+| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/code/Basic%20Code/) | ✅ |
+| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/Assignment/task.md) | ✅ |
 
 ```mermaid
 flowchart LR
     IDX["index.md<br/>this file"] --> L26["Lecture 26 notes<br/>8 chapters"]
-    L26 --> CN["Lecture_26_Complete_Notes.md"]
-    IDX --> CODE["Lecture 26 - Durable Execution with Inngest/code/"]
-    IDX --> ASG["Lecture 26 - Durable Execution with Inngest/Assignment/task.md"]
+    L26 --> CN["Lecture_32_Complete_Notes.md"]
+    IDX --> CODE["Lecture 32 - Durable Execution with Inngest/code/"]
+    IDX --> ASG["Lecture 32 - Durable Execution with Inngest/Assignment/task.md"]
     IDX --> RM["roadmap.md"]
 ```
 ## 📚 Lecture 28 — Async Indexing and RAG Chat
@@ -1220,41 +1220,41 @@ flowchart LR
 ## 📚 Lecture 31 — Security and Guardrails
 
 **10 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 31 - Security and Guardrails/](./Lecture%2031%20-%20Security%20and%20Guardrails/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 45 - Security and Guardrails/](./Lecture%2045%20-%20Security%20and%20Guardrails/) · [📄 Roadmap](./roadmap.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
-| **01** | **Why GenAI Breaks Traditional Security** | Why traditional deterministic security breaks when an LLM is inserted — the model's output is untrusted, the backend must enforce, and no single filter fixes prompt injection | [📄 Chapter 01](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/01-Why-GenAI-Breaks-Traditional-Security.md) |
-| **02** | **Threat Modelling: Assets, Blast Radius & Trust Boundaries** | The five asset classes, the risk equation, reachability → blast radius → controls ordering, and the ShopX running example | [📄 Chapter 02](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/02-Threat-Modelling-Assets-Trust-Boundaries.md) |
-| **03** | **Prompt Injection & Jailbreaks: The Fundamental Problem** | Why prompt injection has no complete fix, the SQL-injection analogy, evasion families, jailbreak vs injection, and why the system prompt is not a security control | [📄 Chapter 03](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/03-Prompt-Injection-Jailbreaks-Fundamental-Problem.md) |
-| **04** | **Injection Delivery Channels: Direct, Indirect, MCP & Multimodal** | Direct vs indirect injection, four worked deliveries (chat, web page, email agent, MCP resource, multimodal), second-order and stored injection | [📄 Chapter 04](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/04-Injection-Delivery-Channels.md) |
-| **05** | **Safe Tools: Least Privilege, Capability Routing & Argument Validation** | How tool calling works, tool risk tiers, least privilege, per-call exposure, the router pattern, and capability routing implementation | [📄 Chapter 05](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/05-Safe-Tools-Least-Privilege-Capability-Routing.md) |
-| **06** | **Never Trust, Always Verify: Authorization, Confirmation & TOCTOU** | Validating tool arguments, authorization in code, high-risk action confirmation, TOCTOU protection, and atomic conditional updates | [📄 Chapter 06](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/06-Never-Trust-Always-Verify.md) |
-| **07** | **Guardrails as Layers: The Full Defense-in-Depth Architecture** | The four guardrail layers (input, semantic classifier, instruction, tool/action, output), the chain that saves you, moderation vs injection detection, and interceptors | [📄 Chapter 07](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/07-Guardrails-as-Layers-Defense-in-Depth.md) |
-| **08** | **PII Masking, Output Validation & Production Hardening** | PII masking before the AI pipeline, output guardrails, CRAG/groundedness checks, and production security architecture | [📄 Chapter 08](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/08-PII-Masking-Output-Validation.md) |
-| **09** | **Red Teaming, Adversarial Testing & Security Evaluation** | Why red teaming is not a one-time event, attack scenarios, red teaming methodology, automated fuzzing, adversarial prompt generation, and multi-turn attack testing | [📄 Chapter 09](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/09-Red-Teaming-Adversarial-Testing-Security-Evaluation.md) |
-| **10** | **Production Security Operations & Incident Response** | Monitoring and detection, alerting and incident triage, incident response lifecycle, audit logging, retention, compliance, and production security checklist | [📄 Chapter 10](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/10-Production-Security-Operations-Incident-Response.md) |
+| **01** | **Why GenAI Breaks Traditional Security** | Why traditional deterministic security breaks when an LLM is inserted — the model's output is untrusted, the backend must enforce, and no single filter fixes prompt injection | [📄 Chapter 01](./Lecture%2045%20-%20Security%20and%20Guardrails/notes/01-Why-GenAI-Breaks-Traditional-Security.md) |
+| **02** | **Threat Modelling: Assets, Blast Radius & Trust Boundaries** | The five asset classes, the risk equation, reachability → blast radius → controls ordering, and the ShopX running example | [📄 Chapter 02](./Lecture%2045%20-%20Security%20and%20Guardrails/notes/02-Threat-Modelling-Assets-Trust-Boundaries.md) |
+| **03** | **Prompt Injection & Jailbreaks: The Fundamental Problem** | Why prompt injection has no complete fix, the SQL-injection analogy, evasion families, jailbreak vs injection, and why the system prompt is not a security control | [📄 Chapter 03](./Lecture%2045%20-%20Security%20and%20Guardrails/notes/03-Prompt-Injection-Jailbreaks-Fundamental-Problem.md) |
+| **04** | **Injection Delivery Channels: Direct, Indirect, MCP & Multimodal** | Direct vs indirect injection, four worked deliveries (chat, web page, email agent, MCP resource, multimodal), second-order and stored injection | [📄 Chapter 04](./Lecture%2045%20-%20Security%20and%20Guardrails/notes/04-Injection-Delivery-Channels.md) |
+| **05** | **Safe Tools: Least Privilege, Capability Routing & Argument Validation** | How tool calling works, tool risk tiers, least privilege, per-call exposure, the router pattern, and capability routing implementation | [📄 Chapter 05](./Lecture%2045%20-%20Security%20and%20Guardrails/notes/05-Safe-Tools-Least-Privilege-Capability-Routing.md) |
+| **06** | **Never Trust, Always Verify: Authorization, Confirmation & TOCTOU** | Validating tool arguments, authorization in code, high-risk action confirmation, TOCTOU protection, and atomic conditional updates | [📄 Chapter 06](./Lecture%2045%20-%20Security%20and%20Guardrails/notes/06-Never-Trust-Always-Verify.md) |
+| **07** | **Guardrails as Layers: The Full Defense-in-Depth Architecture** | The four guardrail layers (input, semantic classifier, instruction, tool/action, output), the chain that saves you, moderation vs injection detection, and interceptors | [📄 Chapter 07](./Lecture%2045%20-%20Security%20and%20Guardrails/notes/07-Guardrails-as-Layers-Defense-in-Depth.md) |
+| **08** | **PII Masking, Output Validation & Production Hardening** | PII masking before the AI pipeline, output guardrails, CRAG/groundedness checks, and production security architecture | [📄 Chapter 08](./Lecture%2045%20-%20Security%20and%20Guardrails/notes/08-PII-Masking-Output-Validation.md) |
+| **09** | **Red Teaming, Adversarial Testing & Security Evaluation** | Why red teaming is not a one-time event, attack scenarios, red teaming methodology, automated fuzzing, adversarial prompt generation, and multi-turn attack testing | [📄 Chapter 09](./Lecture%2045%20-%20Security%20and%20Guardrails/notes/09-Red-Teaming-Adversarial-Testing-Security-Evaluation.md) |
+| **10** | **Production Security Operations & Incident Response** | Monitoring and detection, alerting and incident triage, incident response lifecycle, audit logging, retention, compliance, and production security checklist | [📄 Chapter 10](./Lecture%2045%20-%20Security%20and%20Guardrails/notes/10-Production-Security-Operations-Incident-Response.md) |
 
 ### 📄 Consolidated notes
 
 A single document combining all 10 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
 
-👉 **[Lecture_31_Complete_Notes.md](./Lecture%2031%20-%20Security%20and%20Guardrails/notes/Lecture_31_Complete_Notes.md)**
+👉 **[Lecture_45_Complete_Notes.md](./Lecture%2045%20-%20Security%20and%20Guardrails/notes/Lecture_45_Complete_Notes.md)**
 
 ### 🧩 Lecture artefacts
 
 | Artefact | Link | Status |
 | :--- | :--- | :---: |
-| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2031%20-%20Security%20and%20Guardrails/README.md) | ✅ |
-| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2031%20-%20Security%20and%20Guardrails/code/Basic%20Code/) | ✅ |
-| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2031%20-%20Security%20and%20Guardrails/Assignment/task.md) | ✅ |
+| Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2045%20-%20Security%20and%20Guardrails/README.md) | ✅ |
+| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2045%20-%20Security%20and%20Guardrails/code/Basic%20Code/) | ✅ |
+| Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2045%20-%20Security%20and%20Guardrails/Assignment/task.md) | ✅ |
 
 ```mermaid
 flowchart LR
     IDX["index.md<br/>this file"] --> L31["Lecture 31 notes<br/>10 chapters"]
-    L31 --> CN["Lecture_31_Complete_Notes.md"]
-    IDX --> CODE["Lecture 31 - Security and Guardrails/code/"]
-    IDX --> ASG["Lecture 31 - Security and Guardrails/Assignment/task.md"]
+    L31 --> CN["Lecture_45_Complete_Notes.md"]
+    IDX --> CODE["Lecture 45 - Security and Guardrails/code/"]
+    IDX --> ASG["Lecture 45 - Security and Guardrails/Assignment/task.md"]
     IDX --> RM["roadmap.md"]
 ```
 
