@@ -67,12 +67,13 @@ const activeEndpoint = (): string => {
 export const config = Object.freeze({ ...env, AI_ENDPOINT: activeEndpoint() });
 
 /**
- * Chapter 04 — price per 1M tokens (USD). Prices are data, not code: they change,
+ * Chapter 04 + 10 — price per 1M tokens (USD). Prices are data, not code: they change,
  * so they belong in a table you can update without touching business logic.
+ * `cachedInput` prices prefix-cache hits (50%–90% off `input`); reasoning tokens are billed at `output`.
  */
-export const PRICING: Record<string, { input: number; output: number }> = {
-  'gpt-4o-mini': { input: 0.15, output: 0.6 },
-  'llama-3.3-70b-versatile': { input: 0.59, output: 0.79 },
-  'gemini-2.5-flash': { input: 0.3, output: 2.5 },
-  default: { input: 0.5, output: 1.5 },
+export const PRICING: Record<string, { input: number; cachedInput: number; output: number }> = {
+  'gpt-4o-mini': { input: 0.15, cachedInput: 0.075, output: 0.6 },
+  'llama-3.3-70b-versatile': { input: 0.59, cachedInput: 0.295, output: 0.79 },
+  'gemini-2.5-flash': { input: 0.3, cachedInput: 0.03, output: 2.5 },
+  default: { input: 0.5, cachedInput: 0.25, output: 1.5 },
 };

@@ -12,9 +12,13 @@ export interface TelemetryRecord {
   model: string;
   latencyMs: number;
   inputTokens: number;
+  cachedInputTokens: number;
+  uncachedInputTokens: number;
   outputTokens: number;
+  reasoningTokens: number;
   totalTokens: number;
   estimatedInputTokens: number;
+  cacheSavingsUsd: number;
   costUsd: number;
   slopScore: number;
 }
@@ -37,9 +41,13 @@ export const recordTelemetry = (input: TelemetryInput): TelemetryRecord => {
     model: input.model,
     latencyMs: input.latencyMs,
     inputTokens: input.usage.inputTokens,
+    cachedInputTokens: input.usage.cachedInputTokens,
+    uncachedInputTokens: input.usage.uncachedInputTokens,
     outputTokens: input.usage.outputTokens,
+    reasoningTokens: input.usage.reasoningTokens,
     totalTokens: input.usage.totalTokens,
     estimatedInputTokens: input.estimatedInputTokens,
+    cacheSavingsUsd: Number(input.cost.cacheSavingsUsd.toFixed(6)),
     costUsd: Number(input.cost.totalCost.toFixed(6)),
     slopScore: input.slop.slopScore,
   };

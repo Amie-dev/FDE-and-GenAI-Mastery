@@ -3,7 +3,7 @@
 **Calling LLMs from Your Application: APIs, Multi-SDK & Token Economics**
 Phase 2 · The Application Layer · 🟢 Beginner · **Estimated effort: 6–8 hours**
 
-> **Read first:** the nine chapters in **[../notes](../notes)** (index: **[../index.md](../index.md)**).
+> **Read first:** the ten chapters in **[../notes](../notes)** (index: **[../index.md](../index.md)**).
 > Every question below is answerable from those notes — the chapter and section number sits next to each
 > part, so you never have to guess where the material lives.
 > The lecture's **goal**, **build task** and **completion gate** live in
@@ -31,7 +31,7 @@ prove the gate.**
 
 | Weight | Part | What it tests | Output |
 | :---: | :--- | :--- | :--- |
-| **30%** | **A** — Chapter-wise practice | Can you name the four invariant components, price a call, classify a 429 and spot slop — not recite | Written answers, per chapter (A1–A9) |
+| **30%** | **A** — Chapter-wise practice | Can you name the four invariant components, price a call, classify a 429, spot slop, and price cached/reasoning tokens — not recite | Written answers, per chapter (A1–A10) |
 | **25%** | **B** — Code tasks | Can you run the service, read the numbers it reports, and extend it without breaking the layers | `../code/Basic Code` + your extensions |
 | **30%** | **C** — Capstone: the Support Ticket Summarizer + the three-provider conformance report | The roadmap's actual build task and its gate | A working summarizer + a conformance report |
 | **15%** | **D** — The gate | Can you answer the same prompt through 3 providers with one interface, and state the cost per call | 6 short answers + 1 live demonstration |
@@ -481,6 +481,25 @@ Nine parts, one per chapter. Each part is answerable from its chapter alone plus
 10. 🎯 **Why an API lecture ends here** (§09.0). In three sentences: why does a lecture about HTTP requests,
     pricing and retries finish with a chapter about output quality and training data?
 
+### A10 — Reasoning models & prompt prefix caching
+
+*Read [chapter 10](../notes/10_Reasoning_Models_and_Prompt_Prefix_Caching.md) first.*
+
+1. ✏️ **System-1 vs. System-2** (§10.1). Explain in three sentences how a deliberative reasoning model differs
+   from a fast model at decode time, and why hidden `reasoningTokens` are billed at the **output** rate.
+2. 🎯 **Bounding thinking budgets** (§10.1). Name the exact API parameter used to cap thinking tokens on
+   **OpenAI**, **Anthropic**, and **Gemini**, and explain what happens to TTFT and cost if you leave it
+   unbounded on a classification endpoint.
+3. 🎯 **Prefix layout** (§10.2). You have a system prompt with `new Date().toISOString()` on line 1, followed by
+   3,500 tokens of tool schemas and static policy rules. Why is your cache hit rate 0%, and what two-line edit
+   fixes it?
+4. 🧮 **Cache hit/miss cost math** (§10.3). A prompt has 4,000 static prefix tokens and 200 dynamic user tokens
+   on a model priced at \$0.30/M uncached input and \$0.03/M cached input (90% discount). Compute the input cost
+   of (a) a cold miss and (b) a warm hit, and prove the warm-hit input-cost reduction exceeds 50%.
+5. 🎯 **Model-routing hints** (§10.4). Classify four tasks as **Fast (System-1)** or **Deliberative (System-2)**:
+   (a) extracting JSON invoice fields, (b) diagnosing a race condition across three microservices, (c) routing a
+   support ticket to 1 of 5 queues, (d) proving a state-machine invariant.
+
 ---
 
 ## Part B — Code tasks
@@ -624,6 +643,27 @@ introduced earlier.
 your defence as: (1) what this file's single responsibility is, (2) one design decision inside it and the
 alternative you rejected, (3) one thing you would change if the service had 100× the traffic. Write down the
 one thing you had to look up — that is the gap to close.
+
+### B4 — Verification task: prove ≥ 50% input-cost reduction on cached prefixes
+
+*Release gate (`roadmap-v1.md` S01): "cached prefixes reduce input token cost by 50%+" and cost ledger tracks
+cached vs. uncached input tokens and reasoning tokens.*
+
+1. **Prepare a cacheable prefix ($\ge 1{,}024$ tokens).** Build a `system` prompt of **at least 1,200 tokens**
+   (e.g., a detailed support-ticket classification rubric + 10 few-shot examples) so it clears the minimum
+   prefix-caching threshold on OpenAI, Anthropic, and Gemini.
+2. **Fire two back-to-back `POST /api/chat` calls** within 60 seconds using the **exact same** `system` string
+   and two different short `message` strings (e.g. 50–100 tokens each).
+3. **Inspect the cost ledger & telemetry.** From both JSON responses and the `[telemetry]` log lines, record:
+   - `usage.inputTokens`, `usage.cachedInputTokens`, `usage.uncachedInputTokens`, `usage.reasoningTokens`
+   - `cost.uncachedInputCost`, `cost.cachedInputCost`, `cost.inputCost`, `cost.cacheSavingsUsd`, `cost.reasoningCost`
+4. **Prove $\ge 50\%$ input-cost reduction.** Using the warm-hit call's numbers, compute:
+   - **Baseline uncached input cost:** $(N_{\text{input}} / 1{,}000{,}000) \times P_{\text{input}}$
+   - **Observed cached input cost:** `cost.inputCost`
+   - **Percentage reduction:**
+     $$\text{Reduction \%} = \frac{\text{Baseline} - \text{Observed}}{\text{Baseline}} \times 100\%$$
+   Paste both `curl` commands, both `[telemetry]` JSON lines, and the arithmetic in `Assignment/b1-notes.md`,
+   confirming **$\text{Reduction \%} \ge 50\%$**.
 
 ---
 
@@ -879,7 +919,8 @@ own runs rather than from the notes.
 
 ### Before you close the lecture
 
-- [ ] All **nine** chapter parts (A1–A9) answered in my own words, including **every** numeric problem
+- [ ] All **ten** chapter parts (A1–A10) answered in my own words, including **every** numeric problem
+- [ ] **B4 cached-prefix verification** run against `/api/chat`, proving **$\ge 50\%$ input-cost reduction** with `[telemetry]` logs showing `cachedInputTokens`, `uncachedInputTokens`, `reasoningTokens`, and `cacheSavingsUsd`
 - [ ] The **cost arithmetic** (A4 Q3, Q4, Q5) done on paper, then verified against a real `/api/chat` response
 - [ ] The **backoff arithmetic** (A6 Q5) computed by hand, and the printed `↻` delays in call #8 match it
 - [ ] The **slop score** (A9 Q3) computed by hand, and the guard's real output matches it

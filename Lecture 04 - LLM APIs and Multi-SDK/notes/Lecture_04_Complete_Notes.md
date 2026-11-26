@@ -2,7 +2,7 @@
 ## LLM APIs, Multi-SDK Integration & Token Economics
 
 > **Phase:** 2 · The Application Layer: Talking to Models · **Level:** 🟢 Beginner · **Prerequisites:** Lectures 02–03
-> **Scope:** a single-pass consolidation of the nine chapter notes in this folder.
+> **Scope:** a single-pass consolidation of the ten chapter notes in this folder.
 > **How to use this file:** read it to *revise and navigate*. It is deliberately shorter than the chapters, and
 > every section links to the chapter that explains it in full.
 >
@@ -17,12 +17,13 @@
 > | 07 · Multi-SDK integration — OpenAI · Gemini · Groq · Mistral · Claude · Ollama | [07_Multi_SDK_Integration_OpenAI_Gemini_Groq_Mistral_Anthropic_Ollama.md](./07_Multi_SDK_Integration_OpenAI_Gemini_Groq_Mistral_Anthropic_Ollama.md) |
 > | 08 · Building the service — Express, TypeScript/ESM, Zod config, singletons & telemetry | [08_Building_the_Service_Express_TypeScript_Config_Singletons_and_Telemetry.md](./08_Building_the_Service_Express_TypeScript_Config_Singletons_and_Telemetry.md) |
 > | 09 · AI slop & model collapse | [09_AI_Slop_and_Model_Collapse.md](./09_AI_Slop_and_Model_Collapse.md) |
+> | 10 · Reasoning models & prompt prefix caching | [10_Reasoning_Models_and_Prompt_Prefix_Caching.md](./10_Reasoning_Models_and_Prompt_Prefix_Caching.md) |
 
 ---
 
 ## 1. Executive summary
 
-**The lecture in ten sentences.**
+**The lecture in eleven sentences.**
 
 1. An LLM is a *capability* and a GenAI application is a *system*: the engine supplies power, the vehicle supplies
    steering, brakes, fuel accounting, navigation, gauges and accessories — and as an FDE you build the vehicle,
@@ -54,9 +55,12 @@
 9. The service that ties it together is **configuration + validation + service + adapter + telemetry + secrets
    hygiene**, where every call produces one structured record carrying tenant, prompt id, model, tokens, cost,
    latency and finish reason ([08](./08_Building_the_Service_Express_TypeScript_Config_Singletons_and_Telemetry.md)).
-10. Finally, scale has a cost beyond money: **AI slop** is a pipeline with verification removed, and **model
+10. Scale has a cost beyond money: **AI slop** is a pipeline with verification removed, and **model
     collapse** is what happens when models train on it — so provenance, curation and continuous evaluation are
     engineering requirements ([09](./09_AI_Slop_and_Model_Collapse.md)).
+11. Modern gateways separate **fast (System-1)** from **deliberative (System-2)** models with explicit
+    thinking-token budgets, and order prompts static-first so **prompt prefix caching** cuts input cost by
+    **50%–90%** ([10](./10_Reasoning_Models_and_Prompt_Prefix_Caching.md)).
 
 **The one-line thesis, restated for this lecture:** *the model is a rented engine with a meter on it — your job is
 to steer it, budget it, secure it, observe it, and keep the whole vehicle portable across suppliers.*
@@ -211,10 +215,18 @@ LOG_LEVEL=info
 | :--- | :--- |
 | Identity | `callId`, `tenantId`, `feature`, `promptId` |
 | Route | `provider`, `model`, `routingReason` |
-| Usage | `inputTokens`, `outputTokens`, `cachedTokens` |
-| Money | `costUsd` (from a versioned price table) |
+| Usage | `inputTokens`, `cachedInputTokens`, `uncachedInputTokens`, `outputTokens`, `reasoningTokens` |
+| Money | `costUsd`, `cacheSavingsUsd` (from a versioned price table) |
 | Time | `ttftMs`, `totalMs` |
 | Health | `finishReason`, `status`, `errorCode` |
+
+### 3.11 Prompt prefix caching & reasoning budgets ([chapter 10](./10_Reasoning_Models_and_Prompt_Prefix_Caching.md))
+
+| Provider | Cache activation | Min prefix | Cache discount | Thinking budget control |
+| :--- | :--- | :--- | :--- | :--- |
+| **OpenAI** | Automatic | 1,024 tokens | 50%–75%+ off | `reasoning_effort` (`low` \| `medium` \| `high`) |
+| **Anthropic** | `cache_control: { type: "ephemeral" }` | 1,024–2,048 tokens | 90% off (+25% write) | `thinking: { type: "enabled", budget_tokens }` |
+| **Gemini** | Implicit (2.5+) or `cachedContents` API | 1,024–4,096 tokens | 75%–90% off | `thinkingConfig: { thinkingBudget }` |
 
 ---
 
@@ -411,8 +423,12 @@ LOG_LEVEL=info
     ([07](./07_Multi_SDK_Integration_OpenAI_Gemini_Groq_Mistral_Anthropic_Ollama.md))
 19. List eight fields in the per-call telemetry record and the question each one answers.
     ([08](./08_Building_the_Service_Express_TypeScript_Config_Singletons_and_Telemetry.md))
-20. Define AI slop and model collapse, and name three controls that keep both out of your pipeline.
+| 20. Define AI slop and model collapse, and name three controls that keep both out of your pipeline.
     ([09](./09_AI_Slop_and_Model_Collapse.md))
+21. Explain why thinking tokens are billed at the output rate and name the thinking-budget parameter for OpenAI,
+    Anthropic, and Gemini. ([10](./10_Reasoning_Models_and_Prompt_Prefix_Caching.md))
+22. Why must static instructions and tool schemas precede dynamic user turns for prefix caching, and what
+    happens if your prefix is 900 tokens? ([10](./10_Reasoning_Models_and_Prompt_Prefix_Caching.md))
 
 ---
 
@@ -441,6 +457,7 @@ flowchart LR
 | Reliable under load | [06](./06_Rate_Limits_Quotas_Throttling_and_Retry_Backoff.md) | Backoff, timeouts, concurrency caps and a degradation ladder |
 | Observable | [08](./08_Building_the_Service_Express_TypeScript_Config_Singletons_and_Telemetry.md) | One structured record per call, plus the eight-panel dashboard |
 | Honest about data | [09](./09_AI_Slop_and_Model_Collapse.md) | Provenance, a verification gate and an eval against a human anchor set |
+| Cached & reasoning-aware | [10](./10_Reasoning_Models_and_Prompt_Prefix_Caching.md) | Cached prefixes cut input cost by $\ge 50\%$; cost ledger tracks cached/uncached input and reasoning tokens |
 
 **Suggested revision path.**
 
@@ -457,6 +474,7 @@ flowchart LR
 
 - **Chapter 01:** [GenAI applications vs raw LLMs](./01_GenAI_Applications_vs_Raw_LLMs_The_Engine_vs_Car_Model.md)
 - **Chapter 09:** [AI slop & model collapse](./09_AI_Slop_and_Model_Collapse.md)
+- **Chapter 10:** [Reasoning models & prompt prefix caching](./10_Reasoning_Models_and_Prompt_Prefix_Caching.md)
 - **Lecture index:** [../index.md](../index.md)
 - **Workspace README:** [../README.md](../README.md)
 - **Roadmap:** [../../roadmap.md](../../roadmap.md)

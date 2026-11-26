@@ -10,10 +10,13 @@ export interface ChatMessage {
   content: string;
 }
 
-/** Chapter 04 — usage metadata, normalised. Every provider names these fields differently. */
+/** Chapter 04 + 10 — usage metadata, normalised across providers including cached prefix & reasoning tokens. */
 export interface TokenUsage {
   inputTokens: number;
+  cachedInputTokens: number;
+  uncachedInputTokens: number;
   outputTokens: number;
+  reasoningTokens: number;
   totalTokens: number;
 }
 
@@ -51,12 +54,21 @@ const openAiCompatible = (name: string, baseURL: string, apiKey: string): Provid
         max_tokens: config.AI_MAX_TOKENS,
       });
 
+      const inputTokens = response.usage?.prompt_tokens ?? 0;
+      const cachedInputTokens = response.usage?.prompt_tokens_details?.cached_tokens ?? 0;
+      const uncachedInputTokens = Math.max(0, inputTokens - cachedInputTokens);
+      const outputTokens = response.usage?.completion_tokens ?? 0;
+      const reasoningTokens = response.usage?.completion_tokens_details?.reasoning_tokens ?? 0;
+
       return {
         text: response.choices[0]?.message?.content?.trim() ?? '',
         usage: {
-          inputTokens: response.usage?.prompt_tokens ?? 0,
-          outputTokens: response.usage?.completion_tokens ?? 0,
-          totalTokens: response.usage?.total_tokens ?? 0,
+          inputTokens,
+          cachedInputTokens,
+          uncachedInputTokens,
+          outputTokens,
+          reasoningTokens,
+          totalTokens: response.usage?.total_tokens ?? inputTokens + outputTokens,
         },
         latencyMs: Date.now() - startedAt,
         provider: name,
@@ -98,13 +110,21 @@ const gemini = (apiKey: string): Provider => {
       });
 
       const usage = response.usageMetadata;
+      const inputTokens = usage?.promptTokenCount ?? 0;
+      const cachedInputTokens = usage?.cachedContentTokenCount ?? 0;
+      const uncachedInputTokens = Math.max(0, inputTokens - cachedInputTokens);
+      const outputTokens = usage?.candidatesTokenCount ?? 0;
+      const reasoningTokens = usage?.thoughtsTokenCount ?? 0;
 
       return {
         text: response.text?.trim() ?? '',
         usage: {
-          inputTokens: usage?.promptTokenCount ?? 0,
-          outputTokens: usage?.candidatesTokenCount ?? 0,
-          totalTokens: usage?.totalTokenCount ?? 0,
+          inputTokens,
+          cachedInputTokens,
+          uncachedInputTokens,
+          outputTokens,
+          reasoningTokens,
+          totalTokens: usage?.totalTokenCount ?? inputTokens + outputTokens,
         },
         latencyMs: Date.now() - startedAt,
         provider: 'gemini',

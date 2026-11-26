@@ -36,19 +36,38 @@ export const assertWithinBudget = (messages: ChatMessage[]): number => {
 
 export interface CostBreakdown {
   currency: 'USD';
+  uncachedInputCost: number;
+  cachedInputCost: number;
   inputCost: number;
   outputCost: number;
+  /** Subset of `outputCost` attributable to hidden thinking/reasoning tokens (informational, not added twice). */
+  reasoningCost: number;
+  /** Dollars saved on `cachedInputTokens` compared to paying the uncached input rate. */
+  cacheSavingsUsd: number;
   totalCost: number;
 }
 
 /**
- * Chapter 04 — token economics: prefill (input) tokens are cheap, decode (output)
- * tokens are expensive. cost = (tokens / 1M) × price-per-1M.
+ * Chapter 04 + 10 — token economics: uncached prefill is priced at `rate.input`, cached prefix hits
+ * at `rate.cachedInput` (50%–90% off), and decode (visible + reasoning tokens) at `rate.output`.
  */
 export const computeCost = (usage: TokenUsage, model: string = config.AI_MODEL): CostBreakdown => {
   const rate = PRICING[model] ?? PRICING.default;
-  const inputCost = (usage.inputTokens / 1_000_000) * rate.input;
+  const uncachedInputCost = (usage.uncachedInputTokens / 1_000_000) * rate.input;
+  const cachedInputCost = (usage.cachedInputTokens / 1_000_000) * rate.cachedInput;
+  const inputCost = uncachedInputCost + cachedInputCost;
   const outputCost = (usage.outputTokens / 1_000_000) * rate.output;
+  const reasoningCost = (Math.min(usage.reasoningTokens, usage.outputTokens) / 1_000_000) * rate.output;
+  const cacheSavingsUsd = (usage.cachedInputTokens / 1_000_000) * Math.max(0, rate.input - rate.cachedInput);
 
-  return { currency: 'USD', inputCost, outputCost, totalCost: inputCost + outputCost };
+  return {
+    currency: 'USD',
+    uncachedInputCost,
+    cachedInputCost,
+    inputCost,
+    outputCost,
+    reasoningCost,
+    cacheSavingsUsd,
+    totalCost: inputCost + outputCost,
+  };
 };
