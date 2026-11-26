@@ -15,7 +15,7 @@
 - [x] **Lecture 30** — Enterprise APIs, OpenAPI-to-MCP, Idempotency & Computer-Use Fallback
 - [x] **Lecture 31** — Cloudflare Code Mode & Isolated Code-Execution MCP (`@cloudflare/codemode`)
 - [x] **Lecture 37** — Agent-to-User UIs (`AG-UI`, `MCP Apps`), Kubernetes & KEDA Scaling
-- [ ] **Lecture 39** — Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) & Capacity Engineering
+- [x] **Lecture 39** — Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) & Capacity Engineering
 - [ ] **Lecture 41** — Neuro-Symbolic Verification, Trajectory Evals, Z3 Constraints & GEPA
 - [ ] **Lecture 42** — AI Observability (`OpenTelemetry`, `OpenObserve`) & FOCUS FinOps
 - [ ] **Lecture 43** — Progressive Autonomy, Feature Flags (`OpenFeature`/`flagd`) & Safe Releases
@@ -38,6 +38,11 @@
 ---
 
 ## 🆕 Part 1 — Prompts for New Lectures (Open One by One)
+
+```
+make more better and detials notes 
+better and deepth  notes so that easy to read also easy to understand
+```
 
 > **Style & Code Convention (All New Lectures):** Follow the exact style of **Lecture 01** and **Lecture 13** in this repo:
 > - `notes/`: 7–8 deep chapter notes + `Lecture_XX_Complete_Notes.md` (with Mermaid diagrams, tables, math, and takeaways).

@@ -1,0 +1,28 @@
+{
+  "name": "lecture-39-distributed-inference-simulator",
+  "version": "1.0.0",
+  "description": "Lecture 39 Basic Code — Distributed Inference Capacity (TTFT/TPOT) Simulator & Prefix-Affinity/Residency Router",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "test": "tsx --test src/release-gate.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "distributed-inference",
+    "sglang",
+    "llm-d",
+    "nvidia-dynamo",
+    "ttft",
+    "tpot",
+    "typescript"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
+
