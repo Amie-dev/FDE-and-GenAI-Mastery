@@ -201,7 +201,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-08--tool-calling--function-execution-loops"></a>
 
 ### Lecture 08 — Tool Calling & Function Execution Loops
-* **Phase:** 3 · Agency · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 08](./Lecture%2008%20-%20Tool%20Calling/)
+* **Phase:** 3 · Agency · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 08](./Lecture%2009%20-%20Tool%20Calling/)
 * **Goal:** Implement the ReAct decision loop where models select, call, and observe external tools.
 * **Topics Unlocked:** From text to actions; JSON Schema tool definitions; Model tool choice modes (`auto`, `required`, `none`); ReAct loop mechanics; Tool execution dispatches; Error feedback loops (passing stack traces back to model).
 * **What You Build:** Standalone ReAct execution loop capable of querying weather, calculator, and database tools.
@@ -210,7 +210,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-09--ai-agents-from-first-principles-agency-sandboxing--hitl"></a>
 
 ### Lecture 09 — AI Agents from First Principles: Agency, Sandboxing & HITL
-* **Phase:** 3 · Agency · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 09](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/)
+* **Phase:** 3 · Agency · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 09](./Lecture%2010%20-%20AI%20Agents%20and%20HITL/)
 * **Goal:** Build autonomous agents equipped with safe filesystem sandboxes, tool authorization tiers, and human sign-offs.
 * **Topics Unlocked:** The Agency Spectrum (Levels 1–4); Perceive-Decide-Act loops; Workspace sandboxing (path traversal prevention); Tool authorization tiers (Read vs Write vs Destructive); Human-in-the-Loop (HITL) approval gates.
 * **What You Build:** Autonomous website builder agent operating inside a jailed directory with human approval before publishing.
@@ -219,7 +219,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-10--structured-outputs-schema-enforcement-validation--repair"></a>
 
 ### Lecture 10 — Structured Outputs: Schema Enforcement, Validation & Repair
-* **Phase:** 3 · Agency · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 10](./Lecture%2010%20-%20Structured%20Outputs/)
+* **Phase:** 3 · Agency · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 10](./Lecture%2011%20-%20Structured%20Outputs/)
 * **Goal:** Guarantee 100% typed, validated JSON outputs matching strict Zod schemas.
 * **Topics Unlocked:** The integration gap; Constrained decoding at the logit level; JSON Schema vs Zod; Provider strategy vs Tool strategy; Schema repair and reflection loops; Handling optional and nullable fields.
 * **What You Build:** Self-healing parser that catches validation errors, feeds error diffs to the model, and recovers valid JSON.
@@ -228,7 +228,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-11--building-an-agent-sdk-from-scratch-harness--builder--react-loop"></a>
 
 ### Lecture 11 — Building an Agent SDK from Scratch: Harness, Builder & ReAct Loop
-* **Phase:** 3 · Agency · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 11](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/)
+* **Phase:** 3 · Agency · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 11](./Lecture%2012%20-%20Agent%20SDK%20from%20Scratch/)
 * **Goal:** Architect a reusable, extensible TypeScript Agent SDK with fluent builders, tool registries, and interceptors.
 * **Topics Unlocked:** Stateful SDK vs Stateless API; The `AgentBuilder` fluent pattern; Tool execution engines; Middleware interceptors (pre-call, post-call); Multi-provider decoupling; Swarm orchestration foundations.
 * **What You Build:** Complete open-source-style `@my-org/agent-sdk` with full TypeScript typing.
@@ -245,7 +245,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-12--vector-embeddings-from-first-principles"></a>
 
 ### Lecture 12 — Vector Embeddings from First Principles
-* **Phase:** 4 · Embeddings · **Level:** 🟢 Beginner · **Workspace:** [📂 Lecture 12](./Lecture%2012%20-%20Vector%20Embeddings/)
+* **Phase:** 4 · Embeddings · **Level:** 🟢 Beginner · **Workspace:** [📂 Lecture 12](./Lecture%2015%20-%20Vector%20Embeddings/)
 * **Goal:** Master high-dimensional vector spaces, distance metrics, and vector normalizations.
 * **Topics Unlocked:** The geometry of meaning; Dimensionality ($d=384, 768, 1536, 3072$); Distance metrics: Dot Product, Cosine Similarity, Euclidean Distance ($L2$), Manhattan ($L1$); Embedding normalization; Matryoshka embeddings.
 * **What You Build:** Native vector math library in TypeScript implementing $L2$, Cosine, and Dot Product calculations.
@@ -254,7 +254,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-13--embeddings-project-semantic-search--movie-recommendation"></a>
 
 ### Lecture 13 — Embeddings Project: Semantic Search & Movie Recommendation
-* **Phase:** 4 · Embeddings · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 13](./Lecture%2013%20-%20Semantic%20Search%20Project/)
+* **Phase:** 4 · Embeddings · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 13](./Lecture%2016%20-%20Semantic%20Search%20Project/)
 * **Goal:** Build a production semantic search and recommendation engine over 10,000+ items.
 * **Topics Unlocked:** Semantic search vs lexical keyword search; Embedding chunk generation; Cold start and caching; Cross-encoder rerankers; Recommendation geometry.
 * **What You Build:** Semantic search API over IMDB movie dataset with category filtering and similarity thresholds.
@@ -263,7 +263,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-14--vector-search--storage-scale-knn--the-curse-of-dimensionality"></a>
 
 ### Lecture 14 — Vector Search & Storage: Scale, kNN & the Curse of Dimensionality
-* **Phase:** 4 · Embeddings · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 14](./Lecture%2014%20-%20Vector%20Search%20and%20Storage/)
+* **Phase:** 4 · Embeddings · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 14](./Lecture%2017%20-%20Vector%20Search%20and%20Storage/)
 * **Goal:** Understand the scaling ceiling of exact kNN and the curse of high-dimensional geometry.
 * **Topics Unlocked:** Exact k-Nearest Neighbors ($O(N \cdot D)$); Memory bandwidth bottlenecks; The Curse of Dimensionality (distance concentration phenomenon); When PostgreSQL + `pgvector` suffices vs dedicated vector DBs.
 * **What You Build:** Benchmark suite comparing brute-force kNN latency against dataset size ($N=1k, 10k, 100k, 1M$).
@@ -272,7 +272,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-15--vector-databases--ann-algorithms-ivf-hnsw--product-quantization"></a>
 
 ### Lecture 15 — Vector Databases & ANN Algorithms: IVF, HNSW & Product Quantization
-* **Phase:** 4 · Embeddings · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 15](./Lecture%2015%20-%20Vector%20Databases%20and%20ANN/)
+* **Phase:** 4 · Embeddings · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 15](./Lecture%2018%20-%20Vector%20Databases%20and%20ANN/)
 * **Goal:** Master Approximate Nearest Neighbor (ANN) index algorithms: Inverted File (IVF) and Hierarchical Navigable Small World (HNSW).
 * **Topics Unlocked:** The Recall vs Latency trade-off; Inverted File Index (IVF): Voronoi cells, centroids, `nlist`, `nprobe`; Product Quantization (PQ); HNSW: Skip-list graph hierarchies, small-world properties, `M`, `efConstruction`, `efSearch`.
 * **What You Build:** Qdrant / Pinecone production integration with benchmarked HNSW parameters achieving 98%+ recall.
@@ -289,7 +289,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-16--rag-the-open-book-architecture-ingestion--grounded-generation"></a>
 
 ### Lecture 16 — RAG: The Open-Book Architecture (Ingestion & Grounded Generation)
-* **Phase:** 5 · RAG · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 16](./Lecture%2016%20-%20RAG/)
+* **Phase:** 5 · RAG · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 16](./Lecture%2019%20-%20RAG/)
 * **Goal:** Architect the two fundamental RAG pipelines: Offline Document Ingestion and Online Retrieval-Augmented Generation.
 * **Topics Unlocked:** Parametric vs Non-parametric memory; Offline ingestion pipeline: Document loading $\to$ Cleaning $\to$ Chunking $\to$ Embedding $\to$ Indexing; Online query pipeline: Query embedding $\to$ Vector search $\to$ Prompt synthesis; Grounding constraints.
 * **What You Build:** End-to-end PDF question-answering pipeline with strict source citation links.
@@ -298,7 +298,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-17--advanced-rag-chunking-hybrid-retrieval-reranking--context-engineering"></a>
 
 ### Lecture 17 — Advanced RAG: Chunking, Hybrid Retrieval, Reranking & Context Engineering
-* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 17](./Lecture%2017%20-%20Advanced%20RAG/)
+* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 17](./Lecture%2020%20-%20Advanced%20RAG/)
 * **Goal:** Overcome vector search failure modes using hybrid BM25 + dense retrieval and cross-encoder rerankers.
 * **Topics Unlocked:** Why basic RAG breaks (vocabulary mismatch, semantic drift); Chunking families: Fixed-size, Markdown structure-aware, Semantic chunking; Hybrid Search: Reciprocal Rank Fusion (RRF); Cross-encoder rerankers (Cohere, BGE); Context compression.
 * **What You Build:** Hybrid retrieval pipeline combining BM25 keyword search + Qdrant dense vectors + Cohere Reranker.
@@ -307,7 +307,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-18--vectorless-rag-hierarchical-tree-indexing--llm-wiki-engines"></a>
 
 ### Lecture 18 — Vectorless RAG, Hierarchical Tree Indexing & LLM Wiki Engines
-* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 18](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/)
+* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 18](./Lecture%2021%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/)
 * **Goal:** Build document retrieval engines without vector embeddings using hierarchical summaries and knowledge trees.
 * **Topics Unlocked:** The chunking dilemma; Vectorless RAG; Hierarchical tree indexing (RAPTOR); LLM-driven summary trees; PageRank-style document importance; LLM Wiki maintenance engines.
 * **What You Build:** Tree-based document retrieval engine that traverses summaries to pinpoint exact paragraphs.
@@ -316,7 +316,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-19--agent-memory-systems-stm-ltm-graph-memory-dreaming--mem0"></a>
 
 ### Lecture 19 — Agent Memory Systems: STM, LTM, Graph Memory, Dreaming & mem0
-* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 19](./Lecture%2019%20-%20Agent%20Memory%20Systems/)
+* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 19](./Lecture%2022%20-%20Agent%20Memory%20Systems/)
 * **Goal:** Design human-like tiered agent memory combining working memory, episodic memory, and autonomous background consolidation.
 * **Topics Unlocked:** Short-Term Memory (STM) sliding windows; Long-Term Memory (LTM) taxonomy: Semantic, Episodic, Procedural; Dynamic context assembly: $\text{STM} + \text{LTM\_RAG} + \text{Query}$; Memory extraction; Contradiction resolution; Memory dreaming; `mem0`.
 * **What You Build:** Persistent agent memory service with autonomous fact extraction, deduplication, and contradiction resolution.
@@ -325,7 +325,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-20--graph-databases-cypher-neo4j--graphrag"></a>
 
 ### Lecture 20 — Graph Databases, Cypher, Neo4j & GraphRAG
-* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 20](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/)
+* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 20](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/)
 * **Goal:** Model complex multi-hop relational knowledge using Neo4j, Cypher, and GraphRAG.
 * **Topics Unlocked:** Nodes, edges, properties, labels; Relational SQL vs Document NoSQL vs Native Graph (Index-Free Adjacency); Cypher syntax and pattern matching; Variable-length path traversal (BFS vs DFS); Text-to-Cypher; GraphRAG entity-relationship extraction.
 * **What You Build:** Neo4j knowledge graph engine answering multi-hop queries ("Which manager's direct reports worked on Project X?").
@@ -342,7 +342,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-21--mcp-from-first-principles-host-client-server--tools"></a>
 
 ### Lecture 21 — MCP from First Principles: Host, Client, Server & Tools
-* **Phase:** 6 · Integration · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 21](./Lecture%2021%20-%20MCP%20Core/)
+* **Phase:** 6 · Integration · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 21](./Lecture%2027%20-%20MCP%20Core/)
 * **Goal:** Master the Model Context Protocol (MCP) open standard and implement custom MCP servers.
 * **Topics Unlocked:** The integration problem ($N \times M$ drivers); MCP architecture: Host, Client, Server; The Tools primitive; JSON-RPC 2.0 transport; STDIO vs HTTP streaming / SSE; Discovery, lifecycle, and invocation; Tool context poisoning.
 * **What You Build:** TypeScript MCP server exposing local database and filesystem tools over STDIO and SSE.
@@ -351,7 +351,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-22--mcp-resources-prompts--production-gateway-architecture"></a>
 
 ### Lecture 22 — MCP: Resources, Prompts & Production Gateway Architecture
-* **Phase:** 6 · Integration · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 22](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/)
+* **Phase:** 6 · Integration · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 22](./Lecture%2028%20-%20MCP%20Resources%20Prompts%20and%20Gateway/)
 * **Goal:** Implement the Resources and Prompts primitives and build an enterprise MCP gateway.
 * **Topics Unlocked:** Control model: who decides context (Model vs Application vs User); MCP Resources (URIs, MIME types, dynamic templates); MCP Prompts as reusable interaction templates; Gateway filtering, routing, authentication, and audit logs.
 * **What You Build:** Multi-tenant MCP Gateway with role-based access control, tool filtering, and execution auditing.
@@ -360,7 +360,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-23--claude-skills--the-agent-skills-open-standard"></a>
 
 ### Lecture 23 — Claude Skills & the Agent Skills Open Standard
-* **Phase:** 6 · Integration · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 23](./Lecture%2023%20-%20Claude%20Skills/)
+* **Phase:** 6 · Integration · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 23](./Lecture%2029%20-%20Claude%20Skills/)
 * **Goal:** Package domain workflow knowledge as portable skills using progressive disclosure and deterministic execution.
 * **Topics Unlocked:** Skills vs MCP (workflow knowledge vs connectivity); Progressive disclosure (`frontmatter` $\to$ `body` $\to$ `resources`); The `SKILL.md` specification; Deterministic scripts over probabilistic prompts; Distribution and `/v1/skills` API.
 * **What You Build:** Production Claude Skill with bundled bash/node scripts, prompt guidelines, and validation tests.
@@ -369,7 +369,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-32--langchain-langgraph--langsmith-provider-delivery-stateful-orchestration--tracing"></a>
 
 ### Lecture 32 — LangChain, LangGraph & LangSmith: Provider Delivery, Stateful Orchestration & Tracing
-* **Phase:** 6 · Integration & Orchestration · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 32](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/)
+* **Phase:** 6 · Integration & Orchestration · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 32](./Lecture%2013%20-%20LangChain%20LangGraph%20LangSmith/)
 * **Goal:** Master the complete modern LangChain ecosystem: universal provider delivery, stateful cyclic graphs with LangGraph, and full-stack observability with LangSmith.
 * **Topics Unlocked:** The $\text{Agent} = \text{Model} + \text{Harness}$ formula; Universal provider delivery (`initChatModel`); Standard message protocols (`SystemMessage`, `HumanMessage`, `AIMessage`, `ToolMessage`); Typed tool calling with Zod & Tavily; Token-by-token streaming; Structured output strategies; `StateGraph`, `StateSchema`, and channel reducers; Pregel super-steps; Checkpointers (`MemorySaver`, Postgres); Human-in-the-Loop (`interruptBefore`); Real-world workflows (Notion study notes & Calendar meeting scheduler); LangSmith zero-code tracing, state inspection, custom spans with `@traceable`, and golden dataset offline evals with `evaluate()`.
 * **What You Build:** 15 dedicated notes, an interactive CLI agent with web search, a compiled `StateGraph` Notion workflow, and LangSmith evaluation suites.
@@ -386,7 +386,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-24--multimodal-ai-how-llms-understand-images"></a>
 
 ### Lecture 24 — Multimodal AI: How LLMs Understand Images
-* **Phase:** 7 · Multimodality · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 24](./Lecture%2024%20-%20Multimodal%20AI/)
+* **Phase:** 7 · Multimodality · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 24](./Lecture%2033%20-%20Multimodal%20AI/)
 * **Goal:** Build multimodal vision pipelines that ingest images, extract documents, and reason across visual tokens.
 * **Topics Unlocked:** Vision-Language Models (VLMs); Vision Transformers (ViT): Patching ($16 \times 16$), projection layers, cross-attention; Multi-image reasoning; High-resolution image tiling; Visual hallucinations; When to use Vision LLMs vs specialized OCR (Tesseract, Textract) based on cost and accuracy.
 * **What You Build:** Multimodal invoice parsing pipeline extracting structured JSON line items from receipt photos.
@@ -403,7 +403,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-25--high-performance-inference-gpu-mechanics-vllm--pagedattention"></a>
 
 ### Lecture 25 — High-Performance Inference: GPU Mechanics, vLLM & PagedAttention
-* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 25](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/)
+* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 25](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/)
 * **Goal:** Master LLM inference bottlenecks, GPU VRAM allocation, and serve models at scale with vLLM.
 * **Topics Unlocked:** Compute-bound training vs Memory-bandwidth-bound inference; The KV-Cache problem ($O(\text{seq\_len})$ memory growth); Memory fragmentation; **PagedAttention** (virtual memory paging for KV-cache); Continuous batching; Tensor parallelism; Serving with vLLM.
 * **What You Build:** vLLM deployment benchmark comparing standard HuggingFace pipeline throughput against PagedAttention.
@@ -412,7 +412,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-26--durable-execution--event-driven-multi-agent-workflows-inngest"></a>
 
 ### Lecture 26 — Durable Execution & Event-Driven Multi-Agent Workflows (Inngest)
-* **Phase:** 8 · Production Infra · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 26](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/)
+* **Phase:** 8 · Production Infra · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 26](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/)
 * **Goal:** Build resilient, event-driven multi-agent workflows that survive server crashes, timeouts, and network partitions.
 * **Topics Unlocked:** Ephemeral compute vs Durable execution; The Inngest event loop; Step memoization (`step.run()`); Sleep and human wait primitives (`step.waitForEvent()`); Retries with exponential backoff; Concurrency keys and debouncing.
 * **What You Build:** Multi-step autonomous research pipeline with durable checkpointing that resumes mid-flight after crashes.
@@ -421,7 +421,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-27--enterprise-full-stack-ai-platform-architecture-db-auth--ingestion"></a>
 
 ### Lecture 27 — Enterprise Full-Stack AI Platform: Architecture, DB, Auth & Ingestion
-* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 27](./Lecture%2027%20-%20Full-Stack%20AI%20Platform/)
+* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 27](./Lecture%2034%20-%20Full-Stack%20AI%20Platform/)
 * **Goal:** Architect a complete multi-tenant production AI SaaS platform with PostgreSQL, Better Auth, and Stripe quotas.
 * **Topics Unlocked:** Full-stack architecture; Client/Server boundaries; REST + SSE design; Database schema design (Prisma, PostgreSQL, pgvector); Authentication & RBAC (Better Auth); Multi-tenant data isolation; Token quota enforcement.
 * **What You Build:** Production-grade full-stack Next.js + Express platform with user authentication, isolated chat threads, and usage quotas.
@@ -430,7 +430,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-28--async-vector-indexing-streaming-rag-chat--learning-artifacts"></a>
 
 ### Lecture 28 — Async Vector Indexing, Streaming RAG Chat & Learning Artifacts
-* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 28](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/)
+* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 28](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/)
 * **Goal:** Connect asynchronous Inngest document ingestion with real-time streaming RAG chat and interactive UI artifacts.
 * **Topics Unlocked:** Decoupling upload from indexing; Inngest background worker pipelines; SSE streaming with status event payloads; UI Artifact generation (rendering React components, charts, and code blocks from LLM streams).
 * **What You Build:** Complete async RAG platform: upload large documents $\to$ background index $\to$ stream answers with live citations.
@@ -439,7 +439,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-29--hands-on-autonomous-github-pr-reviewer-bot"></a>
 
 ### Lecture 29 — Hands-On: Autonomous GitHub PR Reviewer Bot
-* **Phase:** 8 · Production Infra · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 29](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/)
+* **Phase:** 8 · Production Infra · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 29](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/)
 * **Goal:** Deploy an autonomous GitHub PR review bot that parses code diffs, detects security vulnerabilities, and posts inline review comments.
 * **Topics Unlocked:** Webhook signature verification; Octokit GitHub REST & GraphQL APIs; Diff parsing; AST code analysis; Reducing token costs on massive PRs; Posting inline comments on specific line numbers.
 * **What You Build:** GitHub App webhook bot running on Inngest that reviews pull requests and flags security risks automatically.
@@ -456,7 +456,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-30--genai-evaluation--testing-golden-data-deterministic-evals--llm-as-a-judge"></a>
 
 ### Lecture 30 — GenAI Evaluation & Testing: Golden Data, Deterministic Evals & LLM-as-a-Judge
-* **Phase:** 9 · Quality & Safety · **Level:** 🟢 Beginner / Intermediate · **Workspace:** [📂 Lecture 30](./Lecture%2030%20-%20Evals%20and%20Testing/)
+* **Phase:** 9 · Quality & Safety · **Level:** 🟢 Beginner / Intermediate · **Workspace:** [📂 Lecture 30](./Lecture%2040%20-%20Evals%20and%20Testing/)
 * **Goal:** Build an automated evaluation harness with golden datasets, deterministic checks, and calibrated LLM judges to block regressions.
 * **Topics Unlocked:** The Attribution Problem; Why a satisfying answer is not evidence; Golden datasets (versioned test files); Deterministic evals (JSON validity, schema compliance, latency budgets); Quality as a vector; LLM-as-a-judge (pointwise vs pairwise, rubrics, position bias); RAG metrics (Faithfulness, Answer Relevance, Context Recall); CI/CD release gates.
 * **What You Build:** Automated evaluation test suite that scores candidate prompt changes against a 50-example benchmark and blocks PR merges on failure.
@@ -465,7 +465,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-31--genai-security--guardrails-prompt-injection-jailbreaks--safe-tool-use"></a>
 
 ### Lecture 31 — GenAI Security & Guardrails: Prompt Injection, Jailbreaks & Safe Tool Use
-* **Phase:** 9 · Quality & Safety · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 31](./Lecture%2031%20-%20Security%20and%20Guardrails/)
+* **Phase:** 9 · Quality & Safety · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 31](./Lecture%2045%20-%20Security%20and%20Guardrails/)
 * **Goal:** Fortify agent systems against direct/indirect prompt injection, enforce least privilege, and deploy multi-layer guardrails that fail closed.
 * **Topics Unlocked:** Why GenAI breaks deterministic security; Threat modeling (assets, blast radius, trust boundaries); Prompt injection mechanics (direct, indirect, multimodal, MCP); Why prompts are not security controls; Safe tool design: least privilege, capability routing, confirmation tokens; Guardrails as defense-in-depth layers (input, semantic, action, output) that **fail closed**; PII masking and pseudonymization; Red-teaming suites.
 * **What You Build:** Defense-in-depth guardrail proxy with bidirectional PII masking, capability routing, and automated adversarial red-team test suite.
@@ -645,31 +645,31 @@ Track your progress across every lecture. Copy this table into your fork or loca
 | **05** | [Prompt Engineering](./Lecture%2005%20-%20Prompt%20Engineering/) | 2 | 🟢 | ✅ | ✅ | ☐ |
 | **06** | [Chatbots, Context & Hallucination](./Lecture%2006%20-%20Chatbots%20and%20Context/) | 2 | 🟡 | ✅ | ✅ | ☐ |
 | **07** | [AI Streaming](./Lecture%2007%20-%20AI%20Streaming/) | 2 | 🟡 | ✅ | ✅ | ☐ |
-| **08** | [Tool Calling](./Lecture%2008%20-%20Tool%20Calling/) | 3 | 🟡 | ✅ | ✅ | ☐ |
-| **09** | [Agents, Sandboxing & HITL](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/) | 3 | 🟡 | ✅ | ✅ | ☐ |
-| **10** | [Structured Outputs](./Lecture%2010%20-%20Structured%20Outputs/) | 3 | 🟡 | ✅ | ✅ | ☐ |
-| **11** | [Agent SDK from Scratch](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/) | 3 | 🟠 | ✅ | ✅ | ☐ |
-| **12** | [Embeddings First Principles](./Lecture%2012%20-%20Vector%20Embeddings/) | 4 | 🟢 | ✅ | ✅ | ☐ |
-| **13** | [Semantic Search Project](./Lecture%2013%20-%20Semantic%20Search%20Project/) | 4 | 🟡 | ✅ | ✅ | ☐ |
-| **14** | [Vector Search & Storage](./Lecture%2014%20-%20Vector%20Search%20and%20Storage/) | 4 | 🟡 | ✅ | ✅ | ☐ |
-| **15** | [Vector DBs & ANN](./Lecture%2015%20-%20Vector%20Databases%20and%20ANN/) | 4 | 🟠 | ✅ | ✅ | ☐ |
-| **16** | [RAG Open-Book Architecture](./Lecture%2016%20-%20RAG/) | 5 | 🟡 | ✅ | ✅ | ☐ |
-| **17** | [Advanced RAG](./Lecture%2017%20-%20Advanced%20RAG/) | 5 | 🟠 | ✅ | ✅ | ☐ |
-| **18** | [Vectorless RAG & LLM Wiki](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/) | 5 | 🟠 | ✅ | ✅ | ☐ |
-| **19** | [Agent Memory Systems](./Lecture%2019%20-%20Agent%20Memory%20Systems/) | 5 | 🟠 | ✅ | ✅ | ☐ |
-| **20** | [Graph DB, Cypher & GraphRAG](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/) | 5 | 🟠 | ✅ | ✅ | ✅ |
-| **21** | [MCP Core](./Lecture%2021%20-%20MCP%20Core/) | 6 | 🟡 | ✅ | ✅ | ✅ |
-| **22** | [MCP Resources, Prompts & Gateway](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/) | 6 | 🟠 | ✅ | ✅ | ☐ |
-| **23** | [Claude Skills](./Lecture%2023%20-%20Claude%20Skills/) | 6 | 🟠 | ✅ | ✅ | ☐ |
-| **24** | [Multimodal AI](./Lecture%2024%20-%20Multimodal%20AI/) | 7 | 🟠 | ✅ | ✅ | ✅ |
-| **25** | [vLLM & PagedAttention](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/) | 8 | 🔴 | ✅ | ✅ | ☐ |
-| **26** | [Durable Execution with Inngest](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/) | 8 | 🟠 | ✅ | ✅ | ☐ |
-| **27** | [Full-Stack AI Platform](./Lecture%2027%20-%20Full-Stack%20AI%20Platform/) | 8 | 🔴 | ✅ | ✅ | ☐ |
-| **28** | [Async Indexing & RAG Chat](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/) | 8 | 🔴 | ✅ | ✅ | ☐ |
-| **29** | [GitHub PR Reviewer Bot](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/) | 8 | 🟠 | ✅ | ✅ | ☐ |
-| **30** | [Evals & Testing](./Lecture%2030%20-%20Evals%20and%20Testing/) | 9 | 🟢 | ✅ | ✅ | ☐ |
-| **31** | [Security & Guardrails](./Lecture%2031%20-%20Security%20and%20Guardrails/) | 9 | 🔴 | ✅ | ✅ | ☐ |
-| **32** | [LangChain, LangGraph & LangSmith](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/) | 6 | 🟡 | ✅ | ✅ | ☐ |
+| **08** | [Tool Calling](./Lecture%2009%20-%20Tool%20Calling/) | 3 | 🟡 | ✅ | ✅ | ☐ |
+| **09** | [Agents, Sandboxing & HITL](./Lecture%2010%20-%20AI%20Agents%20and%20HITL/) | 3 | 🟡 | ✅ | ✅ | ☐ |
+| **10** | [Structured Outputs](./Lecture%2011%20-%20Structured%20Outputs/) | 3 | 🟡 | ✅ | ✅ | ☐ |
+| **11** | [Agent SDK from Scratch](./Lecture%2012%20-%20Agent%20SDK%20from%20Scratch/) | 3 | 🟠 | ✅ | ✅ | ☐ |
+| **12** | [Embeddings First Principles](./Lecture%2015%20-%20Vector%20Embeddings/) | 4 | 🟢 | ✅ | ✅ | ☐ |
+| **13** | [Semantic Search Project](./Lecture%2016%20-%20Semantic%20Search%20Project/) | 4 | 🟡 | ✅ | ✅ | ☐ |
+| **14** | [Vector Search & Storage](./Lecture%2017%20-%20Vector%20Search%20and%20Storage/) | 4 | 🟡 | ✅ | ✅ | ☐ |
+| **15** | [Vector DBs & ANN](./Lecture%2018%20-%20Vector%20Databases%20and%20ANN/) | 4 | 🟠 | ✅ | ✅ | ☐ |
+| **16** | [RAG Open-Book Architecture](./Lecture%2019%20-%20RAG/) | 5 | 🟡 | ✅ | ✅ | ☐ |
+| **17** | [Advanced RAG](./Lecture%2020%20-%20Advanced%20RAG/) | 5 | 🟠 | ✅ | ✅ | ☐ |
+| **18** | [Vectorless RAG & LLM Wiki](./Lecture%2021%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/) | 5 | 🟠 | ✅ | ✅ | ☐ |
+| **19** | [Agent Memory Systems](./Lecture%2022%20-%20Agent%20Memory%20Systems/) | 5 | 🟠 | ✅ | ✅ | ☐ |
+| **20** | [Graph DB, Cypher & GraphRAG](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/) | 5 | 🟠 | ✅ | ✅ | ✅ |
+| **21** | [MCP Core](./Lecture%2027%20-%20MCP%20Core/) | 6 | 🟡 | ✅ | ✅ | ✅ |
+| **22** | [MCP Resources, Prompts & Gateway](./Lecture%2028%20-%20MCP%20Resources%20Prompts%20and%20Gateway/) | 6 | 🟠 | ✅ | ✅ | ☐ |
+| **23** | [Claude Skills](./Lecture%2029%20-%20Claude%20Skills/) | 6 | 🟠 | ✅ | ✅ | ☐ |
+| **24** | [Multimodal AI](./Lecture%2033%20-%20Multimodal%20AI/) | 7 | 🟠 | ✅ | ✅ | ✅ |
+| **25** | [vLLM & PagedAttention](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/) | 8 | 🔴 | ✅ | ✅ | ☐ |
+| **26** | [Durable Execution with Inngest](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/) | 8 | 🟠 | ✅ | ✅ | ☐ |
+| **27** | [Full-Stack AI Platform](./Lecture%2034%20-%20Full-Stack%20AI%20Platform/) | 8 | 🔴 | ✅ | ✅ | ☐ |
+| **28** | [Async Indexing & RAG Chat](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/) | 8 | 🔴 | ✅ | ✅ | ☐ |
+| **29** | [GitHub PR Reviewer Bot](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/) | 8 | 🟠 | ✅ | ✅ | ☐ |
+| **30** | [Evals & Testing](./Lecture%2040%20-%20Evals%20and%20Testing/) | 9 | 🟢 | ✅ | ✅ | ☐ |
+| **31** | [Security & Guardrails](./Lecture%2045%20-%20Security%20and%20Guardrails/) | 9 | 🔴 | ✅ | ✅ | ☐ |
+| **32** | [LangChain, LangGraph & LangSmith](./Lecture%2013%20-%20LangChain%20LangGraph%20LangSmith/) | 6 | 🟡 | ✅ | ✅ | ☐ |
 | **★** | [Capstone Proving Ground](#-capstone--prove-the-whole-path) | All | 🔴 | ☐ | ☐ | ☐ |
 
 ---
@@ -892,28 +892,28 @@ AI Application Engineer          ───────────────�
 > **Thesis:** A tool call is a *proposal* from an untrusted party, not an instruction to the runtime. The architecture must enforce validation, least privilege, and sandboxing.
 
 ### Lecture 08 — Tool Calling & Function Execution Loops
-* **Phase:** 3 · Agency · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 08](./Lecture%2008%20-%20Tool%20Calling/)
+* **Phase:** 3 · Agency · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 08](./Lecture%2009%20-%20Tool%20Calling/)
 * **Goal:** Implement the ReAct decision loop where models select, call, and observe external tools.
 * **Topics Unlocked:** From text to actions; JSON Schema tool definitions; Model tool choice modes (`auto`, `required`, `none`); ReAct loop mechanics; Tool execution dispatches; Error feedback loops (passing stack traces back to model).
 * **What You Build:** Standalone ReAct execution loop capable of querying weather, calculator, and database tools.
 * **Release Gate:** Agent successfully resolves multi-step dependency: computes math $\to$ fetches data $\to$ synthesizes answer.
 
 ### Lecture 09 — AI Agents from First Principles: Agency, Sandboxing & HITL
-* **Phase:** 3 · Agency · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 09](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/)
+* **Phase:** 3 · Agency · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 09](./Lecture%2010%20-%20AI%20Agents%20and%20HITL/)
 * **Goal:** Build autonomous agents equipped with safe filesystem sandboxes, tool authorization tiers, and human sign-offs.
 * **Topics Unlocked:** The Agency Spectrum (Levels 1–4); Perceive-Decide-Act loops; Workspace sandboxing (path traversal prevention); Tool authorization tiers (Read vs Write vs Destructive); Human-in-the-Loop (HITL) approval gates.
 * **What You Build:** Autonomous website builder agent operating inside a jailed directory with human approval before publishing.
 * **Release Gate:** Zero path traversal escapes when tested against adversarial file-access inputs.
 
 ### Lecture 10 — Structured Outputs: Schema Enforcement, Validation & Repair
-* **Phase:** 3 · Agency · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 10](./Lecture%2010%20-%20Structured%20Outputs/)
+* **Phase:** 3 · Agency · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 10](./Lecture%2011%20-%20Structured%20Outputs/)
 * **Goal:** Guarantee 100% typed, validated JSON outputs matching strict Zod schemas.
 * **Topics Unlocked:** The integration gap; Constrained decoding at the logit level; JSON Schema vs Zod; Provider strategy vs Tool strategy; Schema repair and reflection loops; Handling optional and nullable fields.
 * **What You Build:** Self-healing parser that catches validation errors, feeds error diffs to the model, and recovers valid JSON.
 * **Release Gate:** 100 consecutive extractions pass strict Zod validation without a single `JSON.parse` failure.
 
 ### Lecture 11 — Building an Agent SDK from Scratch: Harness, Builder & ReAct Loop
-* **Phase:** 3 · Agency · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 11](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/)
+* **Phase:** 3 · Agency · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 11](./Lecture%2012%20-%20Agent%20SDK%20from%20Scratch/)
 * **Goal:** Architect a reusable, extensible TypeScript Agent SDK with fluent builders, tool registries, and interceptors.
 * **Topics Unlocked:** Stateful SDK vs Stateless API; The `AgentBuilder` fluent pattern; Tool execution engines; Middleware interceptors (pre-call, post-call); Multi-provider decoupling; Swarm orchestration foundations.
 * **What You Build:** Complete open-source-style `@my-org/agent-sdk` with full TypeScript typing.
@@ -926,28 +926,28 @@ AI Application Engineer          ───────────────�
 > **Thesis:** Represent $\to$ store $\to$ compare $\to$ rank. Meaning becomes geometry, and scale turns geometry into an engineering problem.
 
 ### Lecture 12 — Vector Embeddings from First Principles
-* **Phase:** 4 · Embeddings · **Level:** 🟢 Beginner · **Workspace:** [📂 Lecture 12](./Lecture%2012%20-%20Vector%20Embeddings/)
+* **Phase:** 4 · Embeddings · **Level:** 🟢 Beginner · **Workspace:** [📂 Lecture 12](./Lecture%2015%20-%20Vector%20Embeddings/)
 * **Goal:** Master high-dimensional vector spaces, distance metrics, and vector normalizations.
 * **Topics Unlocked:** The geometry of meaning; Dimensionality ($d=384, 768, 1536, 3072$); Distance metrics: Dot Product, Cosine Similarity, Euclidean Distance ($L2$), Manhattan ($L1$); Embedding normalization; Matryoshka embeddings.
 * **What You Build:** Native vector math library in TypeScript implementing $L2$, Cosine, and Dot Product calculations.
 * **Release Gate:** Mathematical equivalence test: prove cosine similarity equals dot product on $L2$-normalized vectors.
 
 ### Lecture 13 — Embeddings Project: Semantic Search & Movie Recommendation
-* **Phase:** 4 · Embeddings · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 13](./Lecture%2013%20-%20Semantic%20Search%20Project/)
+* **Phase:** 4 · Embeddings · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 13](./Lecture%2016%20-%20Semantic%20Search%20Project/)
 * **Goal:** Build a production semantic search and recommendation engine over 10,000+ items.
 * **Topics Unlocked:** Semantic search vs lexical keyword search; Embedding chunk generation; Cold start and caching; Cross-encoder rerankers; Recommendation geometry.
 * **What You Build:** Semantic search API over IMDB movie dataset with category filtering and similarity thresholds.
 * **Release Gate:** Search returns semantically related movies for metaphorical queries containing zero keyword overlaps.
 
 ### Lecture 14 — Vector Search & Storage: Scale, kNN & the Curse of Dimensionality
-* **Phase:** 4 · Embeddings · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 14](./Lecture%2014%20-%20Vector%20Search%20and%20Storage/)
+* **Phase:** 4 · Embeddings · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 14](./Lecture%2017%20-%20Vector%20Search%20and%20Storage/)
 * **Goal:** Understand the scaling ceiling of exact kNN and the curse of high-dimensional geometry.
 * **Topics Unlocked:** Exact k-Nearest Neighbors ($O(N \cdot D)$); Memory bandwidth bottlenecks; The Curse of Dimensionality (distance concentration phenomenon); When PostgreSQL + `pgvector` suffices vs dedicated vector DBs.
 * **What You Build:** Benchmark suite comparing brute-force kNN latency against dataset size ($N=1k, 10k, 100k, 1M$).
 * **Release Gate:** Chart the inflection point where linear scan latency exceeds the 50ms SLA boundary.
 
 ### Lecture 15 — Vector Databases & ANN Algorithms: IVF, HNSW & Product Quantization
-* **Phase:** 4 · Embeddings · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 15](./Lecture%2015%20-%20Vector%20Databases%20and%20ANN/)
+* **Phase:** 4 · Embeddings · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 15](./Lecture%2018%20-%20Vector%20Databases%20and%20ANN/)
 * **Goal:** Master Approximate Nearest Neighbor (ANN) index algorithms: Inverted File (IVF) and Hierarchical Navigable Small World (HNSW).
 * **Topics Unlocked:** The Recall vs Latency trade-off; Inverted File Index (IVF): Voronoi cells, centroids, `nlist`, `nprobe`; Product Quantization (PQ); HNSW: Skip-list graph hierarchies, small-world properties, `M`, `efConstruction`, `efSearch`.
 * **What You Build:** Qdrant / Pinecone production integration with benchmarked HNSW parameters achieving 98%+ recall.
@@ -960,35 +960,35 @@ AI Application Engineer          ───────────────�
 > **Thesis:** Retrieval sets the ceiling; the prompt can only use what arrived. A wrong answer is never just "the model was dumb" — it is a retrieval failure or a context framing failure.
 
 ### Lecture 16 — RAG: The Open-Book Architecture (Ingestion & Grounded Generation)
-* **Phase:** 5 · RAG · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 16](./Lecture%2016%20-%20RAG/)
+* **Phase:** 5 · RAG · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 16](./Lecture%2019%20-%20RAG/)
 * **Goal:** Architect the two fundamental RAG pipelines: Offline Document Ingestion and Online Retrieval-Augmented Generation.
 * **Topics Unlocked:** Parametric vs Non-parametric memory; Offline ingestion pipeline: Document loading $\to$ Cleaning $\to$ Chunking $\to$ Embedding $\to$ Indexing; Online query pipeline: Query embedding $\to$ Vector search $\to$ Prompt synthesis; Grounding constraints.
 * **What You Build:** End-to-end PDF question-answering pipeline with strict source citation links.
 * **Release Gate:** Zero hallucinations on out-of-domain questions: system returns explicit "I do not have enough context" refusals.
 
 ### Lecture 17 — Advanced RAG: Chunking, Hybrid Retrieval, Reranking & Context Engineering
-* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 17](./Lecture%2017%20-%20Advanced%20RAG/)
+* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 17](./Lecture%2020%20-%20Advanced%20RAG/)
 * **Goal:** Overcome vector search failure modes using hybrid BM25 + dense retrieval and cross-encoder rerankers.
 * **Topics Unlocked:** Why basic RAG breaks (vocabulary mismatch, semantic drift); Chunking families: Fixed-size, Markdown structure-aware, Semantic chunking; Hybrid Search: Reciprocal Rank Fusion (RRF); Cross-encoder rerankers (Cohere, BGE); Context compression.
 * **What You Build:** Hybrid retrieval pipeline combining BM25 keyword search + Qdrant dense vectors + Cohere Reranker.
 * **Release Gate:** Demonstrate an 18%+ increase in Hit@3 on technical acronym queries using hybrid search over pure vector search.
 
 ### Lecture 18 — Vectorless RAG, Hierarchical Tree Indexing & LLM Wiki Engines
-* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 18](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/)
+* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 18](./Lecture%2021%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/)
 * **Goal:** Build document retrieval engines without vector embeddings using hierarchical summaries and knowledge trees.
 * **Topics Unlocked:** The chunking dilemma; Vectorless RAG; Hierarchical tree indexing (RAPTOR); LLM-driven summary trees; PageRank-style document importance; LLM Wiki maintenance engines.
 * **What You Build:** Tree-based document retrieval engine that traverses summaries to pinpoint exact paragraphs.
 * **Release Gate:** Answer high-level thematic queries ("Summarize all changes across Chapter 3") that break standard vector RAG.
 
 ### Lecture 19 — Agent Memory Systems: STM, LTM, Graph Memory, Dreaming & mem0
-* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 19](./Lecture%2019%20-%20Agent%20Memory%20Systems/)
+* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 19](./Lecture%2022%20-%20Agent%20Memory%20Systems/)
 * **Goal:** Design human-like tiered agent memory combining working memory, episodic memory, and autonomous background consolidation.
 * **Topics Unlocked:** Short-Term Memory (STM) sliding windows; Long-Term Memory (LTM) taxonomy: Semantic, Episodic, Procedural; Dynamic context assembly: $\text{STM} + \text{LTM\_RAG} + \text{Query}$; Memory extraction; Contradiction resolution; Memory dreaming; `mem0`.
 * **What You Build:** Persistent agent memory service with autonomous fact extraction, deduplication, and contradiction resolution.
 * **Release Gate:** Agent recalls user preferences set 30 sessions prior and adapts response style without prompting.
 
 ### Lecture 20 — Graph Databases, Cypher, Neo4j & GraphRAG
-* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 20](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/)
+* **Phase:** 5 · RAG · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 20](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/)
 * **Goal:** Model complex multi-hop relational knowledge using Neo4j, Cypher, and GraphRAG.
 * **Topics Unlocked:** Nodes, edges, properties, labels; Relational SQL vs Document NoSQL vs Native Graph (Index-Free Adjacency); Cypher syntax and pattern matching; Variable-length path traversal (BFS vs DFS); Text-to-Cypher; GraphRAG entity-relationship extraction.
 * **What You Build:** Neo4j knowledge graph engine answering multi-hop queries ("Which manager's direct reports worked on Project X?").
@@ -1001,28 +1001,28 @@ AI Application Engineer          ───────────────�
 > **Thesis:** Replace $N \times M$ bespoke integrations with one open protocol — then package workflow knowledge, not connectivity, as a portable skill, and orchestrate cyclic stateful multi-actor agent graphs.
 
 ### Lecture 21 — MCP from First Principles: Host, Client, Server & Tools
-* **Phase:** 6 · Integration · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 21](./Lecture%2021%20-%20MCP%20Core/)
+* **Phase:** 6 · Integration · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 21](./Lecture%2027%20-%20MCP%20Core/)
 * **Goal:** Master the Model Context Protocol (MCP) open standard and implement custom MCP servers.
 * **Topics Unlocked:** The integration problem ($N \times M$ drivers); MCP architecture: Host, Client, Server; The Tools primitive; JSON-RPC 2.0 transport; STDIO vs HTTP streaming / SSE; Discovery, lifecycle, and invocation; Tool context poisoning.
 * **What You Build:** TypeScript MCP server exposing local database and filesystem tools over STDIO and SSE.
 * **Release Gate:** Connect custom MCP server to Claude Desktop and execute verified tool calls.
 
 ### Lecture 22 — MCP: Resources, Prompts & Production Gateway Architecture
-* **Phase:** 6 · Integration · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 22](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/)
+* **Phase:** 6 · Integration · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 22](./Lecture%2028%20-%20MCP%20Resources%20Prompts%20and%20Gateway/)
 * **Goal:** Implement the Resources and Prompts primitives and build an enterprise MCP gateway.
 * **Topics Unlocked:** Control model: who decides context (Model vs Application vs User); MCP Resources (URIs, MIME types, dynamic templates); MCP Prompts as reusable interaction templates; Gateway filtering, routing, authentication, and audit logs.
 * **What You Build:** Multi-tenant MCP Gateway with role-based access control, tool filtering, and execution auditing.
 * **Release Gate:** Enforce policy: client with Tier-1 token cannot access admin MCP tools on the same gateway.
 
 ### Lecture 23 — Claude Skills & the Agent Skills Open Standard
-* **Phase:** 6 · Integration · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 23](./Lecture%2023%20-%20Claude%20Skills/)
+* **Phase:** 6 · Integration · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 23](./Lecture%2029%20-%20Claude%20Skills/)
 * **Goal:** Package domain workflow knowledge as portable skills using progressive disclosure and deterministic execution.
 * **Topics Unlocked:** Skills vs MCP (workflow knowledge vs connectivity); Progressive disclosure (`frontmatter` $\to$ `body` $\to$ `resources`); The `SKILL.md` specification; Deterministic scripts over probabilistic prompts; Distribution and `/v1/skills` API.
 * **What You Build:** Production Claude Skill with bundled bash/node scripts, prompt guidelines, and validation tests.
 * **Release Gate:** Skill loads on demand and executes complex data processing tasks with zero prompt drift.
 
 ### Lecture 32 — LangChain, LangGraph & LangSmith: Provider Delivery, Stateful Orchestration & Tracing
-* **Phase:** 6 · Integration & Orchestration · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 32](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/)
+* **Phase:** 6 · Integration & Orchestration · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 32](./Lecture%2013%20-%20LangChain%20LangGraph%20LangSmith/)
 * **Goal:** Master the complete modern LangChain ecosystem: universal provider delivery, stateful cyclic graphs with LangGraph, and full-stack observability with LangSmith.
 * **Topics Unlocked:** The $\text{Agent} = \text{Model} + \text{Harness}$ formula; Universal provider delivery (`initChatModel`); Standard message protocols (`SystemMessage`, `HumanMessage`, `AIMessage`, `ToolMessage`); Typed tool calling with Zod & Tavily; Token-by-token streaming; Structured output strategies; `StateGraph`, `StateSchema`, and channel reducers; Pregel super-steps; Checkpointers (`MemorySaver`, Postgres); Human-in-the-Loop (`interruptBefore`); Real-world workflows (Notion study notes & Calendar meeting scheduler); LangSmith zero-code tracing, state inspection, custom spans with `@traceable`, and golden dataset offline evals with `evaluate()`.
 * **What You Build:** 15 dedicated notes, an interactive CLI agent with web search, a compiled `StateGraph` Notion workflow, and LangSmith evaluation suites.
@@ -1035,7 +1035,7 @@ AI Application Engineer          ───────────────�
 > **Thesis:** Images are numbers too: pixels $\to$ patches $\to$ visual embeddings $\to$ projection $\to$ language space.
 
 ### Lecture 24 — Multimodal AI: How LLMs Understand Images
-* **Phase:** 7 · Multimodality · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 24](./Lecture%2024%20-%20Multimodal%20AI/)
+* **Phase:** 7 · Multimodality · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 24](./Lecture%2033%20-%20Multimodal%20AI/)
 * **Goal:** Build multimodal vision pipelines that ingest images, extract documents, and reason across visual tokens.
 * **Topics Unlocked:** Vision-Language Models (VLMs); Vision Transformers (ViT): Patching ($16 \times 16$), projection layers, cross-attention; Multi-image reasoning; High-resolution image tiling; Visual hallucinations; When to use Vision LLMs vs specialized OCR (Tesseract, Textract) based on cost and accuracy.
 * **What You Build:** Multimodal invoice parsing pipeline extracting structured JSON line items from receipt photos.
@@ -1048,35 +1048,35 @@ AI Application Engineer          ───────────────�
 > **Thesis:** Inference is memory-bandwidth-bound, long AI work must be durable, and a real product needs a database, an auth boundary, and background queues.
 
 ### Lecture 25 — High-Performance Inference: GPU Mechanics, vLLM & PagedAttention
-* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 25](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/)
+* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 25](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/)
 * **Goal:** Master LLM inference bottlenecks, GPU VRAM allocation, and serve models at scale with vLLM.
 * **Topics Unlocked:** Compute-bound training vs Memory-bandwidth-bound inference; The KV-Cache problem ($O(\text{seq\_len})$ memory growth); Memory fragmentation; **PagedAttention** (virtual memory paging for KV-cache); Continuous batching; Tensor parallelism; Serving with vLLM.
 * **What You Build:** vLLM deployment benchmark comparing standard HuggingFace pipeline throughput against PagedAttention.
 * **Release Gate:** Demonstrate a $3\times+$ token throughput gain under concurrent multi-user load using vLLM continuous batching.
 
 ### Lecture 26 — Durable Execution & Event-Driven Multi-Agent Workflows (Inngest)
-* **Phase:** 8 · Production Infra · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 26](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/)
+* **Phase:** 8 · Production Infra · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 26](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/)
 * **Goal:** Build resilient, event-driven multi-agent workflows that survive server crashes, timeouts, and network partitions.
 * **Topics Unlocked:** Ephemeral compute vs Durable execution; The Inngest event loop; Step memoization (`step.run()`); Sleep and human wait primitives (`step.waitForEvent()`); Retries with exponential backoff; Concurrency keys and debouncing.
 * **What You Build:** Multi-step autonomous research pipeline with durable checkpointing that resumes mid-flight after crashes.
 * **Release Gate:** Force-kill the Node.js process mid-workflow; verify the workflow resumes from the exact failed step without re-executing previous steps.
 
 ### Lecture 27 — Enterprise Full-Stack AI Platform: Architecture, DB, Auth & Ingestion
-* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 27](./Lecture%2027%20-%20Full-Stack%20AI%20Platform/)
+* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 27](./Lecture%2034%20-%20Full-Stack%20AI%20Platform/)
 * **Goal:** Architect a complete multi-tenant production AI SaaS platform with PostgreSQL, Better Auth, and Stripe quotas.
 * **Topics Unlocked:** Full-stack architecture; Client/Server boundaries; REST + SSE design; Database schema design (Prisma, PostgreSQL, pgvector); Authentication & RBAC (Better Auth); Multi-tenant data isolation; Token quota enforcement.
 * **What You Build:** Production-grade full-stack Next.js + Express platform with user authentication, isolated chat threads, and usage quotas.
 * **Release Gate:** Multi-tenant security audit: verify User A cannot read or query embeddings belonging to User B.
 
 ### Lecture 28 — Async Vector Indexing, Streaming RAG Chat & Learning Artifacts
-* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 28](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/)
+* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 28](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/)
 * **Goal:** Connect asynchronous Inngest document ingestion with real-time streaming RAG chat and interactive UI artifacts.
 * **Topics Unlocked:** Decoupling upload from indexing; Inngest background worker pipelines; SSE streaming with status event payloads; UI Artifact generation (rendering React components, charts, and code blocks from LLM streams).
 * **What You Build:** Complete async RAG platform: upload large documents $\to$ background index $\to$ stream answers with live citations.
 * **Release Gate:** Upload 50-page document; verify background indexing emits real-time progress events over SSE.
 
 ### Lecture 29 — Hands-On: Autonomous GitHub PR Reviewer Bot
-* **Phase:** 8 · Production Infra · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 29](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/)
+* **Phase:** 8 · Production Infra · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 29](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/)
 * **Goal:** Deploy an autonomous GitHub PR review bot that parses code diffs, detects security vulnerabilities, and posts inline review comments.
 * **Topics Unlocked:** Webhook signature verification; Octokit GitHub REST & GraphQL APIs; Diff parsing; AST code analysis; Reducing token costs on massive PRs; Posting inline comments on specific line numbers.
 * **What You Build:** GitHub App webhook bot running on Inngest that reviews pull requests and flags security risks automatically.
@@ -1089,14 +1089,14 @@ AI Application Engineer          ───────────────�
 > **Thesis:** Assume the model **will** be persuaded, and make persuasion insufficient to move anything that matters. Then prove it with a gate that can block a release.
 
 ### Lecture 30 — GenAI Evaluation & Testing: Golden Data, Deterministic Evals & LLM-as-a-Judge
-* **Phase:** 9 · Quality & Safety · **Level:** 🟢 Beginner / Intermediate · **Workspace:** [📂 Lecture 30](./Lecture%2030%20-%20Evals%20and%20Testing/)
+* **Phase:** 9 · Quality & Safety · **Level:** 🟢 Beginner / Intermediate · **Workspace:** [📂 Lecture 30](./Lecture%2040%20-%20Evals%20and%20Testing/)
 * **Goal:** Build an automated evaluation harness with golden datasets, deterministic checks, and calibrated LLM judges to block regressions.
 * **Topics Unlocked:** The Attribution Problem; Why a satisfying answer is not evidence; Golden datasets (versioned test files); Deterministic evals (JSON validity, schema compliance, latency budgets); Quality as a vector; LLM-as-a-judge (pointwise vs pairwise, rubrics, position bias); RAG metrics (Faithfulness, Answer Relevance, Context Recall); CI/CD release gates.
 * **What You Build:** Automated evaluation test suite that scores candidate prompt changes against a 50-example benchmark and blocks PR merges on failure.
 * **Release Gate:** CI gate successfully fails when an intentional regression lowers faithfulness score below 0.85.
 
 ### Lecture 31 — GenAI Security & Guardrails: Prompt Injection, Jailbreaks & Safe Tool Use
-* **Phase:** 9 · Quality & Safety · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 31](./Lecture%2031%20-%20Security%20and%20Guardrails/)
+* **Phase:** 9 · Quality & Safety · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 31](./Lecture%2045%20-%20Security%20and%20Guardrails/)
 * **Goal:** Fortify agent systems against direct/indirect prompt injection, enforce least privilege, and deploy multi-layer guardrails that fail closed.
 * **Topics Unlocked:** Why GenAI breaks deterministic security; Threat modeling (assets, blast radius, trust boundaries); Prompt injection mechanics (direct, indirect, multimodal, MCP); Why prompts are not security controls; Safe tool design: least privilege, capability routing, confirmation tokens; Guardrails as defense-in-depth layers (input, semantic, action, output) that **fail closed**; PII masking and pseudonymization; Red-teaming suites.
 * **What You Build:** Defense-in-depth guardrail proxy with bidirectional PII masking, capability routing, and automated adversarial red-team test suite.
@@ -1266,31 +1266,31 @@ Track your progress across every lecture. Copy this table into your fork or loca
 | **05** | [Prompt Engineering](./Lecture%2005%20-%20Prompt%20Engineering/) | 2 | 🟢 | ✅ | ✅ | ☐ |
 | **06** | [Chatbots, Context & Hallucination](./Lecture%2006%20-%20Chatbots%20and%20Context/) | 2 | 🟡 | ✅ | ✅ | ☐ |
 | **07** | [AI Streaming](./Lecture%2007%20-%20AI%20Streaming/) | 2 | 🟡 | ✅ | ✅ | ☐ |
-| **08** | [Tool Calling](./Lecture%2008%20-%20Tool%20Calling/) | 3 | 🟡 | ✅ | ✅ | ☐ |
-| **09** | [Agents, Sandboxing & HITL](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/) | 3 | 🟡 | ✅ | ✅ | ☐ |
-| **10** | [Structured Outputs](./Lecture%2010%20-%20Structured%20Outputs/) | 3 | 🟡 | ✅ | ✅ | ☐ |
-| **11** | [Agent SDK from Scratch](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/) | 3 | 🟠 | ✅ | ✅ | ☐ |
-| **12** | [Embeddings First Principles](./Lecture%2012%20-%20Vector%20Embeddings/) | 4 | 🟢 | ✅ | ✅ | ☐ |
-| **13** | [Semantic Search Project](./Lecture%2013%20-%20Semantic%20Search%20Project/) | 4 | 🟡 | ✅ | ✅ | ☐ |
-| **14** | [Vector Search & Storage](./Lecture%2014%20-%20Vector%20Search%20and%20Storage/) | 4 | 🟡 | ✅ | ✅ | ☐ |
-| **15** | [Vector DBs & ANN](./Lecture%2015%20-%20Vector%20Databases%20and%20ANN/) | 4 | 🟠 | ✅ | ✅ | ☐ |
-| **16** | [RAG Open-Book Architecture](./Lecture%2016%20-%20RAG/) | 5 | 🟡 | ✅ | ✅ | ☐ |
-| **17** | [Advanced RAG](./Lecture%2017%20-%20Advanced%20RAG/) | 5 | 🟠 | ✅ | ✅ | ☐ |
-| **18** | [Vectorless RAG & LLM Wiki](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/) | 5 | 🟠 | ✅ | ✅ | ☐ |
-| **19** | [Agent Memory Systems](./Lecture%2019%20-%20Agent%20Memory%20Systems/) | 5 | 🟠 | ✅ | ✅ | ☐ |
-| **20** | [Graph DB, Cypher & GraphRAG](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/) | 5 | 🟠 | ✅ | ✅ | ✅ |
-| **21** | [MCP Core](./Lecture%2021%20-%20MCP%20Core/) | 6 | 🟡 | ✅ | ✅ | ✅ |
-| **22** | [MCP Resources, Prompts & Gateway](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/) | 6 | 🟠 | ✅ | ✅ | ☐ |
-| **23** | [Claude Skills](./Lecture%2023%20-%20Claude%20Skills/) | 6 | 🟠 | ✅ | ✅ | ☐ |
-| **24** | [Multimodal AI](./Lecture%2024%20-%20Multimodal%20AI/) | 7 | 🟠 | ✅ | ✅ | ✅ |
-| **25** | [vLLM & PagedAttention](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/) | 8 | 🔴 | ✅ | ✅ | ☐ |
-| **26** | [Durable Execution with Inngest](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/) | 8 | 🟠 | ✅ | ✅ | ☐ |
-| **27** | [Full-Stack AI Platform](./Lecture%2027%20-%20Full-Stack%20AI%20Platform/) | 8 | 🔴 | ✅ | ✅ | ☐ |
-| **28** | [Async Indexing & RAG Chat](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/) | 8 | 🔴 | ✅ | ✅ | ☐ |
-| **29** | [GitHub PR Reviewer Bot](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/) | 8 | 🟠 | ✅ | ✅ | ☐ |
-| **30** | [Evals & Testing](./Lecture%2030%20-%20Evals%20and%20Testing/) | 9 | 🟢 | ✅ | ✅ | ☐ |
-| **31** | [Security & Guardrails](./Lecture%2031%20-%20Security%20and%20Guardrails/) | 9 | 🔴 | ✅ | ✅ | ☐ |
-| **32** | [LangChain, LangGraph & LangSmith](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/) | 6 | 🟡 | ✅ | ✅ | ☐ |
+| **08** | [Tool Calling](./Lecture%2009%20-%20Tool%20Calling/) | 3 | 🟡 | ✅ | ✅ | ☐ |
+| **09** | [Agents, Sandboxing & HITL](./Lecture%2010%20-%20AI%20Agents%20and%20HITL/) | 3 | 🟡 | ✅ | ✅ | ☐ |
+| **10** | [Structured Outputs](./Lecture%2011%20-%20Structured%20Outputs/) | 3 | 🟡 | ✅ | ✅ | ☐ |
+| **11** | [Agent SDK from Scratch](./Lecture%2012%20-%20Agent%20SDK%20from%20Scratch/) | 3 | 🟠 | ✅ | ✅ | ☐ |
+| **12** | [Embeddings First Principles](./Lecture%2015%20-%20Vector%20Embeddings/) | 4 | 🟢 | ✅ | ✅ | ☐ |
+| **13** | [Semantic Search Project](./Lecture%2016%20-%20Semantic%20Search%20Project/) | 4 | 🟡 | ✅ | ✅ | ☐ |
+| **14** | [Vector Search & Storage](./Lecture%2017%20-%20Vector%20Search%20and%20Storage/) | 4 | 🟡 | ✅ | ✅ | ☐ |
+| **15** | [Vector DBs & ANN](./Lecture%2018%20-%20Vector%20Databases%20and%20ANN/) | 4 | 🟠 | ✅ | ✅ | ☐ |
+| **16** | [RAG Open-Book Architecture](./Lecture%2019%20-%20RAG/) | 5 | 🟡 | ✅ | ✅ | ☐ |
+| **17** | [Advanced RAG](./Lecture%2020%20-%20Advanced%20RAG/) | 5 | 🟠 | ✅ | ✅ | ☐ |
+| **18** | [Vectorless RAG & LLM Wiki](./Lecture%2021%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/) | 5 | 🟠 | ✅ | ✅ | ☐ |
+| **19** | [Agent Memory Systems](./Lecture%2022%20-%20Agent%20Memory%20Systems/) | 5 | 🟠 | ✅ | ✅ | ☐ |
+| **20** | [Graph DB, Cypher & GraphRAG](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/) | 5 | 🟠 | ✅ | ✅ | ✅ |
+| **21** | [MCP Core](./Lecture%2027%20-%20MCP%20Core/) | 6 | 🟡 | ✅ | ✅ | ✅ |
+| **22** | [MCP Resources, Prompts & Gateway](./Lecture%2028%20-%20MCP%20Resources%20Prompts%20and%20Gateway/) | 6 | 🟠 | ✅ | ✅ | ☐ |
+| **23** | [Claude Skills](./Lecture%2029%20-%20Claude%20Skills/) | 6 | 🟠 | ✅ | ✅ | ☐ |
+| **24** | [Multimodal AI](./Lecture%2033%20-%20Multimodal%20AI/) | 7 | 🟠 | ✅ | ✅ | ✅ |
+| **25** | [vLLM & PagedAttention](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/) | 8 | 🔴 | ✅ | ✅ | ☐ |
+| **26** | [Durable Execution with Inngest](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/) | 8 | 🟠 | ✅ | ✅ | ☐ |
+| **27** | [Full-Stack AI Platform](./Lecture%2034%20-%20Full-Stack%20AI%20Platform/) | 8 | 🔴 | ✅ | ✅ | ☐ |
+| **28** | [Async Indexing & RAG Chat](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/) | 8 | 🔴 | ✅ | ✅ | ☐ |
+| **29** | [GitHub PR Reviewer Bot](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/) | 8 | 🟠 | ✅ | ✅ | ☐ |
+| **30** | [Evals & Testing](./Lecture%2040%20-%20Evals%20and%20Testing/) | 9 | 🟢 | ✅ | ✅ | ☐ |
+| **31** | [Security & Guardrails](./Lecture%2045%20-%20Security%20and%20Guardrails/) | 9 | 🔴 | ✅ | ✅ | ☐ |
+| **32** | [LangChain, LangGraph & LangSmith](./Lecture%2013%20-%20LangChain%20LangGraph%20LangSmith/) | 6 | 🟡 | ✅ | ✅ | ☐ |
 | **★** | [Capstone Proving Ground](#-capstone--prove-the-whole-path) | All | 🔴 | ☐ | ☐ | ☐ |
 
 ---
