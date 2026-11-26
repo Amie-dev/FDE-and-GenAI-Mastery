@@ -50,11 +50,11 @@ An agent acting on behalf of User A is deterministically blocked from invoking t
 
 | Step | Status |
 | :--- | :---: |
-| Review syllabus & reference links below | ☐ |
-| Write all chapter notes + `Lecture_44_Complete_Notes.md` in `notes/` | ☐ |
-| Update `index.md` with links to every chapter | ☐ |
-| Build & test the runnable implementation in `code/` | ☐ |
-| Write & pass the completion gate in `Assignment/task.md` | ☐ |
+| Review syllabus & reference links below | ✅ |
+| Write all chapter notes + `Lecture_44_Complete_Notes.md` in `notes/` | ✅ |
+| Update `index.md` with links to every chapter | ✅ |
+| Build & test the runnable implementation in `code/` | ✅ |
+| Write & pass the completion gate in `Assignment/task.md` | ✅ |
 
 ---
 

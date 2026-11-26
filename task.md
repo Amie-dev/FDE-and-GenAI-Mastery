@@ -19,7 +19,7 @@
 - [x] **Lecture 41** — Neuro-Symbolic Verification, Trajectory Evals, Z3 Constraints & GEPA
 - [x] **Lecture 42** — AI Observability (`OpenTelemetry`, `OpenObserve`) & FOCUS FinOps
 - [x] **Lecture 43** — Progressive Autonomy, Feature Flags (`OpenFeature`/`flagd`) & Safe Releases
-- [ ] **Lecture 44** — Enterprise Identity & Agent Authorization (`OIDC`, `SAML`, `SCIM`, `authentik`, `ReBAC`)
+- [x] **Lecture 44** — Enterprise Identity & Agent Authorization (`OIDC`, `SAML`, `SCIM`, `authentik`, `ReBAC`)
 
 ### Part 2 — 9 Upgraded Existing Lectures (Add Missing Topics & Sync New Numbers)
 - [ ] **Lecture 04** (`Old L04`) — Add Fast vs. Deliberative Models & Prompt Prefix Caching
