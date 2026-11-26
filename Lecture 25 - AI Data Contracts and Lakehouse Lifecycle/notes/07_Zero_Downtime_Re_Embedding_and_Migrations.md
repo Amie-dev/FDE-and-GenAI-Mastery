@@ -38,6 +38,16 @@ flowchart LR
 3. **Verify Green Readiness:** Confirm `greenCount >= blueCount` (minus tombstones) and run offline golden-set recall evals against Green.
 4. **Atomic Alias Swap:** Point `prod_kb_live` from `kb_chunks_v1` to `kb_chunks_v2`. Keep Blue warm for 24 hours for instant rollback before retiring it.
 
+```json
+// Atomic Qdrant / Vector Alias Swap (0 ms downtime, < 1s rollback)
+{
+  "actions": [
+    { "delete_alias": { "alias_name": "prod_kb_live" } },
+    { "create_alias": { "collection_name": "kb_chunks_v2_3072d", "alias_name": "prod_kb_live" } }
+  ]
+}
+```
+
 ---
 
 ## 07.2 Key takeaways

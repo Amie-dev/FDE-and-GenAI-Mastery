@@ -42,6 +42,15 @@ $$\text{Score}(\text{node}) = w_{\text{hit}} \cdot \mathbb{1}[\text{prefixHash} 
 - When `eu-p1` has `queue = 2` (`Score = +84`), it beats cold `eu-p2` (`Score = -8`) — preserving KV reuse.
 - When `eu-p3` backs up to `queue = 18` (`Score = -44`), the router **spills to a less-loaded node**, preventing queueing-induced TTFT spikes!
 
+### Concrete `llm-d` Routing Policy Config
+```yaml
+# llm-d InferencePool Endpoint Picker weights
+scoring:
+  kvCacheAffinityWeight: 100   # +100 if prefixHash is warm on pod
+  queueDepthPenaltyWeight: 8   # -8 per active request in pod queue
+  loraAdapterMatchRequired: true
+```
+
 ---
 
 ## 04.2 Key takeaways

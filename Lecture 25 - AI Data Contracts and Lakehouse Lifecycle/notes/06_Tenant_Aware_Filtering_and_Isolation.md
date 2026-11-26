@@ -30,6 +30,16 @@ By the end of this chapter you should be able to:
 > [!CAUTION]
 > **Never post-filter top-K vector results by `tenant_id`!** If you fetch global `topK = 5` and then filter in TypeScript for `tenantId === "t1"`, 4 of the 5 results might belong to `t2` — leaving `t1` with 1 (or 0!) results and leaking `t2` vectors into app memory. Always pass `filter: { tenantId }` **inside** the vector query.
 
+```typescript
+// ✅ Pre-filtered inside Qdrant / pgvector (Zero cross-tenant leakage)
+const hits = await vectorDb.search({
+  collection: "kb_chunks_live",
+  vector: queryEmbedding,
+  limit: 5,
+  filter: { must: [{ key: "tenant_id", match: { value: caller.tenantId } }] },
+});
+```
+
 ---
 
 ## 06.2 Key takeaways

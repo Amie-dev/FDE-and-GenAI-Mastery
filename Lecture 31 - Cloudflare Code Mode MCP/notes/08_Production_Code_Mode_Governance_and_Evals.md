@@ -29,6 +29,16 @@ By the end of this chapter you should be able to:
 | **10-Item Pagination Loop** | `10` LLM roundtrips | **`1` `execute()` call** | **10× fewer turns** |
 | **Secret Exposure** | Host-side (safe) | **Host-side RPC proxy (`0` secrets in sandbox)** | Parity + sandboxed code |
 
+### Host-Proxy SSRF & Method Guard
+```typescript
+const ALLOWED_BASE = "https://api.enterprise.internal";
+const ALLOWED_METHODS = new Set(["GET", "POST"]);
+
+if (!url.startsWith(ALLOWED_BASE) || !ALLOWED_METHODS.has(method.toUpperCase())) {
+  throw new Error(`Blocked by Host Proxy Policy: ${method} ${url}`);
+}
+```
+
 ---
 
 ## 08.2 Key takeaways

@@ -41,6 +41,15 @@ flowchart LR
     Def --> Query["Grounded Query / Tool Call<br/>(Zero Formula Guessing)"]
 ```
 
+### Worked Example: Why Semantic Contracts Stop \$60,000 Hallucinations
+Suppose `billing.subscriptions` for **Acme** has 3 rows:
+- Row 1: `plan = "enterprise"`, `mrr_cents = 1000000` (`$10,000/mo`), `status = "active"`, `is_internal_test = false`
+- Row 2: `plan = "sandbox_qa"`, `mrr_cents = 500000` (`$5,000/mo`), `status = "active"`, `is_internal_test = true`
+- Row 3: `plan = "starter"`, `mrr_cents = 100000` (`$1,000/mo`), `status = "canceled"`, `is_internal_test = false`
+
+- **Without Metric Contract:** An unguided LLM writes `SELECT SUM(mrr_cents * 12) / 100 FROM billing.subscriptions` $\rightarrow$ **`$192,000` (wrong by `$72,000`!)**.
+- **With `net_arr` Contract (`requiredFilters: ["status = 'active'", "is_internal_test = false"]`):** Excludes Row 2 (QA test) and Row 3 (canceled) $\rightarrow$ **`$120,000` (100% finance-accurate)**.
+
 ---
 
 ## 05.2 Key takeaways

@@ -39,6 +39,16 @@ flowchart LR
 > [!IMPORTANT]
 > **Two-Stage Safety Net:** On rollback, don't just revert `active_model` back to the baseline—also **downgrade `autonomy_mode` from `autonomous` $\rightarrow$ `human_approved`** if the incident involved tool-execution errors.
 
+### Concrete Rollback Event Output (`< 30s` SLA)
+```json
+{
+  "rolledBack": true,
+  "reason": "Canary taskSuccessRate 40.0% < 90.0%",
+  "rollbackElapsedMs": 0.005,
+  "postRollbackFlagd": { "canaryWeightPct": 0, "autonomyMode": "human_approved" }
+}
+```
+
 ---
 
 ## 4. Model Migration Playbook (Step-by-Step)

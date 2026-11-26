@@ -29,6 +29,16 @@ By the end of this chapter you should be able to:
 | **`terminationGracePeriodSeconds`** | Time K8s waits after `SIGTERM` before `SIGKILL` | `60`–`120` seconds |
 | **Queue Visibility Timeout** | Auto-requeues job if a pod crashes (`OOMKilled`) without acking | `90` seconds |
 
+### Graceful `SIGTERM` Handler Pattern
+```typescript
+let shuttingDown = false;
+process.on("SIGTERM", async () => {
+  shuttingDown = true; // Stop pulling new jobs from Redis
+  await waitForCurrentStepCheckpoint(); // Finish & persist current step
+  process.exit(0);
+});
+```
+
 ---
 
 ## 07.2 Key takeaways

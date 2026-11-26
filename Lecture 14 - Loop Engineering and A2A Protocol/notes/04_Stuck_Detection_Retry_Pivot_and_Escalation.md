@@ -54,6 +54,14 @@ flowchart TD
 > [!WARNING]
 > **Never retry a deterministic `400` or `PermissionDenied` error.** Retrying the exact same invalid arguments 3 times is the #1 cause of stuck loops. Classify errors into `transient` vs. `structural` before deciding between Retry and Pivot.
 
+### Concrete Trace: Catching an A-B-A-B Oscillation on Step 4
+1. **Step 1:** `edit("router.ts", "import { z } from 'zod'")` $\rightarrow$ `tsc` error (`Cannot find module 'zod'`).
+2. **Step 2:** `edit("router.ts", "import z from 'zod'")` $\rightarrow$ `tsc` error.
+3. **Step 3:** `edit("router.ts", "import { z } from 'zod'")` $\rightarrow$ `tsc` error.
+4. **Step 4:** Agent proposes `import z from 'zod'` again!
+- **Stuck Detector:** Sees `[sigA, sigB, sigA, sigB]` in the 4-step sliding window $\rightarrow$ **Oscillation detected!**
+- **Pivot:** Bans `edit("router.ts")` import guesses, forces `PlanNode` to run `bash("cat package.json")` first $\rightarrow$ discovers `zod` isn't installed yet!
+
 ---
 
 ## 04.3 The Human Escalation Handoff Packet

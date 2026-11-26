@@ -65,6 +65,15 @@ const apiServer = await openApiMcpServer({
 });
 ```
 
+### What `execute()` Looks Like in Practice
+After `search({ query: "dns" })` returns the matching paths, the agent writes one clean `execute()` snippet:
+```javascript
+async () => {
+  const zones = await request({ method: "GET", path: "/zones?status=active" });
+  return zones.result.map((z) => ({ id: z.id, name: z.name }));
+}
+```
+
 ---
 
 ## 04.2 Key takeaways

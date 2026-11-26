@@ -32,7 +32,25 @@ flowchart TD
 
 ### Why tombstones prevent "zombie resurrection"
 
-Suppose an ingestion worker started embedding `doc_42` at `12:00:00`, and a GDPR delete arrives at `12:00:02`. If the delete finishes at `12:00:03` and the slow ingestion worker finishes writing chunks at `12:00:05`, **`doc_42` comes back to life**. Checking a persistent **tombstone (`deleted_sources`)** before writing prevents zombie resurrection.
+Watch the race condition without a tombstone:
+- `12:00:00` — Slow ingestion worker starts embedding `doc_42`.
+- `12:00:02` — Customer submits **GDPR Art. 17 Erasure** for `doc_42`.
+- `12:00:03` — Cascade deleter wipes SQL, Vector, and Graph (`0` rows left).
+- `12:00:05` — Slow worker finishes embedding and inserts `doc_42` chunks back into Qdrant—**resurrecting deleted PII!**
+
+**Fix:** Step 1 of deletion writes a persistent tombstone `{ tenantId: "t1", sourceId: "doc_42", deletedAt: "12:00:02Z" }`. Every ingestion worker checks `isTombstoned(tenantId, sourceId)` right before committing writes—dropping the stale `12:00:05` write safely.
+
+### Concrete Deletion Audit Receipt
+```json
+{
+  "receiptId": "gdpr_del_991",
+  "tenantId": "t1",
+  "sourceId": "doc_42",
+  "deletedCounts": { "sql": 1, "vectorChunks": 12, "graphNodes": 5, "cacheKeys": 2 },
+  "remainingDerivedCount": 0,
+  "verified": true
+}
+```
 
 ---
 

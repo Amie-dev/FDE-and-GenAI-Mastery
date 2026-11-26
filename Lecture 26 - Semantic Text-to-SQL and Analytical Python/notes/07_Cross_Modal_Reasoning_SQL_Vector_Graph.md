@@ -42,6 +42,15 @@ flowchart TD
 
 If you let the Vector store do a broad semantic search for `"EMEA churn"`, it might pull support tickets from **2024** or from a **different customer** (`Beta Corp US` vs. `Beta Corp EU`). By running SQL **first** to identify the exact `canonicalId` (`c2`) and passing `filter: { customerId: "c2" }` into Vector and Graph, every qualitative quote is **provably tied to the exact revenue delta**.
 
+### Concrete 3-Modality Synthesis Payload
+```json
+{
+  "sqlTruth": { "region": "EMEA", "q2Mrr": 30000, "q3Mrr": 15000, "deltaUsd": -15000, "churnedCustomer": "c2" },
+  "vectorEvidence": [{ "customerId": "c2", "ticketId": "zd_884", "quote": "SAML SSO timeout after v4.2 upgrade" }],
+  "graphBlastRadius": [{ "sharedDependency": "SAML_Provider_X", "atRiskCustomers": ["c1", "c5"] }]
+}
+```
+
 ---
 
 ## 07.2 Key takeaways

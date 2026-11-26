@@ -41,7 +41,13 @@ flowchart LR
 
 ## 03.2 Rules for production-grade synthetic fixtures
 
-1. **Preserve foreign-key & cross-system joins:** If `CRM` uses `cust_101` and `Billing` uses `stripe_991` linked by `email`, masking `email` must be **deterministic** (`hmac(email)`) so cross-system identity resolution still works!
+1. **Preserve foreign-key & cross-system joins (Deterministic Pseudonymization):**
+   If `CRM` and `Billing` link via `email`, random Faker replacement breaks the join (`alice@acme.com` becomes `bob@example.com` in CRM and `carol@example.org` in Billing!). Use **keyed HMAC**:
+   ```typescript
+   // Both CRM and Billing map "ops@acme.com" -> "anon_8f3a19c2@synthetic.local"
+   const maskEmail = (email: string, secret: string) =>
+     `anon_${hmacSha256(email.trim().toLowerCase(), secret).slice(0, 8)}@synthetic.local`;
+   ```
 2. **Match production skew and nulls:** Production data has `15%` missing phone numbers, duplicate accounts, and `past_due` edge cases. Clean textbook fixtures hide real agent bugs.
 3. **Seeded reproducibility:** Always pass a fixed PRNG `seed` so CI release gates produce identical synthetic rows on every run.
 

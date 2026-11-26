@@ -74,7 +74,17 @@ Never spend LLM tokens to verify something a `zod` schema, HTTP status code, or 
 
 ---
 
-## 01.4 Raw ReAct vs. Plan-Act-Verify
+## 01.4 Worked Example: Raw ReAct vs. PAV on a Database Migration
+
+Suppose the user asks: *"Add `tenant_id` to `invoices`, backfill existing rows, and verify zero NULLs remain."*
+- **Raw ReAct:** Runs `ALTER TABLE`, sees `200 OK`, forgets the backfill because the `ALTER` response had noisy schema warnings, and tells the user *"Done!"* (leaving 50,000 NULL rows in prod!).
+- **Plan-Act-Verify (PAV):**
+  1. **PLAN:** Emits `{ steps: [ { id: 1, action: "alter_table", postCondition: "column_exists('tenant_id')" }, { id: 2, action: "backfill_rows", postCondition: "rows_updated > 0" }, { id: 3, action: "count_nulls", postCondition: "null_count === 0" } ] }`.
+  2. **ACT + VERIFY:** Executes Step 1 $\rightarrow$ `VerifyNode` runs `SELECT` schema check $\rightarrow$ passes. Executes Step 2 $\rightarrow$ `VerifyNode` checks `rows_updated`. Executes Step 3 $\rightarrow$ `VerifyNode` asserts `null_count === 0` before allowing the loop to finish!
+
+---
+
+## 01.5 Raw ReAct vs. Plan-Act-Verify
 
 | Dimension | Raw ReAct | Plan-Act-Verify (PAV) |
 | :--- | :--- | :--- |

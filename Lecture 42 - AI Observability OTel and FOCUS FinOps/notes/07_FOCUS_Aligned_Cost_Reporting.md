@@ -73,6 +73,23 @@ flowchart LR
 ### Example SQL Query on a FOCUS-Aligned Ledger
 Because every provider row is normalized into one table, one SQL query answers both finance and engineering questions:
 
+```json
+// Sample FOCUS v1.0 Record Generated from an OTel Span
+{
+  "BillingAccountId": "org_ai_prod_001",
+  "ProviderName": "OpenAI",
+  "ServiceCategory": "AI and Machine Learning",
+  "ResourceId": "gpt-4o",
+  "PricingQuantity": 3450,
+  "PricingUnit": "Tokens",
+  "ListCost": 0.01095,
+  "EffectiveCost": 0.009855,
+  "Tags": { "tenant_id": "tenant_acme", "feature_id": "support_triage" },
+  "x_TraceId": "7b9cd45c34a022b8c378cb18a9a568bc",
+  "x_TaskSuccess": true
+}
+```
+
 ```sql
 SELECT
     Tags['tenant_id'] AS tenant_id,

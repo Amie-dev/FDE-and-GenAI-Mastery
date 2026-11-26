@@ -54,7 +54,9 @@ flowchart LR
 ```
 
 > [!IMPORTANT]
-> **Why `bash` replaces 20 bespoke tools:** Instead of shipping separate tools for `git_status`, `npm_test`, `ripgrep`, `docker_ps`, and `curl`, a coding model already knows POSIX/CLI syntax. Giving it `bash` + `AGENTS.md` ("use `npm run gate`") eliminates schema bloat and preserves prompt-prefix cache stability.
+> **Why `bash` replaces 20 bespoke tools (Token Math):**
+> Suppose a bloated harness registers 35 JSON tool schemas (`~200` tokens each = **`7,000` tokens** in every turn's prompt). Over a 15-turn debugging loop, you pay to prefill `7,000 × 15 = 105,000` schema tokens—and the model still confuses `git_diff_staged` with `git_diff_files`!
+> With `Pi`'s 4 primitives (`read`, `write`, `edit`, `bash`), tool schemas take only **`~400` tokens** (`400 × 15 = 6,000` tokens—**94% fewer schema tokens**) and the model uses standard POSIX/CLI commands it already mastered during pretraining.
 
 ---
 

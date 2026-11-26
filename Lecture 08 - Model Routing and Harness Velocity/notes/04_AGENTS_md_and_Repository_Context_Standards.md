@@ -90,7 +90,27 @@ flowchart TD
 
 ---
 
-## 04.4 The "Compound Engineering" feedback loop
+## 04.4 Worked Example: Before vs. After `AGENTS.md`
+
+Consider a monorepo using **`pnpm`**, **`node:test`**, and strict Zod validation:
+
+| Scenario | What Happens Without `AGENTS.md` | What Happens With `AGENTS.md` |
+| :--- | :--- | :--- |
+| **Running Tests** | Agent guesses `npm test` or `npx jest`, crashes on ESM imports, burns 3 turns debugging Jest config | Agent reads `Test: pnpm --filter api test` and runs the exact command on Turn 1 |
+| **Adding an Endpoint** | Agent writes manual `if (!req.body.email)` checks instead of the repo's `zod` middleware | Agent sees *"All routes must validate input with `src/middleware/validate.ts`"* and matches the codebase on the first try |
+| **Editing Protected Files** | Agent modifies a generated SQL migration or weakens a release-gate test | Agent obeys `Boundaries: Never edit migrations/ or release-gate.test.ts` |
+
+### Common `AGENTS.md` Anti-Patterns vs. Fixes
+
+| Anti-Pattern | Why It Hurts Agent Accuracy | Fix |
+| :--- | :--- | :--- |
+| **2,000-line `AGENTS.md` novel** | Triggers "Lost in the Middle"; wastes thousands of tokens per turn | Keep root `< 150` lines; move subsystem rules to subdirectory `AGENTS.md` files |
+| **Stale commands** (`yarn test` when repo moved to `pnpm`) | Agent loops endlessly trying a broken command | Test every command in `AGENTS.md` in CI or during onboarding |
+| **Vague platitudes** (*"Write clean, modular code"*) | Zero actionable signal for an LLM | Write concrete rules (*"Keep functions < 40 lines; use early returns; no `any`"*) |
+
+---
+
+## 04.5 The "Compound Engineering" feedback loop
 
 Treat every agent mistake as a **missing rule in `AGENTS.md`**, not a one-off prompt annoyance:
 

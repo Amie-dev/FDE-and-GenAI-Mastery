@@ -43,6 +43,17 @@ flowchart LR
 | **2. Authorization / HITL** | `amount > 50 && !hasHitlApproval => BLOCKED` | Boundary leak at `amount = 50.01` or `51` |
 | **3. Idempotency** | `run(call, key) === run(replay(call, key))` | Duplicate mutations on network retries |
 
+### Concrete Property Test Snippet
+```typescript
+for (let i = 0; i < 100; i += 1) {
+  const amount = Math.floor(rng() * 250) - 20; // [-20 .. 229]
+  const hitl = rng() > 0.5;
+  const result = await verifyPlanWithZ3({ amountUsd: amount, hasHitlApproval: hitl });
+  const expectedSat = amount >= 0 && amount <= 100 && (amount <= 50 || hitl);
+  assert.equal(result.sat, expectedSat, `Mismatch at amount=${amount}, hitl=${hitl}`);
+}
+```
+
 ---
 
 ## 03.2 Key takeaways

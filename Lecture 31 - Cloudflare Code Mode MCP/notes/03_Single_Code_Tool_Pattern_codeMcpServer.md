@@ -49,6 +49,14 @@ const wrappedServer = await codeMcpServer({
 
 Because TypeScript type signatures (`codemode.getOrder(args: { orderId: string }): Promise<Order>`) are **far more compact** than verbose JSON Schema objects, 50 tools shrink by **5×–10×** in tokens while enabling multi-step chaining in a single call.
 
+### Choosing the Right Pattern
+
+| Upstream Tool Count | Recommended Pattern | Why |
+| :---: | :--- | :--- |
+| `1 – 15` tools | Standard MCP | Small enough that raw JSON schemas don't bloat context |
+| `15 – 150` tools | **`codeMcpServer()`** | TypeScript declarations fit cleanly in 1 `code` tool |
+| `200 – 2,500+` endpoints | **`openApiMcpServer()`** | Constant `~1,000` tokens via `search()` + `execute()` |
+
 ---
 
 ## 03.2 Key takeaways

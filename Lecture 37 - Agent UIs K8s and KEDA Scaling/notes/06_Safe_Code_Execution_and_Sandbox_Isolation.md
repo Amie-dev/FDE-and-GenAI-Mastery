@@ -33,6 +33,23 @@ flowchart LR
     Pod --> Net["K8s NetworkPolicy<br/>(Deny egress to 169.254.169.254 & internal VPC)"]
 ```
 
+### Hardened Kubernetes Sandbox Pod Spec
+```yaml
+spec:
+  runtimeClassName: gvisor
+  automountServiceAccountToken: false
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10001
+  containers:
+    - name: python-sandbox
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: ["ALL"]
+```
+
 ---
 
 ## 06.2 Key takeaways

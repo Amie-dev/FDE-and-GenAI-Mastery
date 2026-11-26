@@ -40,6 +40,15 @@ Classify each delegated sub-task as **`required`** or **`best_effort`**:
 - If a **`required`** peer fails (e.g., *Security Compliance*), the Fan-In step triggers a **Pivot** or **Escalation** — never silently approve.
 - If a **`best_effort`** peer fails (e.g., *Optional Changelog Summary*), synthesize the remaining artifacts and attach a `warnings: ["DocsAgent timed out"]` field.
 
+```typescript
+// Concrete Fan-Out with per-branch timeout & Promise.allSettled
+const results = await Promise.allSettled(
+  branches.map((b) =>
+    callA2APeer(b.agentUrl, b.task, { signal: AbortSignal.timeout(b.timeoutMs) })
+  )
+);
+```
+
 ---
 
 ## 07.2 Conflict reconciliation in Fan-In synthesis

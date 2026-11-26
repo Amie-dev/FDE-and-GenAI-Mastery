@@ -35,7 +35,13 @@ A Forward-Deployed Engineer (FDE) engagement isn't done until the customer's own
 2. **Runbooks & Incident Playbooks:** 1-page guides for *"How to roll back a model in `flagd`"*, *"How to pause autonomous mode"*, and *"How to raise a tenant budget cap"*.
 3. **Observability & FinOps Dashboards:** Pre-built OpenObserve views for Task Success SLO, `p95 TTFT`, Drift Alerts, and FOCUS CPST by feature.
 4. **Regression Eval Harness:** Automated CI script so the customer can safely test future model upgrades (e.g., next quarter's model release) using the exact same shadow $\rightarrow$ canary pipeline.
-5. **Formal UAT Sign-Off Record:** Signed off by Product Owner, Security/Compliance Lead, and SRE Lead.
+5. **Formal UAT Sign-Off Record:** Signed off by Product Owner, Security/Compliance Lead, and SRE Lead:
+   ```markdown
+   - [x] Release Manifest ID: `rel_2026_11_26_004` (HMAC-SHA256 Verified)
+   - [x] Live Kill-Switch Verified (`autonomous -> human_approved` in < 5s)
+   - [x] Canary Auto-Rollback Verified (`< 30s` on degraded model injection)
+   - [x] Signed Off By: Product Owner · Security Lead · Customer SRE
+   ```
 
 ---
 

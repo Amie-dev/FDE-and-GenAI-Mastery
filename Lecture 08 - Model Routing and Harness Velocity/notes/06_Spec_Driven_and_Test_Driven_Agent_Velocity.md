@@ -89,7 +89,18 @@ export function assertTestsUnmodified(changedFiles: string[], protectedGlobs: st
 
 ---
 
-## 06.4 Key takeaways
+## 06.4 Worked Example: System-1-First + TDD Escalation Math
+
+Suppose you need an agent to implement 100 medium-complexity TypeScript bugfixes:
+- **Always using System-2 (`o3` / frontier reasoning):** 100 tasks × \$0.12/task = **\$12.00**, avg latency `28s`/task.
+- **System-1-First (`Haiku` / `Flash`) + TDD Oracle + System-2 Fallback:**
+  - `75` tasks pass `tsc && npm test` on System-1's first attempt: $75 \times \$0.008 = \$0.60$, avg `3s`.
+  - `25` tasks fail the TDD oracle on Attempt 1 and escalate with exact compiler/test stderr to System-2: $25 \times (\$0.008 + \$0.10) = \$2.70$.
+  - **Total Cost:** **\$3.30** (**72.5% cheaper** than System-2-always) with **identical verified test pass rate**!
+
+---
+
+## 06.5 Key takeaways
 
 1. **Spec first, tests second, implementation third.** Never ask an agent to generate production code without an executable acceptance test.
 2. **Always observe the RED failure** before generating the GREEN patch.

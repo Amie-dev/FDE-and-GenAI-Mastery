@@ -54,12 +54,33 @@ flowchart LR
 ## 01.3 The Data Estate Inventory contract
 
 Record six fields for every asset discovered during Phase 0/1 engagement:
-- `assetId` (e.g., `crm.salesforce.accounts`)
-- `tier` (`OLTP` | `WAREHOUSE` | `SAAS_API` | `DOCUMENT` | `SHADOW`)
-- `ownerTeam` & `stewardEmail`
-- `freshnessSla` (e.g., `real-time`, `1h`, `24h`)
-- `piiClassification` (`PUBLIC` | `INTERNAL` | `CONFIDENTIAL` | `RESTRICTED`)
-- `systemOfRecordFor` (e.g., `["contact_email", "account_owner"]`)
+
+```json
+[
+  {
+    "assetId": "crm.salesforce.accounts",
+    "tier": "SAAS_API",
+    "ownerTeam": "@revops",
+    "freshnessSla": "real-time",
+    "piiClassification": "CONFIDENTIAL",
+    "systemOfRecordFor": ["account_owner", "sales_stage"]
+  },
+  {
+    "assetId": "shadow.finance.q4_arr_v3_xlsx",
+    "tier": "SHADOW",
+    "ownerTeam": "unknown (Bob laptop)",
+    "freshnessSla": "manual",
+    "piiClassification": "CONFIDENTIAL",
+    "systemOfRecordFor": [],
+    "action": "QUARANTINE_AND_MIGRATE_TO_DWH"
+  }
+]
+```
+
+### Quick Routing Rule of Thumb
+- Need **live state right now** (*"Was this invoice paid 30 seconds ago?"*) $\rightarrow$ **OLTP Read-Replica** or **SaaS API**.
+- Need **historical aggregation** (*"Compare Q1–Q4 churn by region"*) $\rightarrow$ **Warehouse / Lakehouse**.
+- Found a **Shadow Spreadsheet** $\rightarrow$ **Never connect an agent to it**; promote its logic into a governed `dbt` model first.
 
 ---
 

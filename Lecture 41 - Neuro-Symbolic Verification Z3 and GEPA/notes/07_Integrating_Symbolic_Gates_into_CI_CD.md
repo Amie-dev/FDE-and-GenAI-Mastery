@@ -41,6 +41,14 @@ flowchart LR
 | **Property-Based Suite** | **CI/CD** (every PR) | `1–5 s` | Fail build on any counterexample |
 | **Trajectory Eval + GEPA** | **CI/CD** (prompt/model PR) | `10–60 s` | Fail build if trajectory score `< 0.90` or token cost regresses |
 
+### Concrete CI Release Gate Workflow (`.github/workflows/ai-gate.yml`)
+```yaml
+- name: Run Neuro-Symbolic & Trajectory Release Gates
+  run: |
+    npm run typecheck
+    npm test   # Runs Trajectory Eval + Z3 Policy + 50-case PBT + GEPA Pareto Gate
+```
+
 ---
 
 ## 07.2 Key takeaways

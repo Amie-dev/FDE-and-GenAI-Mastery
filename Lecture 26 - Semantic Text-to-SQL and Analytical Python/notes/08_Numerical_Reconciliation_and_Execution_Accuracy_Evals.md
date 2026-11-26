@@ -33,7 +33,7 @@ flowchart LR
 
 ### Design details to watch out for
 
-1. **Strip formatting commas:** `$69,000` must parse as `69000`, not `69` and `000`.
+1. **Strip formatting commas:** `$69,000` must parse as `69000`, not `69` and `000` (e.g., `Number(match.replaceAll(",", ""))` from `/\b\d[\d,]*(?:\.\d+)?\b/g`).
 2. **Tolerance (`<= 0.5%`):** Allows harmless rounding (e.g., `4.35%` vs `4.3%`) while catching any fabricated or miscalculated number.
 3. **Separate question text from answer text:** Don't pass `"Q2"` or `"2026"` into the reconciler if those date/quarter labels aren't in the numeric ledger — reconcile only the **generated answer** against `{ ...ledger, ...allowedConstants }`.
 

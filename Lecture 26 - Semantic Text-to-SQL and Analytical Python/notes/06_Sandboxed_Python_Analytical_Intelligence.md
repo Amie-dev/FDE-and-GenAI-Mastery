@@ -50,6 +50,16 @@ Running arbitrary LLM-generated Python with `exec()` on your API server is a **R
 3. **Zero Inherited Environment (`env: {}`):** Even if a script somehow inspected `os.environ`, no `OPENAI_API_KEY`, `DATABASE_URL`, or AWS credentials exist in the child process.
 4. **Strict Time & Buffer Caps (`timeout: 2000ms`, `maxBuffer: 256KB`):** Stops `while True: pass` infinite loops or stdout memory bombs immediately.
 
+```typescript
+// Launching isolated Python cleanly from Node.js
+const res = spawnSync("python3", ["-I", "-c", safeScript], {
+  env: {},              // Zero secrets inherited!
+  timeout: 2000,        // Kill infinite loops at 2s
+  maxBuffer: 256 * 1024,
+  encoding: "utf8",
+});
+```
+
 > [!TIP]
 > **In multi-tenant SaaS production:** Pair these process-level controls with a **container or microVM boundary** (Docker `--network=none --read-only`, Firecracker, or Cloudflare Sandboxes) as covered in Lecture 08 Chapter 07.
 

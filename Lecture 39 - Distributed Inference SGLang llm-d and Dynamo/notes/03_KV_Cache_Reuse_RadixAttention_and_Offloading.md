@@ -49,7 +49,7 @@ When **User B** sends a legal question:
 
 ## 03.2 Tiered KV Offloading: `LMCache` & `Mooncake`
 
-GPU HBM is expensive and small (`80 GB` on an H100). If 100 tenants each have a `10,000`-token knowledge base, their combined KV cache (`100 * 3.2 GB = 320 GB`) **does not fit in GPU HBM**.
+GPU HBM is expensive and small (`80 GB` on an H100). On a 70B GQA model, each token's KV cache uses `~320 KB` (`4,500 tokens ≈ 1.44 GB`; `10,000 tokens ≈ 3.2 GB`). If 100 tenants each have a `10,000`-token knowledge base, their combined KV cache (`100 × 3.2 GB = 320 GB`) **does not fit in GPU HBM**.
 
 **`LMCache`** and **Moonshot AI's `Mooncake`** solve this by adding **tiered KV offloading**:
 

@@ -48,7 +48,24 @@ Why lineage matters for AI agents:
 
 ---
 
-## 02.3 Ownership & access control lists (ACLs)
+## 02.3 Worked Example: Catching Stale Data via Operational Metadata
+
+Suppose a CFO asks the agent: *"What is Acme's current MRR?"*
+The catalogue returns `mart.customer_360` with **operational metadata**:
+```json
+{
+  "assetId": "mart.customer_360",
+  "qualityTier": "GOLD",
+  "lastSyncedAt": "2026-11-24T02:00:00Z",
+  "expectedFreshnessHours": 2,
+  "upstreamStatus": "FAILED (stg_subscriptions_cdc)"
+}
+```
+Because `now - lastSyncedAt` (`58 hours`) exceeds `expectedFreshnessHours` (`2 hours`), a metadata-aware agent **warns the user** (*"Warning: `mart.customer_360` is 58h stale due to a failed `stg_subscriptions_cdc` job"*) or falls back to the live Billing API—instead of confidently reporting outdated numbers!
+
+---
+
+## 02.4 Ownership & access control lists (ACLs)
 
 Every catalogued asset must carry:
 1. **Data Owner:** Accountable for schema changes and quality SLAs.

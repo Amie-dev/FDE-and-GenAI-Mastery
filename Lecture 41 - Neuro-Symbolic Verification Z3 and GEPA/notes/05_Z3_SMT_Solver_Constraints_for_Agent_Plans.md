@@ -45,6 +45,15 @@ flowchart LR
 
 If you put all 25 constraints into a single `solver.check()` call and it returns `"unsat"`, you only know *"something failed"*. By checking each policy (or using Z3's `unsatCore()`), you can tell the planner **exactly which rule broke** (`"HitlViolation: refund $80 > $50 requires hasHitlApproval"`), enabling instant self-repair.
 
+```typescript
+// Concrete z3-solver check for Conditional HITL (> $50 requires approval)
+const s = new Z3.Solver();
+const total = Z3.Int.val(planTotalUsd);
+const approved = Z3.Bool.val(hasHitlApproval);
+s.add(Z3.Implies(total.gt(50), approved));
+const status = await s.check(); // "sat" or "unsat"
+```
+
 ---
 
 ## 05.2 Key takeaways

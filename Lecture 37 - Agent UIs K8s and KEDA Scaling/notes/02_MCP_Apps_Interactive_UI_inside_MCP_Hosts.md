@@ -38,6 +38,13 @@ flowchart LR
 2. **Typed `postMessage` Bridge:** The widget can only trigger host-approved actions (e.g., calling an allow-listed MCP tool or updating its own state).
 3. **Strict Content Security Policy (CSP):** Block external script/image exfiltration from inside the widget.
 
+### `AG-UI` vs. `MCP Apps`: When to Use Which
+
+| Pattern | Best For | Where It Renders |
+| :--- | :--- | :--- |
+| **`AG-UI`** | Your own custom full-stack AI app (Next.js/React) | Your app's native UI components |
+| **`MCP Apps`** | Portable interactive widgets (tables, forms, charts) | Sandboxed `iframe` inside *any* MCP host (IDE, ChatGPT/Claude-style host) |
+
 ---
 
 ## 02.2 Key takeaways

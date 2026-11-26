@@ -26,4 +26,3 @@
 | **Basic Code Project** | `authentik`-compatible OIDC JWT signer/verifier, RFC 8693 OBO Token Exchange, Zanzibar ReBAC graph engine, and fail-closed MCP Gateway | [code/Basic Code/](./code/Basic%20Code/package.json) |
 | **Implementation Guide** | Chapter-by-chapter walkthrough with full source code and explanations | [implementations guide/](./code/Basic%20Code/implementations%20guide/00_Overview_and_File_Structure.md) |
 | **Assignment & Release Gate** | Acceptance criteria, verification commands, and self-check rubric | [Assignment/task.md](./Assignment/task.md) |
-

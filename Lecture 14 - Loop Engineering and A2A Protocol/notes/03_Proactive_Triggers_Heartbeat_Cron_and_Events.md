@@ -49,6 +49,11 @@ Every proactive trigger must run a deterministic `$0` pre-flight check first:
 - **Incident Watchdog:** Query `error_rate > 0.05`; if metrics are green, do not wake the System-2 root-cause agent.
 - **Inbox Triage:** Check `unreadCount > 0`; if `0`, skip.
 
+### Worked Cost Math: Why `$0` Pre-Flight Saves 99%
+Suppose a Heartbeat PR Monitor runs every **5 minutes** (`288` ticks/day), and each LLM check costs `$0.03`:
+- **Without Pre-Flight:** $288 \times \$0.03 = \mathbf{\$8.64/\text{day}}$ (**\$259/month** per repo just to say *"nothing changed"*!).
+- **With `$0` Pre-Flight (`git ls-remote`):** Only `2` ticks/day actually have new commits $\rightarrow 2 \times \$0.03 = \mathbf{\$0.06/\text{day}}$ (**99.3% cost reduction**).
+
 ---
 
 ## 03.3 Idempotency, cooldowns, and concurrency locks

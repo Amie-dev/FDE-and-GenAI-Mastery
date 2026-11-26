@@ -51,6 +51,11 @@ flowchart LR
 2. **Force `reasoning` *before* `verdict`:** `{ reasoning: string, verdict: "PASS" | "FAIL" }`. Because decoding is autoregressive, generating the verdict *first* locks the model into a snap guess.
 3. **Neutralize Verbosity & Self-Preference Bias:** Explicitly tell the judge *"Do not reward longer responses; concise and accurate beats verbose."*
 
+### Worked Calibration Example (50 Human-Labeled Traces)
+Suppose on `50` human-labeled traces, your binary judge agrees on `24 PASS` and `22 FAIL`, with `2 FP` and `2 FN`:
+- Observed agreement $p_o = 46 / 50 = 0.92$, expected chance agreement $p_e \approx 0.50$.
+- **Cohen's Kappa:** $\kappa = \frac{p_o - p_e}{1 - p_e} = \frac{0.92 - 0.50}{1 - 0.50} = \mathbf{0.84} \ge 0.80$ ✅ (Judge approved for CI!).
+
 ---
 
 ## 02.3 Key takeaways

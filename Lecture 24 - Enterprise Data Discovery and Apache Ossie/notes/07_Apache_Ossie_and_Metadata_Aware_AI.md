@@ -46,6 +46,12 @@ An enterprise catalogue can hold 10,000 tables. Never dump the whole catalogue i
 2. **Step 2 (Lineage & ACL Filter):** Strip restricted PII columns and uncertified `raw` tables.
 3. **Step 3 (Resolve & Cite):** Run deterministic identity resolution + precedence rules, then let the LLM format the grounded, cited answer.
 
+### End-to-End Trace: *"Is Acme Corp active and what is their ARR?"*
+1. **Glossary:** `"ARR"` $\rightarrow$ `net_arr` (`status = 'active' AND is_internal_test = false`).
+2. **Crosswalk:** `"Acme Corp"` $\rightarrow$ `canon_acme_01` (`sf_001` + `cus_99`).
+3. **ACL & Precedence:** Caller has `finance:read`; `billing > crm` for `subscriptionStatus`.
+4. **Result:** *"Acme Corp is **`past_due`** (per `billing.subscriptions` `cus_99`; note `crm.accounts` still shows `active`), with `$0` active `net_arr`."*
+
 ---
 
 ## 07.3 Key takeaways

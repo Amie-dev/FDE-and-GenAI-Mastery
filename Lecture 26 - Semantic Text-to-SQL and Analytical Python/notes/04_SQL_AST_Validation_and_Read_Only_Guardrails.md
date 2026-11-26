@@ -42,6 +42,14 @@ Now compare what happens when an attacker injects `; DROP TABLE mart_subscriptio
 - `ast` becomes an **Array of 2 statements**: `[{ type: "select" }, { type: "drop" }]`!
 - Our validator checks `if (Array.isArray(ast) && ast.length !== 1)` $\rightarrow$ **Blocked immediately!**
 
+### Concrete Attack Vector Test Table
+
+| Attack Payload | Naive Regex Guard | AST Validator (`node-sql-parser`) |
+| :--- | :--- | :--- |
+| `SELECT 1; DROP TABLE users;` | Blocked (if `DROP` checked) | **Blocked:** `Array.isArray(ast)` has length `2` |
+| `WITH d AS (DELETE FROM users RETURNING *) SELECT * FROM d` | **BYPASSED** (starts with `WITH`) | **Blocked:** CTE inner AST node has `type === "delete"` |
+| `DR/**/OP TABLE users` | **BYPASSED** (comment splits `DROP`) | **Blocked:** Syntax error $\rightarrow$ fail-closed rejection |
+
 ```mermaid
 flowchart TD
     SQL["Candidate SQL"] --> Parse{"1. node-sql-parser.parse()"}

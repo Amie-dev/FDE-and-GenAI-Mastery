@@ -95,6 +95,13 @@ A subtle bug in naive budget checks:
 1. **Reserve:** Before calling the LLM, atomically decrement an estimated max cost (e.g., `estimated_cost = $0.05`) using Redis `DECRBYFLOAT` or a Lua script. If remaining < 0, immediately roll back and return `429 Budget Exceeded`.
 2. **Reconcile:** When the LLM response returns with actual `input_tokens` and `output_tokens`, compute `actual_cost` and adjust the balance by `(estimated_cost - actual_cost)`.
 
+```typescript
+const check = budgetGuard.checkAndReserve("tenant_acme", 0.02);
+if (!check.allowed) throw new Error("429 Budget Exceeded"); // Hard circuit breaker
+const run = await executeAgent();
+budgetGuard.reconcile("tenant_acme", 0.02, run.totalCostUsd); // Refund unused estimate
+```
+
 ---
 
 ## 6. Chapter Summary

@@ -38,9 +38,13 @@ sequenceDiagram
 
 ### Enforcing scope inside the Host `request` proxy
 
-Even before calling the upstream API, the Host Worker `request` handler can check the user's OAuth scopes:
-- If `userScopes` only includes `read`, reject any `POST`/`PATCH`/`DELETE` inside the `request()` callback with `403 Insufficient Scope`.
-- This ensures **User A's sandboxed code can only act with User A's exact permissions**.
+Even before calling the upstream API, the Host Worker `request` handler checks the user's OAuth scopes:
+```typescript
+if (method !== "GET" && !userScopes.has("dns:write")) {
+  return new Response("403 Insufficient Scope: dns:write required", { status: 403 });
+}
+```
+This ensures **User A's sandboxed code can only act with User A's exact permissions**.
 
 ---
 

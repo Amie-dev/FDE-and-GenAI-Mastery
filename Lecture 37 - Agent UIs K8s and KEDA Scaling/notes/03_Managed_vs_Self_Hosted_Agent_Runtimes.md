@@ -29,6 +29,12 @@ By the end of this chapter you should be able to:
 | **Custom Sandboxing** | Built-in (`Dynamic Workers` / Modal sandboxes) | Full control (`gVisor`, `Kata Containers`, `Firecracker`) |
 | **Best For** | Startups, rapid FDE pilots, bursty SaaS | Regulated banks/healthcare, heavy GPU/CPU pipelines, existing K8s orgs |
 
+### The 4 Hard Triggers That Force Self-Hosted Kubernetes
+1. **Strict VPC / Air-Gapped Data Residency:** Customer compliance forbids data leaving their AWS/GCP/on-prem VPC.
+2. **Custom Kernel Sandboxing (`gVisor` / `Firecracker`):** Untrusted Python/bash execution inside customer-controlled nodes.
+3. **Co-located Self-Hosted GPUs:** Running vLLM/SGLang inference pods next to agent workers over internal VPC networking.
+4. **Existing Platform Team:** Enterprise SREs already standardize on EKS/GKE + ArgoCD + OpenObserve.
+
 ---
 
 ## 03.2 Key takeaways

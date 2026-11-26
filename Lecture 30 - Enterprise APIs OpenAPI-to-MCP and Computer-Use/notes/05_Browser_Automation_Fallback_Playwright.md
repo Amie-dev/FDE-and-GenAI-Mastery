@@ -44,6 +44,18 @@ flowchart LR
 | **Safety** | Could navigate to external sites or click "Delete All" | Locked to **allow-listed origin** + **explicit form actions** |
 | **Idempotency** | Can double-submit forms on retry | Protected by **`IdempotencyStore`** before launching browser |
 
+### Resilient Playwright Pattern (Semantic Locators + Origin Guard)
+```typescript
+if (!ALLOWED_ORIGINS.has(new URL(targetUrl).origin)) {
+  throw new Error("403 Forbidden Origin");
+}
+await page.goto(targetUrl);
+await page.getByLabel("Order ID").fill(orderId);
+await page.getByLabel("Credit Amount (USD)").fill(String(amountUsd));
+await page.getByRole("button", { name: "Submit Credit Memo" }).click();
+await page.getByText("Credit Memo Recorded").waitFor({ timeout: 5000 });
+```
+
 ---
 
 ## 05.2 Key takeaways

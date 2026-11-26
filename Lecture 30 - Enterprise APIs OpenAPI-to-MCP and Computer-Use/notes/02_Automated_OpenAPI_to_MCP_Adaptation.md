@@ -38,6 +38,23 @@ Suppose the raw OpenAPI spec has:
 - `POST /refunds` $\rightarrow$ Compiled to `create_refund` (`permission: "APPROVAL_REQUIRED"` if `> $50`, `requiresIdempotency: true` — compiler automatically adds `idempotencyKey: string` to `inputSchema.required`!)
 - `DELETE /orders/{orderId}` $\rightarrow$ **Blocked / Omitted** by compiler policy (`allowMethods: ["GET", "POST", "PATCH"]`).
 
+```json
+// Compiled MCP Tool Output for POST /refunds
+{
+  "name": "create_refund",
+  "description": "Issue a customer refund after verifying eligibility with get_order. MUTATING ACTION: Requires unique idempotencyKey.",
+  "inputSchema": {
+    "type": "object",
+    "required": ["orderId", "amountUsd", "idempotencyKey"],
+    "properties": {
+      "orderId": { "type": "string" },
+      "amountUsd": { "type": "number", "exclusiveMinimum": 0 },
+      "idempotencyKey": { "type": "string", "description": "Unique retry key" }
+    }
+  }
+}
+```
+
 ---
 
 ## 02.2 Writing LLM-friendly tool descriptions

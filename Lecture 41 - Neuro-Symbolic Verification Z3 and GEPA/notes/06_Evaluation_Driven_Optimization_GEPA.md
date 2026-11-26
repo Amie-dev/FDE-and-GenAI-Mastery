@@ -45,6 +45,10 @@ flowchart LR
 
 Notice how **Pareto selection** automatically rejects `v2` (prompt bloat) because `v1` achieves `100%` pass rate in only `43` tokens!
 
+### Exact `v0 -> v1` GEPA Prompt Evolution
+- **`v0` (`15` tokens, `0%` pass):** *"You are a helpful support agent. Process customer refunds."*
+- **`v1` (`43` tokens, `100%` pass):** *"You are a support agent. Always call `getOrder` then `verifyPolicy` before `refundOrder`. For refunds > \$50, always call `requestHitlApproval` first. Never exceed \$100."*
+
 ---
 
 ## 06.2 Avoiding Overfitting in GEPA

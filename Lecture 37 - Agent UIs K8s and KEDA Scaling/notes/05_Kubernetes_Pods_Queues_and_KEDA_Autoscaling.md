@@ -38,6 +38,26 @@ $$\text{desiredReplicas} = \text{clamp}\!\left(\left\lceil \frac{\text{queueDept
 - If `queueDepth = 40`, `targetListLength = 5`, `min = 1`, `max = 20`: $\lceil 40 / 5 \rceil = \mathbf{8\text{ pods}}$.
 - If `queueDepth = 250`: $\lceil 250 / 5 \rceil = 50$, clamped to **`maxReplicaCount = 20`** so a queue spike cannot exhaust your cluster or upstream LLM rate limits!
 
+### Concrete KEDA `ScaledObject` YAML
+```yaml
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: agent-worker-scaler
+spec:
+  scaleTargetRef:
+    name: agent-worker
+  minReplicaCount: 1
+  maxReplicaCount: 20
+  cooldownPeriod: 120
+  triggers:
+    - type: redis
+      metadata:
+        address: redis.internal:6379
+        listName: agent_jobs
+        listLength: "5"
+```
+
 ---
 
 ## 05.2 Key takeaways

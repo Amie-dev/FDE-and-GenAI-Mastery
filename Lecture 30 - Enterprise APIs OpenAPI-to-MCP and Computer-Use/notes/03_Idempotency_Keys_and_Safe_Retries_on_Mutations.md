@@ -56,6 +56,10 @@ sequenceDiagram
 | **2. Replay with Matching Payload** | `key` exists AND `sha256(args) === stored.payloadHash` | Return stored response (`replayed: true`); **0 upstream calls** |
 | **3. Replay with Different Payload** | `key` exists BUT `sha256(args) !== stored.payloadHash` | Reject with **`409 Conflict`** — never silently return the old result for new arguments! |
 
+### Harness-Derived vs. LLM-Generated Keys
+Never rely solely on the LLM to invent a random UUID—if the LLM re-plans, it might generate a *new* UUID for the same refund! Derive deterministic keys in the harness:
+`idempotencyKey = sha256(workflowRunId + ":" + stepId + ":" + toolName)` — guaranteeing every retry of the same step produces the exact same key.
+
 ---
 
 ## 03.2 Key takeaways

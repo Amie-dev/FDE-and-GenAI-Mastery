@@ -39,6 +39,12 @@ flowchart LR
 | Classifying unstructured ticket into 12 categories | ❌ | ✅ |
 | Extracting `{risks, actionItems, entities}` from prose | ❌ | ✅ |
 
+### Worked Trace: Ingesting a Messy Support Ticket
+1. **Deterministic Pre-Transform:** Strip HTML tags, redact credit card regex `4[0-9]{12}(?:[0-9]{3})?`, compute `contentHash = sha256(cleanText)`.
+2. **Idempotency Gate:** If `contentHash === existingRecord.contentHash`, **skip LLM extraction (`$0`)**.
+3. **LLM Enrichment (System-1):** Extract `{ category: "billing_dispute", entities: ["Acme Corp"] }`.
+4. **Deterministic Post-Transform:** Convert `"Nov 26, 2026"` $\rightarrow$ `"2026-11-26T00:00:00Z"` (`ISO-8601`), lowercase tags, and validate via Zod.
+
 ---
 
 ## 01.2 Key takeaways

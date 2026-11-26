@@ -38,7 +38,10 @@ flowchart TD
 
 1. **Tag every GPU pool with `region` and `jurisdiction`:** Never rely on DNS geo-routing alone; enforce `requiredRegion` inside the `DistributedInferenceRouter` itself.
 2. **Minimum 2 Availability Zones per region:** To avoid ever hitting `503 ResidencyUnavailable`, deploy at least `N+1` capacity across 2+ AZs within `EU` (and within `IN`).
-3. **Audit-log every routing decision:** Record `{ requestId, requiredRegion, selectedNodeId, nodeRegion }` so compliance auditors can prove 0% cross-border leakage.
+3. **Audit-log every routing decision:** Record `{ requestId, requiredRegion, selectedNodeId, nodeRegion }` so compliance auditors can prove 0% cross-border leakage:
+   ```json
+   { "requestId": "req_881", "requiredRegion": "EU", "selectedNodeId": "eu-dublin-az2", "nodeRegion": "EU", "failClosed": true }
+   ```
 
 ---
 

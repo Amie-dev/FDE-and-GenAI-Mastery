@@ -27,6 +27,15 @@ By the end of this chapter you should be able to:
 | **3. Key-Mismatch Conflict** | Reusing an old `idempotencyKey` with a different `amountUsd` is blocked | Throws `409 Conflict` (`IdempotencyMismatchError`) |
 | **4. Approval & Fallback** | Refunds `> $50` return `PENDING_APPROVAL`; legacy ERP form uses allow-listed Playwright fallback | High-value refund paused; `evil.com` blocked; `erp.internal` succeeds once |
 
+### Simulating Network Drop + Retry in CI
+```typescript
+let upstreamCalls = 0;
+const first = await adapter.invoke("create_refund", { orderId: "ORD-1", amountUsd: 45, idempotencyKey: "k-1" });
+const retry = await adapter.invoke("create_refund", { orderId: "ORD-1", amountUsd: 45, idempotencyKey: "k-1" });
+assert.equal(upstreamCalls, 1);
+assert.equal(retry.replayed, true);
+```
+
 ---
 
 ## 07.2 Key takeaways

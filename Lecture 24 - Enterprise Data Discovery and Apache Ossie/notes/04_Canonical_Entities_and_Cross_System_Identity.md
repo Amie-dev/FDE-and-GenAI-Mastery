@@ -44,6 +44,21 @@ flowchart LR
 > [!CAUTION]
 > **Never auto-merge on fuzzy company name alone.** `"Delta Airlines"` and `"Delta Faucets"` share a prefix; `"Acme Corp (US)"` and `"Acme Corp (UK)"` may be separate legal billing entities. Require deterministic keys or human steward sign-off for Tier 3 matches.
 
+### Concrete Crosswalk Output (`canon_acme_01`)
+```json
+{
+  "canonicalId": "canon_acme_01",
+  "entityType": "Customer",
+  "displayName": "Acme Corporation",
+  "matchedBy": "TIER_2_NORMALIZED_DOMAIN (acme.com)",
+  "crosswalk": {
+    "salesforce": "001Dn00000A",
+    "stripe": "cus_P9x881",
+    "zendesk": "org_7741"
+  }
+}
+```
+
 ---
 
 ## 04.2 Key takeaways

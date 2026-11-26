@@ -54,12 +54,14 @@ flowchart LR
 
 ---
 
-## 05.3 Bounding adaptive topologies
+## 05.3 Bounding adaptive topologies (Stopping Fork Bombs)
 
-Dynamic spawning without limits is a fork-bomb risk. Always enforce:
+Dynamic spawning without limits creates exponential blowup: if a planner spawns `5` workers, and each worker spawns `5` sub-workers at depth `3`, you just launched $5^3 = \mathbf{125}$ concurrent LLM loops from one user prompt!
+
+Always enforce three hard caps:
 - **`maxFanOut` (Width Cap):** e.g., `maxWorkers = 5`. If a planner proposes 20 sub-tasks, batch or prioritize top 5.
 - **`maxDepth` (Recursion Cap):** e.g., `maxDepth = 2`. A spawned worker cannot recursively spawn sub-workers indefinitely.
-- **Shared Budget Pool:** All spawned branches deduct from the **parent run's** `maxTokens` and `maxCostUsd` ledger.
+- **Shared Budget Pool:** All spawned branches deduct atomically from the **parent run's** `maxTokens` and `maxCostUsd` ledger.
 
 ---
 

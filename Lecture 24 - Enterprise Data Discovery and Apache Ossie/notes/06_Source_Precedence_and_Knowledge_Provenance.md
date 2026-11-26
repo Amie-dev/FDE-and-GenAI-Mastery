@@ -51,6 +51,9 @@ A metadata-aware agent must **never silently hide a cross-system conflict**. Its
 
 This gives human operators immediate trust and surfaces data-sync drift between CRM and Billing.
 
+### When to Abstain Instead of Guessing
+If **both** Rank 1 (`billing.subscriptions`) and Rank 2 (`crm.accounts`) are missing or their timestamps are older than the freshness SLA, **do not average or guess**—return `status: "ABSTAINED_INSUFFICIENT_AUTHORITY"` with the exact missing system name so an operator can investigate.
+
 ---
 
 ## 06.3 Key takeaways

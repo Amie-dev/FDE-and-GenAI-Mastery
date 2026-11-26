@@ -32,7 +32,10 @@ flowchart LR
 ### The 4 pillars of Connector Governance
 
 1. **Scoped Permissions:** A support connector only receives `orders:read` and `refunds:create` — never `users:delete` or `billing:export_all`.
-2. **Thresholded Approvals:** High-impact mutations return `PENDING_APPROVAL` with an `approvalId` instead of executing immediately.
+2. **Thresholded Approvals:** High-impact mutations return `PENDING_APPROVAL` with an `approvalId` instead of executing immediately:
+   ```json
+   { "status": "PENDING_APPROVAL", "approvalId": "apr_9921", "tool": "create_refund", "amountUsd": 5000, "reason": "Exceeds $50 auto-approval cap" }
+   ```
 3. **Per-Connector Rate Limits:** Cap `maxCallsPerMinute` (e.g., `20 req/min` for legacy ERPs) so an agent cannot DDoS internal services.
 4. **Structured Audit Trail:** Log `{ traceId, callerId, toolName, idempotencyKey, decision, latencyMs }` for every connector call.
 

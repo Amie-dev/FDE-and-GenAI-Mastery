@@ -57,6 +57,16 @@ At `14:00`, a cron job re-indexes Confluence with a broken HTML stripper:
 - **Abstention rate** spikes from `3.5%` $\rightarrow$ `38%` (a **+57 $\sigma$** jump!).
 - Your OpenObserve alert fires in 15 minutes with the exact `trace_id`s of abstained runs, letting SREs roll back the Confluence index before most customers even notice.
 
+```sql
+-- OpenObserve SQL: 15-minute rolling abstention & schema-repair drift check
+SELECT feature_id,
+       COUNT(*) AS total_runs,
+       AVG(CASE WHEN task_success = false THEN 1.0 ELSE 0.0 END) AS failure_rate
+FROM default_traces
+WHERE gen_ai_operation_name = 'invoke_agent' AND _timestamp > NOW() - INTERVAL '15 minutes'
+GROUP BY feature_id;
+```
+
 ---
 
 ## 4. Calibrating Online Judges & Avoiding Alert Fatigue

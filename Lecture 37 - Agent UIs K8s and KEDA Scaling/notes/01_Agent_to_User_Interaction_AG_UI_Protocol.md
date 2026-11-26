@@ -47,6 +47,15 @@ sequenceDiagram
     Worker-->>UI: event: RUN_FINISHED
 ```
 
+### Concrete `AG-UI` SSE Wire Events
+```text
+event: STEP_STARTED
+data: {"type":"STEP_STARTED","runId":"run_42","stepName":"Verify Refund Eligibility"}
+
+event: APPROVAL_REQUIRED
+data: {"type":"APPROVAL_REQUIRED","runId":"run_42","approvalId":"apr_1","tool":"issue_refund","amountUsd":250}
+```
+
 ---
 
 ## 01.2 Key takeaways

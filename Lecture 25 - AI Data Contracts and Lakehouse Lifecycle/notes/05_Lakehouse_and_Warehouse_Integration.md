@@ -34,11 +34,17 @@ flowchart LR
 
 ---
 
-## 05.2 Incremental snapshot syncs
+## 05.2 Incremental snapshot syncs & Time-Travel
 
-Instead of `SELECT * FROM silver_docs`, store `lastProcessedSnapshotId` (Iceberg) or `lastUpdatedAt` watermark:
-- **Inserts/Updates:** Embed and upsert only rows changed since `lastProcessedSnapshotId`.
+Instead of `SELECT * FROM silver_docs` (re-embedding 10M rows every night), store `lastProcessedSnapshotId` (Iceberg) or `lastUpdatedAt` watermark:
+- **Inserts/Updates:** Embed and upsert only rows changed since `lastProcessedSnapshotId` (often `< 1%` of corpus).
 - **Deletes:** Emit `DELETE` tombstones to the Cascade Deletion Propagator (Chapter 04).
+
+```sql
+-- Reproducible RAG evals using Iceberg Time-Travel:
+SELECT source_id, content, updated_at
+FROM lakehouse.silver_knowledge VERSION AS OF 84920194821;
+```
 
 ---
 

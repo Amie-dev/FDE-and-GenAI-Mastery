@@ -69,7 +69,13 @@ A **Release Manifest** is an immutable JSON document (signed with SHA-256 / HMAC
 
 ## 3. Why Cryptographic Signing & Content Hashes Matter
 
-1. **Tamper Evidence:** Signing the canonical JSON payload (`HMAC-SHA256` or Ed25519/Cosign) guarantees nobody edited the prompt or bumped `canary_weight` in production without leaving a verified audit trail (also feeds the **AI BOM** in Lecture 45).
+1. **Tamper Evidence:** Signing the canonical JSON payload (`HMAC-SHA256` or Ed25519/Cosign) guarantees nobody edited the prompt or bumped `canary_weight` in production without leaving a verified audit trail (also feeds the **AI BOM** in Lecture 45):
+   ```typescript
+   const expectedDigest = createHmac("sha256", signingSecret)
+     .update(JSON.stringify(unsignedManifest))
+     .digest("hex");
+   if (manifest.signature.digest !== expectedDigest) throw new Error("Tampered manifest!");
+   ```
 2. **Instant "Known-Good" Rollback:** Rolling back isn't guessing *"which prompt went with `gpt-4o-2024-11-20`?"*—you simply restore **`rel_2026_11_26_003`**, which atomically reverts model, prompt hash, skill versions, and `flagd` weights together.
 3. **Trace-to-Manifest Lineage:** Stamp `release.id = "rel_2026_11_26_004"` onto every OTel root span (`agent.run`) so OpenObserve can group error spikes by exact release bundle!
 

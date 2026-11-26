@@ -46,7 +46,13 @@ flowchart LR
 
 ## 05.2 Row-Level Security & Cost Budgets
 
-1. **Tenant Isolation (`tenant_id`):** In multi-tenant warehouses, never trust the LLM to remember `WHERE tenant_id = 't1'`. Either use **Postgres Row-Level Security (RLS)** on the DB session or inject/rewrite the AST `WHERE` clause deterministically in the harness.
+1. **Tenant Isolation (`tenant_id`):** In multi-tenant warehouses, never trust the LLM to remember `WHERE tenant_id = 't1'`. Either use **Postgres Row-Level Security (RLS)** on the DB session or inject/rewrite the AST `WHERE` clause deterministically in the harness:
+   ```sql
+   -- Postgres RLS: DB engine enforces tenant_id even if LLM forgets WHERE!
+   ALTER TABLE mart_subscriptions ENABLE ROW LEVEL SECURITY;
+   CREATE POLICY tenant_isolation ON mart_subscriptions
+     USING (tenant_id = current_setting('app.current_tenant_id'));
+   ```
 2. **Query Cost Budgets:**
    - **Row cap:** Reject `LIMIT > 200` (or inject `LIMIT 200` if omitted).
    - **Scan-byte cap:** Use BigQuery's `maximumBytesBilled` or Snowflake's `EXPLAIN` dry-run to abort queries scanning `> 1 GB` before execution.

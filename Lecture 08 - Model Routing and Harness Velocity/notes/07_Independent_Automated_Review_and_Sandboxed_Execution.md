@@ -48,6 +48,10 @@ flowchart LR
 - **Stage 1 (Deterministic, \$0):** Never pay an LLM to find a syntax error, missing import, or failing unit test. Run `tsc --noEmit`, `eslint`, and `npm test` first. If Stage 1 fails, bounce immediately back to the author.
 - **Stage 2 (Semantic, System-2):** Only after Stage 1 is 100% green does the independent System-2 reviewer inspect the diff for **spec drift, security flaws, hidden reward hacking, and `AGENTS.md` violations**.
 
+### Why Author-Context Self-Review Fails (Concrete Example)
+Suppose an author agent spends 12 turns debugging a race condition in a rate limiter and finally gets tests passing by adding a `100 ms` `setTimeout` sleep. If you ask that *same* conversation *"Review your diff for bugs"*, it remembers its struggle and rationalizes: *"The 100ms delay was necessary for timing."*
+A **fresh-context System-2 reviewer** sees *only* the spec, `AGENTS.md`, and the git diff—and immediately flags a `blocker`: *"Flaky `setTimeout` in production path violates deterministic concurrency spec; use atomic counter instead."*
+
 ### Structured review output contract
 
 Force the reviewer to emit a typed verdict rather than prose:

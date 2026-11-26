@@ -40,7 +40,33 @@ flowchart LR
 
 ---
 
-## 02.2 Why Exception Queues beat crashing the pipeline
+## 02.2 Concrete Zod Contract & Exception Queue Record
+
+```typescript
+import { z } from "zod";
+
+export const KnowledgeRecordContract = z.object({
+  tenantId: z.string().min(1),
+  sourceId: z.string().min(1),
+  sourceUri: z.string().url(),
+  content: z.string().min(20),
+  updatedAt: z.string().datetime(),
+  freshnessSlaMinutes: z.number().int().positive().default(60),
+});
+```
+
+If record `#8812` arrives with `tenantId: ""`, the pipeline routes it to the **Exception Queue** without stopping the batch:
+```json
+{
+  "queue": "ai_ingestion_dlq",
+  "sourceId": "doc_8812",
+  "owner": "@data-ingestion",
+  "errors": [{ "path": ["tenantId"], "message": "String must contain at least 1 character(s)" }],
+  "quarantinedAt": "2026-11-26T09:00:00Z"
+}
+```
+
+### Why Exception Queues beat crashing the pipeline
 
 If batch #402 contains 9,998 valid documents and 2 malformed records:
 - **Crashing the whole job** blocks 9,998 fresh documents from reaching users (violating freshness SLAs).

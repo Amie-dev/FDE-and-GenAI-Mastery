@@ -86,6 +86,37 @@ stateDiagram-v2
 
 Each `completed` task returns structured **Artifacts** (text, JSON, or files) plus optional **usage metadata** so the coordinator can track total cost across agent boundaries.
 
+### Concrete `tasks/send` Request & `completed` Response
+```json
+// Coordinator -> SecurityAuditAgent (POST /a2a)
+{
+  "jsonrpc": "2.0",
+  "id": "req-42",
+  "method": "tasks/send",
+  "params": {
+    "id": "task_cve_901",
+    "message": {
+      "role": "user",
+      "parts": [{ "type": "text", "text": "Audit PR #412 diff for CVEs and leaked secrets." }]
+    }
+  }
+}
+
+// SecurityAuditAgent -> Coordinator (Completed Artifact)
+{
+  "jsonrpc": "2.0",
+  "id": "req-42",
+  "result": {
+    "id": "task_cve_901",
+    "status": { "state": "completed" },
+    "artifacts": [
+      { "parts": [{ "type": "data", "data": { "verdict": "REJECT", "findings": ["Hardcoded Stripe key in src/pay.ts:14"] } }] }
+    ],
+    "metadata": { "tokensUsed": 2150, "costUsd": 0.0084 }
+  }
+}
+```
+
 ---
 
 ## 06.4 Key takeaways

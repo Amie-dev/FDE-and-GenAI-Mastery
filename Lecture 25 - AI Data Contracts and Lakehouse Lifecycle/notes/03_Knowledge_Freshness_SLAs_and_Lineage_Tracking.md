@@ -38,6 +38,23 @@ flowchart LR
     Cache -.-> Ledger
 ```
 
+### Concrete Lineage Ledger Record
+```json
+{
+  "tenantId": "tenant_acme",
+  "sourceId": "doc_42",
+  "version": 3,
+  "ingestedAt": "2026-11-26T08:00:00Z",
+  "freshnessSlaMs": 3600000,
+  "derivedArtifacts": {
+    "sqlRowId": "documents:t1:doc_42",
+    "vectorChunkIds": ["chk_1", "chk_2", "chk_3"],
+    "graphNodeIds": ["node_acme", "node_sla_policy"],
+    "cacheKeys": ["rag_cache:t1:q_refund_policy"]
+  }
+}
+```
+
 ### Freshness SLA enforcement at query time
 
 Every record carries `freshnessSlaMs` (e.g., `3,600,000 ms` = 1 hour for pricing docs). At retrieval time:

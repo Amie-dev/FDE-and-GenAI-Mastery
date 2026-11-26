@@ -68,11 +68,25 @@ Notice `maxCallsPerRun`: even a `READ_ONLY` tool like `webSearch` needs a per-ru
 
 ---
 
-## 02.3 Graceful degradation when a budget trips
+## 02.3 Worked Example: Headroom Check & Graceful Degradation
 
-When a budget circuit breaker trips, **never throw away the work already done**:
-1. Return `{ status: "BUDGET_EXCEEDED", completedSteps, pendingSteps, totalTokensUsed, totalCostUsd }`.
-2. Persist the checkpoint so a human (or a higher-budget batch job) can resume from `pendingSteps` rather than starting from zero.
+Suppose `maxCostUsd = $0.25` and `maxSteps = 10`:
+- Steps 1–4 (System-1 searches & edits) spend `$0.08` total.
+- Step 5 fails a unit test; the router wants to escalate to a System-2 model whose average call costs `$0.18`.
+- **Headroom check:** `currentCost ($0.08) + estimatedNextCall ($0.18) = $0.26 > $0.25`!
+- Instead of starting the call and overshooting `$0.25`, the harness trips the circuit breaker **before** calling System-2 and returns:
+
+```json
+{
+  "status": "BUDGET_EXCEEDED",
+  "completedSteps": ["step_1_locate_file", "step_2_apply_patch", "step_3_run_tests"],
+  "pendingSteps": ["step_4_fix_edge_case", "step_5_final_gate"],
+  "totalTokensUsed": 18400,
+  "totalCostUsd": 0.08
+}
+```
+
+A human or higher-budget batch worker can resume directly from `step_4_fix_edge_case`—zero wasted work.
 
 ---
 

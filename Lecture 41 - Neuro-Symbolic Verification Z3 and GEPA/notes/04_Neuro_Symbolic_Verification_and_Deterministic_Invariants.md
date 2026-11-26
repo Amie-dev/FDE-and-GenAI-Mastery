@@ -29,6 +29,11 @@ By the end of this chapter you should be able to:
 | **Prompt-Only Rule** | `~95% – 99.5%` | Attention dilution + adversarial phrasing can override prose rules | Silent policy breach in production |
 | **Neuro-Symbolic Gate** | **`100%`** | Symbolic verifier runs *after* LLM planning and *before* tool execution | Zero unauthorized executions (worst case: blocks & asks LLM to re-plan) |
 
+### 2-Turn Counterexample Self-Repair Trace
+1. **Turn 1 (Neural Proposal):** `[getOrder("ORD-101"), refundOrder("ORD-101", $80)]`
+2. **Z3 Gate (`UNSAT`):** Returns `["PreconditionViolation: verifyPolicy must precede refundOrder", "HitlViolation: $80 > $50 requires HITL"]`.
+3. **Turn 2 (Neural Self-Repair):** Planner reads exact violations and emits `[getOrder("ORD-101"), verifyPolicy("ORD-101"), requestHitlApproval("ORD-101", $80), refundOrder("ORD-101", $80)]` $\rightarrow$ **Z3 Gate (`SAT`)** $\rightarrow$ Executed safely!
+
 ```mermaid
 flowchart TD
     Goal["Customer: 'Refund $80 for ORD-101'"] --> Neural["Neural Planner (LLM)<br/>Proposes: [getOrder, refundOrder($80)]"]

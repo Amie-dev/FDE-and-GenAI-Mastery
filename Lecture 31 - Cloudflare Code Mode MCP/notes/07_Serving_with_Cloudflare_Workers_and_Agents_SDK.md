@@ -59,6 +59,13 @@ export default {
 };
 ```
 
+### Stateless Handler vs. Stateful Durable Object (`McpAgent`)
+
+| Mode | Backing Runtime | Best For |
+| :--- | :--- | :--- |
+| **Stateless (`createMcpHandler`)** | Ephemeral Worker | Read-mostly OpenAPI / tool gateways with per-request OAuth JWTs |
+| **Stateful (`McpAgent` Durable Object)** | Persistent DO + SQLite | Long-lived SSE sessions, per-session workspace state, and resumable tasks |
+
 ---
 
 ## 07.2 Key takeaways

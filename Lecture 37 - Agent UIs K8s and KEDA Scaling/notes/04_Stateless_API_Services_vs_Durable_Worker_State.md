@@ -40,6 +40,11 @@ flowchart LR
 2. **Worker Pods can scale to zero or 50** based on queue depth (Chapter 05) without dropping user SSE connections.
 3. **Browser refresh resilience:** Because events and checkpoints are persisted, reconnecting to `GET /runs/:runId/stream` replays missed `AG-UI` events seamlessly.
 
+### How Reconnect Replay Works (`Last-Event-ID`)
+1. Every `AG-UI` event is written to a **Redis Stream** (`XADD run:42 * event ...`) with a monotonic ID (`1795-0`, `1795-1`).
+2. If the user refreshes their browser at `1795-3`, the client reconnects with `Last-Event-ID: 1795-3`.
+3. The stateless API pod reads `XRANGE run:42 (1795-3 +` and streams all missed events + live updates without restarting the worker!
+
 ---
 
 ## 04.2 Key takeaways
