@@ -51,11 +51,11 @@ To mark **Lecture 08** complete, verify all of the following:
 
 | Step | Status |
 | :--- | :---: |
-| Review syllabus & reference links below | ☐ |
-| Write all chapter notes + `Lecture_08_Complete_Notes.md` in `notes/` | ☐ |
-| Update `index.md` with links to every chapter | ☐ |
-| Build & test the runnable implementation in `code/` | ☐ |
-| Write & pass the completion gate in `Assignment/task.md` | ☐ |
+| Review syllabus & reference links below | ✅ |
+| Write all chapter notes + `Lecture_08_Complete_Notes.md` in `notes/` | ✅ |
+| Update `index.md` with links to every chapter | ✅ |
+| Build & test the runnable implementation in `code/` | ✅ |
+| Write & pass the completion gate in `Assignment/task.md` | ✅ |
 
 ---
 

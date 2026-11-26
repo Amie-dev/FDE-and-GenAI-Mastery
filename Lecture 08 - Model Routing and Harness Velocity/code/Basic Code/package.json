@@ -1,0 +1,27 @@
+{
+  "name": "lecture-08-model-routing-harness-velocity",
+  "version": "1.0.0",
+  "description": "Lecture 08 — Dynamic Model Routing, Prompt Prefix Caching, AGENTS.md & SDD/TDD Harness Velocity",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "benchmark": "tsx src/index.ts --benchmark-only",
+    "test": "tsx --test src/release-gate.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "model-routing",
+    "prompt-caching",
+    "agents-md",
+    "sdd",
+    "tdd",
+    "typescript"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.20.7",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

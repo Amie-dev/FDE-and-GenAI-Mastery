@@ -7,7 +7,7 @@
 ## ✅ Master Progress Checklist
 
 ### Part 1 — 13 Brand-New Lectures (`notes/`, `index.md`, `code/`, `Assignment/task.md`)
-- [ ] **Lecture 08** — Model Routing & Harness Velocity (`AGENTS.md`, `Pi`, `Superpowers`, SDD/TDD)
+- [x] **Lecture 08** — Model Routing & Harness Velocity (`AGENTS.md`, `Pi`, `Superpowers`, SDD/TDD)
 - [ ] **Lecture 14** — Loop Engineering (`Plan-Act-Verify`, Stuck Detection, Heartbeat) & A2A Protocol
 - [ ] **Lecture 24** — Enterprise Data Discovery, Ontologies & Apache Ossie
 - [ ] **Lecture 25** — AI Data Contracts, Lakehouse Storage & Knowledge Lifecycle
@@ -38,6 +38,11 @@
 ---
 
 ## 🆕 Part 1 — Prompts for New Lectures (Open One by One)
+
+> **Style & Code Convention (All New Lectures):** Follow the exact style of **Lecture 01** and **Lecture 13** in this repo:
+> - `notes/`: 7–8 deep chapter notes + `Lecture_XX_Complete_Notes.md` (with Mermaid diagrams, tables, math, and takeaways).
+> - `code/`: Use the **Lecture 01 / Lecture 04 / Lecture 11** code layout (`code/Basic Code/` + `code/Production Code/` + `implementations guide/`) with runnable TypeScript (`package.json`, `tsconfig.json`, `npm test` release-gate checks).
+> - `Assignment/task.md`: Follow **Lecture 01**'s structured Part A (chapter practice) / Part B (`Basic Code` + `Production Code` + `implementations guide`) / Part C (capstone/gate) / Part D (spoken/written defense).
 
 <details>
 <summary><b>1. Prompt for Lecture 08 — Model Routing & Harness Velocity</b></summary>
