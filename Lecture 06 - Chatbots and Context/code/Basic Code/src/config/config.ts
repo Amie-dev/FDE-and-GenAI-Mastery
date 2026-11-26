@@ -30,6 +30,7 @@ const envSchema = z.object({
   ANCHOR_TURNS: z.coerce.number().int().min(0).default(2), // K
   RECENT_TURNS: z.coerce.number().int().min(1).default(6), // M
   SUMMARISE_THRESHOLD: z.coerce.number().int().min(2).default(8),
+  COMPACTION_UTILIZATION_THRESHOLD: z.coerce.number().min(0.1).max(0.99).default(0.8),
   SEMANTIC_RECALL: z.coerce.number().int().min(0).default(3),
 
   // Chapter 02 §02.9 — tier caps.
@@ -76,6 +77,7 @@ export const CONTEXT_POLICY: Readonly<ContextPolicy> = Object.freeze({
   recentTurns: env.RECENT_TURNS,
   summarise: true,
   summariseThreshold: env.SUMMARISE_THRESHOLD,
+  compactionUtilizationThreshold: env.COMPACTION_UTILIZATION_THRESHOLD,
   semanticRecall: env.SEMANTIC_RECALL,
 });
 

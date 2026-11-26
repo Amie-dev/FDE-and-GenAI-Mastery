@@ -1,6 +1,6 @@
 # Lecture 06 — Chatbots and Context · Complete Notes
 
-> **Phase:** 2 — Application Layer · **Level:** 🟡 Intermediate · **Chapters:** 8 · **Source:** `FDE L04`
+> **Phase:** 2 — Application Layer · **Level:** 🟡 Intermediate · **Chapters:** 9 · **Source:** `FDE L04 · roadmap-v1.md (S01)`
 > **Goal:** build a real multi-turn assistant and understand exactly why it forgets, drifts and lies.
 > **Gate:** you can show a conversation that stays coherent past the context limit — and explain the exact
 > trade-off you chose.
@@ -11,7 +11,7 @@
 
 ---
 
-## 1. Executive summary — the ten things
+## 1. Executive summary — the eleven things
 
 1. **The LLM is stateless.** No memory survives a request. *The application carries the conversation*
    ([ch 01](./01_Stateless_LLMs_Conversation_History_and_Role_Architecture.md)).
@@ -34,6 +34,9 @@
 10. **Reliability is engineered, not assumed.** Seven layers of defence in depth around an unprivileged model
     ([ch 07](./07_Engineering_Defences_Grounding_RAG_Guardrails_and_Verification.md),
     [ch 08](./08_Complete_Enterprise_Chatbot_Architecture.md)).
+11. **Compact at 80% utilization to survive 50+ turns.** Explicit tier budgets, lossless-first compaction
+    (tool-output trimming, extractive pruning, rolling structured summaries), and pinned anchors stop context rot
+    before it starts ([ch 09](./09_Explicit_Context_Budgeting_Compaction_and_Long_Horizon_Sessions.md)).
 
 ---
 
@@ -420,6 +423,10 @@ Detail: [ch 06](./06_Hallucination_Mechanisms_Fluency_vs_Truth.md) §06.9 ·
 21. Draw the six-tier topology and explain why the model tier is the smallest box.
 22. Your system is coherent but costs 4× budget. Which tier do you change first, and what breaks?
 23. A stakeholder says: *"Can't we just use a 1M-token model and skip all of this?"* Answer in four sentences.
+24. Why do we trigger context compaction at **80% budget utilization** rather than 100%, and in what order
+    should lossless vs. lossy compaction run? ([ch 09](./09_Explicit_Context_Budgeting_Compaction_and_Long_Horizon_Sessions.md))
+25. Name four mechanisms of **context rot** in 50+ turn sessions and the engineering defence for each.
+    ([ch 09](./09_Explicit_Context_Budgeting_Compaction_and_Long_Horizon_Sessions.md))
 
 ---
 
@@ -459,4 +466,5 @@ Detail: [ch 06](./06_Hallucination_Mechanisms_Fluency_vs_Truth.md) §06.9 ·
 - **Chapter 06:** [Hallucination Mechanisms: Fluency vs Truth](./06_Hallucination_Mechanisms_Fluency_vs_Truth.md)
 - **Chapter 07:** [Engineering Defences: Grounding, RAG, Guardrails & Verification](./07_Engineering_Defences_Grounding_RAG_Guardrails_and_Verification.md)
 - **Chapter 08:** [Complete Enterprise Chatbot Architecture](./08_Complete_Enterprise_Chatbot_Architecture.md)
+- **Chapter 09:** [Explicit Context Budgeting, Compaction & Long-Horizon Sessions](./09_Explicit_Context_Budgeting_Compaction_and_Long_Horizon_Sessions.md)
 - **Next lecture:** Lecture 07 — [AI Streaming](../Lecture%2007%20-%20AI%20Streaming/)

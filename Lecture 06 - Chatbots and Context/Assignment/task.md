@@ -3,7 +3,7 @@
 **Chatbots & Context: Statelessness, Context Windows, Memory & Hallucination**
 Phase 2 · The Application Layer · 🟡 Intermediate · **Estimated effort: 8–10 hours**
 
-> **Read first:** the eight chapters in **[../notes](../notes)** (index: **[../index.md](../index.md)**).
+> **Read first:** the nine chapters in **[../notes](../notes)** (index: **[../index.md](../index.md)**).
 > Every question below is answerable from those notes — the chapter and section number sits next to each part,
 > so you never have to guess where the material lives.
 > The lecture's **goal**, **build task** and **completion gate** live in **[../README.md](../README.md)** and
@@ -534,6 +534,19 @@ Eight parts, one per chapter. Each part is answerable from its chapter alone plu
     **ten-line** design: the tiers you would build, the context strategy, the defence layers you would ship
     first, the trade-off you are choosing, and the one metric that would tell you it is working.
 
+### A9 — Explicit context budgeting, compaction & long-horizon sessions
+
+*Read [chapter 09](../notes/09_Explicit_Context_Budgeting_Compaction_and_Long_Horizon_Sessions.md) first.*
+
+1. 🧮 **Explicit 5+1 tier budget** (§09.1). Given $C_{\max} = 32{,}000$, $B_{\text{output}} = 2{,}000$, and
+   $M_{\text{safety}} = 0.10$, compute $B_{\text{usable}}$. If system + schemas = 1,500, memory = 500, RAG = 3,000,
+   tool outputs = 2,500, and current turn = 500, how many tokens remain for history — and at what token count
+   does the **80% compaction threshold** fire?
+2. 🎯 **Lossless vs. lossy compaction** (§09.2). Explain why **tool-output trimming** and deduplication run
+   *before* rolling prose summarization, and give one example of data that lossy summarization can silently break.
+3. 🎯 **Context rot across 50+ turns** (§09.3). Name four mechanisms that cause a 50-turn session to rot even
+   when tokens still fit inside $C_{\max}$, and map each to its concrete architectural defence.
+
 ---
 
 ## Part B — Code tasks
@@ -930,6 +943,22 @@ out of a chapter. D1 is the live demonstration; D2–D6 are the written half.
 
 Then answer, still live: **which of the four levers (retain · compress · retrieve · evict) is doing most of the
 work in your system, and what would break first if you disabled it?**
+
+### D7 — The 50-turn budget-survival gate (`roadmap-v1.md` S01)
+
+*Release gate: "Sustain 50 simulated turns without exceeding the configured context budget" with automatic
+compaction at 80% budget utilization.*
+
+1. Configure a tight budget (e.g. `CONTEXT_WINDOW_TOKENS=6000`, `HISTORY_TIER_SHARE=0.35`,
+   `COMPACTION_UTILIZATION_THRESHOLD=0.8`).
+2. Run a **50-turn** simulated conversation against `POST /api/chat` (in offline stub mode or live mode),
+   recording `context.inputTokens`, `context.fits`, `context.summaryPresent`, and `[compaction]` middleware
+   logs at every turn.
+3. **Pass criteria (all three must hold):**
+   - `context.fits === true` on **all 50 turns** (`inputTokens + outputReserve <= contextWindow`).
+   - `[compaction]` middleware fires automatically whenever history utilization crosses **80%**, snapping
+     utilization back down in a bounded sawtooth curve.
+   - Turn 1's pinned anchor constraint is still present in `context.messages` at Turn 50.
 
 ### D2 — The gate question, spoken: statelessness without the word "memory"
 

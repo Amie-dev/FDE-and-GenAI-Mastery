@@ -50,13 +50,14 @@ export interface TurnLedger {
   itlMs?: number; // chapter 05 §05.3
 }
 
-/** Chapter 03 §03.8 — one manager, declarative policy, no bespoke code paths. */
+/** Chapter 03 §03.8 + Chapter 09 — one manager, declarative policy, no bespoke code paths. */
 export interface ContextPolicy {
   budgetTokens: number; // B — the history-tier budget (the elastic tier)
   anchorTurns: number; // K — first K turns pinned (0 = disabled)
   recentTurns: number; // M — most recent turns kept verbatim
-  summarise: boolean; // enable rolling compaction (off the hot path)
+  summarise: boolean; // enable rolling compaction (off the hot path or at 80% threshold)
   summariseThreshold: number; // compact when raw turns exceed this
+  compactionUtilizationThreshold: number; // compact automatically when utilization >= 0.80 (80%)
   semanticRecall: number; // top-k old turns recalled (0 = disabled)
 }
 

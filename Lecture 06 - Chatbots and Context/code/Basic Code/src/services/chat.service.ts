@@ -2,7 +2,7 @@ import { config, CONTEXT_POLICY } from '../config/config.js';
 import { COMPACTION_SPEC, REFUSAL_TEXT } from '../config/prompts.js';
 import { callModel } from '../lib/llm.js';
 import type { AssemblyReport, ChatTurn, Finding, GroundedAnswer, KbChunk, SessionState } from '../types/chat.types.js';
-import { assembleContext } from './context.service.js';
+import { assembleContext, computeHistoryUtilization } from './context.service.js';
 import { searchKnowledge } from './grounding.service.js';
 import { hasBlocking, sanitizeInput, screenOutput } from './guardrail.service.js';
 import { getFactsForUser } from './memory.service.js';
@@ -169,14 +169,22 @@ export const runTurn = async (session: SessionState, rawText: string): Promise<T
  * durable transcript lives in the cold store (a database, in production).
  * Returns true when a compaction actually happened.
  */
-export const compactIfNeeded = async (session: SessionState): Promise<boolean> => {
+export const compactIfNeeded = async (session: SessionState, options?: { force?: boolean }): Promise<boolean> => {
   const policy = CONTEXT_POLICY;
   if (!policy.summarise) return false;
-  if (session.turns.length <= policy.summariseThreshold) return false;
+  const { utilization } = computeHistoryUtilization(session);
+  const overTurnThreshold = session.turns.length > policy.summariseThreshold;
+  const overBudgetThreshold = utilization >= policy.compactionUtilizationThreshold;
+  if (!options?.force && !overTurnThreshold && !overBudgetThreshold) return false;
 
   // The pinned anchor (§03.3) is never compacted: the first K turns carry the goal
   // and the hard constraints, and they are exactly what "I already told you" means.
-  const splitAt = Math.max(policy.anchorTurns, session.turns.length - policy.recentTurns);
+  // When forced by the 80% budget threshold on a few large turns, compact down to the
+  // most recent 2 turns so utilization actually drops below 80%.
+  let splitAt = Math.max(policy.anchorTurns, session.turns.length - policy.recentTurns);
+  if (options?.force && splitAt <= policy.anchorTurns && session.turns.length > policy.anchorTurns + 1) {
+    splitAt = Math.max(policy.anchorTurns + 1, session.turns.length - 2);
+  }
   const older = session.turns.slice(policy.anchorTurns, splitAt);
   const keep = session.turns.slice(splitAt);
   if (older.length === 0) return false;

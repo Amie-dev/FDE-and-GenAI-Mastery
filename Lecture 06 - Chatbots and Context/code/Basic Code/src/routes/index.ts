@@ -10,6 +10,7 @@ import {
   postSession,
   removeSession,
 } from '../controllers/chat.controller.js';
+import { compactContextAtThreshold } from '../middleware/compaction.js';
 import {
   chatRequestSchema,
   memoryRequestSchema,
@@ -37,8 +38,8 @@ router.post('/context/preview', validateBody(previewRequestSchema), postPreview)
 /** Chapter 02 §02.5 — the O(N^2) accumulation projection. */
 router.post('/context/projection', validateBody(projectionRequestSchema), postProjection);
 
-/** Chapter 08 §08.6 — one message, end to end, buffered. */
-router.post('/chat', validateBody(chatRequestSchema), postChat);
+/** Chapter 08 §08.6 + Chapter 09 — validated, compacted at 80% budget, buffered. */
+router.post('/chat', validateBody(chatRequestSchema), compactContextAtThreshold, postChat);
 
-/** Chapter 05 §05.7 — the same turn, streamed over SSE. */
-router.post('/chat/stream', validateBody(chatRequestSchema), postChatStream);
+/** Chapter 05 §05.7 + Chapter 09 — validated, compacted at 80% budget, streamed over SSE. */
+router.post('/chat/stream', validateBody(chatRequestSchema), compactContextAtThreshold, postChatStream);

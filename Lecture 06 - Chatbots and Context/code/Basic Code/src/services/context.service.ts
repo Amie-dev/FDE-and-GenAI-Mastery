@@ -13,6 +13,19 @@ import { MESSAGE_OVERHEAD_TOKENS, contentWords, estimateTokens } from './token.s
  * `chat.service.ts` and runs AFTER the response (chapter 03 §03.7 design rule).
  */
 
+/**
+ * Chapter 09 — compute current history-tier token utilization (0..1+) against
+ * `CONTEXT_POLICY.budgetTokens` so middleware can trigger compaction at 80%.
+ */
+export const computeHistoryUtilization = (session: SessionState): { usedTokens: number; budgetTokens: number; utilization: number } => {
+  const summaryTokens = session.runningSummary ? estimateTokens(session.runningSummary) + MESSAGE_OVERHEAD_TOKENS : 0;
+  const turnTokens = session.turns.reduce((total, turn) => total + estimateTokens(turn.content) + MESSAGE_OVERHEAD_TOKENS, 0);
+  const usedTokens = summaryTokens + turnTokens;
+  const budgetTokens = CONTEXT_POLICY.budgetTokens;
+  const utilization = budgetTokens > 0 ? usedTokens / budgetTokens : 0;
+  return { usedTokens, budgetTokens, utilization };
+};
+
 /** §03.8 step 3 — the only subtle loop: a newest-first walk with a hard guarantee. */
 export const takeNewestWithinBudget = (turns: ChatTurn[], budget: number): ChatTurn[] => {
   const kept: ChatTurn[] = [];

@@ -19,9 +19,10 @@
 | 06 | **Hallucination Mechanisms: Fluency vs Truth** | Hallucination is the training objective working as designed; fluency guarantees nothing and sycophancy is the default. | [06_Hallucination_Mechanisms_Fluency_vs_Truth.md](./notes/06_Hallucination_Mechanisms_Fluency_vs_Truth.md) |
 | 07 | **Engineering Defences: Grounding, RAG, Guardrails & Verification** | Seven deterministic layers around a probabilistic core, with calibrated refusal shipped as a product feature. | [07_Engineering_Defences_Grounding_RAG_Guardrails_and_Verification.md](./notes/07_Engineering_Defences_Grounding_RAG_Guardrails_and_Verification.md) |
 | 08 | **Complete Enterprise Chatbot Architecture** | Six tiers, one unprivileged kernel, and a cost/coherence/latency trade-off you must be able to name. | [08_Complete_Enterprise_Chatbot_Architecture.md](./notes/08_Complete_Enterprise_Chatbot_Architecture.md) |
-| — | **Lecture 06 — Complete Notes** | Consolidated revision layer: executive summary, one master diagram, cheat sheet, decision tables, 20 misconceptions, glossary and 23 self-check questions. | [Lecture_06_Complete_Notes.md](./notes/Lecture_06_Complete_Notes.md) |
+| 09 | **Explicit Context Budgeting, Compaction & Long-Horizon Sessions** | Explicit 5+1 tier budgets, lossless-first compaction at 80% utilization, and five defences against context rot across 50+ turns. | [09_Explicit_Context_Budgeting_Compaction_and_Long_Horizon_Sessions.md](./notes/09_Explicit_Context_Budgeting_Compaction_and_Long_Horizon_Sessions.md) |
+| — | **Lecture 06 — Complete Notes** | Consolidated revision layer: executive summary, one master diagram, cheat sheet, decision tables, 20 misconceptions, glossary and 25 self-check questions. | [Lecture_06_Complete_Notes.md](./notes/Lecture_06_Complete_Notes.md) |
 
-**Chapter count: 8** (within the 5–10 limit for this lecture).
+**Chapter count: 9** (within the 5–10 limit for this lecture).
 
 ---
 
