@@ -1,0 +1,30 @@
+{
+  "name": "lecture-26-semantic-text-to-sql-python",
+  "version": "1.0.0",
+  "description": "Lecture 26 Basic Code — AST-Validated Text-to-SQL, Column ACLs, Sandboxed Python & Numerical Reconciliation",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "test": "tsx --test src/release-gate.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "text-to-sql",
+    "sql-ast",
+    "node-sql-parser",
+    "python-sandbox",
+    "numerical-reconciliation",
+    "typescript"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "node-sql-parser": "^5.3.9"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
+
