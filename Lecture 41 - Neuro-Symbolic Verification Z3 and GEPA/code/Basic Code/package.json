@@ -1,0 +1,30 @@
+{
+  "name": "lecture-41-neuro-symbolic-z3-gepa",
+  "version": "1.0.0",
+  "description": "Lecture 41 Basic Code — Trajectory Evaluator, Z3 SMT Policy Verifier & GEPA Optimizer",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "test": "tsx --test src/release-gate.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "z3-solver",
+    "neuro-symbolic",
+    "trajectory-eval",
+    "gepa",
+    "property-based-testing",
+    "typescript"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "z3-solver": "^4.13.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
+

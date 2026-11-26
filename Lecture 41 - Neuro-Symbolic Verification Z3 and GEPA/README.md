@@ -50,11 +50,11 @@ Z3 verifier rejects 100% of policy-violating action plans pre-execution; GEPA lo
 
 | Step | Status |
 | :--- | :---: |
-| Review syllabus & reference links below | ☐ |
-| Write all chapter notes + `Lecture_41_Complete_Notes.md` in `notes/` | ☐ |
-| Update `index.md` with links to every chapter | ☐ |
-| Build & test the runnable implementation in `code/` | ☐ |
-| Write & pass the completion gate in `Assignment/task.md` | ☐ |
+| Review syllabus & reference links below | ✅ |
+| Write all chapter notes + `Lecture_41_Complete_Notes.md` in `notes/` | ✅ |
+| Update `index.md` with links to every chapter | ✅ |
+| Build & test the runnable implementation in `code/` | ✅ |
+| Write & pass the completion gate in `Assignment/task.md` | ✅ |
 
 ---
 

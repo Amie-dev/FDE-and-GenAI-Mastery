@@ -16,7 +16,7 @@
 - [x] **Lecture 31** — Cloudflare Code Mode & Isolated Code-Execution MCP (`@cloudflare/codemode`)
 - [x] **Lecture 37** — Agent-to-User UIs (`AG-UI`, `MCP Apps`), Kubernetes & KEDA Scaling
 - [x] **Lecture 39** — Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) & Capacity Engineering
-- [ ] **Lecture 41** — Neuro-Symbolic Verification, Trajectory Evals, Z3 Constraints & GEPA
+- [x] **Lecture 41** — Neuro-Symbolic Verification, Trajectory Evals, Z3 Constraints & GEPA
 - [ ] **Lecture 42** — AI Observability (`OpenTelemetry`, `OpenObserve`) & FOCUS FinOps
 - [ ] **Lecture 43** — Progressive Autonomy, Feature Flags (`OpenFeature`/`flagd`) & Safe Releases
 - [ ] **Lecture 44** — Enterprise Identity & Agent Authorization (`OIDC`, `SAML`, `SCIM`, `authentik`, `ReBAC`)
