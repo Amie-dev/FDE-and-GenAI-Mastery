@@ -1,18 +1,19 @@
 /**
- * Lecture 32 — LangGraph orchestration in TypeScript / JavaScript.
+ * Lecture 13 — LangGraph orchestration in TypeScript / JavaScript.
  *
- * Demonstrates a stateful agent graph:
+ * Demonstrates stateful & adaptive agent graphs:
  *   - StateSchema (typed state with a reducer channel)
  *   - StateGraph, nodes, edges, START, END
  *   - compile() then invoke() / stream()
  *   - MemorySaver checkpointer + threadId for persistence
+ *   - Dynamic Send() fan-out / fan-in with ReducedValue (Chapter 16)
  *
  * Required env: OPENAI_API_KEY (only if nodes call a model; this example is pure JS)
  * Run:   npx tsx src/langgraph.ts
  *        (or: npm run langgraph)
  */
 
-import { END, START, StateGraph, StateSchema, MemorySaver } from "@langchain/langgraph";
+import { END, START, StateGraph, StateSchema, MemorySaver, ReducedValue, Send } from "@langchain/langgraph";
 import * as z from "zod";
 
 const State = new StateSchema({
@@ -51,9 +52,61 @@ async function streamExample() {
     }
 }
 
+const FanOutState = new StateSchema({
+    topic: z.string(),
+    subtasks: z.array(z.string()),
+    // Fan-in channel: append partial arrays from N parallel Send() workers.
+    results: new ReducedValue(
+        z.array(z.string()).default(() => []),
+        { reducer: (curr: string[], next: string[]) => curr.concat(next) },
+    ),
+    summary: z.string(),
+});
+
+const plannerNode = (state: { topic: string }) => ({
+    subtasks: [
+        `${state.topic}: architecture`,
+        `${state.topic}: failure-modes`,
+        `${state.topic}: cost-guardrails`,
+    ],
+});
+
+const routeToWorkers = (state: { subtasks: string[] }) =>
+    state.subtasks.map((task) => new Send("worker", { task }));
+
+const workerNode = (state: { task: string }) => ({
+    results: [`[done] ${state.task}`],
+});
+
+const aggregatorNode = (state: { results: string[] }) => ({
+    summary: `Synthesized ${state.results.length} parallel branches: ${state.results.join(" | ")}`,
+});
+
+const fanOutGraph = new StateGraph(FanOutState)
+    .addNode("planner", plannerNode)
+    .addNode("worker", workerNode)
+    .addNode("aggregator", aggregatorNode)
+    .addEdge(START, "planner")
+    .addConditionalEdges("planner", routeToWorkers, ["worker"])
+    .addEdge("worker", "aggregator")
+    .addEdge("aggregator", END)
+    .compile();
+
+async function sendFanOutExample() {
+    console.log("\n--- dynamic Send() fan-out / fan-in ---");
+    const result = await fanOutGraph.invoke({
+        topic: "adaptive-agents",
+        subtasks: [],
+        results: [],
+        summary: "",
+    });
+    console.log("Fan-out result:", JSON.stringify(result));
+}
+
 export async function runLangGraph() {
     await invokeExample();
     await streamExample();
+    await sendFanOutExample();
 }
 
 // Standalone: `npx tsx src/langgraph.ts`  (also works with a relative path)

@@ -1,7 +1,7 @@
-# Lecture 32 - LangChain, LangGraph & LangSmith
+# Lecture 13 - LangChain, LangGraph & LangSmith
 
-> **Phase:** 6 · Agent Orchestration · **Level:** 🟡 Intermediate  
-> **Topic:** LangChain provider delivery, LangGraph orchestration, LangSmith observability — all in TypeScript / JavaScript.
+> **Phase:** 3 · Agency, Graphs & Loop Engineering · **Level:** 🟡 Intermediate · **Roadmap:** [roadmap-v1.md](../roadmap-v1.md) (S06 · Moved from Old L32)  
+> **Topic:** LangChain provider delivery, LangGraph orchestration (static & adaptive `Send()` topologies), LangSmith observability — all in TypeScript / JavaScript.
 
 ---
 
@@ -33,7 +33,7 @@ Source references: [docs.langchain.com](https://docs.langchain.com/) (JavaScript
 ## 📁 Layout
 
 ```text
-Lecture 32 - LangChain LangGraph LangSmith/
+Lecture 13 - LangChain LangGraph LangSmith/
 ├── README.md          # this file — objectives · phase · level · source mapping · checklist
 ├── index.md           # chapter index
 ├── prompt.md          # generation prompt (git-ignored)
@@ -54,7 +54,8 @@ Lecture 32 - LangChain LangGraph LangSmith/
 │   ├── 13_Checkpointers_Persistence_and_HITL.md
 │   ├── 14_Production_Workflows_Notion_and_Google_Calendar.md
 │   ├── 15_LangSmith_Observability_Tracing_and_Evals.md
-│   └── Lecture_32_Complete_Notes.md   # Complete consolidated master notes
+│   ├── 16_Static_vs_Adaptive_Graph_Topologies.md
+│   └── Lecture_13_Complete_Notes.md   # Complete consolidated master notes
 ├── code/
 │   ├── package.json          # deps from reference repo (@langchain/*)
 │   ├── .env.example          # env var template

@@ -1,7 +1,7 @@
 {
   "name": "lecture-17-advanced-rag-production",
   "version": "1.0.0",
-  "description": "Production Advanced RAG implementation (TypeScript + Express) for Lecture 17",
+  "description": "Production Advanced RAG implementation (TypeScript + Express) for Lecture 20",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",

@@ -1,5 +1,5 @@
 /**
- * Lecture 32 — combined runner.
+ * Lecture 13 — combined runner.
  *
  * Runs all three demos in sequence:
  *   1. providers.ts   — LangChain provider delivery (initChatModel / ChatOpenAI)
@@ -16,7 +16,7 @@ import { runLangGraph } from "./langgraph";
 import { runLangSmith } from "./langsmith";
 
 (async () => {
-    console.log("========== Lecture 32 — LangChain · LangGraph · LangSmith ==========");
+    console.log("========== Lecture 13 — LangChain · LangGraph · LangSmith ==========");
     await runProviders();
     await runLangGraph();
     await runLangSmith();

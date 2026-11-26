@@ -1,4 +1,4 @@
-# Lecture 32 — Assignment / Completion Gate
+# Lecture 13 — Assignment / Completion Gate
 
 ## Goal
 
@@ -36,16 +36,23 @@ Run the langgraph demo and show:
 ### Task 4 — Combined runner (optional but recommended)
 - [ ] `npm start` (runs `src/index.ts`) executes all three demos in sequence without errors.
 
+### Task 5 — Adaptive `Send()` fan-out / fan-in (notes/16)
+Run `npm run langgraph` and verify the dynamic map-reduce section:
+- [ ] `planner` emits `N` subtasks at runtime and `routeToWorkers` returns `N` `Send("worker", { task })` branches.
+- [ ] `results` uses a `ReducedValue` append reducer so all `N` parallel worker outputs survive fan-in.
+- [ ] `aggregator` synthesizes all `N` results into `summary`.
+- [ ] Explain in two sentences how `Send()` + `ReducedValue` bridges to Lecture 14's Plan-Act-Verify loop and A2A delegation.
+
 ## Completion gate
 
 All of the following must be true:
 
-- [ ] `npm install` succeeds inside `code/`.
+- [ ] `npm install` and `npm run typecheck` succeed inside `code/`.
 - [ ] `npm run providers` runs and prints a model reply + streamed output.
-- [ ] `npm run langgraph` runs and prints the final state + stream events.
+- [ ] `npm run langgraph` runs and prints the final state, stream events, and the dynamic `Send()` fan-out/fan-in summary.
 - [ ] `npm run langsmith` runs and prints a model reply (requires LangSmith keys; tracing is best-effort without them).
-- [ ] You can explain, in one sentence each: what a LangChain **provider package** does, what `compile()` does in LangGraph, and which env var enables LangSmith tracing.
+- [ ] You can explain, in one sentence each: what a LangChain **provider package** does, what `compile()` does in LangGraph, why `Send()` fan-in requires a reducer, and which env var enables LangSmith tracing.
 
 ## Deliverable
 
-Push your completed `Lecture 32 - LangChain LangGraph LangSmith/` folder (notes + code) and be ready to walk through the output of each demo.
+Push your completed `Lecture 13 - LangChain LangGraph LangSmith/` folder (notes + code) and be ready to walk through the output of each demo.

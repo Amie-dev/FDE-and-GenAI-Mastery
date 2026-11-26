@@ -85,7 +85,7 @@ export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY="lsv2_pt_..."
 
 # 3. Destination project name (defaults to 'default' if omitted)
-export LANGSMITH_PROJECT="lecture-32-production"
+export LANGSMITH_PROJECT="lecture-13-production"
 
 # 4. Optional: Custom endpoint (for enterprise private-cloud deployments)
 # export LANGSMITH_ENDPOINT="https://api.smith.langchain.com"

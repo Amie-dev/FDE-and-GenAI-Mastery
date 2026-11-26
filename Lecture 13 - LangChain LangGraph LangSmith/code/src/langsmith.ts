@@ -1,5 +1,5 @@
 /**
- * Lecture 32 — LangSmith tracing & observability in TypeScript / JavaScript.
+ * Lecture 13 — LangSmith tracing & observability in TypeScript / JavaScript.
  *
  * Demonstrates that LangChain / LangGraph traces are sent to LangSmith
  * automatically once tracing env vars are set.
@@ -8,7 +8,7 @@
  *   LANGSMITH_TRACING=true
  *   LANGSMITH_API_KEY=ls-...
  *   OPENAI_API_KEY=sk-...
- *   (optional) LANGSMITH_PROJECT=lecture-32
+ *   (optional) LANGSMITH_PROJECT=lecture-13
  *
  * Run:   npx tsx src/langsmith.ts
  *        (or: npm run langsmith)
@@ -25,7 +25,7 @@ export async function runLangSmith() {
     console.log("  LANGSMITH_TRACING=true");
     console.log("  LANGSMITH_API_KEY=ls-...");
     console.log("  OPENAI_API_KEY=sk-...");
-    console.log("  LANGSMITH_PROJECT=lecture-32\n");
+    console.log("  LANGSMITH_PROJECT=lecture-13\n");
 
     const model = await initChatModel("openai:gpt-5.5");
     const response = await model.invoke("Explain observability in one sentence.");

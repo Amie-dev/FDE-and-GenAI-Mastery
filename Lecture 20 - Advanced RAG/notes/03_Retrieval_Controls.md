@@ -834,4 +834,4 @@ The distinction between "the corpus has nothing" and "the filter excluded everyt
 
 ---
 
-**Back to:** [Lecture 17 — Chapter Index](./index.md) · [Complete Notes](./Lecture_17_Complete_Notes.md)
+**Back to:** [Lecture 20 — Chapter Index](./index.md) · [Complete Notes](./Lecture_20_Complete_Notes.md)

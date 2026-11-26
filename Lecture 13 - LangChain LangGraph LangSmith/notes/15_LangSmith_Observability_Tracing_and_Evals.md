@@ -62,7 +62,7 @@ graph TD
 | :--- | :--- | :--- |
 | **Run** | A single unit of execution. | Captures inputs, outputs, start/end timestamps, token counts, and errors for one step (an LLM call, a tool execution, or a graph node). |
 | **Trace** | A directed acyclic tree of nested Runs. | Represents the complete journey of a single user invocation from start to finish. |
-| **Project** | A logical namespace / bucket. | Isolates environments (e.g. `lecture-32-dev`, `agent-staging`, `production`). |
+| **Project** | A logical namespace / bucket. | Isolates environments (e.g. `lecture-13-dev`, `agent-staging`, `production`). |
 | **Dataset** | A versioned collection of test examples. | Benchmark "golden dataset" containing inputs and reference ground truths for regression testing. |
 | **Feedback** | Key-value metric attached to a Run. | User ratings (`thumbs_up: true`), latency scores, or human annotations. |
 
@@ -84,7 +84,7 @@ export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY="lsv2_pt_..."
 
 # Destination project name (defaults to 'default' if omitted)
-export LANGSMITH_PROJECT="lecture-32-agent"
+export LANGSMITH_PROJECT="lecture-13-agent"
 ```
 
 Once exported, any call to `model.invoke()`, `agent.invoke()`, or `graph.invoke()` automatically dispatches telemetry asynchronously in the background without adding latency to the main event loop:

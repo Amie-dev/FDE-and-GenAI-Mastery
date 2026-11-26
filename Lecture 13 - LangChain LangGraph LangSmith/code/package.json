@@ -1,7 +1,7 @@
 {
-  "name": "lecture-32-langchain-langgraph-langsmith",
+  "name": "lecture-13-langchain-langgraph-langsmith",
   "version": "1.0.0",
-  "description": "Lecture 32 — LangChain provider delivery, LangGraph orchestration, LangSmith observability in TypeScript / JavaScript",
+  "description": "Lecture 13 — LangChain provider delivery, LangGraph orchestration, LangSmith observability in TypeScript / JavaScript",
   "main": "src/index.ts",
   "scripts": {
     "dev": "tsx watch src/index.ts",

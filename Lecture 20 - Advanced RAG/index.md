@@ -1,7 +1,7 @@
-# Lecture 17 — Advanced RAG: Chapter Index
+# Lecture 20 — Advanced RAG: Chapter Index
 
-> **Total chapters:** 8 (within 5–10 range)  
-> **Source:** `Forward-Deployed-Engineer/Lecture 12/notes/` + `gen-ai-cohort/week03/learning/day05/notes/`
+> **Total chapters:** 9 (within 5–10 range)  
+> **Source:** `Forward-Deployed-Engineer/Lecture 12/notes/` + `gen-ai-cohort/week03/learning/day05/notes/` · `roadmap-v1.md` (S03)
 
 ---
 
@@ -17,6 +17,7 @@
 | 06 | [`06_Query_Processing.md`](notes/06_Query_Processing.md) | Query Processing — Translation, Routing, Decomposition, HyDE | Query rewriting, step-back prompting, sub-query decomposition, HyDE; multi-source routing & adapters; CRAG |
 | 07 | [`07_Context_Engineering.md`](notes/07_Context_Engineering.md) | Context Engineering — Ordering, Budget, Framing | Lost-in-the-middle; precedence rules; labelled chunks; citation validation; budgeting; injection defence |
 | 08 | [`08_Production_RAG.md`](notes/08_Production_RAG.md) | Production RAG — The Playbook | Golden set design; ablation matrix; versioning/fingerprints; latency/cost budgets; re-indexing; observability; runbook; maturity ladder |
+| 09 | [`09_Document_AI_Provenance_and_Calibrated_Abstention.md`](notes/09_Document_AI_Provenance_and_Calibrated_Abstention.md) | Document AI, Chunk Provenance & Calibrated Abstention | Layout-aware multimodal parsing trade-offs; chunk provenance (`sourceUri`, page/line, SHA-256 hash); inline citation verification & calibrated abstention gates |
 
 ---
 
@@ -24,7 +25,7 @@
 
 | File | Description |
 |------|-------------|
-| [`Lecture_17_Complete_Notes.md`](notes/Lecture_17_Complete_Notes.md) | Consolidated one-page map: executive summary, cheat sheet, decision tables, misconceptions, glossary, 20 self-check questions, chapter reference |
+| [`Lecture_20_Complete_Notes.md`](notes/Lecture_20_Complete_Notes.md) | Consolidated one-page map: executive summary, cheat sheet, decision tables, misconceptions, glossary, 20 self-check questions, chapter reference |
 
 ---
 
@@ -50,5 +51,5 @@
 ## Quick Navigation
 
 - **Start here:** [Chapter 01](notes/01_Why_Basic_RAG_Breaks.md) → follow "Where This Goes Next" links
-- **Reference:** [Complete Notes](notes/Lecture_17_Complete_Notes.md) for cheat sheet and self-check
+- **Reference:** [Complete Notes](notes/Lecture_20_Complete_Notes.md) for cheat sheet and self-check
 - **Source:** `../../Forward-Deployed-Engineer/Lecture 12/notes/` (9 chapters + complete) · `../../gen-ai-cohort/week03/learning/day05/notes/` (6 files + completed notes)

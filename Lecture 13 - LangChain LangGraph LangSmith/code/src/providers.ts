@@ -1,5 +1,5 @@
 /**
- * Lecture 32 — LangChain provider delivery in TypeScript / JavaScript.
+ * Lecture 13 — LangChain provider delivery in TypeScript / JavaScript.
  *
  * Demonstrates the "one API for any model" provider model:
  *   - initChatModel with provider prefix ("openai:gpt-5.5")

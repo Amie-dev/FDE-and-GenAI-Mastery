@@ -1,4 +1,4 @@
-# Assignment — Lecture 17: Advanced RAG
+# Assignment — Lecture 20: Advanced RAG
 
 **Level:** 🟠 Advanced · 🟡 Intermediate
 **Goal:** After reading the notes and building the code, complete these tasks to prove you understand why basic RAG breaks, and how each Advanced RAG control fixes it.
@@ -87,7 +87,7 @@
 ## Part 4 — Reflection (write one paragraph each)
 34. **The main failure mode of basic RAG.** What is it, and which Advanced RAG control addresses it?
 35. **The cost/quality trade-off.** Which Advanced RAG steps are cheap, and which are expensive? Where would you draw the line in production?
-36. **What I would take to production.** If you were shipping Lecture 17 code tomorrow, what would you add, modify, or remove before it could handle real user traffic?
+36. **What I would take to production.** If you were shipping Lecture 20 code tomorrow, what would you add, modify, or remove before it could handle real user traffic?
 
 ---
 

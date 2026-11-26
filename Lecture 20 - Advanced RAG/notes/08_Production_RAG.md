@@ -633,8 +633,8 @@ flowchart TD
 ## Where This Goes Next
 
 - **[Chapter 01](./01_Why_Basic_RAG_Breaks.md)** with the whole picture: the assumption, the two failure classes, and the seven controls.
-- Read the **[Complete Consolidated Notes](./Lecture_17_Complete_Notes.md)** for the one-page map, cheat sheet and self-check.
+- Read the **[Complete Consolidated Notes](./Lecture_20_Complete_Notes.md)** for the one-page map, cheat sheet and self-check.
 
 ---
 
-**Back to:** [Lecture 17 — Chapter Index](./index.md) · [Complete Notes](./Lecture_17_Complete_Notes.md)
+**Back to:** [Lecture 20 — Chapter Index](./index.md) · [Complete Notes](./Lecture_20_Complete_Notes.md)
