@@ -10,7 +10,7 @@
 - [x] **Lecture 08** — Model Routing & Harness Velocity (`AGENTS.md`, `Pi`, `Superpowers`, SDD/TDD)
 - [x] **Lecture 14** — Loop Engineering (`Plan-Act-Verify`, Stuck Detection, Heartbeat) & A2A Protocol
 - [x] **Lecture 24** — Enterprise Data Discovery, Ontologies & Apache Ossie
-- [ ] **Lecture 25** — AI Data Contracts, Lakehouse Storage & Knowledge Lifecycle
+- [x] **Lecture 25** — AI Data Contracts, Lakehouse Storage & Knowledge Lifecycle
 - [ ] **Lecture 26** — Semantic-Layer Text-to-SQL & Analytical Intelligence
 - [ ] **Lecture 30** — Enterprise APIs, OpenAPI-to-MCP, Idempotency & Computer-Use Fallback
 - [ ] **Lecture 31** — Cloudflare Code Mode & Isolated Code-Execution MCP (`@cloudflare/codemode`)

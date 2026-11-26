@@ -1,0 +1,30 @@
+{
+  "name": "lecture-25-ai-data-contracts-lakehouse",
+  "version": "1.0.0",
+  "description": "Lecture 25 Basic Code — Zod AI Data Contracts, Cascade Deletion & Zero-Downtime Blue/Green Re-Embedding",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "test": "tsx --test src/release-gate.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "data-contracts",
+    "zod",
+    "cascade-deletion",
+    "gdpr",
+    "lakehouse",
+    "typescript"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
+
