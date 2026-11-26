@@ -31,6 +31,7 @@ Read all 8 chapter notes in `notes/` and review the `code/Basic Code` reference 
 - [ ] **REST endpoint** to send human approval event for a specific `jobId` (`routes/index.ts`)
 - [ ] **Rate limiting middleware** protecting trigger endpoints per IP (`middleware/rateLimit.ts`)
 - [ ] **Environment configuration** via Zod-validated `.env` with secrets never hardcoded (`config/config.ts`)
+- [ ] **Idempotent CDC sync & DLQ replay** — Postgres WAL/CDC handler with `idempotencyKey`, monotonic `lsn` ordering, and safe DLQ replay (`cdcSync.ts`)
 
 ### Stretch Goals (3)
 
@@ -76,3 +77,4 @@ You can answer **all** of these without notes:
 - **Q6**: Why are step IDs required to be stable across deployments?
 - **Q7**: What does `shouldRetry` control, and why is `jitter` important?
 - **Q8**: Can you kill the process mid-workflow and show it resumes exactly where it stopped?
+- **Q9 (S16 Gate)**: Replay the same `cdc/record.changed` event twice and send an out-of-order stale `lsn`: how does `cdcSync.ts` guarantee zero duplicate writes, and how does `replayDlqEntry()` recover a poison-pill event safely?

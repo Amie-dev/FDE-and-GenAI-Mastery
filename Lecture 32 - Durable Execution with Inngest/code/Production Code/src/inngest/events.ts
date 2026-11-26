@@ -6,6 +6,8 @@ export const EVENTS = {
   RESEARCH_FAILED: "ai/research.failed",
   DEAD_LETTER: "ai/research.dead-letter",
   FALLBACK_USED: "ai/research.fallback-used",
+  CDC_RECORD_CHANGED: "cdc/record.changed",
+  CDC_DLQ_REPLAY: "cdc/dlq.replay",
 } as const;
 
 export interface ResearchRequestedPayload {
@@ -35,4 +37,14 @@ export interface DeadLetterPayload {
   error: string;
   attempts: number;
   timestamp: string;
+}
+
+export interface CdcRecordChangedPayload {
+  table: string;
+  op: "INSERT" | "UPDATE" | "DELETE";
+  recordId: string;
+  lsn: number;
+  idempotencyKey: string;
+  after?: { title: string; content: string } | null;
+  simulateFailure?: boolean;
 }

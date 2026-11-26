@@ -1,4 +1,4 @@
-# 📘 Lecture 26 — Complete Notes: Durable Execution with Inngest
+# 📘 Lecture 32 — Complete Notes: Durable Execution with Inngest
 
 **Lecture:** Durable Execution with Inngest  
 **Phase:** 8 · Production Infra · **Level:** 🟠 Advanced  
@@ -18,6 +18,7 @@
 | 6 | Concurrency, Throttling & Rate Limiting | `notes/06-concurrency-throttling-and-rate-limiting.md` | Concurrency vs throttling vs rate limiting, per-user/provider limits |
 | 7 | Error Resilience, Observability & Dead Letter | `notes/07-error-resilience-observability.md` | Retries, backoff/jitter, shouldRetry, onFailure, dead letter, observability |
 | 8 | Cron Scheduled Workflows, Versioning & Advanced | `notes/08-cron-versioning-advanced.md` | Cron triggers, step ID stability, versioning strategies, secrets |
+| 9 | CDC Pipelines, Idempotency & DLQ Replay | `notes/09-cdc-idempotency-and-dlq-replay.md` | Postgres WAL/Debezium CDC, duplicate-event idempotency, LSN ordering, DLQ poison-pill isolation & safe replay |
 
 > Each chapter file contains full detail. This complete notes file summarizes the key concepts across all chapters with cross-chapter synthesis.
 
@@ -25,7 +26,7 @@
 
 ## 📋 Executive Summary
 
-Lecture 26 covers **durable execution** — the ability to run multi-step, long-running workflows reliably across failures, retries, delays, and distributed execution. **Inngest** is an event-driven workflow orchestration platform that provides durable execution primitives through its Node.js/TypeScript SDK.
+Lecture 32 covers **durable execution** — the ability to run multi-step, long-running workflows reliably across failures, retries, delays, and distributed execution. **Inngest** is an event-driven workflow orchestration platform that provides durable execution primitives through its Node.js/TypeScript SDK.
 
 The core insight is that AI workloads are rarely single LLM calls; they are distributed processes involving web search, vector search, graph queries, LLM synthesis, tool calls, database writes, and notifications. Building these as procedural code creates fragile systems where a single failure loses all intermediate progress. Inngest solves this by making workflow steps **durable**: each step's result is persisted, and retries can reuse completed work instead of re-executing from scratch.
 
@@ -300,4 +301,4 @@ DURABLE  = "Preserve progress across failures, retries, delays."
 
 ---
 
-*8 chapters · 5-10 chapter range satisfied · Source: GAC D13*
+*9 chapters · 5-10 chapter range satisfied · Source: GAC D13 · roadmap-v1.md (S16)*
