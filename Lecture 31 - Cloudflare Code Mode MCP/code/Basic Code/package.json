@@ -1,0 +1,27 @@
+{
+  "name": "lecture-31-cloudflare-codemode-mcp",
+  "version": "1.0.0",
+  "description": "Lecture 31 Basic Code — Cloudflare Code Mode MCP (codeMcpServer + openApiMcpServer + Sandbox Isolation)",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "test": "tsx --test src/release-gate.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "cloudflare",
+    "codemode",
+    "mcp",
+    "dynamic-workers",
+    "openapi",
+    "typescript"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
+
