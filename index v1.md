@@ -62,7 +62,7 @@
 ## 📚 Lecture 01 — Introduction to FDE and AI History
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 01 - Introduction to FDE and AI History/](./Lecture%2001%20-%20Introduction%20to%20FDE%20and%20AI%20History/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 01 - Introduction to FDE and AI History/](./Lecture%2001%20-%20Introduction%20to%20FDE%20and%20AI%20History/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -102,7 +102,7 @@ flowchart LR
 ## 📚 Lecture 02 — LLM Foundations
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 02 - LLM Foundations/](./Lecture%2002%20-%20LLM%20Foundations/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 02 - LLM Foundations/](./Lecture%2002%20-%20LLM%20Foundations/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -143,7 +143,7 @@ flowchart LR
 ## 📚 Lecture 03 — Attention and Decoding
 
 **9 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 03 - Attention and Decoding/](./Lecture%2003%20-%20Attention%20and%20Decoding/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 03 - Attention and Decoding/](./Lecture%2003%20-%20Attention%20and%20Decoding/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -185,7 +185,7 @@ flowchart LR
 ## 📚 Lecture 04 — LLM APIs and Multi-SDK
 
 **9 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 04 - LLM APIs and Multi-SDK/](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 04 - LLM APIs and Multi-SDK/](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -227,7 +227,7 @@ flowchart LR
 ## 📚 Lecture 05 — Prompt Engineering
 
 **9 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 05 - Prompt Engineering/](./Lecture%2005%20-%20Prompt%20Engineering/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 05 - Prompt Engineering/](./Lecture%2005%20-%20Prompt%20Engineering/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -269,7 +269,7 @@ flowchart LR
 ## 📚 Lecture 06 — Chatbots and Context
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 06 - Chatbots and Context/](./Lecture%2006%20-%20Chatbots%20and%20Context/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 06 - Chatbots and Context/](./Lecture%2006%20-%20Chatbots%20and%20Context/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -310,7 +310,7 @@ flowchart LR
 ## 📚 Lecture 07 — AI Streaming
 
 **9 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 07 - AI Streaming/](./Lecture%2007%20-%20AI%20Streaming/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 07 - AI Streaming/](./Lecture%2007%20-%20AI%20Streaming/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -352,7 +352,7 @@ flowchart LR
 ## 📚 Lecture 08 — Tool Calling
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 08 - Tool Calling/](./Lecture%2009%20-%20Tool%20Calling/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 08 - Tool Calling/](./Lecture%2009%20-%20Tool%20Calling/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -393,7 +393,7 @@ flowchart LR
 ## 📚 Lecture 09 — AI Agents and HITL
 
 **9 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 09 - AI Agents and HITL/](./Lecture%2010%20-%20AI%20Agents%20and%20HITL/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 09 - AI Agents and HITL/](./Lecture%2010%20-%20AI%20Agents%20and%20HITL/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -435,7 +435,7 @@ flowchart LR
 ## 📚 Lecture 10 — Structured Outputs
 
 **9 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 10 - Structured Outputs/](./Lecture%2011%20-%20Structured%20Outputs/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 10 - Structured Outputs/](./Lecture%2011%20-%20Structured%20Outputs/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -478,7 +478,7 @@ flowchart LR
 ## 📚 Lecture 11 — Agent SDK from Scratch
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 11 - Agent SDK from Scratch/](./Lecture%2012%20-%20Agent%20SDK%20from%20Scratch/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 11 - Agent SDK from Scratch/](./Lecture%2012%20-%20Agent%20SDK%20from%20Scratch/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -519,7 +519,7 @@ flowchart LR
 ## 📚 Lecture 12 — Vector Embeddings
 
 **7 chapters**
-**Folder:** [📂 ./Lecture 12 - Vector Embeddings/](./Lecture%2015%20-%20Vector%20Embeddings/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 12 - Vector Embeddings/](./Lecture%2015%20-%20Vector%20Embeddings/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -552,7 +552,7 @@ flowchart LR
 ## 📚 Lecture 13 — Semantic Search Project
 
 **6 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 13 - Semantic Search Project/](./Lecture%2016%20-%20Semantic%20Search%20Project/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 13 - Semantic Search Project/](./Lecture%2016%20-%20Semantic%20Search%20Project/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -591,7 +591,7 @@ flowchart LR
 ## 📚 Lecture 14 — Vector Search and Storage
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 14 - Vector Search and Storage/](./Lecture%2017%20-%20Vector%20Search%20and%20Storage/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 14 - Vector Search and Storage/](./Lecture%2017%20-%20Vector%20Search%20and%20Storage/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -632,7 +632,7 @@ flowchart LR
 ## 📚 Lecture 15 — Vector Databases and ANN
 
 **5 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 15 - Vector Databases and ANN/](./Lecture%2018%20-%20Vector%20Databases%20and%20ANN/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 15 - Vector Databases and ANN/](./Lecture%2018%20-%20Vector%20Databases%20and%20ANN/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -670,7 +670,7 @@ flowchart LR
 ## 📚 Lecture 16 — RAG
 
 **9 chapters**
-**Folder:** [📂 ./Lecture 16 - RAG/](./Lecture%2019%20-%20RAG/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 16 - RAG/](./Lecture%2019%20-%20RAG/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -705,7 +705,7 @@ flowchart LR
 ## 📚 Lecture 17 — Advanced RAG
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 17 - Advanced RAG/](./Lecture%2020%20-%20Advanced%20RAG/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 17 - Advanced RAG/](./Lecture%2020%20-%20Advanced%20RAG/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -722,7 +722,7 @@ flowchart LR
 
 A single document combining all 8 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
 
-👉 **[Lecture_17_Complete_Notes.md](./Lecture%2020%20-%20Advanced%20RAG/notes/Lecture_17_Complete_Notes.md)**
+👉 **[Lecture_17_Complete_Notes.md](./Lecture%2020%20-%20Advanced%20RAG/notes/Lecture_20_Complete_Notes.md)**
 
 ### 🧩 Lecture artefacts
 
@@ -746,7 +746,7 @@ flowchart LR
 ## 📚 Lecture 18 — Vectorless RAG and LLM Wiki
 
 **7 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 18 - Vectorless RAG and LLM Wiki/](./Lecture%2021%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 18 - Vectorless RAG and LLM Wiki/](./Lecture%2021%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -786,7 +786,7 @@ flowchart LR
 ## 📚 Lecture 19 — Agent Memory Systems
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 19 - Agent Memory Systems/](./Lecture%2022%20-%20Agent%20Memory%20Systems/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 19 - Agent Memory Systems/](./Lecture%2022%20-%20Agent%20Memory%20Systems/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -803,7 +803,7 @@ flowchart LR
 
 A single document combining all 8 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
 
-👉 **[Lecture_19_Complete_Notes.md](./Lecture%2022%20-%20Agent%20Memory%20Systems/notes/Lecture_19_Complete_Notes.md)**
+👉 **[Lecture_19_Complete_Notes.md](./Lecture%2022%20-%20Agent%20Memory%20Systems/notes/Lecture_22_Complete_Notes.md)**
 
 ### 🧩 Lecture artefacts
 
@@ -827,7 +827,7 @@ flowchart LR
 ## 📚 Lecture 20 — Graph Databases and GraphRAG
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 20 - Graph Databases and GraphRAG/](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 20 - Graph Databases and GraphRAG/](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -844,7 +844,7 @@ flowchart LR
 
 A single document combining all 8 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
 
-👉 **[Lecture_20_Complete_Notes.md](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/notes/Lecture_20_Complete_Notes.md)**
+👉 **[Lecture_20_Complete_Notes.md](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/notes/Lecture_23_Complete_Notes.md)**
 
 ### 🧩 Lecture artefacts
 
@@ -868,7 +868,7 @@ flowchart LR
 ## 📚 Lecture 21 — MCP Core
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 21 - MCP Core/](./Lecture%2027%20-%20MCP%20Core/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 21 - MCP Core/](./Lecture%2027%20-%20MCP%20Core/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -909,7 +909,7 @@ flowchart LR
 ## 📚 Lecture 22 — MCP Resources Prompts and Gateway
 
 **9 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 22 - MCP Resources Prompts and Gateway/](./Lecture%2028%20-%20MCP%20Resources%20Prompts%20and%20Gateway/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 22 - MCP Resources Prompts and Gateway/](./Lecture%2028%20-%20MCP%20Resources%20Prompts%20and%20Gateway/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -952,7 +952,7 @@ flowchart LR
 ## 📚 Lecture 23 — Claude Skills
 
 **6 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 23 - Claude Skills/](./Lecture%2029%20-%20Claude%20Skills/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 23 - Claude Skills/](./Lecture%2029%20-%20Claude%20Skills/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -991,7 +991,7 @@ flowchart LR
 ## 📚 Lecture 24 — Multimodal AI
 
 **10 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 24 - Multimodal AI/](./Lecture%2033%20-%20Multimodal%20AI/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 24 - Multimodal AI/](./Lecture%2033%20-%20Multimodal%20AI/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -1034,7 +1034,7 @@ flowchart LR
 ## 📚 Lecture 25 — vLLM and PagedAttention
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 25 - vLLM and PagedAttention/](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 25 - vLLM and PagedAttention/](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -1051,14 +1051,14 @@ flowchart LR
 
 A single document combining all 8 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
 
-👉 **[Lecture_25_Complete_Notes.md](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/notes/Lecture_25_Complete_Notes.md)**
+👉 **[Lecture_25_Complete_Notes.md](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/notes/Lecture_39_Complete_Notes.md)**
 
 ### 🧩 Lecture artefacts
 
 | Artefact | Link | Status |
 | :--- | :--- | :---: |
 | Lecture workspace README (objectives · level · source mapping · checklist) | [📄 README.md](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/README.md) | ✅ |
-| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/code/Basic%20Code/) | ✅ |
+| Basic Code — the lecture's runnable codebase | [📂 code/Basic Code](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/code/) | ✅ |
 | Assignment — chapter-wise questions, build tasks and completion gate | [📝 Assignment/task.md](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/Assignment/task.md) | ✅ |
 
 ```mermaid
@@ -1075,7 +1075,7 @@ flowchart LR
 ## 📚 Lecture 26 — Durable Execution with Inngest
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 26 - Durable Execution with Inngest/](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 26 - Durable Execution with Inngest/](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -1092,7 +1092,7 @@ flowchart LR
 
 A single document combining all 8 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
 
-👉 **[Lecture_26_Complete_Notes.md](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/notes/Lecture_26_Complete_Notes.md)**
+👉 **[Lecture_26_Complete_Notes.md](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/notes/Lecture_32_Complete_Notes.md)**
 
 ### 🧩 Lecture artefacts
 
@@ -1113,7 +1113,7 @@ flowchart LR
 ## 📚 Lecture 28 — Async Indexing and RAG Chat
 
 **8 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 28 - Async Indexing and RAG Chat/](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 28 - Async Indexing and RAG Chat/](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -1130,7 +1130,7 @@ flowchart LR
 
 A single document combining all 8 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
 
-👉 **[Lecture_28_Complete_Notes.md](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/Lecture_28_Complete_Notes.md)**
+👉 **[Lecture_28_Complete_Notes.md](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/notes/Lecture_28_Complete_Notes.md)**
 
 ### 🧩 Lecture artefacts
 
@@ -1153,7 +1153,7 @@ flowchart LR
 ## 📚 Lecture 29 — GitHub PR Reviewer Bot
 
 **4 chapters**
-**Folder:** [📂 ./Lecture 29 - GitHub PR Reviewer Bot/](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 29 - GitHub PR Reviewer Bot/](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -1194,7 +1194,7 @@ The following lectures exist as folders but have no numbered chapter notes yet. 
 ## 📚 Lecture 30 — Evals and Testing
 
 **9 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 30 - Evals and Testing/](./Lecture%2041%20-%20Evals%20and%20Testing/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 30 - Evals and Testing/](./Lecture%2041%20-%20Evals%20and%20Testing/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :-- | :--- | :--- | :--- |
@@ -1235,7 +1235,7 @@ flowchart LR
 ## 📚 Lecture 31 — Security and Guardrails
 
 **10 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 31 - Security and Guardrails/](./Lecture%2046%20-%20Security%20and%20Guardrails/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 31 - Security and Guardrails/](./Lecture%2046%20-%20Security%20and%20Guardrails/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -1254,7 +1254,7 @@ flowchart LR
 
 A single document combining all 10 chapters — executive summary, cheat sheet, decision tables, misconceptions, glossary and self-check questions, with links back into the chapters for detail:
 
-👉 **[Lecture_31_Complete_Notes.md](./Lecture%2046%20-%20Security%20and%20Guardrails/notes/Lecture_31_Complete_Notes.md)**
+👉 **[Lecture_31_Complete_Notes.md](./Lecture%2046%20-%20Security%20and%20Guardrails/notes/Lecture_46_Complete_Notes.md)**
 
 ### 🧩 Lecture artefacts
 
@@ -1277,7 +1277,7 @@ flowchart LR
 ## 📚 Lecture 32 — LangChain LangGraph LangSmith
 
 **15 chapters** + 1 consolidated document
-**Folder:** [📂 ./Lecture 32 - LangChain LangGraph LangSmith/](./Lecture%2013%20-%20LangChain%20LangGraph%20LangSmith/) · [📄 Roadmap](./roadmap.md)
+**Folder:** [📂 ./Lecture 32 - LangChain LangGraph LangSmith/](./Lecture%2013%20-%20LangChain%20LangGraph%20LangSmith/) · [📄 Roadmap](./roadmap-v1.md)
 
 | # | Chapter | One-line summary | Notes |
 | :---: | :--- | :--- | :--- |
@@ -1301,7 +1301,7 @@ flowchart LR
 
 A single document combining all 15 chapters — architecture flowcharts, universal comparative matrix, complete code templates, and self-check questions, with links back into the chapters for detail:
 
-👉 **[Lecture_32_Complete_Notes.md](./Lecture%2013%20-%20LangChain%20LangGraph%20LangSmith/notes/Lecture_32_Complete_Notes.md)**
+👉 **[Lecture_32_Complete_Notes.md](./Lecture%2013%20-%20LangChain%20LangGraph%20LangSmith/notes/Lecture_13_Complete_Notes.md)**
 
 ### 🧩 Lecture artefacts
 

@@ -403,7 +403,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-25--high-performance-inference-gpu-mechanics-vllm--pagedattention"></a>
 
 ### Lecture 25 — High-Performance Inference: GPU Mechanics, vLLM & PagedAttention
-* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 25](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/)
+* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 25](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/)
 * **Goal:** Master LLM inference bottlenecks, GPU VRAM allocation, and serve models at scale with vLLM.
 * **Topics Unlocked:** Compute-bound training vs Memory-bandwidth-bound inference; The KV-Cache problem ($O(\text{seq\_len})$ memory growth); Memory fragmentation; **PagedAttention** (virtual memory paging for KV-cache); Continuous batching; Tensor parallelism; Serving with vLLM.
 * **What You Build:** vLLM deployment benchmark comparing standard HuggingFace pipeline throughput against PagedAttention.
@@ -456,7 +456,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-30--genai-evaluation--testing-golden-data-deterministic-evals--llm-as-a-judge"></a>
 
 ### Lecture 30 — GenAI Evaluation & Testing: Golden Data, Deterministic Evals & LLM-as-a-Judge
-* **Phase:** 9 · Quality & Safety · **Level:** 🟢 Beginner / Intermediate · **Workspace:** [📂 Lecture 30](./Lecture%2040%20-%20Evals%20and%20Testing/)
+* **Phase:** 9 · Quality & Safety · **Level:** 🟢 Beginner / Intermediate · **Workspace:** [📂 Lecture 30](./Lecture%2041%20-%20Evals%20and%20Testing/)
 * **Goal:** Build an automated evaluation harness with golden datasets, deterministic checks, and calibrated LLM judges to block regressions.
 * **Topics Unlocked:** The Attribution Problem; Why a satisfying answer is not evidence; Golden datasets (versioned test files); Deterministic evals (JSON validity, schema compliance, latency budgets); Quality as a vector; LLM-as-a-judge (pointwise vs pairwise, rubrics, position bias); RAG metrics (Faithfulness, Answer Relevance, Context Recall); CI/CD release gates.
 * **What You Build:** Automated evaluation test suite that scores candidate prompt changes against a 50-example benchmark and blocks PR merges on failure.
@@ -465,7 +465,7 @@ AI Application Engineer          ───────────────�
 <a id="lecture-31--genai-security--guardrails-prompt-injection-jailbreaks--safe-tool-use"></a>
 
 ### Lecture 31 — GenAI Security & Guardrails: Prompt Injection, Jailbreaks & Safe Tool Use
-* **Phase:** 9 · Quality & Safety · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 31](./Lecture%2045%20-%20Security%20and%20Guardrails/)
+* **Phase:** 9 · Quality & Safety · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 31](./Lecture%2046%20-%20Security%20and%20Guardrails/)
 * **Goal:** Fortify agent systems against direct/indirect prompt injection, enforce least privilege, and deploy multi-layer guardrails that fail closed.
 * **Topics Unlocked:** Why GenAI breaks deterministic security; Threat modeling (assets, blast radius, trust boundaries); Prompt injection mechanics (direct, indirect, multimodal, MCP); Why prompts are not security controls; Safe tool design: least privilege, capability routing, confirmation tokens; Guardrails as defense-in-depth layers (input, semantic, action, output) that **fail closed**; PII masking and pseudonymization; Red-teaming suites.
 * **What You Build:** Defense-in-depth guardrail proxy with bidirectional PII masking, capability routing, and automated adversarial red-team test suite.
@@ -662,13 +662,13 @@ Track your progress across every lecture. Copy this table into your fork or loca
 | **22** | [MCP Resources, Prompts & Gateway](./Lecture%2028%20-%20MCP%20Resources%20Prompts%20and%20Gateway/) | 6 | 🟠 | ✅ | ✅ | ☐ |
 | **23** | [Claude Skills](./Lecture%2029%20-%20Claude%20Skills/) | 6 | 🟠 | ✅ | ✅ | ☐ |
 | **24** | [Multimodal AI](./Lecture%2033%20-%20Multimodal%20AI/) | 7 | 🟠 | ✅ | ✅ | ✅ |
-| **25** | [vLLM & PagedAttention](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/) | 8 | 🔴 | ✅ | ✅ | ☐ |
+| **25** | [vLLM & PagedAttention](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/) | 8 | 🔴 | ✅ | ✅ | ☐ |
 | **26** | [Durable Execution with Inngest](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/) | 8 | 🟠 | ✅ | ✅ | ☐ |
 | **27** | [Full-Stack AI Platform](./Lecture%2034%20-%20Full-Stack%20AI%20Platform/) | 8 | 🔴 | ✅ | ✅ | ☐ |
 | **28** | [Async Indexing & RAG Chat](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/) | 8 | 🔴 | ✅ | ✅ | ☐ |
 | **29** | [GitHub PR Reviewer Bot](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/) | 8 | 🟠 | ✅ | ✅ | ☐ |
-| **30** | [Evals & Testing](./Lecture%2040%20-%20Evals%20and%20Testing/) | 9 | 🟢 | ✅ | ✅ | ☐ |
-| **31** | [Security & Guardrails](./Lecture%2045%20-%20Security%20and%20Guardrails/) | 9 | 🔴 | ✅ | ✅ | ☐ |
+| **30** | [Evals & Testing](./Lecture%2041%20-%20Evals%20and%20Testing/) | 9 | 🟢 | ✅ | ✅ | ☐ |
+| **31** | [Security & Guardrails](./Lecture%2046%20-%20Security%20and%20Guardrails/) | 9 | 🔴 | ✅ | ✅ | ☐ |
 | **32** | [LangChain, LangGraph & LangSmith](./Lecture%2013%20-%20LangChain%20LangGraph%20LangSmith/) | 6 | 🟡 | ✅ | ✅ | ☐ |
 | **★** | [Capstone Proving Ground](#-capstone--prove-the-whole-path) | All | 🔴 | ☐ | ☐ | ☐ |
 
@@ -1048,7 +1048,7 @@ AI Application Engineer          ───────────────�
 > **Thesis:** Inference is memory-bandwidth-bound, long AI work must be durable, and a real product needs a database, an auth boundary, and background queues.
 
 ### Lecture 25 — High-Performance Inference: GPU Mechanics, vLLM & PagedAttention
-* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 25](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/)
+* **Phase:** 8 · Production Infra · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 25](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/)
 * **Goal:** Master LLM inference bottlenecks, GPU VRAM allocation, and serve models at scale with vLLM.
 * **Topics Unlocked:** Compute-bound training vs Memory-bandwidth-bound inference; The KV-Cache problem ($O(\text{seq\_len})$ memory growth); Memory fragmentation; **PagedAttention** (virtual memory paging for KV-cache); Continuous batching; Tensor parallelism; Serving with vLLM.
 * **What You Build:** vLLM deployment benchmark comparing standard HuggingFace pipeline throughput against PagedAttention.
@@ -1089,14 +1089,14 @@ AI Application Engineer          ───────────────�
 > **Thesis:** Assume the model **will** be persuaded, and make persuasion insufficient to move anything that matters. Then prove it with a gate that can block a release.
 
 ### Lecture 30 — GenAI Evaluation & Testing: Golden Data, Deterministic Evals & LLM-as-a-Judge
-* **Phase:** 9 · Quality & Safety · **Level:** 🟢 Beginner / Intermediate · **Workspace:** [📂 Lecture 30](./Lecture%2040%20-%20Evals%20and%20Testing/)
+* **Phase:** 9 · Quality & Safety · **Level:** 🟢 Beginner / Intermediate · **Workspace:** [📂 Lecture 30](./Lecture%2041%20-%20Evals%20and%20Testing/)
 * **Goal:** Build an automated evaluation harness with golden datasets, deterministic checks, and calibrated LLM judges to block regressions.
 * **Topics Unlocked:** The Attribution Problem; Why a satisfying answer is not evidence; Golden datasets (versioned test files); Deterministic evals (JSON validity, schema compliance, latency budgets); Quality as a vector; LLM-as-a-judge (pointwise vs pairwise, rubrics, position bias); RAG metrics (Faithfulness, Answer Relevance, Context Recall); CI/CD release gates.
 * **What You Build:** Automated evaluation test suite that scores candidate prompt changes against a 50-example benchmark and blocks PR merges on failure.
 * **Release Gate:** CI gate successfully fails when an intentional regression lowers faithfulness score below 0.85.
 
 ### Lecture 31 — GenAI Security & Guardrails: Prompt Injection, Jailbreaks & Safe Tool Use
-* **Phase:** 9 · Quality & Safety · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 31](./Lecture%2045%20-%20Security%20and%20Guardrails/)
+* **Phase:** 9 · Quality & Safety · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 31](./Lecture%2046%20-%20Security%20and%20Guardrails/)
 * **Goal:** Fortify agent systems against direct/indirect prompt injection, enforce least privilege, and deploy multi-layer guardrails that fail closed.
 * **Topics Unlocked:** Why GenAI breaks deterministic security; Threat modeling (assets, blast radius, trust boundaries); Prompt injection mechanics (direct, indirect, multimodal, MCP); Why prompts are not security controls; Safe tool design: least privilege, capability routing, confirmation tokens; Guardrails as defense-in-depth layers (input, semantic, action, output) that **fail closed**; PII masking and pseudonymization; Red-teaming suites.
 * **What You Build:** Defense-in-depth guardrail proxy with bidirectional PII masking, capability routing, and automated adversarial red-team test suite.
@@ -1283,13 +1283,13 @@ Track your progress across every lecture. Copy this table into your fork or loca
 | **22** | [MCP Resources, Prompts & Gateway](./Lecture%2028%20-%20MCP%20Resources%20Prompts%20and%20Gateway/) | 6 | 🟠 | ✅ | ✅ | ☐ |
 | **23** | [Claude Skills](./Lecture%2029%20-%20Claude%20Skills/) | 6 | 🟠 | ✅ | ✅ | ☐ |
 | **24** | [Multimodal AI](./Lecture%2033%20-%20Multimodal%20AI/) | 7 | 🟠 | ✅ | ✅ | ✅ |
-| **25** | [vLLM & PagedAttention](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/) | 8 | 🔴 | ✅ | ✅ | ☐ |
+| **25** | [vLLM & PagedAttention](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/) | 8 | 🔴 | ✅ | ✅ | ☐ |
 | **26** | [Durable Execution with Inngest](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/) | 8 | 🟠 | ✅ | ✅ | ☐ |
 | **27** | [Full-Stack AI Platform](./Lecture%2034%20-%20Full-Stack%20AI%20Platform/) | 8 | 🔴 | ✅ | ✅ | ☐ |
 | **28** | [Async Indexing & RAG Chat](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/) | 8 | 🔴 | ✅ | ✅ | ☐ |
 | **29** | [GitHub PR Reviewer Bot](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/) | 8 | 🟠 | ✅ | ✅ | ☐ |
-| **30** | [Evals & Testing](./Lecture%2040%20-%20Evals%20and%20Testing/) | 9 | 🟢 | ✅ | ✅ | ☐ |
-| **31** | [Security & Guardrails](./Lecture%2045%20-%20Security%20and%20Guardrails/) | 9 | 🔴 | ✅ | ✅ | ☐ |
+| **30** | [Evals & Testing](./Lecture%2041%20-%20Evals%20and%20Testing/) | 9 | 🟢 | ✅ | ✅ | ☐ |
+| **31** | [Security & Guardrails](./Lecture%2046%20-%20Security%20and%20Guardrails/) | 9 | 🔴 | ✅ | ✅ | ☐ |
 | **32** | [LangChain, LangGraph & LangSmith](./Lecture%2013%20-%20LangChain%20LangGraph%20LangSmith/) | 6 | 🟡 | ✅ | ✅ | ☐ |
 | **★** | [Capstone Proving Ground](#-capstone--prove-the-whole-path) | All | 🔴 | ☐ | ☐ | ☐ |
 

@@ -1,26 +1,26 @@
-# 🗺️ Forward Deployed Engineer & GenAI Mastery — Master Roadmap v1 (`45 Lectures`)
+# 🗺️ Forward Deployed Engineer & GenAI Mastery — Master Roadmap v1 (`46 Lectures`)
 
 <div align="center">
 
 [![Version](https://img.shields.io/badge/Roadmap-v1.0_(45_Lectures)-blueviolet?style=for-the-badge&logo=googlegemini&logoColor=white)](#-phase-graph)
 [![Delivery Model](https://img.shields.io/badge/Delivery-Build_%E2%86%92_Connect_%E2%86%92_Ship-10b981?style=for-the-badge&logo=bookstack&logoColor=white)](#-macro-delivery-phases)
-[![Status](https://img.shields.io/badge/Status-45%2F45_Modules_Built-success?style=for-the-badge&logo=target&logoColor=white)](#-appendix-d--progress-tracker)
+[![Status](https://img.shields.io/badge/Status-46%2F46_Modules_Built-success?style=for-the-badge&logo=target&logoColor=white)](#-appendix-d--progress-tracker)
 [![Codebase](https://img.shields.io/badge/Stack-TypeScript_%7C_Python_%7C_Cloudflare_%7C_K8s-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](#-appendix-c--tech-stack-prerequisites--study-plan)
 
 ```text
-████████████████████████████████  45 / 45 Lectures Built (100.0%) · 32 Existing/Upgraded + 13 New FDE Modules Complete
+████████████████████████████████  45 / 46 Lectures Built (100.0%) · 32 Existing/Upgraded + 14 New Modules Complete
 ```
 
-**[🗺️ Phase Graph](#-phase-graph)** • **[🪜 Career Ladder](#-the-career-capability-ladder)** • **[📚 45 Lecture Cards](#-phase-0--orientation)** • **[📈 Progress Tracker](#-appendix-d--progress-tracker)** • **[🏁 Capstone](#-capstone--single-engagement-proving-ground)** • **[🗂️ Appendices](#-appendix-a--re-numbering--de-duplication-map)**
+**[🗺️ Phase Graph](#-phase-graph)** • **[🪜 Career Ladder](#-the-career-capability-ladder)** • **[📚 46 Lecture Cards](#-phase-0--orientation)** • **[📈 Progress Tracker](#-appendix-d--progress-tracker)** • **[🏁 Capstone](#-capstone--single-engagement-proving-ground)** • **[🗂️ Appendices](#-appendix-a--re-numbering--de-duplication-map)**
 
 </div>
 
 ---
 
 > [!IMPORTANT]
-> **What `roadmap-v1.md` is:** The upgraded **45-Lecture + Single-Engagement Capstone** master map merging the original 32-lecture curriculum ([`roadmap.md`](./roadmap.md)) with the **24-Session FDE Delivery Curriculum** (`Build → Connect → Ship`) and **Cloudflare Code Mode** ([`update.md`](./update.md)).
+> **What `roadmap-v1.md` is:** The upgraded **46-Lecture + Single-Engagement Capstone** master map merging the original 32-lecture curriculum ([`roadmap.md`](./roadmap.md)) with the **24-Session FDE Delivery Curriculum** (`Build → Connect → Ship`) and **Cloudflare Code Mode** ([`update.md`](./update.md)).
 >
-> **How it is organized:** **3 Macro Delivery Stages** (`Build` · `Connect` · `Ship`) spanning **11 Technical Phases (`0`–`10`)** and **45 sequential lectures (`L01`–`L46`)**. Existing workspaces keep clickable links to their current folders until you run the optional folder-renumbering migration.
+> **How it is organized:** **3 Macro Delivery Stages** (`Build` · `Connect` · `Ship`) spanning **11 Technical Phases (`0`–`10`)** and **46 sequential lectures (`L01`–`L46`)**. Existing workspaces keep clickable links to their current folders until you run the optional folder-renumbering migration.
 
 ---
 
@@ -179,35 +179,35 @@ AI Application Engineer                          ──────────�
 > **Thesis:** A tool call is an untrusted proposal, not an instruction. Bound the loop, verify schemas, isolate sandboxes, and orchestrate stateful graphs with explicit recovery paths.
 
 ### Lecture 09 — Tool Calling & Function Execution Loops
-* **Status:** `✅ Existing (Old L08)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 08](./Lecture%2008%20-%20Tool%20Calling/)
+* **Status:** `✅ Existing (Old L08)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 08](./Lecture%2009%20-%20Tool%20Calling/)
 * **Goal:** Implement the ReAct loop where models propose, invoke, and observe typed external tools.
 * **Topics Unlocked:** JSON Schema tool contracts; `tool_choice` policies (`auto`, `required`, `none`); ReAct execution loop; error feedback injection.
 * **What You Build:** Standalone ReAct loop calling weather, math, and database tools with error recovery.
 * **Release Gate:** Agent resolves multi-step tool dependencies and recovers from simulated tool errors.
 
 ### Lecture 10 — AI Agents from First Principles: Agency, Sandboxing & HITL
-* **Status:** `✅ Existing (Old L09)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 09](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/)
+* **Status:** `✅ Existing (Old L09)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 09](./Lecture%2010%20-%20AI%20Agents%20and%20HITL/)
 * **Goal:** Build autonomous agents with jailed filesystem sandboxes, tool authorization tiers, and Human-in-the-Loop (HITL) approvals.
 * **Topics Unlocked:** The 4-level Agency Spectrum; Perceive-Decide-Act; workspace sandboxing; tool risk tiers (Read / Write / Destructive); HITL approval gates.
 * **What You Build:** Jailed website-builder agent requiring human approval before destructive writes.
 * **Release Gate:** Zero path-traversal escapes against adversarial filesystem inputs.
 
 ### Lecture 11 — Structured Outputs: Schema Enforcement, Validation & Repair
-* **Status:** `✅ Existing (Old L10)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 10](./Lecture%2010%20-%20Structured%20Outputs/)
+* **Status:** `✅ Existing (Old L10)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 10](./Lecture%2011%20-%20Structured%20Outputs/)
 * **Goal:** Guarantee 100% typed, runtime-validated JSON outputs conforming to Zod schemas.
 * **Topics Unlocked:** Constrained logit decoding; Provider strategy vs. Tool strategy; self-healing schema repair loops; nullable/optional handling.
 * **What You Build:** Self-healing Zod extraction pipeline feeding validation diffs back for automatic repair.
 * **Release Gate:** 100 consecutive extractions pass strict Zod validation with zero manual `JSON.parse` errors.
 
 ### Lecture 12 — Building an Agent SDK from Scratch
-* **Status:** `✅ Existing (Old L11)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 11](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/)
+* **Status:** `✅ Existing (Old L11)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 11](./Lecture%2012%20-%20Agent%20SDK%20from%20Scratch/)
 * **Goal:** Architect a reusable TypeScript Agent SDK with fluent builders, tool registries, and middleware interceptors.
 * **Topics Unlocked:** Stateful SDK vs. stateless API; `AgentBuilder` fluent pattern; tool execution engines; pre/post interceptors; multi-provider decoupling.
 * **What You Build:** Custom `@my-org/agent-sdk` package in TypeScript with zero framework dependencies.
 * **Release Gate:** Run 3 distinct agent workflows powered solely by your custom SDK.
 
 ### Lecture 13 — LangChain, LangGraph & LangSmith
-* **Status:** `🔀 Moved (Old L32)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 32](./Lecture%2032%20-%20LangChain%20LangGraph%20LangSmith/)
+* **Status:** `🔀 Moved (Old L32)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 32](./Lecture%2013%20-%20LangChain%20LangGraph%20LangSmith/)
 * **Goal:** Master LangChain's universal harness (`initChatModel`, `createAgent`), LangGraph stateful orchestration (`StateGraph`, Pregel super-steps, checkpointers), and LangSmith tracing & evals.
 * **Topics Unlocked:** $\text{Agent} = \text{Model} + \text{Harness}$; `StateSchema` & channel reducers; `addConditionalEdges` & `Command`; `MemorySaver` & `interruptBefore`; Notion & Calendar workflows; LangSmith `@traceable` & `evaluate()`.
 * **What You Build:** 15-chapter reference, Tavily CLI agent, compiled `StateGraph` Notion workflow, and LangSmith trace suite.
@@ -227,28 +227,28 @@ AI Application Engineer                          ──────────�
 > **Thesis:** Represent $\to$ store $\to$ compare $\to$ rank. Meaning becomes geometry, and scale turns geometry into an index-engineering problem.
 
 ### Lecture 15 — Vector Embeddings from First Principles
-* **Status:** `✅ Existing (Old L12)` · **Level:** 🟢 Beginner · **Workspace:** [📂 Lecture 12](./Lecture%2012%20-%20Vector%20Embeddings/)
+* **Status:** `✅ Existing (Old L12)` · **Level:** 🟢 Beginner · **Workspace:** [📂 Lecture 12](./Lecture%2015%20-%20Vector%20Embeddings/)
 * **Goal:** Master high-dimensional vector spaces, distance metrics, and $L2$ normalization.
 * **Topics Unlocked:** Geometry of meaning; Dot Product, Cosine Similarity, Euclidean ($L2$), Manhattan ($L1$); unit-vector normalization; Matryoshka embeddings.
 * **What You Build:** Native TypeScript vector math library implementing all 4 metrics.
 * **Release Gate:** Prove cosine similarity equals dot product on $L2$-normalized vectors.
 
 ### Lecture 16 — Embeddings Project: Semantic Search & Movie Recommendation
-* **Status:** `✅ Existing (Old L13)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 13](./Lecture%2013%20-%20Semantic%20Search%20Project/)
+* **Status:** `✅ Existing (Old L13)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 13](./Lecture%2016%20-%20Semantic%20Search%20Project/)
 * **Goal:** Build a semantic search and recommendation engine over 10,000+ items.
 * **Topics Unlocked:** Semantic vs. lexical search; embedding caching; similarity thresholding; recommendation geometry.
 * **What You Build:** Semantic movie search API supporting metaphorical queries with zero keyword overlap.
 * **Release Gate:** Metaphorical queries return relevant top-5 results with $<100\text{ms}$ query latency.
 
 ### Lecture 17 — Vector Search & Storage: Scale, kNN & Curse of Dimensionality
-* **Status:** `✅ Existing (Old L14)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 14](./Lecture%2014%20-%20Vector%20Search%20and%20Storage/)
+* **Status:** `✅ Existing (Old L14)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 14](./Lecture%2017%20-%20Vector%20Search%20and%20Storage/)
 * **Goal:** Benchmark exact kNN scaling ceilings and decide when `pgvector` suffices vs. dedicated vector DBs.
 * **Topics Unlocked:** Exact kNN $O(N \cdot D)$; memory bandwidth bottlenecks; curse of dimensionality (distance concentration); `pgvector` trade-offs.
 * **What You Build:** Latency benchmark suite across $N = 1\text{k}, 10\text{k}, 100\text{k}, 1\text{M}$ vectors.
 * **Release Gate:** Identify and chart the exact inflection point where brute-force scan violates a 50ms SLA.
 
 ### Lecture 18 — Vector Databases & ANN Algorithms: IVF, HNSW & Product Quantization
-* **Status:** `✅ Existing (Old L15)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 15](./Lecture%2015%20-%20Vector%20Databases%20and%20ANN/)
+* **Status:** `✅ Existing (Old L15)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 15](./Lecture%2018%20-%20Vector%20Databases%20and%20ANN/)
 * **Goal:** Tune Approximate Nearest Neighbor (ANN) indexes: IVF, HNSW, and Product Quantization.
 * **Topics Unlocked:** Recall vs. latency trade-offs; IVF (`nlist`, `nprobe`, Voronoi cells); Product Quantization (PQ); HNSW (`M`, `efConstruction`, `efSearch`).
 * **What You Build:** Qdrant / Pinecone index tuned for 98%+ recall at sub-15ms latency.
@@ -261,35 +261,35 @@ AI Application Engineer                          ──────────�
 > **Thesis:** Retrieval sets the ceiling; the prompt can only use what arrived. Combine hybrid retrieval, provenance, abstention, temporal memory, and ontologies.
 
 ### Lecture 19 — RAG: The Open-Book Architecture
-* **Status:** `✅ Existing (Old L16)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 16](./Lecture%2016%20-%20RAG/)
+* **Status:** `✅ Existing (Old L16)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 16](./Lecture%2019%20-%20RAG/)
 * **Goal:** Build the offline ingestion and online retrieval-augmented generation pipelines with grounded citations.
 * **Topics Unlocked:** Parametric vs. non-parametric memory; ingestion (load $\to$ clean $\to$ chunk $\to$ embed $\to$ index); online query synthesis; grounding rules.
 * **What You Build:** End-to-end PDF Q&A service with inline source citations.
 * **Release Gate:** Out-of-domain questions trigger explicit groundedness refusals with zero fabricated citations.
 
 ### Lecture 20 — Advanced RAG: Chunking, Hybrid Retrieval, Reranking, Provenance & Abstention
-* **Status:** `🔼 Upgraded (Old L17)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 17](./Lecture%2017%20-%20Advanced%20RAG/)
+* **Status:** `🔼 Upgraded (Old L17)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 17](./Lecture%2020%20-%20Advanced%20RAG/)
 * **Goal:** Fix basic RAG failures with BM25 + dense hybrid search, cross-encoder rerankers, chunk provenance, and calibrated abstention.
 * **Topics Unlocked:** Semantic & markdown chunking; Reciprocal Rank Fusion (RRF); cross-encoder rerankers; **chunk-level provenance & citation verification**; **abstention engineering** under low retrieval confidence.
 * **What You Build:** Hybrid BM25 + Qdrant + Reranker pipeline with provenance checks and abstention thresholds.
 * **Release Gate:** 18%+ Hit@3 lift on acronym queries; 0% hallucination rate when retrieval confidence falls below abstention threshold.
 
 ### Lecture 21 — Vectorless RAG, Hierarchical Tree Indexing & LLM Wiki Engines
-* **Status:** `✅ Existing (Old L18)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 18](./Lecture%2018%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/)
+* **Status:** `✅ Existing (Old L18)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 18](./Lecture%2021%20-%20Vectorless%20RAG%20and%20LLM%20Wiki/)
 * **Goal:** Traverse long documents without flat chunking using hierarchical summary trees (RAPTOR) and LLM Wikis.
 * **Topics Unlocked:** Abrupt-chunking failures; vectorless retrieval; hierarchical tree indexing; LLM-maintained wiki engines.
 * **What You Build:** Tree-traversal document retriever answering corpus-wide thematic questions.
 * **Release Gate:** Accurately answer global summary questions that fail under standard top-$k$ vector chunking.
 
 ### Lecture 22 — Agent Memory Systems: Working, Episodic, Semantic, Procedural & Poisoning Defence
-* **Status:** `🔼 Upgraded (Old L19)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 19](./Lecture%2019%20-%20Agent%20Memory%20Systems/)
+* **Status:** `🔼 Upgraded (Old L19)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 19](./Lecture%2022%20-%20Agent%20Memory%20Systems/)
 * **Goal:** Engineer tiered agent memory with consolidation, contradiction resolution, TTL expiry, and poisoning defence.
 * **Topics Unlocked:** Working, episodic, semantic & procedural memory; `mem0`; consolidation & compaction; contradiction resolution; **memory expiry (TTL) & revision**; **deletion**; **memory poisoning defence**.
 * **What You Build:** Persistent memory service with fact extraction, TTL expiry, and adversarial write validation.
 * **Release Gate:** Agent recalls preferences across 30 sessions, supersedes contradicted facts, and blocks poisoned memory writes.
 
 ### Lecture 23 — Graph Databases, Cypher, Neo4j, Ontologies & Temporal GraphRAG
-* **Status:** `🔼 Upgraded (Old L20)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 20](./Lecture%2020%20-%20Graph%20Databases%20and%20GraphRAG/)
+* **Status:** `🔼 Upgraded (Old L20)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 20](./Lecture%2023%20-%20Graph%20Databases%20and%20GraphRAG/)
 * **Goal:** Model multi-hop relational knowledge and bitemporal facts using Neo4j, Cypher, ontologies, and GraphRAG.
 * **Topics Unlocked:** Property graphs & index-free adjacency; Cypher variable-length paths; Text-to-Cypher; **formal ontology engineering**; **temporal facts** (`valid_from` / `valid_to` point-in-time queries); graph-assisted retrieval.
 * **What You Build:** Temporal Neo4j GraphRAG system answering point-in-time multi-hop queries.
@@ -329,21 +329,21 @@ AI Application Engineer                          ──────────�
 > **Thesis:** Replace $N \times M$ bespoke integrations with MCP, compress 2,500-endpoint APIs into ~1,000 tokens with Cloudflare Code Mode, and drive continuous freshness via CDC and Inngest.
 
 ### Lecture 27 — MCP Core: Host, Client, Server & Tools
-* **Status:** `✅ Existing (Old L21)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 21](./Lecture%2021%20-%20MCP%20Core/)
+* **Status:** `✅ Existing (Old L21)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 21](./Lecture%2027%20-%20MCP%20Core/)
 * **Goal:** Master the Model Context Protocol (MCP) specification and build custom MCP servers.
 * **Topics Unlocked:** Host / Client / Server architecture; JSON-RPC 2.0; STDIO vs. Streamable HTTP/SSE; tool discovery & lifecycle; tool context poisoning.
 * **What You Build:** TypeScript MCP server exposing database and filesystem tools over STDIO and HTTP.
 * **Release Gate:** Connect server to an MCP host and execute verified end-to-end tool calls.
 
 ### Lecture 28 — MCP Resources, Prompts & Production Gateway Architecture
-* **Status:** `✅ Existing (Old L22)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 22](./Lecture%2022%20-%20MCP%20Resources%20Prompts%20and%20Gateway/)
+* **Status:** `✅ Existing (Old L22)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 22](./Lecture%2028%20-%20MCP%20Resources%20Prompts%20and%20Gateway/)
 * **Goal:** Implement MCP Resources and Prompts and enforce policy through an enterprise MCP gateway.
 * **Topics Unlocked:** Control model (model vs. app vs. user); static/dynamic/templated URIs; MCP Prompts; gateway filtering, routing, auth, and audit logging.
 * **What You Build:** Multi-tenant MCP Gateway enforcing per-role tool visibility and audit trails.
 * **Release Gate:** Lower-privilege tokens cannot discover or invoke restricted admin tools through the gateway.
 
 ### Lecture 29 — Claude Skills & the Agent Skills Open Standard
-* **Status:** `✅ Existing (Old L23)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 23](./Lecture%2023%20-%20Claude%20Skills/)
+* **Status:** `✅ Existing (Old L23)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 23](./Lecture%2029%20-%20Claude%20Skills/)
 * **Goal:** Package repeatable workflow knowledge as portable skills using progressive disclosure.
 * **Topics Unlocked:** Skills vs. MCP; progressive disclosure (`frontmatter` $\to$ `body` $\to$ `resources`); `SKILL.md` spec; deterministic scripts over prose; `/v1/skills` API.
 * **What You Build:** Production skill package with bundled deterministic scripts and validation tests.
@@ -373,7 +373,7 @@ AI Application Engineer                          ──────────�
 * **Release Gate:** Agent discovers endpoints via `search()`, chains multi-step API calls in one `execute()` block using $<1,500$ schema tokens, and leaks zero credentials.
 
 ### Lecture 32 — Durable Execution (Inngest) & Event-Driven CDC Workflows
-* **Status:** `🔼 Upgraded (Old L26)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 26](./Lecture%2026%20-%20Durable%20Execution%20with%20Inngest/)
+* **Status:** `🔼 Upgraded (Old L26)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 26](./Lecture%2032%20-%20Durable%20Execution%20with%20Inngest/)
 * **Goal:** Build proactive, event-driven agent workflows powered by Inngest, webhooks, schedules, and Change Data Capture (CDC).
 * **Topics Unlocked:** Durable execution (`step.run`, `step.waitForEvent`); **CDC (Change Data Capture)** pipelines (Debezium/Postgres WAL); **duplicate-event idempotency**; retries with backoff; **dead-letter queue (DLQ) replay** & recovery.
 * **What You Build:** CDC-triggered Inngest workflow that keeps vector/graph indexes fresh with DLQ handling.
@@ -386,28 +386,28 @@ AI Application Engineer                          ──────────�
 > **Thesis:** Production AI requires multimodal ingestion, multi-tenant platforms, native Agent-to-User UIs (`AG-UI`, `MCP Apps`), and autoscaled Kubernetes workers with microVM sandboxes.
 
 ### Lecture 33 — Multimodal AI: Vision Transformers & Document Parsing
-* **Status:** `✅ Existing (Old L24)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 24](./Lecture%2024%20-%20Multimodal%20AI/)
+* **Status:** `✅ Existing (Old L24)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 24](./Lecture%2033%20-%20Multimodal%20AI/)
 * **Goal:** Parse images, scanned tables, and receipts using Vision-Language Models vs. specialized OCR on cost/accuracy evidence.
 * **Topics Unlocked:** ViT patching & projection; high-res image tiling; visual hallucinations; VLM vs. OCR benchmarks.
 * **What You Build:** Multimodal invoice/receipt extractor emitting validated JSON line items.
 * **Release Gate:** $\ge 95\%$ total-amount extraction accuracy on noisy receipt images.
 
 ### Lecture 34 — Enterprise Full-Stack AI Platform
-* **Status:** `✅ Existing (Old L27)` · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 27](./Lecture%2027%20-%20Full-Stack%20AI%20Platform/)
+* **Status:** `✅ Existing (Old L27)` · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 27](./Lecture%2034%20-%20Full-Stack%20AI%20Platform/)
 * **Goal:** Build a multi-tenant AI SaaS platform with PostgreSQL, auth boundaries, and token quotas.
 * **Topics Unlocked:** Next.js + Express REST/SSE topology; Prisma/Postgres schema; Better Auth & RBAC; multi-tenant isolation; usage quotas.
 * **What You Build:** Multi-tenant full-stack AI app with isolated workspaces and enforced token budgets.
 * **Release Gate:** Cross-tenant security check confirms User A cannot read User B's threads or embeddings.
 
 ### Lecture 35 — Async Vector Indexing, Streaming RAG & UI Artifacts
-* **Status:** `✅ Existing (Old L28)` · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 28](./Lecture%2028%20-%20Async%20Indexing%20and%20RAG%20Chat/)
+* **Status:** `✅ Existing (Old L28)` · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 28](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/)
 * **Goal:** Connect background Inngest indexing with real-time SSE RAG chat and generative UI artifacts.
 * **Topics Unlocked:** Decoupled upload vs. indexing; progress telemetry over SSE; interactive UI artifact streaming.
 * **What You Build:** Async RAG platform indexing 50-page PDFs in background with live UI progress and cited chat.
 * **Release Gate:** Upload 50-page PDF; background job streams progress over SSE without blocking chat requests.
 
 ### Lecture 36 — Hands-On: Autonomous GitHub PR Reviewer Bot
-* **Status:** `✅ Existing (Old L29)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 29](./Lecture%2029%20-%20GitHub%20PR%20Reviewer%20Bot/)
+* **Status:** `✅ Existing (Old L29)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 29](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/)
 * **Goal:** Deploy an autonomous event-driven GitHub PR reviewer bot using Inngest and Octokit.
 * **Topics Unlocked:** Webhook HMAC verification; Octokit REST/GraphQL; diff chunking & AST focus; inline line-level comments.
 * **What You Build:** GitHub App bot posting line-level security and logic reviews on pull requests.
@@ -434,7 +434,7 @@ AI Application Engineer                          ──────────�
 > **Thesis:** Inference is memory-bandwidth-bound. Serve models economically with vLLM, quantization, sovereign/Indic models, KV-cache reuse, and disaggregated prefill/decode (`SGLang`, `llm-d`, `Dynamo`).
 
 ### Lecture 39 — High-Performance Inference: vLLM, Quantization & Sovereign / Indic Models
-* **Status:** `🔼 Upgraded (Old L25)` · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 25](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/)
+* **Status:** `🔼 Upgraded (Old L25)` · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 25](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/)
 * **Goal:** Optimize LLM serving with PagedAttention, continuous batching, quantization, and sovereign/Indian-language model selection.
 * **Topics Unlocked:** Compute-bound training vs. memory-bandwidth-bound inference; KV-cache fragmentation; **PagedAttention** & vLLM; **quantization** (AWQ, GPTQ, FP8); **hosted vs. self-hosted** economics; **RAG vs. fine-tuning**; **sovereign & Indian-language models** (Sarvam, Krutrim, Airavata, Indic benchmarks).
 * **What You Build:** vLLM + quantized model benchmark comparing throughput against standard HuggingFace serving + Indic evaluation slice.
@@ -454,7 +454,7 @@ AI Application Engineer                          ──────────�
 > **Thesis:** Never ship an autonomous system without trajectory evals, Z3 invariants, OTel/FOCUS FinOps, `flagd` progressive releases, delegated OIDC/ReBAC identity, and an AI BOM security gate.
 
 ### Lecture 41 — GenAI Evaluation & Testing: Golden Datasets & LLM-as-a-Judge
-* **Status:** `✅ Existing (Old L30)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 30](./Lecture%2030%20-%20Evals%20and%20Testing/)
+* **Status:** `✅ Existing (Old L30)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 30](./Lecture%2041%20-%20Evals%20and%20Testing/)
 * **Goal:** Build automated evaluation suites with versioned golden datasets, deterministic assertions, and calibrated LLM judges.
 * **Topics Unlocked:** Attribution problem; versioned golden datasets; deterministic checks; quality as a vector; pointwise/pairwise LLM judges & calibration; RAG metrics (Faithfulness, Recall@k, MRR, nDCG); CI release gates.
 * **What You Build:** Automated CI eval pipeline blocking merges when faithfulness or schema validity regresses.
@@ -489,7 +489,7 @@ AI Application Engineer                          ──────────�
 * **Release Gate:** Agent acting for User A cannot invoke tools or read resources owned by User B, even via prompt injection.
 
 ### Lecture 46 — GenAI Security, Guardrails, OWASP Agentic/MCP Top 10 & AI Supply Chain (AI BOM)
-* **Status:** `🔼 Upgraded (Old L31)` · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 31](./Lecture%2031%20-%20Security%20and%20Guardrails/)
+* **Status:** `🔼 Upgraded (Old L31)` · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 31](./Lecture%2046%20-%20Security%20and%20Guardrails/)
 * **Goal:** Defend against OWASP LLM/Agentic/MCP threats, malicious skills, memory poisoning, and secure the AI supply chain with an AI BOM.
 * **Topics Unlocked:** Threat modeling & blast radius; direct/indirect prompt injection; **OWASP LLM, Agentic & MCP Top 10**; **malicious skills & plugins** scanning; **memory poisoning** & tool escalation; fail-closed layered guardrails; bidirectional PII masking; model provenance & **AI Bills of Materials (AI BOM)**; red-teaming suites.
 * **What You Build:** Fail-closed guardrail proxy + AI BOM generator + 50-payload OWASP agentic/MCP red-team suite.
@@ -562,7 +562,7 @@ flowchart LR
 * **Phase 3: Ship (`S17`–`S24`):** `S17` (`L43`) ✅ · `S18` (`L44`) ✅ · `S19` (`L45`) ✅ · `S20` (`L46`) ✅ · `S21` (`L39`) ✅ · `S22` (`L34`, `L37`) ✅ · `S23` (`L37`) ✅ · `S24` (`L40`) ✅
 * **Cloudflare Code Mode:** `L31` (`@cloudflare/codemode`, `codeMcpServer`, `openApiMcpServer`) ✅
 
-**Result:** **24 / 24** FDE Sessions + **Cloudflare Code Mode** = **100% Covered** across **45 Lectures**.
+**Result:** **24 / 24** FDE Sessions + **Cloudflare Code Mode** = **100% Covered** across **46 Lectures**.
 
 ---
 
@@ -651,7 +651,7 @@ flowchart LR
 
 <div align="center">
 
-**[⬆️ Return to Top](#️-forward-deployed-engineer--genai-mastery--master-roadmap-v1-45-lectures)**
+**[⬆️ Return to Top](#️-forward-deployed-engineer--genai-mastery--master-roadmap-v1-46-lectures)**
 
 </div>
 

@@ -84,7 +84,7 @@ This repository is a **single merged learning path** built by reading, comparing
 | 🧩 Verification appendices | **5** (A → E in `roadmap-v1.md`) |
 | 🏁 Capstone | **1** end-to-end system brief |
 
-> 💡 Every number above is derived from the repository contents — the 45-lecture curriculum and topic map live in [`roadmap-v1.md`](./roadmap-v1.md), and the chapter index lives in [`index v1.md`](./index%20v1.md).
+> 💡 Every number above is derived from the repository contents — the 46-lecture curriculum and topic map live in [`roadmap-v1.md`](./roadmap-v1.md), and the chapter index lives in [`index v1.md`](./index%20v1.md).
 
 ---
 
@@ -420,7 +420,7 @@ Each phase below is summarised twice: a one-line thesis and a lecture chip list 
 
 </details>
 
-**[📂 Lecture 38](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/)** · **[📂 Lecture 39](./Lecture%2040%20-%20Distributed%20Inference%20SGLang%20llm-d%20and%20Dynamo/)** · **[📄 Roadmap: Phase 9](./roadmap-v1.md#-phase-9--distributed--sovereign-inference-stage-3-ship)**
+**[📂 Lecture 39](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/)** · **[📂 Lecture 40](./Lecture%2040%20-%20Distributed%20Inference%20SGLang%20llm-d%20and%20Dynamo/)** · **[📄 Roadmap: Phase 9](./roadmap-v1.md#-phase-9--distributed--sovereign-inference-stage-3-ship)**
 
 ---
 
@@ -449,7 +449,7 @@ Each phase below is summarised twice: a one-line thesis and a lecture chip list 
 
 </details>
 
-**[📂 Lecture 40](./Lecture%2041%20-%20Evals%20and%20Testing/)** · **[📂 Lecture 41](./Lecture%2042%20-%20Neuro-Symbolic%20Verification%20Z3%20and%20GEPA/)** · **[📂 Lecture 42](./Lecture%2043%20-%20AI%20Observability%20OTel%20and%20FOCUS%20FinOps/)** · **[📂 Lecture 43](./Lecture%2044%20-%20Progressive%20Autonomy%20flagd%20and%20Safe%20Releases/)** · **[📂 Lecture 44](./Lecture%2045%20-%20Enterprise%20Identity%20OIDC%20SCIM%20and%20ReBAC/)** · **[📂 Lecture 45](./Lecture%2046%20-%20Security%20and%20Guardrails/)** · **[📄 Roadmap: Phase 10](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship)**
+**[📂 Lecture 41](./Lecture%2041%20-%20Evals%20and%20Testing/)** · **[📂 Lecture 42](./Lecture%2042%20-%20Neuro-Symbolic%20Verification%20Z3%20and%20GEPA/)** · **[📂 Lecture%2043](./Lecture%2043%20-%20AI%20Observability%20OTel%20and%20FOCUS%20FinOps/)** · **[📂 Lecture%2044](./Lecture%2044%20-%20Progressive%20Autonomy%20flagd%20and%20Safe%20Releases/)** · **[📂 Lecture%2045](./Lecture%2045%20-%20Enterprise%20Identity%20OIDC%20SCIM%20and%20ReBAC/)** · **[📂 Lecture%2046](./Lecture%2046%20-%20Security%20and%20Guardrails/)** · **[📄 Roadmap: Phase 10](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship)**
 
 ---
 
@@ -484,7 +484,7 @@ This repository was assembled by reading, comparing and **de-duplicating** two i
 | 2 | **No topic missed** | All **35** source lectures/days and all **235** source note files are mapped to a target lecture |
 | 3 | **No topic duplicated** | When both sources teach the same subject it appears **once**, with both listed as depth tiers (e.g. *"FDE L10 = internals, GAC D04 = vendor landscape"*) |
 
-**Result: 35 source lectures/days + 24 FDE sessions + Code Mode → 45 lectures across 11 phases (Build → Connect → Ship).**
+**Result: 35 source lectures/days + 24 FDE sessions + Code Mode → 46 lectures across 11 phases (Build → Connect → Ship).**
 
 ---
 
@@ -523,7 +523,7 @@ Five verification appendices inside **[`roadmap-v1.md`](./roadmap-v1.md)** prove
 ### 1 · Reading the roadmap (no setup required)
 
 ```text
-1. Open  roadmap-v1.md                           → the master map: 45 lectures · 11 phases (Build → Connect → Ship)
+1. Open  roadmap-v1.md                           → the master map: 46 lectures · 11 phases (Build → Connect → Ship)
 2. Open  roadmap-v1.md → "Lecture NN — …"        → goal · topics · build · release gate
 3. Open  Lecture NN - <Title>/README.md          → that lecture's workspace
 4. Open  index v1.md                             → chapter-by-chapter index across all 46 lectures
@@ -559,9 +559,9 @@ RECORD → tick Appendix D and write down the number you measured
 FDE-and-GenAI-Mastery/
 ├── README.md                     # ← you are here (orientation, navigation, verification)
 ├── index v1.md                   # 📚 chapter index — all 46 lectures' chapters + notes links
-├── roadmap-v1.md                 # ⭐ THE MASTER MAP (45 lectures · 11 phases · Build → Connect → Ship)
+├── roadmap-v1.md                 # ⭐ THE MASTER MAP (46 lectures · 11 phases · Build → Connect → Ship)
 │   ├── Macro Delivery Phases · Phase Graph · Career Capability Ladder
-│   ├── Detailed breakdown        # 45 lecture cards: Goal · Topics · Build · Release Gate
+│   ├── Detailed breakdown        # 46 lecture cards: Goal · Topics · Build · Release Gate
 │   ├── Capstone brief
 │   └── Appendices A → E          # re-numbering · 24-session coverage · stack · tracker · sequence
 │
@@ -586,7 +586,7 @@ gen-ai-cohort/                    # source repository 2  (16 days · 83 note fil
 
 > 🛠️ **Every lecture ships a `prompt.md`** — the generation prompt for that lecture. Open it, change only the **chapter number** in Block 1, and run the blocks in order: chapters → complete notes → basic code → production code → assignment → index. `prompt.md` is **git-ignored** (it is your personal working file), and the generated output lands in `notes/`, `code/`, `index.md` and `Assignment/task.md`.
 
-> 📌 The two source repositories sit **beside** this folder — they are the *inputs*, never edited here. All 45 lecture folders are your **workspaces**.
+> 📌 The two source repositories sit **beside** this folder — they are the *inputs*, never edited here. All 46 lecture folders are your **workspaces**.
 
 ---
 
@@ -608,7 +608,7 @@ Every lecture in this repository follows the same four-part contract, so you can
 | Status | Item |
 | :---: | :--- |
 | ✅ | All **46 lectures** defined across **11 phases** (`Build: L01–L23` · `Connect: L24–L32` · `Ship: L33–L46`), ordered basic → advanced |
-| ✅ | **45 workspace folders** complete with `README.md` + `notes/` + `code/` + `Assignment/task.md` |
+| ✅ | **46 workspace folders** complete with `README.md` + `notes/` + `code/` + `Assignment/task.md` |
 | ✅ | Master roadmap ([`roadmap-v1.md`](./roadmap-v1.md)) with per-lecture **Goal · Topics · Build · Release Gate** |
 | ✅ | **5 verification appendices** (re-numbering · 24-session FDE coverage · stack · progress tracker `46/46` · structural design) |
 | ✅ | **35/35** source lectures/days + **24/24** FDE sessions + **Cloudflare Code Mode** mapped — **0 duplicates** |
