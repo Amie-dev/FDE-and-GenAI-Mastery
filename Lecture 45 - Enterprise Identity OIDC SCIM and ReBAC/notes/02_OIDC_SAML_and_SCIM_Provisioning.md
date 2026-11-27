@@ -2,30 +2,34 @@
 
 > **Lecture 45 · Chapter 02 of 07** · Level: 🔴 Expert · Phase 10 — Quality, FinOps, Identity & Security
 > **Source:** `FDE S19` · **Roadmap Reference:** [`roadmap-v1.md`](../../roadmap-v1.md#lecture-44--enterprise-identity--agent-authorization-oidc-saml-scim-authentik-rebac)
+> **Roadmap topics:** Authentication (OIDC & SAML 2.0) vs. Lifecycle Sync (SCIM 2.0) · bridging SAML → OIDC via `authentik` · SCIM 2.0 offboarding `PATCH` payload · OIDC JWT anatomy & mandatory gateway verification checklist.
 
 ---
 
-## 1. Intuition: Logging In vs. Knowing Who Still Works Here
+## 02.0 What this chapter is for
 
 Enterprise identity rests on **three distinct protocols**, and confusing them is one of the most common enterprise integration mistakes:
 1. **OIDC (OpenID Connect)** & **SAML 2.0** handle **Authentication (*"Who are you right now at login time?"*)**.
 2. **SCIM 2.0 (System for Cross-domain Identity Management)** handles **Lifecycle Sync (*"Did Alice get promoted to Finance, or fired 10 minutes ago?"*)**.
 
-Why is SCIM critical for AI agents? Suppose Alice is fired at 10:00 AM in Workday/Okta. Without SCIM, your agent platform only finds out the next time she tries to log in—meaning **background agent jobs, delegated sessions, or ReBAC group memberships could stay active for hours or days**. With SCIM 2.0, Okta pushes a deactivation request to `authentik` in seconds, which immediately strips her ReBAC tuples.
+Why is SCIM critical for AI agents? Suppose Alice is fired at 10:00 AM in Workday/Okta. Without SCIM, your agent platform only finds out the next time she tries to log in—meaning **background agent jobs, delegated sessions, or ReBAC group memberships could stay active for hours or days**. With SCIM 2.0, Okta pushes a deactivation request to `authentik` in seconds, immediately stripping her ReBAC tuples and revoking active tokens.
+
+By the end of this chapter you should be able to:
+
+1. Distinguish **OIDC**, **SAML 2.0**, and **SCIM 2.0** by format, transport, and role in an AI platform.
+2. Explain why **`authentik` bridges SAML 2.0 → OIDC once** so downstream agents and MCP servers only speak JSON JWTs.
+3. Trace a **SCIM 2.0 de-provisioning `PATCH`** event from HR/Okta to ReBAC tuple revocation.
+4. Validate an **enterprise OIDC JWT** (`alg`, signature, `iss`, `aud`, `exp`) at the MCP Gateway.
 
 ---
 
-## 2. Side-by-Side Comparison: OIDC vs. SAML vs. SCIM
+## 02.1 Side-by-Side Comparison: OIDC vs. SAML vs. SCIM
 
 | Protocol | Format & Transport | Primary Job | Where It Lives in AI Architecture |
 | :--- | :--- | :--- | :--- |
 | **OIDC (OpenID Connect)** | JSON / JWTs over OAuth 2.0 HTTPS | Modern **Authentication** for web apps, SPAs, CLIs, and APIs | Issues signed `id_token` + `access_token` (`sub`, `tenant_id`, `groups`, `scope`) to your Agent UI & MCP Gateway |
 | **SAML 2.0** | Signed XML assertions over HTTP POST | Legacy/Enterprise **SSO Federation** (Okta, Entra ID, Ping) | Connects customer's corporate IdP to your **`authentik` Identity Broker** |
-| **SCIM 2.0** | REST JSON (`POST /Users`, `PATCH /Groups`) | **Automated Provisioning & De-provisioning** | Syncs org charts, departments, and revocations from Okta/Entra $\rightarrow$ `authentik` $\rightarrow$ ReBAC tuple store |
-
----
-
-## 3. How SAML, OIDC, and SCIM Flow Together
+| **SCIM 2.0** | REST JSON (`POST /Users`, `PATCH /Groups`) | **Automated Provisioning & De-provisioning** | Syncs org charts, departments, and revocations from Okta/Entra → `authentik` → ReBAC tuple store |
 
 ```mermaid
 flowchart LR
@@ -36,12 +40,9 @@ flowchart LR
     UI -->|"5. Bearer JWT"| GW["Agent & MCP Gateway"]
 ```
 
-### Why You Bridge SAML $\rightarrow$ OIDC Once at `authentik`
-Enterprise customers insist on SAML 2.0; modern MCP servers and TypeScript/Python microservices want lightweight JSON JWTs. Putting **`authentik`** in front as an **Identity Broker** lets customers plug in SAML 2.0 *once*, while every downstream agent and MCP server only ever speaks clean **OIDC JWTs**.
-
 ---
 
-## 4. Concrete SCIM 2.0 De-Provisioning Payload
+## 02.2 Concrete SCIM 2.0 De-Provisioning Flow
 
 When HR terminates Alice in Okta, Okta sends a `PATCH` request to `authentik`'s SCIM endpoint within seconds:
 
@@ -62,11 +63,23 @@ Content-Type: application/scim+json
 }
 ```
 
-Your webhook/sync handler receives `"active": false` and calls `rebac.removeUser("user:alice")` + revokes active OBO tokens—shutting down all agent access immediately.
+```mermaid
+sequenceDiagram
+    participant HR as Workday / Okta
+    participant Auth as authentik (SCIM Server)
+    participant ReBAC as OpenFGA / ReBAC Store
+    participant Agent as Background Agent Job
+
+    HR->>Auth: PATCH /scim/v2/Users/usr_alice_9182 { active: false }
+    Auth->>Auth: Disable user & revoke refresh/OBO grants
+    Auth->>ReBAC: Delete tuples for user:alice
+    Agent->>ReBAC: Check(user:alice, viewer, doc:q3)
+    ReBAC-->>Agent: FALSE -> Background job halted immediately!
+```
 
 ---
 
-## 5. Anatomy & Validation of an Enterprise OIDC JWT
+## 02.3 Anatomy & Validation of an Enterprise OIDC JWT
 
 ```json
 {
@@ -83,17 +96,38 @@ Your webhook/sync handler receives `"active": false` and calls `rebac.removeUser
 ```
 
 ### Mandatory Gateway Verification Checklist
-1. **Signature & `alg`:** Verify RS256/ES256/HS256 signature against the IdP's JWKS public key; **explicitly reject `alg: "none"`**.
+
+1. **Signature & `alg`:** Verify RS256/ES256 signature against the IdP's JWKS public key; **explicitly reject `alg: "none"`**.
 2. **`iss` (Issuer):** Must match your exact trusted `authentik` provider URL.
 3. **`aud` (Audience):** Must match `"mcp-gateway"`—blocks cross-service token replay.
-4. **`exp` (Expiration):** Reject if `now >= exp`. Keep access token TTL short (5–15 min).
+4. **`exp` (Expiration):** Reject if `now >= exp`. Keep access token TTL short (`5–15` min).
+
+> [!WARNING]
+> **Never decode a JWT with `jwt.decode()` without verifying its signature.** Decoding without verification lets any attacker forge `sub: "ceo@acme.com"` and `tenant_id: "tenant_acme"` in plain Base64!
 
 ---
 
-## 6. Chapter Summary
-- **OIDC** issues modern JWTs; **SAML 2.0** federates corporate IdPs into `authentik`; **SCIM 2.0** pushes real-time group changes and offboarding (`"active": false`).
-- Every gateway must cryptographically validate **`alg`, signature, `iss`, `aud`, and `exp`** before trusting `sub` or `tenant_id`.
+## 02.4 Common Mistakes
+
+| # | Common Mistake | Why It Hurts | What To Do Instead |
+| :---: | :--- | :--- | :--- |
+| **1** | **Supporting SSO (SAML/OIDC) without SCIM 2.0** | Terminated employees keep ReBAC group access and background agent jobs | Wire **SCIM 2.0** from Okta/Entra to revoke sessions & ReBAC tuples in seconds |
+| **2** | **Parsing XML SAML assertions inside every MCP server** | Bloats every microservice with complex XML signature libraries | Terminate SAML once at **`authentik`** and issue clean **OIDC JWTs** internally |
+| **3** | **Skipping `aud` (Audience) validation on JWTs** | A token minted for the UI can be replayed against internal admin APIs | Strictly enforce **`aud === expectedServiceUri`** at every gateway |
+| **4** | **Issuing 24-hour OIDC access tokens** | Stolen or revoked tokens stay valid all day | Keep access token TTL **`5–15` minutes** and use short-lived OBO tokens |
 
 ---
-**Next:** [Chapter 03 — Deploying `authentik` as the Identity Control Plane](./03_Deploying_authentik_as_the_Identity_Control_Plane.md)
 
+## 02.5 Key Takeaways
+
+1. **OIDC** issues modern JWTs; **SAML 2.0** federates corporate IdPs into `authentik`; **SCIM 2.0** pushes real-time group changes and offboarding (`"active": false`).
+2. Bridge SAML → OIDC once at your **Identity Control Plane** so downstream agents stay simple.
+3. Every gateway must cryptographically validate **`alg`, signature, `iss`, `aud`, and `exp`** before trusting `sub` or `tenant_id`.
+
+---
+
+### Navigation
+
+- **Next:** [Chapter 03 — Deploying `authentik` as the Identity Control Plane](./03_Deploying_authentik_as_the_Identity_Control_Plane.md)
+- **Previous:** [Chapter 01 — Why Shared Service Accounts Break Agent Security](./01_Why_Shared_Service_Accounts_Break_Agent_Security.md)
+- **Back to index:** [../index.md](../index.md)

@@ -21,7 +21,7 @@
 
 [![GitHub](https://img.shields.io/badge/GitHub-Amie--dev-181717?style=for-the-badge&logo=github)](https://github.com/Amie-dev)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Aminul-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/aminul-dev/)
-[![Twitter](https://img.shields.io/badge/Twitter-@AminulIsla65775-000000?style=for-the-badge&logo=x)](https://x.com/AminulIsla65775)
+[![Twitter](https://img.shields.io/badge/Twitter-@aminul_builds-000000?style=for-the-badge\&logo=x)](https://x.com/aminul_builds)
 
 **[📖 Start the Curriculum](#-curriculum-navigation)** · **[🗺️ Learning Path](#-learning-path)** · **[🚀 Quick Start](#-quick-start)** · **[📑 Master Roadmap v1](./roadmap-v1.md)** · **[📚 Chapter Index](./index%20v1.md)** · **[✅ Verification](#-verification-appendices)**
 

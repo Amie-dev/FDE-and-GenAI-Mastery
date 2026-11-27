@@ -18,7 +18,8 @@ By the end of this chapter you should be able to:
 1. Explain the **`AGENTS.md` open standard** and how it differs from `README.md`.
 2. Author a high-signal `AGENTS.md` covering build/test commands, architecture invariants, code style, and forbidden actions.
 3. Apply **hierarchical scoping** and **progressive context loading** so agents read only the context relevant to the directory they are editing.
-4. Measure and prevent **context bloat** that degrades reasoning accuracy and wastes tokens.
+4. Measure and prevent **context bloat** ("lost in the middle") that degrades reasoning accuracy and wastes tokens.
+5. Practice **Compound Engineering** — turning every agent mistake into a permanent rule update.
 
 ---
 
@@ -66,6 +67,9 @@ A strong `AGENTS.md` answers five operational questions in under 150 lines:
 - Do NOT modify `tests/release-gate.test.ts` to make a failing patch pass.
 ```
 
+> [!TIP]
+> **Make every command copy-pasteable.** Instead of writing *"Run the unit tests"*, write `npx tsx --test src/router.test.ts`. Exact commands eliminate 2–4 wasted exploration turns on every agent run.
+
 ---
 
 ## 04.3 Progressive context loading & hierarchical scoping
@@ -79,7 +83,7 @@ The solution is **hierarchical `AGENTS.md` + progressive disclosure**:
 
 ```mermaid
 flowchart TD
-    Root["/AGENTS.md (80 lines)<br/>Repo-wide commands, git rules, safety boundaries"] --> SubA["/packages/api/AGENTS.md (50 lines)<br/>Loaded ONLY when editing API files"]
+    Root["/AGENTS.md (80 lines)<br/>Repo-wide commands, git rules, safety boundaries<br/>(Always loaded + Prefix Cached)"] --> SubA["/packages/api/AGENTS.md (50 lines)<br/>Loaded ONLY when editing API files"]
     Root --> SubB["/packages/web/AGENTS.md (50 lines)<br/>Loaded ONLY when editing React/UI files"]
     Root --> Docs["/docs/architecture/auth.md<br/>Referenced by path; read on demand"]
 ```
@@ -87,6 +91,12 @@ flowchart TD
 1. **Root `AGENTS.md`:** Always loaded (and **prompt-prefix cached**!). Contains only universal rules.
 2. **Subdirectory `AGENTS.md`:** Loaded progressively *only* when the agent reads or edits files inside that subtree.
 3. **Pointer-based deep docs:** Instead of pasting a 400-line database schema into `AGENTS.md`, write: *"For billing state transitions, read `docs/billing-state-machine.md` before editing `src/billing/`."*
+
+### Token-cost math: Monolithic vs. Hierarchical `AGENTS.md`
+
+Suppose a monorepo has `2,000` lines (`~24,000` tokens) of total documentation, and an agent runs a `15`-turn bugfix inside `packages/api/`:
+- **Monolithic root `AGENTS.md`:** `24,000` tokens × 15 turns = `360,000` prefill tokens (plus severe attention dilution).
+- **Hierarchical (`80`-line root `~1,000` tokens + `50`-line `api/AGENTS.md` `~600` tokens):** `1,600` tokens × 15 turns = `24,000` prefill tokens (**93.3% fewer context tokens** and sharper instruction adherence!).
 
 ---
 
@@ -100,9 +110,9 @@ Consider a monorepo using **`pnpm`**, **`node:test`**, and strict Zod validation
 | **Adding an Endpoint** | Agent writes manual `if (!req.body.email)` checks instead of the repo's `zod` middleware | Agent sees *"All routes must validate input with `src/middleware/validate.ts`"* and matches the codebase on the first try |
 | **Editing Protected Files** | Agent modifies a generated SQL migration or weakens a release-gate test | Agent obeys `Boundaries: Never edit migrations/ or release-gate.test.ts` |
 
-### Common `AGENTS.md` Anti-Patterns vs. Fixes
+### Traps: Common `AGENTS.md` anti-patterns
 
-| Anti-Pattern | Why It Hurts Agent Accuracy | Fix |
+| Trap | Why It Hurts Agent Accuracy | Fix |
 | :--- | :--- | :--- |
 | **2,000-line `AGENTS.md` novel** | Triggers "Lost in the Middle"; wastes thousands of tokens per turn | Keep root `< 150` lines; move subsystem rules to subdirectory `AGENTS.md` files |
 | **Stale commands** (`yarn test` when repo moved to `pnpm`) | Agent loops endlessly trying a broken command | Test every command in `AGENTS.md` in CI or during onboarding |
@@ -114,20 +124,37 @@ Consider a monorepo using **`pnpm`**, **`node:test`**, and strict Zod validation
 
 Treat every agent mistake as a **missing rule in `AGENTS.md`**, not a one-off prompt annoyance:
 
-1. Agent makes a mistake (e.g., uses `jest` instead of `node:test`, or forgets `--noEmit`).
-2. You fix it *and* add a single crisp bullet to `AGENTS.md` (or a subdirectory `AGENTS.md`).
-3. Every future agent run — and every teammate's agent — inherits that lesson automatically.
+```mermaid
+flowchart LR
+    M["1. Agent Makes Mistake<br/>(e.g., uses jest instead of node:test)"] --> F["2. Fix Patch + Identify Missing Rule"]
+    F --> U["3. Add 1 Crisp Bullet to AGENTS.md"]
+    U --> V["4. Every Future Agent Run<br/>Inherits the Lesson"]
+    V -.->|"Continuous improvement"| M
+```
+
+> [!IMPORTANT]
+> **Compound Engineering turns debugging time into permanent team velocity.** A 2-line update to `AGENTS.md` after a code review comment prevents that exact bug across every future human and AI session.
 
 ---
 
-## 04.5 Key takeaways
+## 04.6 Common mistakes
+
+| # | Common Mistake | Why It Hurts | What To Do Instead |
+| :---: | :--- | :--- | :--- |
+| 1 | **Copy-pasting `README.md` into `AGENTS.md`** | Marketing prose and badges waste tokens without giving commands or invariants | Write imperative commands, file maps, invariants, and boundaries only. |
+| 2 | **Letting root `AGENTS.md` grow past 150–200 lines** | Dilutes attention ("Lost in the Middle") and slows every turn | Split subsystem rules into subdirectory `AGENTS.md` files and pointer docs. |
+| 3 | **Listing rules without verification commands** | Agent writes code that violates style/types and never checks it | Include exact `typecheck`, `lint`, and single-file `test` commands. |
+| 4 | **Forgetting to update `AGENTS.md` when tooling changes** | Stale commands cause agents to burn turns failing on deleted scripts | Validate `AGENTS.md` commands in CI as part of repo health checks. |
+
+---
+
+## 04.7 Key takeaways
 
 1. **`AGENTS.md` is the machine-readable contract** between your codebase and any AI coding harness.
 2. **Keep root `AGENTS.md` lean (`< 150` lines)** so it fits cleanly inside the cached static prefix without diluting attention.
 3. **Use hierarchical `AGENTS.md` files and explicit file pointers** for progressive context loading.
-4. **Update `AGENTS.md` whenever an agent fails a convention** — turning one-off fixes into permanent harness velocity.
+4. **Practice Compound Engineering:** update `AGENTS.md` whenever an agent fails a convention — turning one-off fixes into permanent harness velocity.
 
 ---
 
 **Next:** [Chapter 05 — Pi Harness & Superpowers Composable Workflows](./05_Pi_Harness_and_Superpowers_Composable_Workflows.md)
-

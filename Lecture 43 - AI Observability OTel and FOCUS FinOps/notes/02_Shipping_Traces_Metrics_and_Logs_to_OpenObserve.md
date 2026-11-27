@@ -1,73 +1,34 @@
 # Chapter 02 — Shipping Traces, Metrics & Logs to OpenObserve
 
 > **Lecture 43 · Chapter 02 of 07** · Level: 🟠 Advanced · Phase 10 — Quality, FinOps, Identity & Security
-> **Source:** `FDE S17` · **Roadmap Reference:** [`roadmap-v1.md`](../../roadmap-v1.md#lecture-42--ai-observability-opentelemetry-openobserve--focus-finops)
-> **External Reference:** [OpenObserve Documentation](https://openobserve.ai/docs/)
-> **Roadmap topics:** OTel Collector pipeline (Receivers $\rightarrow$ Processors $\rightarrow$ Exporters) · OTLP HTTP/gRPC ingestion into OpenObserve · correlating traces, metrics, and logs via `traceId`.
+> **Source:** `FDE S17` · **Roadmap Reference:** [`roadmap-v1.md`](../../roadmap-v1.md#lecture-42--ai-observability-opentelemetry-openobserve--focus-finops) · [OpenObserve Documentation](https://openobserve.ai/docs/)
+> **Roadmap topics:** OTel Collector pipeline (Receivers → Processors → Exporters) · OTLP HTTP/gRPC ingestion into OpenObserve · correlating traces, metrics, and logs via `trace_id` · head vs. tail-based sampling.
 
 ---
 
 ## 02.0 What this chapter is for
 
-Emitting OTel spans in memory is useless unless they land in a fast, searchable backend. **OpenObserve** is an open-source, cloud-native observability platform (written in Rust, storing Parquet on S3/disk) that ingests **OTLP (OpenTelemetry Protocol)** traces, metrics, and logs natively at a fraction of traditional APM costs.
+Emitting OpenTelemetry spans in process memory is useless unless they are **buffered, scrubbed of secrets, sampled intelligently, and stored** where engineers can query them in seconds during an incident.
 
-By the end of this chapter you should be able to:
-
-1. Wire the **OTel Collector** (`OTLP Receiver -> Batch + PII Redaction Processor -> OTLP/HTTP OpenObserve Exporter`).
-2. Correlate **Traces** (latency waterfall), **Metrics** (p95 TTFT, token rate), and **Logs** (exact tool error stderr) using a single `traceId`.
-3. Configure **tail-based sampling** so 100% of error/slow traces are kept while high-volume routine `200 OK` traces are sampled economically.
-
----
-
-## 02.1 The OTel Collector $\rightarrow$ OpenObserve Pipeline
-
-```mermaid
-flowchart LR
-    App["Agent Service<br/>(OTel SDK)"] -->|"OTLP/HTTP (4318)"| Col["OTel Collector<br/>1. Batch Processor<br/>2. Redact PII Keys<br/>3. Tail Sampling (Keep 100% errors)"]
-    Col -->|"POST /api/default/v1/traces"| OO["OpenObserve<br/>(Parquet Storage + SQL/PromQL UI)"]
-```
-
-### Why an OTel Collector sits in the middle
-
-1. **Decouples app from backend:** Your agent always sends OTLP to `localhost:4318`; swapping OpenObserve for another backend is a 3-line YAML change.
-2. **Centralized PII scrubbing:** Collector processors strip `authorization` headers or email regexes *before* telemetry leaves your VPC.
-3. **Buffering & Retries:** If OpenObserve restarts, the Collector buffers spans without slowing down user requests.
-
----
-
-## 02.2 Key takeaways
-
-1. **Ship OTLP through an OTel Collector** for batching, PII redaction, and backend portability.
-2. **OpenObserve ingests OTLP traces, metrics, and logs natively**, letting you query AI traces with SQL.
-
----
-
-**Next:** [Chapter 03 — Continuous Quality Monitoring & Drift Detection](./03_Continuous_Quality_Monitoring_and_Drift_Detection.md)
-
-# Chapter 02 — Shipping Traces, Metrics & Logs to OpenObserve
-
-> **Lecture 43 · Chapter 02 of 07** · Level: 🟠 Advanced · Phase 10 — Quality, FinOps, Identity & Security
-> **Source:** `FDE S17` · **Roadmap Reference:** [`roadmap-v1.md`](../../roadmap-v1.md#lecture-42--ai-observability-opentelemetry-openobserve--focus-finops)
-> **External Reference:** [OpenObserve Documentation](https://openobserve.ai/docs/)
-
----
-
-## 1. Why OpenObserve + OTel Collector?
-
-Emitting OTel spans inside your Node.js/Python process is only half the story—they need to be **buffered, scrubbed, sampled, and stored** somewhere you can query in seconds during an outage.
-
-**OpenObserve** is an open-source, Rust-based observability backend designed as a high-efficiency alternative to Elasticsearch/Splunk/Datadog:
+**OpenObserve** is an open-source, Rust-based observability backend designed as a high-efficiency alternative to Elasticsearch, Splunk, and Datadog:
 - **Native OTLP Ingestion:** Accepts OpenTelemetry **Traces, Metrics, and Logs** directly over OTLP/HTTP (`4318`) or OTLP/gRPC (`4317`).
 - **Parquet + Object Storage (S3/MinIO):** Stores telemetry in compressed Apache Parquet files rather than expensive JVM heap/Lucene indexes—cutting storage costs by **10x–30x** for high-volume AI traces.
 - **SQL & PromQL Querying:** Lets engineers run standard SQL across `gen_ai.*` span attributes (`SELECT tenant_id, SUM(gen_ai_cost_usd) ...`).
 
+By the end of this chapter you should be able to:
+
+1. Explain why an **OTel Collector** sits between your agent services and OpenObserve.
+2. Correlate **Traces, Metrics, and Logs** using a single `trace_id` to debug slow or failed runs.
+3. Read and configure a production **`otel-collector.yaml`** pipeline (OTLP receiver, batch, PII redaction, OpenObserve exporter).
+4. Contrast **head sampling** vs. **tail-based sampling** and keep 100% of billing records accurate.
+
 ---
 
-## 2. Three Signals Correlated by `trace_id`
+## 02.1 Three Signals Correlated by `trace_id`
 
 Each telemetry signal answers a different operational question—and **`trace_id` is the glue** connecting them:
 
-| Signal | Best Used For | Example AI Query |
+| Signal | Best Used For | Example AI Operational Question |
 | :--- | :--- | :--- |
 | **Traces** | Debugging *one slow or failed agent run* end-to-end | *"Why did `trace_id=7b9cd45c...` take 9.2 seconds? Oh, `execute_tool sql_query` retried 4 times!"* |
 | **Metrics** | Fast dashboards, `p95` percentiles, and SLO burn-rate alerts | *"What is `p95(gen_ai.client.operation.duration)` for `gpt-4o` over the last 15 minutes?"* |
@@ -76,21 +37,24 @@ Each telemetry signal answers a different operational question—and **`trace_id
 ```mermaid
 flowchart LR
     App["Agent Service<br/>(OTel SDK + Structured Logger)"] -->|"OTLP/HTTP :4318<br/>(trace_id injected in logs)"| Col["OTel Collector<br/>1. Batch Processor<br/>2. Attributes Processor (Redact PII)<br/>3. Tail Sampling"]
-    Col -->|"POST /api/default/v1/traces"| OOT["OpenObserve Traces"]
-    Col -->|"POST /api/default/v1/metrics"| OOM["OpenObserve Metrics"]
-    Col -->|"POST /api/default/v1/logs"| OOL["OpenObserve Logs"]
-    OOT <-->|"Click trace_id"| OOL
+    Col -->|"POST /api/default/v1/traces"| OOT["OpenObserve Traces<br/>(Parquet)"]
+    Col -->|"POST /api/default/v1/metrics"| OOM["OpenObserve Metrics<br/>(PromQL / SQL)"]
+    Col -->|"POST /api/default/v1/logs"| OOL["OpenObserve Logs<br/>(Full-Text + SQL)"]
+    OOT <-->|"Pivot on trace_id"| OOL
 ```
+
+> [!TIP]
+> **Inject `trace_id` and `span_id` into every structured JSON log line.** When an alert fires on a metric spike, you jump from the metric → failing trace → exact stderr/Zod log line in two clicks.
 
 ---
 
-## 3. Why You Put an OTel Collector in the Middle
+## 02.2 Why You Put an OTel Collector in the Middle
 
 Never point 50 microservices directly at a remote observability SaaS URL with synchronous HTTP calls. Put an **OpenTelemetry Collector** sidecar or DaemonSet in front:
 
-1. **Zero Request Latency Impact:** Your agent writes spans to `localhost:4318` in sub-millisecond memory; the Collector batches and retries exports asynchronously.
+1. **Zero Request Latency Impact:** Your agent flushes spans to `localhost:4318` in sub-millisecond memory; the Collector batches and retries exports asynchronously.
 2. **Centralized PII Redaction:** One `attributes` / `transform` processor strips `authorization`, `cookie`, and regex-matched emails/SSNs across *all* services before anything leaves your VPC.
-3. **Backend Portability:** Switching from local Jaeger $\rightarrow$ OpenObserve $\rightarrow$ Grafana Cloud is a 4-line Collector YAML change—zero application code redeploys.
+3. **Backend Portability:** Switching from local Jaeger → OpenObserve → Grafana Cloud is a 4-line Collector YAML change with zero application code redeploys.
 
 ### Minimal OTel Collector Config for OpenObserve (`otel-collector.yaml`)
 
@@ -140,25 +104,50 @@ service:
 
 ---
 
-## 4. Head Sampling vs. Tail-Based Sampling
+## 02.3 Head Sampling vs. Tail-Based Sampling
 
-At 1,000,000 agent runs/day, storing 100% of routine traces can still get expensive. How do you sample without losing the bugs?
+At 1,000,000 agent runs/day, storing 100% of routine `200 OK` traces can still get noisy and expensive. How do you sample without losing the rare bugs?
 
-| Strategy | Where Decision Happens | Fatal Flaw / Benefit |
+```mermaid
+flowchart TD
+    In["100% Completed Traces<br/>in OTel Collector Buffer"] --> Check{"Tail-Sampling Policy"}
+    Check -->|"status == ERROR or task.success == false"| KeepErr["KEEP 100%<br/>(All Failures & Tool Loops)"]
+    Check -->|"duration > 5,000 ms or cost > $0.10"| KeepSlow["KEEP 100%<br/>(All Latency & FinOps Outliers)"]
+    Check -->|"Fast 200 OK Routine Run"| Sample["PROBABILITY SAMPLE 5%<br/>(Baseline Volume Control)"]
+```
+
+| Strategy | Where Decision Happens | Fatal Flaw / Production Benefit |
 | :--- | :--- | :--- |
 | **Head Sampling (e.g., 10% random)** | At the *start* of the request | **Flaw:** Drops **90% of your errors and latency spikes** because you didn't know the request would fail when it started! |
-| **Tail-Based Sampling (Smart)** | In the OTel Collector *after* the trace finishes | **Benefit:** Keeps **100% of errors** (`status == ERROR` or `task.success == false`), **100% of slow/expensive runs** (`duration > 5s` or `cost > $0.10`), and only samples `5%` of fast `OK` runs! |
+| **Tail-Based Sampling (Smart)** | In the OTel Collector *after* the trace finishes | **Benefit:** Keeps **100% of errors**, **100% of slow/expensive runs**, and samples only `5%` of fast `OK` runs |
 
-> [!TIP]
-> **Cost & FinOps Rule:** Even if you tail-sample **traces** at 10% for fast `OK` requests, **always keep 100% of billing/cost records** (via metrics or FOCUS event logs) so your financial ledger never undercounts customer spend!
+> [!IMPORTANT]
+> **FinOps Accuracy Rule:** Even if you tail-sample **traces** at 5% for fast `OK` requests, **never sample billing/cost records**! Emit 100% of token/cost counters via **OTel Metrics** or **FOCUS event logs** so your financial ledger never undercounts customer spend.
+
+---
+
+## 02.4 Common Mistakes
+
+| # | Common Mistake | Why It Hurts | What To Do Instead |
+| :---: | :--- | :--- | :--- |
+| **1** | **Exporting OTLP directly from app pods to SaaS** | Backpressure or SaaS outages block agent threads and duplicate PII-scrubbing code | Route all services through a local **OTel Collector** with `batch` and retry queues |
+| **2** | **Using 10% head sampling in production** | Drops 9 out of 10 rare hallucinations, timeouts, and tool errors | Use **tail-based sampling** to keep 100% of errors and slow/costly traces |
+| **3** | **Computing customer billing from sampled traces** | Sampling 5% of `OK` traces undercounts actual token spend by 95% | Keep **100% of cost metrics / FOCUS billing events** unsampled |
+| **4** | **Omitting `trace_id` from application logs** | You see a red span in OpenObserve, but can't find the matching Zod/SQL error log | Configure your logger to inject active OTel `trace_id` and `span_id` automatically |
 
 ---
 
-## 5. Chapter Summary
-- **OpenObserve** ingests native OTLP traces, metrics, and logs into Parquet storage with SQL/PromQL querying.
-- Always correlate **Traces, Metrics, and Logs** with the same `trace_id`.
-- Deploy an **OTel Collector** for async batching, PII redaction, and **tail-based sampling** (100% of errors/slow/expensive traces kept, routine successes sampled).
+## 02.5 Key Takeaways
+
+1. **OpenObserve** ingests native OTLP traces, metrics, and logs into compressed Parquet storage with SQL and PromQL querying.
+2. **Correlate all three signals with `trace_id`** so you can move seamlessly from a `p95` metric alert → trace waterfall → exact error log.
+3. **Always deploy an OTel Collector** for async batching, centralized PII redaction, and backend portability.
+4. **Use tail-based sampling** for traces (keep 100% of errors and outliers) while keeping **100% of FinOps cost records** unsampled.
 
 ---
-**Next:** [Chapter 03 — Continuous Quality Monitoring & Drift Detection](./03_Continuous_Quality_Monitoring_and_Drift_Detection.md)
 
+### Navigation
+
+- **Next:** [Chapter 03 — Continuous Quality Monitoring & Drift Detection](./03_Continuous_Quality_Monitoring_and_Drift_Detection.md)
+- **Previous:** [Chapter 01 — OpenTelemetry (OTel) GenAI Semantic Conventions](./01_OpenTelemetry_GenAI_Semantic_Conventions.md)
+- **Back to index:** [../index.md](../index.md)

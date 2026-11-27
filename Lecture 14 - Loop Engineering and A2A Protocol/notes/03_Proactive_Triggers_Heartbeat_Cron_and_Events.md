@@ -10,13 +10,15 @@
 
 Chatbots are **reactive**: they sit idle until a human types a message. Production agents are increasingly **proactive**: they monitor repositories, watch incident queues, reconcile invoices every morning, and wake up on webhooks.
 
-Running an agent without a human in the loop introduces new failure modes: **duplicate triggers**, **alert fatigue**, and **runaway background spend**.
+Running an agent without a human in the loop introduces new failure modes: **idle polling waste**, **duplicate webhook triggers**, **alert storms**, and **overlapping cron runs**.
 
 By the end of this chapter you should be able to:
 
 1. Compare the three proactive trigger patterns: **Heartbeat**, **Cron Schedule**, and **Event-Driven (Webhook/Queue)**.
-2. Implement **cheap pre-flight filters** so an agent wakes up *only* when deterministic state actually changed.
-3. Prevent duplicate executions using **idempotency keys** and **cooldown windows**.
+2. Implement **`$0` deterministic pre-flight filters** so an agent wakes up *only* when state has actually changed.
+3. Calculate the exact cost savings of pre-flight gating on high-frequency heartbeat monitors.
+4. Prevent duplicate or overlapping executions using **idempotency keys**, **per-entity cooldowns**, and **singleton locks**.
+5. Suppress noisy alerts with **quiet-hours** and severity-escalation rules.
 
 ---
 
@@ -31,7 +33,9 @@ By the end of this chapter you should be able to:
 ```mermaid
 flowchart LR
     T1["Heartbeat (every 5m)"] --> Pre{"Deterministic Pre-Flight<br/>($0 State Diff Check)"}
-    T2["Cron (0 8 * * *)"] --> Pre
+    T2["Cron (0 8 * * 1-5)"] --> Lock{"Singleton Lock<br/>(No Overlap?)"}
+    Lock -->|"Acquired"| Pre
+    Lock -->|"Busy"| SkipLock["Skip Tick ($0)"]
     T3["Webhook / Queue Event"] --> Dedup["Idempotency + Cooldown<br/>(Deduplicate Event ID)"]
     Dedup --> Pre
     Pre -->|"No actionable change"| Skip["Skip LLM Call ($0)"]
@@ -49,10 +53,18 @@ Every proactive trigger must run a deterministic `$0` pre-flight check first:
 - **Incident Watchdog:** Query `error_rate > 0.05`; if metrics are green, do not wake the System-2 root-cause agent.
 - **Inbox Triage:** Check `unreadCount > 0`; if `0`, skip.
 
-### Worked Cost Math: Why `$0` Pre-Flight Saves 99%
-Suppose a Heartbeat PR Monitor runs every **5 minutes** (`288` ticks/day), and each LLM check costs `$0.03`:
-- **Without Pre-Flight:** $288 \times \$0.03 = \mathbf{\$8.64/\text{day}}$ (**\$259/month** per repo just to say *"nothing changed"*!).
-- **With `$0` Pre-Flight (`git ls-remote`):** Only `2` ticks/day actually have new commits $\rightarrow 2 \times \$0.03 = \mathbf{\$0.06/\text{day}}$ (**99.3% cost reduction**).
+### Worked Cost Math: Why `$0` Pre-Flight Saves 99%+
+
+Suppose a Heartbeat PR Monitor runs every **5 minutes** (`288` ticks/day per repo), and each LLM check costs `$0.03`:
+- **Without Pre-Flight (LLM checks every tick):**
+  $$288 \times \$0.03 = \mathbf{\$8.64/\text{day}} \quad (\mathbf{\$259.20/\text{month}}\text{ per repo just to say "nothing changed"!})$$
+  Across 50 repos, that is **\$12,960/month** wasted on idle polling.
+- **With `$0` Pre-Flight (`git ls-remote` / ETag):**
+  Only `2` ticks/day actually have new commits:
+  $$2 \times \$0.03 = \mathbf{\$0.06/\text{day}} \quad (\mathbf{\$1.80/\text{month}}\text{ per repo — }\mathbf{99.3\%\text{ cost reduction}})$$
+
+> [!IMPORTANT]
+> **Separate the Sensor from the Reasoner.** The heartbeat/cron scheduler is a cheap deterministic sensor. The LLM is an expensive reasoner that should only be woken up when the sensor detects a non-empty state delta.
 
 ---
 
@@ -60,19 +72,87 @@ Suppose a Heartbeat PR Monitor runs every **5 minutes** (`288` ticks/day), and e
 
 Proactive triggers fail loudly when two ticks overlap or a webhook delivers the same payload twice:
 
-1. **Idempotency Key:** Derive `key = hash(triggerType + entityId + eventVersion)`. If `key` was already processed, return the cached result immediately.
-2. **Per-Entity Cooldown:** After an agent alerts or acts on `service-payments`, suppress re-triggering for `cooldownMs` (e.g., `15 minutes`) unless severity escalates.
-3. **Singleton Lock:** Ensure a slow 8-minute cron run does not overlap with the next 5-minute heartbeat on the same entity.
+```mermaid
+sequenceDiagram
+    participant WH as Webhook / Scheduler
+    participant Gate as Trigger Guard (Redis / DB)
+    participant Agent as Bounded PAV Loop
+
+    WH->>Gate: Event (entity=payments, v=42)
+    Gate->>Gate: Check Idempotency Key (hash)
+    alt Already Processed
+        Gate-->>WH: 200 OK (Cached / No-op)
+    else New Event
+        Gate->>Gate: Check Cooldown (15m) & Singleton Lock
+        alt In Cooldown & Same Severity
+            Gate-->>WH: Suppress (Avoid Alert Storm)
+        else Ready
+            Gate->>Agent: Acquire Lock + Launch PAV Loop
+            Agent-->>Gate: Completed -> Release Lock + Record Key
+        end
+    end
+```
+
+```typescript
+export interface TriggerEvent {
+  triggerType: "heartbeat" | "cron" | "webhook";
+  entityId: string;
+  eventVersion: string;
+  severity: "info" | "warn" | "critical";
+  nowMs: number;
+}
+
+export class TriggerGuard {
+  private seenKeys = new Set<string>();
+  private lastAlertMs = new Map<string, number>();
+
+  shouldLaunch(ev: TriggerEvent, cooldownMs = 15 * 60_000): { run: boolean; reason: string } {
+    const key = `${ev.triggerType}:${ev.entityId}:${ev.eventVersion}`;
+    if (this.seenKeys.has(key)) {
+      return { run: false, reason: "DUPLICATE_IDEMPOTENCY_KEY" };
+    }
+    const last = this.lastAlertMs.get(ev.entityId);
+    if (last !== undefined && ev.nowMs - last < cooldownMs && ev.severity !== "critical") {
+      return { run: false, reason: "COOLDOWN_ACTIVE" };
+    }
+    this.seenKeys.add(key);
+    this.lastAlertMs.set(ev.entityId, ev.nowMs);
+    return { run: true, reason: "AUTHORIZED" };
+  }
+}
+```
+
+### Quiet hours & noise suppression
+
+For non-critical notifications (e.g., daily digests or low-severity drift alerts), enforce a **quiet-hours policy** (e.g., suppress Slack/PagerDuty pings between `22:00` and `07:00` local time, batching them into the morning digest) while still allowing `critical` severity to page immediately.
+
+### Traps: Where proactive agents break
+
+| Trap | What Happens | Fix |
+| :--- | :--- | :--- |
+| **Webhook retry storm** | Downstream takes 6s; webhook sender times out at 5s and retries 5× | Return `202 Accepted` immediately, enqueue event, and deduplicate by `idempotencyKey`. |
+| **Cron overlap** | An 8-minute audit overlaps with a 5-minute schedule, corrupting shared state | Acquire a distributed **singleton lock** per `entityId` with a lease TTL. |
 
 ---
 
-## 03.4 Key takeaways
+## 03.4 Common mistakes
+
+| # | Common Mistake | Why It Hurts | What To Do Instead |
+| :---: | :--- | :--- | :--- |
+| 1 | **Waking the LLM on every heartbeat tick** | Burns 99% of tokens confirming that nothing changed | Gate every heartbeat/cron with a `$0` deterministic pre-flight diff check. |
+| 2 | **Processing webhooks synchronously without idempotency keys** | Retries trigger duplicate agent runs and duplicate side effects | Ack fast (`202`), deduplicate on `hash(triggerType + entityId + version)`. |
+| 3 | **No per-entity cooldown window** | Flapping metrics trigger 20 identical incident-triage runs in 10 minutes | Enforce a `cooldownMs` window unless severity escalates to `critical`. |
+| 4 | **Skipping singleton locks on cron jobs** | Slow runs overlap and race on the same workspace or database rows | Hold a per-entity lock for the duration of the run. |
+
+---
+
+## 03.5 Key takeaways
 
 1. **Three proactive triggers:** Heartbeat (polling), Cron (calendar), and Event-Driven (webhooks/queues).
 2. **Gate every trigger with a `$0` deterministic pre-flight check** so idle ticks cost zero tokens.
-3. **Enforce idempotency keys and cooldowns** to survive webhook retries and prevent alert storms.
+3. **Enforce idempotency keys, singleton locks, and cooldowns** to survive webhook retries and prevent alert storms.
+4. **Always launch proactive work inside a bounded PAV loop** (Chapters 01–02) so unattended runs cannot overspend.
 
 ---
 
 **Next:** [Chapter 04 — Stuck Detection, Retry, Pivot & Escalation](./04_Stuck_Detection_Retry_Pivot_and_Escalation.md)
-
