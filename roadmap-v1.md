@@ -20,7 +20,7 @@
 > [!IMPORTANT]
 > **What `roadmap-v1.md` is:** The upgraded **45-Lecture + Single-Engagement Capstone** master map merging the original 32-lecture curriculum ([`roadmap.md`](./roadmap.md)) with the **24-Session FDE Delivery Curriculum** (`Build → Connect → Ship`) and **Cloudflare Code Mode** ([`update.md`](./update.md)).
 >
-> **How it is organized:** **3 Macro Delivery Stages** (`Build` · `Connect` · `Ship`) spanning **11 Technical Phases (`0`–`10`)** and **45 sequential lectures (`L01`–`L45`)**. Existing workspaces keep clickable links to their current folders until you run the optional folder-renumbering migration.
+> **How it is organized:** **3 Macro Delivery Stages** (`Build` · `Connect` · `Ship`) spanning **11 Technical Phases (`0`–`10`)** and **45 sequential lectures (`L01`–`L46`)**. Existing workspaces keep clickable links to their current folders until you run the optional folder-renumbering migration.
 
 ---
 
@@ -30,7 +30,7 @@
 | :--- | :---: | :---: | :--- | :---: |
 | **1 · BUILD** *(Engineer AI Systems)* | `0` – `5` | `L01` – `L23` | Foundations, prompt caching, model routing, `AGENTS.md`/SDD/TDD, tool loops, A2A, LangGraph, vectors, hybrid RAG, memory & GraphRAG | `21 Existing · 2 New` |
 | **2 · CONNECT** *(Enterprise Data & APIs)* | `6` – `7` | `L24` – `L32` | Data estates, Apache Ossie, AI data contracts, lakehouse lifecycle, semantic Text-to-SQL, sandboxed Python, MCP, **Cloudflare Code Mode**, CDC & Inngest | `4 Existing · 5 New` |
-| **3 · SHIP** *(Scale, Ops, Identity & Security)* | `8` – `10` | `L33` – `L45` | Multimodal, full-stack apps, `AG-UI`/`MCP Apps`, K8s/KEDA, vLLM & disaggregated inference (`SGLang`/`llm-d`), evals, Z3/GEPA, OTel/FOCUS FinOps, `flagd` canaries, OIDC/ReBAC & AI BOM | `7 Existing · 6 New` |
+| **3 · SHIP** *(Scale, Ops, Identity & Security)* | `8` – `10` | `L33` – `L46` | Multimodal, full-stack apps, `AG-UI`/`MCP Apps`, K8s/KEDA, vLLM & disaggregated inference (`SGLang`/`llm-d`), evals, Z3/GEPA, OTel/FOCUS FinOps, `flagd` canaries, OIDC/ReBAC & AI BOM | `7 Existing · 6 New` |
 | **★ · CAPSTONE** *(One Engagement)* | `All` | `Weeks 5–12` | Apply every layer onto **one continuous customer engagement repository** from discovery to UAT & handover | `Single-Engagement` |
 
 ---
@@ -60,10 +60,10 @@ flowchart TD
         P6 --> P7
     end
 
-    subgraph SHIP["🟢 STAGE 3: SHIP — Secure, Deploy, Operate & Prove Value (L33–L45)"]
+    subgraph SHIP["🟢 STAGE 3: SHIP — Secure, Deploy, Operate & Prove Value (L33–L46)"]
         P8["<b>Phase 8 · Apps, Agent UIs & Scaling</b><br/>L33: Multimodal · L34: Full-Stack Platform<br/>L35: Async RAG · L36: GitHub PR Bot<br/>🆕 L37: AG-UI, MCP Apps & K8s/KEDA"]:::ship
-        P9["<b>Phase 9 · Distributed & Sovereign Inference</b><br/>L38: vLLM, Quantization & Sovereign/Indic<br/>🆕 L39: SGLang, llm-d, Dynamo & Disaggregated Serving"]:::ship
-        P10["<b>Phase 10 · Quality, FinOps, Identity & Security</b><br/>L40: Evals · 🆕 L41: Z3 & GEPA<br/>🆕 L42: OTel, OpenObserve & FOCUS FinOps<br/>🆕 L43: Progressive Autonomy & flagd Canaries<br/>🆕 L44: OIDC, SAML, SCIM, authentik & ReBAC<br/>L45: Security, OWASP Agentic/MCP & AI BOM"]:::ship
+        P9["<b>Phase 9 · Distributed & Sovereign Inference</b><br/>L39: vLLM, Quantization & Sovereign/Indic<br/>🆕 L40: SGLang, llm-d, Dynamo & Disaggregated Serving"]:::ship
+        P10["<b>Phase 10 · Quality, FinOps, Identity & Security</b><br/>L41: Evals · 🆕 L42: Z3 & GEPA<br/>🆕 L43: OTel, OpenObserve & FOCUS FinOps<br/>🆕 L44: Progressive Autonomy & flagd Canaries<br/>🆕 L45: OIDC, SAML, SCIM, authentik & ReBAC<br/>L46: Security, OWASP Agentic/MCP & AI BOM"]:::ship
         P8 --> P9 --> P10
     end
 
@@ -420,20 +420,27 @@ AI Application Engineer                          ──────────�
 * **What You Build:** Containerized agent backend streaming `AG-UI` / `MCP Apps` progress + Kubernetes/KEDA scaling manifests + isolated code runner.
 * **Release Gate:** Queue spike triggers KEDA scale-out from 1 to $N$ worker pods; untrusted Python snippet cannot access host network or filesystem.
 
+### Lecture 38 — AI Agent Sandboxes All-in-One (`MicroVMs`, `Docker`, `Cloudflare`, `E2B`, `AIO`)
+* **Status:** `✅ Complete` · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 38](./Lecture%2038%20-%20AI%20Agent%20Sandboxes%20All-in-One/)
+* **Goal:** Master all modern AI agent sandbox architectures, topologies, and platforms in one place.
+* **Topics Unlocked:** *Sandbox-as-a-Tool* vs. *Agent-in-Sandbox*; **V8 Isolates vs. Containers vs. `gVisor` vs. MicroVMs**; **Docker AI Sandboxes** (microVM + private `dockerd` + host proxy); **OpenAI Agents SDK** `SandboxSession`; **Cloudflare Sandbox SDK (GA)** vs. **Dynamic Workers**; **AIO Sandbox (`agent-infra/sandbox`)**; **E2B**, **Modal**, and **Daytona** snapshots, hibernation &amp; preview URLs.
+* **What You Build:** Multi-platform sandbox router + egress validator + AIO MCP workspace session demo.
+* **Release Gate:** Egress validator blocks `169.254.169.254`, AIO session shares `/workspace` with zero leaked host secrets, and all 5 release-gate tests pass.
+
 ---
 
 ## 🟦 Phase 9 — Distributed & Sovereign Inference *(Stage 3: Ship)*
 
 > **Thesis:** Inference is memory-bandwidth-bound. Serve models economically with vLLM, quantization, sovereign/Indic models, KV-cache reuse, and disaggregated prefill/decode (`SGLang`, `llm-d`, `Dynamo`).
 
-### Lecture 38 — High-Performance Inference: vLLM, Quantization & Sovereign / Indic Models
+### Lecture 39 — High-Performance Inference: vLLM, Quantization & Sovereign / Indic Models
 * **Status:** `🔼 Upgraded (Old L25)` · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 25](./Lecture%2025%20-%20vLLM%20and%20PagedAttention/)
 * **Goal:** Optimize LLM serving with PagedAttention, continuous batching, quantization, and sovereign/Indian-language model selection.
 * **Topics Unlocked:** Compute-bound training vs. memory-bandwidth-bound inference; KV-cache fragmentation; **PagedAttention** & vLLM; **quantization** (AWQ, GPTQ, FP8); **hosted vs. self-hosted** economics; **RAG vs. fine-tuning**; **sovereign & Indian-language models** (Sarvam, Krutrim, Airavata, Indic benchmarks).
 * **What You Build:** vLLM + quantized model benchmark comparing throughput against standard HuggingFace serving + Indic evaluation slice.
 * **Release Gate:** Achieve $\ge 3\times$ concurrent token throughput gain with vLLM continuous batching while holding quality within 2% of FP16.
 
-### Lecture 39 — Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) & Capacity Engineering
+### Lecture 40 — Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) & Capacity Engineering
 * **Status:** `🆕 NEW (Covers S24)` · **Level:** 🔴 Expert · **Workspace:** *To be scaffolded (`Lecture 39`)*
 * **Goal:** Architect multi-node distributed inference using prefix/KV-cache routing, disaggregated prefill/decode, and data residency controls.
 * **Topics Unlocked:** Model-aware routing; **KV cache reuse & offloading** (LMCache/Mooncake); **disaggregated prefill/decode inference**; **SGLang** (RadixAttention), **`llm-d`**, and **NVIDIA Dynamo**; data **residency**, high availability, and cost-capacity engineering.
@@ -446,42 +453,42 @@ AI Application Engineer                          ──────────�
 
 > **Thesis:** Never ship an autonomous system without trajectory evals, Z3 invariants, OTel/FOCUS FinOps, `flagd` progressive releases, delegated OIDC/ReBAC identity, and an AI BOM security gate.
 
-### Lecture 40 — GenAI Evaluation & Testing: Golden Datasets & LLM-as-a-Judge
+### Lecture 41 — GenAI Evaluation & Testing: Golden Datasets & LLM-as-a-Judge
 * **Status:** `✅ Existing (Old L30)` · **Level:** 🟡 Intermediate · **Workspace:** [📂 Lecture 30](./Lecture%2030%20-%20Evals%20and%20Testing/)
 * **Goal:** Build automated evaluation suites with versioned golden datasets, deterministic assertions, and calibrated LLM judges.
 * **Topics Unlocked:** Attribution problem; versioned golden datasets; deterministic checks; quality as a vector; pointwise/pairwise LLM judges & calibration; RAG metrics (Faithfulness, Recall@k, MRR, nDCG); CI release gates.
 * **What You Build:** Automated CI eval pipeline blocking merges when faithfulness or schema validity regresses.
 * **Release Gate:** CI gate fails intentionally when a prompt regression drops faithfulness below 0.85.
 
-### Lecture 41 — Neuro-Symbolic Verification, Trajectory Evals, Z3 Constraints & GEPA
+### Lecture 42 — Neuro-Symbolic Verification, Trajectory Evals, Z3 Constraints & GEPA
 * **Status:** `🆕 NEW (Covers S08)` · **Level:** 🔴 Expert · **Workspace:** *To be scaffolded (`Lecture 41`)*
 * **Goal:** Verify multi-step agent trajectories using property-based testing, Z3 SMT solver invariants, and evaluation-driven optimization (GEPA).
 * **Topics Unlocked:** **Trajectory evaluation** (step-by-step path & tool-action correctness); **property-based testing**; **neuro-symbolic verification** & deterministic invariants; **Z3 SMT constraints** for plan/policy validation; evaluation-driven optimization (**GEPA**).
 * **What You Build:** Trajectory evaluator + Z3 constraint checker rejecting invalid agent action sequences pre-execution + GEPA prompt optimizer.
 * **Release Gate:** Z3 verifier blocks 100% of policy-violating action plans; GEPA optimization improves benchmark pass rate measurably.
 
-### Lecture 42 — AI Observability (`OpenTelemetry`, `OpenObserve`) & FOCUS FinOps
+### Lecture 43 — AI Observability (`OpenTelemetry`, `OpenObserve`) & FOCUS FinOps
 * **Status:** `🆕 NEW (Covers S17)` · **Level:** 🟠 Advanced · **Workspace:** *To be scaffolded (`Lecture 42`)*
 * **Goal:** Instrument agents with vendor-neutral OpenTelemetry specs, ship telemetry to OpenObserve, and track FOCUS-aligned AI FinOps.
 * **Topics Unlocked:** **OpenTelemetry (OTel)** GenAI semantic conventions; **OpenObserve** traces, metrics & logs; quality drift & SLOs; **cost per successful task**; tenant & feature attribution; budgets; **FOCUS-aligned** cost reporting.
 * **What You Build:** OTel-instrumented agent exporting model/tool/RAG spans to OpenObserve with a FOCUS-aligned cost-per-task report.
 * **Release Gate:** Trace links user tenant $\to$ feature $\to$ model calls $\to$ FOCUS cost-per-successful-task metric accurately.
 
-### Lecture 43 — Progressive Autonomy, Feature Flags (`OpenFeature`/`flagd`) & Safe Releases
+### Lecture 44 — Progressive Autonomy, Feature Flags (`OpenFeature`/`flagd`) & Safe Releases
 * **Status:** `🆕 NEW (Covers S18)` · **Level:** 🟠 Advanced · **Workspace:** *To be scaffolded (`Lecture 43`)*
 * **Goal:** Roll out model migrations and agent autonomy safely using shadow mode, `OpenFeature`/`flagd`, eval-gated canaries, and release manifests.
 * **Topics Unlocked:** Progressive autonomy (**Shadow $\to$ Human-Approved $\to$ Scoped Autonomous**); **OpenFeature & `flagd`**; evaluation-based **canaries**; prompt/model/skill versioning; **release manifests**; **technical UAT**; instant rollback & incident recovery.
 * **What You Build:** Shadow-mode + `flagd` progressive rollout pipeline with automated canary rollback and signed release manifest.
 * **Release Gate:** Simulated quality drop in canary cohort triggers automatic `flagd` rollback to baseline model within 30s.
 
-### Lecture 44 — Enterprise Identity & Agent Authorization (`OIDC`, `SAML`, `SCIM`, `authentik`, `ReBAC`)
+### Lecture 45 — Enterprise Identity & Agent Authorization (`OIDC`, `SAML`, `SCIM`, `authentik`, `ReBAC`)
 * **Status:** `🆕 NEW (Covers S19)` · **Level:** 🔴 Expert · **Workspace:** *To be scaffolded (`Lecture 44`)*
 * **Goal:** Enforce user-to-tool identity attribution and fine-grained authorization across MCP and agent gateways.
 * **Topics Unlocked:** **OIDC, SAML & SCIM**; **`authentik`** identity provider; scoped & **delegated credentials** (On-Behalf-Of); user-to-tool attribution; **MCP Authorization** spec; **RBAC vs. ReBAC** (Relationship-Based Access Control); gateway policy controls.
 * **What You Build:** `authentik` OIDC/SCIM + ReBAC policy engine sitting in front of an MCP gateway with full user-to-tool audit logs.
 * **Release Gate:** Agent acting for User A cannot invoke tools or read resources owned by User B, even via prompt injection.
 
-### Lecture 45 — GenAI Security, Guardrails, OWASP Agentic/MCP Top 10 & AI Supply Chain (AI BOM)
+### Lecture 46 — GenAI Security, Guardrails, OWASP Agentic/MCP Top 10 & AI Supply Chain (AI BOM)
 * **Status:** `🔼 Upgraded (Old L31)` · **Level:** 🔴 Expert · **Workspace:** [📂 Lecture 31](./Lecture%2031%20-%20Security%20and%20Guardrails/)
 * **Goal:** Defend against OWASP LLM/Agentic/MCP threats, malicious skills, memory poisoning, and secure the AI supply chain with an AI BOM.
 * **Topics Unlocked:** Threat modeling & blast radius; direct/indirect prompt injection; **OWASP LLM, Agentic & MCP Top 10**; **malicious skills & plugins** scanning; **memory poisoning** & tool escalation; fail-closed layered guardrails; bidirectional PII masking; model provenance & **AI Bills of Materials (AI BOM)**; red-teaming suites.
@@ -540,19 +547,19 @@ flowchart LR
 | `L32` | `Old L26` | 🔼 Upgrade | Durable Execution (Inngest) & Event-Driven CDC Workflows *(+ CDC & DLQ)* |
 | `L33`–`L36` | `Old L24, L27–L29` | ✅ Keep | Multimodal AI, Full-Stack Platform, Async RAG, GitHub PR Bot |
 | `L37` | *S22 + S23* | 🆕 **NEW** | Agent-to-User UIs (`AG-UI`, `MCP Apps`), Kubernetes & KEDA Scaling |
-| `L38` | `Old L25` | 🔼 Upgrade | High-Performance Inference: vLLM, Quantization & Sovereign / Indic Models |
-| `L39` | *S24* | 🆕 **NEW** | Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) & Capacity Engineering |
-| `L40` | `Old L30` | ✅ Keep | GenAI Evaluation & Testing |
-| `L41`–`L44` | *S08, S17–S19* | 🆕 **NEW** | Z3/GEPA (`L41`), OTel/OpenObserve/FOCUS FinOps (`L42`), `flagd`/Shadow Releases (`L43`), OIDC/ReBAC (`L44`) |
-| `L45` | `Old L31` | 🔼 Upgrade | GenAI Security, Guardrails, OWASP Agentic/MCP Top 10 & AI Supply Chain (AI BOM) |
+| `L39` | `Old L25` | 🔼 Upgrade | High-Performance Inference: vLLM, Quantization & Sovereign / Indic Models |
+| `L40` | *S24* | 🆕 **NEW** | Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) & Capacity Engineering |
+| `L41` | `Old L30` | ✅ Keep | GenAI Evaluation & Testing |
+| `L42`–`L45` | *S08, S17–S19* | 🆕 **NEW** | Z3/GEPA (`L42`), OTel/OpenObserve/FOCUS FinOps (`L43`), `flagd`/Shadow Releases (`L44`), OIDC/ReBAC (`L45`) |
+| `L46` | `Old L31` | 🔼 Upgrade | GenAI Security, Guardrails, OWASP Agentic/MCP Top 10 & AI Supply Chain (AI BOM) |
 
 ---
 
 ## 📋 Appendix B — 24-Session FDE Coverage Checklist
 
-* **Phase 1: Build (`S01`–`S08`):** `S01` (`L04`, `L08`) ✅ · `S02` (`L08`, `L29`) ✅ · `S03` (`L19`–`L21`, `L33`) ✅ · `S04` (`L23`) ✅ · `S05` (`L09`, `L10`, `L14`) ✅ · `S06` (`L13`, `L14`) ✅ · `S07` (`L22`) ✅ · `S08` (`L40`, `L41`) ✅
+* **Phase 1: Build (`S01`–`S08`):** `S01` (`L04`, `L08`) ✅ · `S02` (`L08`, `L29`) ✅ · `S03` (`L19`–`L21`, `L33`) ✅ · `S04` (`L23`) ✅ · `S05` (`L09`, `L10`, `L14`) ✅ · `S06` (`L13`, `L14`) ✅ · `S07` (`L22`) ✅ · `S08` (`L41`, `L42`) ✅
 * **Phase 2: Connect (`S09`–`S16`):** `S09` (`L24`) ✅ · `S10` (`L24`) ✅ · `S11` (`L25`) ✅ · `S12` (`L25`) ✅ · `S13` (`L26`) ✅ · `S14` (`L26`) ✅ · `S15` (`L27`–`L31`) ✅ · `S16` (`L32`) ✅
-* **Phase 3: Ship (`S17`–`S24`):** `S17` (`L42`) ✅ · `S18` (`L43`) ✅ · `S19` (`L44`) ✅ · `S20` (`L45`) ✅ · `S21` (`L38`) ✅ · `S22` (`L34`, `L37`) ✅ · `S23` (`L37`) ✅ · `S24` (`L39`) ✅
+* **Phase 3: Ship (`S17`–`S24`):** `S17` (`L43`) ✅ · `S18` (`L44`) ✅ · `S19` (`L45`) ✅ · `S20` (`L46`) ✅ · `S21` (`L39`) ✅ · `S22` (`L34`, `L37`) ✅ · `S23` (`L37`) ✅ · `S24` (`L40`) ✅
 * **Cloudflare Code Mode:** `L31` (`@cloudflare/codemode`, `codeMcpServer`, `openApiMcpServer`) ✅
 
 **Result:** **24 / 24** FDE Sessions + **Cloudflare Code Mode** = **100% Covered** across **45 Lectures**.
@@ -612,14 +619,15 @@ flowchart LR
 | **35** | `28` | Async Indexing & RAG Chat | Ship | 🔴 | ✅ | ✅ | ☐ |
 | **36** | `29` | GitHub PR Reviewer Bot | Ship | 🟠 | ✅ | ✅ | ☐ |
 | **37** | — | **Agent UIs (`AG-UI`, `MCP Apps`), Kubernetes & KEDA** | Ship | 🔴 | ✅ | ✅ | ☐ |
-| **38** | `25` | vLLM, Quantization & Sovereign / Indic Models | Ship | 🔴 | ✅ | ✅ | ☐ |
-| **39** | — | **Distributed Inference (`SGLang`, `llm-d`, `Dynamo`)** | Ship | 🔴 | ✅ | ✅ | ☐ |
-| **40** | `30` | Evals & Testing | Ship | 🟡 | ✅ | ✅ | ☐ |
-| **41** | — | **Neuro-Symbolic Verification, Z3 & GEPA** | Ship | 🔴 | ✅ | ✅ | ☐ |
-| **42** | — | **AI Observability (`OTel`, `OpenObserve`) & FOCUS FinOps** | Ship | 🟠 | ✅ | ✅ | ☐ |
-| **43** | — | **Progressive Autonomy, `flagd` & Safe Releases** | Ship | 🟠 | ✅ | ✅ | ☐ |
-| **44** | — | **Enterprise Identity (`OIDC`, `SCIM`, `authentik`, `ReBAC`)** | Ship | 🔴 | ✅ | ✅ | ☐ |
-| **45** | `31` | Security, Guardrails, OWASP Agentic/MCP & AI BOM | Ship | 🔴 | ✅ | ✅ | ☐ |
+| **38** | — | **AI Agent Sandboxes All-in-One (`MicroVMs`, `Docker`, `Cloudflare`, `E2B`, `AIO`)** | Ship | 🔴 | ✅ | ✅ | ✅ |
+| **39** | `25` | vLLM, Quantization & Sovereign / Indic Models | Ship | 🔴 | ✅ | ✅ | ☐ |
+| **40** | — | **Distributed Inference (`SGLang`, `llm-d`, `Dynamo`)** | Ship | 🔴 | ✅ | ✅ | ☐ |
+| **41** | `30` | Evals & Testing | Ship | 🟡 | ✅ | ✅ | ☐ |
+| **42** | — | **Neuro-Symbolic Verification, Z3 & GEPA** | Ship | 🔴 | ✅ | ✅ | ☐ |
+| **43** | — | **AI Observability (`OTel`, `OpenObserve`) & FOCUS FinOps** | Ship | 🟠 | ✅ | ✅ | ☐ |
+| **44** | — | **Progressive Autonomy, `flagd` & Safe Releases** | Ship | 🟠 | ✅ | ✅ | ☐ |
+| **45** | — | **Enterprise Identity (`OIDC`, `SCIM`, `authentik`, `ReBAC`)** | Ship | 🔴 | ✅ | ✅ | ☐ |
+| **46** | `31` | Security, Guardrails, OWASP Agentic/MCP & AI BOM | Ship | 🔴 | ✅ | ✅ | ☐ |
 | **★** | `★` | **Single-Engagement Capstone** | All | 🔴 | ☐ | ☐ | ☐ |
 
 ---

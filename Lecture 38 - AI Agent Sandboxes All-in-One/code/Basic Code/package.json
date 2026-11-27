@@ -1,0 +1,18 @@
+{
+  "name": "lecture-38-ai-agent-sandboxes-all-in-one",
+  "version": "1.0.0",
+  "description": "Lecture 38 Basic Code — AI Agent Sandboxes All-in-One (Sandbox Router, Egress Policy, Cloudflare Sandbox vs Dynamic Workers, AIO MCP Adapter)",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "test": "tsx --test src/release-gate.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
+

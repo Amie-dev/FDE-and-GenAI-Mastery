@@ -6,7 +6,7 @@
 
 *Forward Deployed Engineering · LLM internals · Agents &amp; Tools · RAG &amp; Knowledge Systems · MCP · Multimodal · Evals · Security*
 
-[![Lectures](https://img.shields.io/badge/Lectures-45-blueviolet?style=for-the-badge)](#-curriculum-navigation)
+[![Lectures](https://img.shields.io/badge/Lectures-46-blueviolet?style=for-the-badge)](#-curriculum-navigation)
 [![Phases](https://img.shields.io/badge/Phases-11_(Build_%E2%86%92_Connect_%E2%86%92_Ship)-2ea44f?style=for-the-badge)](#-learning-path)
 [![Source Lectures Merged](https://img.shields.io/badge/FDE_Sessions_Covered-24%2F24_%2B_Code_Mode-orange?style=for-the-badge)](#-where-this-came-from)
 [![Topic Coverage](https://img.shields.io/badge/Topic_Coverage-35%2F35-success?style=for-the-badge)](#-verification-appendices)
@@ -36,7 +36,7 @@
 | 🎯 | **[Repository Overview](#-repository-overview)** | What this repository is and who it is for |
 | 📊 | **[Repository at a Glance](#-repository-at-a-glance)** | Hard numbers: lectures, phases, topics, files, coverage |
 | 🗺️ | **[Learning Path](#-learning-path)** | The 11-phase route across 3 Macro Stages (Build → Connect → Ship) |
-| 📚 | **[Curriculum Navigation](#-curriculum-navigation)** | All 45 lectures with folder links, stage, level and phase |
+| 📚 | **[Curriculum Navigation](#-curriculum-navigation)** | All 46 lectures with folder links, stage, level and phase |
 | 📑 | **[Chapter Index](./index%20v1.md)** | Every written lecture's chapters — number, title, one-line summary and a link to each `notes/` file |
 | 📖 | **[Phase Highlights](#-phase-highlights)** | Collapsible deep-dive per phase, with topic chips |
 | 🔀 | **[Where This Came From](#-where-this-came-from)** | The two source repositories and how they were merged |
@@ -72,12 +72,12 @@ This repository is a **single merged learning path** built by reading, comparing
 
 | Metric | Value |
 | :--- | ---: |
-| 🎓 Merged lectures | **45** (`Build: L01–L23` · `Connect: L24–L32` · `Ship: L33–L45`) |
+| 🎓 Merged lectures | **46** (`Build: L01–L23` · `Connect: L24–L32` · `Ship: L33–L46`) |
 | 🧭 Learning phases | **11** (Phase 0 → 10 across 3 Macro Stages) |
 | 📚 Source lectures/days merged | **35** (19 `Forward-Deployed-Engineer` + 16 `gen-ai-cohort`) |
 | 📓 Source note files mapped | **235** (152 FDE chapters + 83 cohort note files) |
 | 🧾 Indexed sub-topics | **454+** |
-| 🗂️ Lecture workspace folders | **45** (each with `notes/` + `code/` + `Assignment/`) |
+| 🗂️ Lecture workspace folders | **46** (each with `notes/` + `code/` + `Assignment/`) |
 | ✍️ Roadmap volume | **649 lines** (`roadmap-v1.md`) |
 | ✅ Source coverage | **35 / 35** lectures &amp; days mapped + **24 / 24** FDE sessions + Code Mode |
 | 🔁 Duplicated topics | **0** |
@@ -102,9 +102,9 @@ Follow the phases **in order** — each one assumes only the phase before it. Co
 | **5 · RAG, Memory &amp; Graphs** | Build | 19 · 20 · 21 · 22 · 23 | 🟥 | Build grounded RAG end-to-end, prove retrieval quality, add vectorless trees, agent memory with poisoning defence, and ontology-driven temporal GraphRAG |
 | **6 · Enterprise Data &amp; SQL** | Connect | 24 · 25 · 26 | 🟣 | Map enterprise data catalogues &amp; Apache Ossie, enforce AI data contracts &amp; GDPR cascades, and run AST-validated semantic Text-to-SQL + sandboxed Python |
 | **7 · Connectors, Code Mode &amp; CDC** | Connect | 27 · 28 · 29 · 30 · 31 · 32 | 🟪 | Connect systems via MCP &amp; Gateways, package Skills, adapt OpenAPI-to-MCP, collapse 2,500+ APIs with Cloudflare Code Mode, and sync via Inngest + CDC/DLQ |
-| **8 · Multimodality &amp; Agent Apps** | Ship | 33 · 34 · 35 · 36 · 37 | 🟫 | Parse multimodal docs, ship full-stack RAG &amp; PR reviewer apps, stream `AG-UI` / `MCP Apps`, and scale isolated workers on Kubernetes + KEDA |
-| **9 · Distributed &amp; Sovereign Inference** | Ship | 38 · 39 | 🟦 | Serve models economically with vLLM, quantization &amp; Indic/sovereign models, and scale multi-node disaggregated prefill/decode (`SGLang`, `llm-d`, `Dynamo`) |
-| **10 · Quality, FinOps, Identity &amp; Security** | Ship | 40 · 41 · 42 · 43 · 44 · 45 | 🟥 | Gate releases with evals, Z3 neuro-symbolic invariants, OTel/FOCUS FinOps, `flagd` canaries, OIDC/SCIM/ReBAC identity, OWASP Agentic/MCP guardrails &amp; AI BOM |
+| **8 · Multimodality &amp; Agent Apps** | Ship | 33 · 34 · 35 · 36 · 37 · 38 | 🟫 | Parse multimodal docs, ship full-stack RAG &amp; PR reviewer apps, stream `AG-UI` / `MCP Apps`, scale on K8s + KEDA, and isolate agents in MicroVM/Docker/Cloudflare/AIO sandboxes |
+| **9 · Distributed &amp; Sovereign Inference** | Ship | 39 · 40 | 🟦 | Serve models economically with vLLM, quantization &amp; Indic/sovereign models, and scale multi-node disaggregated prefill/decode (`SGLang`, `llm-d`, `Dynamo`) |
+| **10 · Quality, FinOps, Identity &amp; Security** | Ship | 41 · 42 · 43 · 44 · 45 · 46 | 🟥 | Gate releases with evals, Z3 neuro-symbolic invariants, OTel/FOCUS FinOps, `flagd` canaries, OIDC/SCIM/ReBAC identity, OWASP Agentic/MCP guardrails &amp; AI BOM |
 
 > 🧭 **Cross-cutting note:** Phase 10 is not "last" in spirit — security, identity, observability and evaluation apply to every system you build from Phase 2 onwards. Read Phase 10 as the **certification layer**.
 
@@ -151,14 +151,15 @@ Follow the phases **in order** — each one assumes only the phase before it. Co
 | **35** | 🟫 Async Indexing and RAG Chat | Ship · 8 | 🔴 | [📂](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/) | [📄](./roadmap-v1.md#-phase-8--multimodality-full-stack-apps--agent-scaling-stage-3-ship) |
 | **36** | 🟫 GitHub PR Reviewer Bot | Ship · 8 | 🟠 | [📂](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/) | [📄](./roadmap-v1.md#-phase-8--multimodality-full-stack-apps--agent-scaling-stage-3-ship) |
 | **37** | 🟫 Agent UIs (`AG-UI`, `MCP Apps`), K8s &amp; KEDA | Ship · 8 | 🔴 | [📂](./Lecture%2037%20-%20Agent%20UIs%20K8s%20and%20KEDA%20Scaling/) | [📄](./roadmap-v1.md#-phase-8--multimodality-full-stack-apps--agent-scaling-stage-3-ship) |
-| **38** | 🟦 vLLM, PagedAttention, Quantization &amp; Indic Models | Ship · 9 | 🔴 | [📂](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/) | [📄](./roadmap-v1.md#-phase-9--distributed--sovereign-inference-stage-3-ship) |
-| **39** | 🟦 Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) | Ship · 9 | 🔴 | [📂](./Lecture%2039%20-%20Distributed%20Inference%20SGLang%20llm-d%20and%20Dynamo/) | [📄](./roadmap-v1.md#-phase-9--distributed--sovereign-inference-stage-3-ship) |
-| **40** | 🟥 Evals and Testing | Ship · 10 | 🟡 | [📂](./Lecture%2040%20-%20Evals%20and%20Testing/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
-| **41** | 🟥 Neuro-Symbolic Verification (`Z3`, `GEPA`) | Ship · 10 | 🔴 | [📂](./Lecture%2041%20-%20Neuro-Symbolic%20Verification%20Z3%20and%20GEPA/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
-| **42** | 🟥 AI Observability (`OTel`, `OpenObserve`) &amp; FOCUS FinOps | Ship · 10 | 🟠 | [📂](./Lecture%2042%20-%20AI%20Observability%20OTel%20and%20FOCUS%20FinOps/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
-| **43** | 🟥 Progressive Autonomy (`flagd`) &amp; Safe Releases | Ship · 10 | 🟠 | [📂](./Lecture%2043%20-%20Progressive%20Autonomy%20flagd%20and%20Safe%20Releases/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
-| **44** | 🟥 Enterprise Identity (`OIDC`, `SCIM`, `authentik`, `ReBAC`) | Ship · 10 | 🔴 | [📂](./Lecture%2044%20-%20Enterprise%20Identity%20OIDC%20SCIM%20and%20ReBAC/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
-| **45** | 🟥 Security, Guardrails, OWASP Agentic/MCP &amp; AI BOM | Ship · 10 | 🔴 | [📂](./Lecture%2045%20-%20Security%20and%20Guardrails/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
+| **38** | 🟫 AI Agent Sandboxes All-in-One (`MicroVMs`, `Docker`, `Cloudflare`, `E2B`, `AIO`) | Ship · 8 | 🔴 | [📂](./Lecture%2038%20-%20AI%20Agent%20Sandboxes%20All-in-One/) | [📄](./roadmap-v1.md#-phase-8--multimodality-fullstack-apps--agent-scaling-stage-3-ship) |
+| **39** | 🟦 vLLM, PagedAttention, Quantization &amp; Indic Models | Ship · 9 | 🔴 | [📂](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/) | [📄](./roadmap-v1.md#-phase-9--distributed--sovereign-inference-stage-3-ship) |
+| **40** | 🟦 Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) | Ship · 9 | 🔴 | [📂](./Lecture%2040%20-%20Distributed%20Inference%20SGLang%20llm-d%20and%20Dynamo/) | [📄](./roadmap-v1.md#-phase-9--distributed--sovereign-inference-stage-3-ship) |
+| **41** | 🟥 Evals and Testing | Ship · 10 | 🟡 | [📂](./Lecture%2041%20-%20Evals%20and%20Testing/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
+| **42** | 🟥 Neuro-Symbolic Verification (`Z3`, `GEPA`) | Ship · 10 | 🔴 | [📂](./Lecture%2042%20-%20Neuro-Symbolic%20Verification%20Z3%20and%20GEPA/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
+| **43** | 🟥 AI Observability (`OTel`, `OpenObserve`) &amp; FOCUS FinOps | Ship · 10 | 🟠 | [📂](./Lecture%2043%20-%20AI%20Observability%20OTel%20and%20FOCUS%20FinOps/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
+| **44** | 🟥 Progressive Autonomy (`flagd`) &amp; Safe Releases | Ship · 10 | 🟠 | [📂](./Lecture%2044%20-%20Progressive%20Autonomy%20flagd%20and%20Safe%20Releases/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
+| **45** | 🟥 Enterprise Identity (`OIDC`, `SCIM`, `authentik`, `ReBAC`) | Ship · 10 | 🔴 | [📂](./Lecture%2045%20-%20Enterprise%20Identity%20OIDC%20SCIM%20and%20ReBAC/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
+| **46** | 🟥 Security, Guardrails, OWASP Agentic/MCP &amp; AI BOM | Ship · 10 | 🔴 | [📂](./Lecture%2046%20-%20Security%20and%20Guardrails/) | [📄](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship) |
 | **★** | 🏁 Single-Engagement Capstone | All | 🔴 | ➖ | [📄](./roadmap-v1.md#-capstone--single-engagement-proving-ground) |
 
 **Legend:** 🟢 Beginner · 🟡 Intermediate · 🟠 Advanced · 🔴 Expert
@@ -377,7 +378,7 @@ Each phase below is summarised twice: a one-line thesis and a lecture chip list 
 
 > **Thesis** — Images are numbers too, full-stack products need durable pipelines and auth, and real-time agent UX (`AG-UI`, `MCP Apps`) scales elastically on Kubernetes + KEDA.
 
-`Lecture 33 — Multimodal AI` · `Lecture 34 — Full-Stack AI Platform` · `Lecture 35 — Async Indexing &amp; RAG Chat` · `Lecture 36 — GitHub PR Reviewer Bot` · `Lecture 37 — Agent UIs, K8s &amp; KEDA`
+`Lecture 33 — Multimodal AI` · `Lecture 34 — Full-Stack AI Platform` · `Lecture 35 — Async Indexing &amp; RAG Chat` · `Lecture 36 — GitHub PR Reviewer Bot` · `Lecture 37 — Agent UIs, K8s &amp; KEDA` · `Lecture 38 — AI Agent Sandboxes All-in-One`
 
 <details>
 <summary><b>🔎 What this phase teaches</b></summary>
@@ -394,9 +395,11 @@ Each phase below is summarised twice: a one-line thesis and a lecture chip list 
 
 **37 · Agent-to-User UIs (`AG-UI`, `MCP Apps`), Kubernetes &amp; KEDA Scaling** — **`AG-UI`** (Agent-User Interaction protocol); **`MCP Apps`** (interactive UI widgets inside MCP hosts); stateless services vs durable worker state; **Kubernetes** pods &amp; queues; **KEDA** event-driven autoscaling; microVM/gVisor **sandbox isolation** &amp; resource limits; managed vs self-hosted runtimes.
 
+**38 · AI Agent Sandboxes All-in-One (`MicroVMs`, `Docker`, `Cloudflare`, `E2B`, `AIO`)** — *Sandbox-as-a-Tool* vs. *Agent-in-Sandbox* topologies; **V8 Isolates vs. Containers vs. `gVisor` vs. Firecracker MicroVMs**; **Docker AI Sandboxes** (microVM + private `dockerd` + host credential proxy); **OpenAI Agents SDK** `SandboxSession` abstraction; **Cloudflare Sandbox SDK (GA)** vs. **Dynamic Workers**; **AIO Sandbox (`agent-infra/sandbox`)** (Browser + Shell + VNC + MCP); and managed platforms (**E2B**, **Modal**, **Daytona**) with snapshots, hibernation &amp; preview URLs.
+
 </details>
 
-**[📂 Lecture 33](./Lecture%2033%20-%20Multimodal%20AI/)** · **[📂 Lecture 34](./Lecture%2034%20-%20Full-Stack%20AI%20Platform/)** · **[📂 Lecture 35](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/)** · **[📂 Lecture 36](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/)** · **[📂 Lecture 37](./Lecture%2037%20-%20Agent%20UIs%20K8s%20and%20KEDA%20Scaling/)** · **[📄 Roadmap: Phase 8](./roadmap-v1.md#-phase-8--multimodality-full-stack-apps--agent-scaling-stage-3-ship)**
+**[📂 Lecture 33](./Lecture%2033%20-%20Multimodal%20AI/)** · **[📂 Lecture 34](./Lecture%2034%20-%20Full-Stack%20AI%20Platform/)** · **[📂 Lecture 35](./Lecture%2035%20-%20Async%20Indexing%20and%20RAG%20Chat/)** · **[📂 Lecture 36](./Lecture%2036%20-%20GitHub%20PR%20Reviewer%20Bot/)** · **[📂 Lecture 37](./Lecture%2037%20-%20Agent%20UIs%20K8s%20and%20KEDA%20Scaling/)** · **[📂 Lecture 38](./Lecture%2038%20-%20AI%20Agent%20Sandboxes%20All-in-One/)** · **[📄 Roadmap: Phase 8](./roadmap-v1.md#-phase-8--multimodality-full-stack-apps--agent-scaling-stage-3-ship)**
 
 ---
 
@@ -404,20 +407,20 @@ Each phase below is summarised twice: a one-line thesis and a lecture chip list 
 
 > **Thesis** — Inference is memory-bandwidth-bound. Serve models economically with vLLM, quantization, sovereign/Indic models, KV-cache reuse, and disaggregated prefill/decode (`SGLang`, `llm-d`, `Dynamo`).
 
-`Lecture 38 — vLLM, Quantization &amp; Indic Models` · `Lecture 39 — Distributed Inference (SGLang, llm-d, Dynamo)`
+`Lecture 39 — vLLM, Quantization &amp; Indic Models` · `Lecture 40 — Distributed Inference (SGLang, llm-d, Dynamo)`
 
 <details>
 <summary><b>🔎 What this phase teaches</b></summary>
 
 <br>
 
-**38 · High-Performance Inference: vLLM, Quantization &amp; Sovereign / Indic Models** — GPU VRAM and HBM; **compute-bound training vs memory-bandwidth-bound inference**; **prefill vs decode**; **PagedAttention** &amp; continuous batching; **quantization** (AWQ, GPTQ, FP8, INT4) and VRAM-vs-accuracy benchmarks; **hosted vs self-hosted TCO &amp; break-even math**; **RAG vs fine-tuning** decision framework; **sovereign &amp; Indian-language models** (Sarvam, BharatGPT, Krutrim, Airavata) and Indic tokenization/eval considerations.
+**39 · High-Performance Inference: vLLM, Quantization &amp; Sovereign / Indic Models** — GPU VRAM and HBM; **compute-bound training vs memory-bandwidth-bound inference**; **prefill vs decode**; **PagedAttention** &amp; continuous batching; **quantization** (AWQ, GPTQ, FP8, INT4) and VRAM-vs-accuracy benchmarks; **hosted vs self-hosted TCO &amp; break-even math**; **RAG vs fine-tuning** decision framework; **sovereign &amp; Indian-language models** (Sarvam, BharatGPT, Krutrim, Airavata) and Indic tokenization/eval considerations.
 
-**39 · Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) &amp; Capacity Engineering** — model-aware routing; **KV cache reuse &amp; offloading** (LMCache / Mooncake); **disaggregated prefill/decode inference**; **SGLang** (RadixAttention), **`llm-d`**, and **NVIDIA Dynamo**; data **residency**, high availability, and TTFT/TPOT cost-capacity engineering.
+**40 · Distributed Inference (`SGLang`, `llm-d`, `Dynamo`) &amp; Capacity Engineering** — model-aware routing; **KV cache reuse &amp; offloading** (LMCache / Mooncake); **disaggregated prefill/decode inference**; **SGLang** (RadixAttention), **`llm-d`**, and **NVIDIA Dynamo**; data **residency**, high availability, and TTFT/TPOT cost-capacity engineering.
 
 </details>
 
-**[📂 Lecture 38](./Lecture%2038%20-%20vLLM%20and%20PagedAttention/)** · **[📂 Lecture 39](./Lecture%2039%20-%20Distributed%20Inference%20SGLang%20llm-d%20and%20Dynamo/)** · **[📄 Roadmap: Phase 9](./roadmap-v1.md#-phase-9--distributed--sovereign-inference-stage-3-ship)**
+**[📂 Lecture 38](./Lecture%2039%20-%20vLLM%20and%20PagedAttention/)** · **[📂 Lecture 39](./Lecture%2040%20-%20Distributed%20Inference%20SGLang%20llm-d%20and%20Dynamo/)** · **[📄 Roadmap: Phase 9](./roadmap-v1.md#-phase-9--distributed--sovereign-inference-stage-3-ship)**
 
 ---
 
@@ -425,28 +428,28 @@ Each phase below is summarised twice: a one-line thesis and a lecture chip list 
 
 > **Thesis** — Never ship an autonomous system without trajectory evals, Z3 invariants, OTel/FOCUS FinOps, `flagd` progressive releases, delegated OIDC/ReBAC identity, and an AI BOM security gate.
 
-`Lecture 40 — Evals &amp; Testing` · `Lecture 41 — Neuro-Symbolic Verification (Z3, GEPA)` · `Lecture 42 — AI Observability &amp; FOCUS FinOps` · `Lecture 43 — Progressive Autonomy (flagd)` · `Lecture 44 — Enterprise Identity (OIDC, SCIM, ReBAC)` · `Lecture 45 — Security, OWASP Agentic/MCP &amp; AI BOM`
+`Lecture 41 — Evals &amp; Testing` · `Lecture 42 — Neuro-Symbolic Verification (Z3, GEPA)` · `Lecture 43 — AI Observability &amp; FOCUS FinOps` · `Lecture 44 — Progressive Autonomy (flagd)` · `Lecture 45 — Enterprise Identity (OIDC, SCIM, ReBAC)` · `Lecture 46 — Security, OWASP Agentic/MCP &amp; AI BOM`
 
 <details>
 <summary><b>🔎 What this phase teaches</b></summary>
 
 <br>
 
-**40 · GenAI Evaluation &amp; Testing** — the **attribution problem**; observability as the data layer (`AgentResponse`, `traceId`, `promptVersion`); versioned **golden datasets**; **deterministic evaluation**; quality as a **vector not a scalar**; **LLM-as-a-judge** and its biases; RAG metrics (hit · recall@k · precision@k · MRR · nDCG); offline vs online evaluation and CI release gates.
+**41 · GenAI Evaluation &amp; Testing** — the **attribution problem**; observability as the data layer (`AgentResponse`, `traceId`, `promptVersion`); versioned **golden datasets**; **deterministic evaluation**; quality as a **vector not a scalar**; **LLM-as-a-judge** and its biases; RAG metrics (hit · recall@k · precision@k · MRR · nDCG); offline vs online evaluation and CI release gates.
 
-**41 · Neuro-Symbolic Verification, Trajectory Evals, Z3 Constraints &amp; GEPA** — **trajectory evaluation** (step-by-step path &amp; tool-action correctness); **property-based testing**; **neuro-symbolic verification** &amp; deterministic invariants; **Z3 SMT solver constraints** for pre-execution plan/policy validation; evaluation-driven prompt optimization (**GEPA**).
+**42 · Neuro-Symbolic Verification, Trajectory Evals, Z3 Constraints &amp; GEPA** — **trajectory evaluation** (step-by-step path &amp; tool-action correctness); **property-based testing**; **neuro-symbolic verification** &amp; deterministic invariants; **Z3 SMT solver constraints** for pre-execution plan/policy validation; evaluation-driven prompt optimization (**GEPA**).
 
-**42 · AI Observability (`OpenTelemetry`, `OpenObserve`) &amp; FOCUS FinOps** — **OpenTelemetry (OTel)** GenAI semantic conventions; **OpenObserve** traces, metrics &amp; logs; quality drift &amp; SLOs; **cost per successful task**; tenant &amp; feature attribution; budgets; **FOCUS-aligned** AI cost reporting.
+**43 · AI Observability (`OpenTelemetry`, `OpenObserve`) &amp; FOCUS FinOps** — **OpenTelemetry (OTel)** GenAI semantic conventions; **OpenObserve** traces, metrics &amp; logs; quality drift &amp; SLOs; **cost per successful task**; tenant &amp; feature attribution; budgets; **FOCUS-aligned** AI cost reporting.
 
-**43 · Progressive Autonomy, Feature Flags (`OpenFeature`/`flagd`) &amp; Safe Releases** — progressive autonomy (**Shadow → Human-Approved → Scoped Autonomous**); **OpenFeature &amp; `flagd`**; evaluation-based **canaries**; prompt/model/skill versioning; **release manifests**; **technical UAT**; instant rollback &amp; incident recovery.
+**44 · Progressive Autonomy, Feature Flags (`OpenFeature`/`flagd`) &amp; Safe Releases** — progressive autonomy (**Shadow → Human-Approved → Scoped Autonomous**); **OpenFeature &amp; `flagd`**; evaluation-based **canaries**; prompt/model/skill versioning; **release manifests**; **technical UAT**; instant rollback &amp; incident recovery.
 
-**44 · Enterprise Identity &amp; Agent Authorization (`OIDC`, `SAML`, `SCIM`, `authentik`, `ReBAC`)** — **OIDC, SAML &amp; SCIM**; **`authentik`** identity provider; scoped &amp; **delegated credentials** (On-Behalf-Of); user-to-tool attribution; **MCP Authorization** spec; **RBAC vs ReBAC** (Relationship-Based Access Control); gateway policy controls.
+**45 · Enterprise Identity &amp; Agent Authorization (`OIDC`, `SAML`, `SCIM`, `authentik`, `ReBAC`)** — **OIDC, SAML &amp; SCIM**; **`authentik`** identity provider; scoped &amp; **delegated credentials** (On-Behalf-Of); user-to-tool attribution; **MCP Authorization** spec; **RBAC vs ReBAC** (Relationship-Based Access Control); gateway policy controls.
 
-**45 · GenAI Security, Guardrails, OWASP Agentic/MCP Top 10 &amp; AI Supply Chain (AI BOM)** — threat modelling &amp; blast radius; prompt injection &amp; jailbreaks; **OWASP Top 10 for LLM, Agentic AI &amp; MCP** (tool poisoning, confused deputy, excessive agency); **AI supply chain security** (scanning malicious skills/plugins, model provenance, capability registries); **AI Bills of Materials (AI BOM / CycloneDX ML-BOM)** in CI/CD; fail-closed layered guardrails; bidirectional **PII masking**; red-teaming suites.
+**46 · GenAI Security, Guardrails, OWASP Agentic/MCP Top 10 &amp; AI Supply Chain (AI BOM)** — threat modelling &amp; blast radius; prompt injection &amp; jailbreaks; **OWASP Top 10 for LLM, Agentic AI &amp; MCP** (tool poisoning, confused deputy, excessive agency); **AI supply chain security** (scanning malicious skills/plugins, model provenance, capability registries); **AI Bills of Materials (AI BOM / CycloneDX ML-BOM)** in CI/CD; fail-closed layered guardrails; bidirectional **PII masking**; red-teaming suites.
 
 </details>
 
-**[📂 Lecture 40](./Lecture%2040%20-%20Evals%20and%20Testing/)** · **[📂 Lecture 41](./Lecture%2041%20-%20Neuro-Symbolic%20Verification%20Z3%20and%20GEPA/)** · **[📂 Lecture 42](./Lecture%2042%20-%20AI%20Observability%20OTel%20and%20FOCUS%20FinOps/)** · **[📂 Lecture 43](./Lecture%2043%20-%20Progressive%20Autonomy%20flagd%20and%20Safe%20Releases/)** · **[📂 Lecture 44](./Lecture%2044%20-%20Enterprise%20Identity%20OIDC%20SCIM%20and%20ReBAC/)** · **[📂 Lecture 45](./Lecture%2045%20-%20Security%20and%20Guardrails/)** · **[📄 Roadmap: Phase 10](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship)**
+**[📂 Lecture 40](./Lecture%2041%20-%20Evals%20and%20Testing/)** · **[📂 Lecture 41](./Lecture%2042%20-%20Neuro-Symbolic%20Verification%20Z3%20and%20GEPA/)** · **[📂 Lecture 42](./Lecture%2043%20-%20AI%20Observability%20OTel%20and%20FOCUS%20FinOps/)** · **[📂 Lecture 43](./Lecture%2044%20-%20Progressive%20Autonomy%20flagd%20and%20Safe%20Releases/)** · **[📂 Lecture 44](./Lecture%2045%20-%20Enterprise%20Identity%20OIDC%20SCIM%20and%20ReBAC/)** · **[📂 Lecture 45](./Lecture%2046%20-%20Security%20and%20Guardrails/)** · **[📄 Roadmap: Phase 10](./roadmap-v1.md#-phase-10--quality-finops-identity--security-stage-3-ship)**
 
 ---
 
@@ -491,10 +494,10 @@ Five verification appendices inside **[`roadmap-v1.md`](./roadmap-v1.md)** prove
 
 | Appendix | What it proves | Link |
 | :--- | :--- | :--- |
-| **A — Re-Numbering &amp; De-duplication Map** | How each source lecture &amp; session (Old L01–L32 + S01–S24 + Code Mode) mapped to L01–L45 | [📄](./roadmap-v1.md#-appendix-a--re-numbering--de-duplication-map) |
+| **A — Re-Numbering &amp; De-duplication Map** | How each source lecture &amp; session (Old L01–L32 + S01–S24 + Code Mode) mapped to L01–L46 | [📄](./roadmap-v1.md#-appendix-a--re-numbering--de-duplication-map) |
 | **B — 24-Session FDE Coverage Checklist** | **24/24** FDE sessions mapped ✅ | [📄](./roadmap-v1.md#-appendix-b--24-session-fde-coverage-checklist) |
 | **C — Tech Stack, Prerequisites &amp; Study Plan** | Expanded production stack, prerequisites, and study sequence | [📄](./roadmap-v1.md#-appendix-c--tech-stack-prerequisites--study-plan) |
-| **D — Progress Tracker** | Tick-off table for all **45 lectures** + the capstone (**45/45 · 100%**) | [📄](./roadmap-v1.md#-appendix-d--progress-tracker) |
+| **D — Progress Tracker** | Tick-off table for all **46 lectures** + the capstone (**46/46 · 100%**) | [📄](./roadmap-v1.md#-appendix-d--progress-tracker) |
 | **E — Structural Learning Design** | The prerequisite → objective → unlocks chain and career capability ladder | [📄](./roadmap-v1.md#-appendix-e--structural-learning-design) |
 
 ---
@@ -523,7 +526,7 @@ Five verification appendices inside **[`roadmap-v1.md`](./roadmap-v1.md)** prove
 1. Open  roadmap-v1.md                           → the master map: 45 lectures · 11 phases (Build → Connect → Ship)
 2. Open  roadmap-v1.md → "Lecture NN — …"        → goal · topics · build · release gate
 3. Open  Lecture NN - <Title>/README.md          → that lecture's workspace
-4. Open  index v1.md                             → chapter-by-chapter index across all 45 lectures
+4. Open  index v1.md                             → chapter-by-chapter index across all 46 lectures
 ```
 
 ### 2 · Working a lecture (the reading contract)
@@ -555,7 +558,7 @@ RECORD → tick Appendix D and write down the number you measured
 ```text
 FDE-and-GenAI-Mastery/
 ├── README.md                     # ← you are here (orientation, navigation, verification)
-├── index v1.md                   # 📚 chapter index — all 45 lectures' chapters + notes links
+├── index v1.md                   # 📚 chapter index — all 46 lectures' chapters + notes links
 ├── roadmap-v1.md                 # ⭐ THE MASTER MAP (45 lectures · 11 phases · Build → Connect → Ship)
 │   ├── Macro Delivery Phases · Phase Graph · Career Capability Ladder
 │   ├── Detailed breakdown        # 45 lecture cards: Goal · Topics · Build · Release Gate
@@ -575,7 +578,7 @@ FDE-and-GenAI-Mastery/
 ├── …
 ├── Lecture 33 - Multimodal AI/
 ├── …
-└── Lecture 45 - Security and Guardrails/
+└── Lecture 46 - Security and Guardrails/
 
 Forward-Deployed-Engineer/        # source repository 1  (19 lectures · 152 chapter notes)
 gen-ai-cohort/                    # source repository 2  (16 days · 83 note files)
@@ -604,12 +607,12 @@ Every lecture in this repository follows the same four-part contract, so you can
 
 | Status | Item |
 | :---: | :--- |
-| ✅ | All **45 lectures** defined across **11 phases** (`Build: L01–L23` · `Connect: L24–L32` · `Ship: L33–L45`), ordered basic → advanced |
+| ✅ | All **46 lectures** defined across **11 phases** (`Build: L01–L23` · `Connect: L24–L32` · `Ship: L33–L46`), ordered basic → advanced |
 | ✅ | **45 workspace folders** complete with `README.md` + `notes/` + `code/` + `Assignment/task.md` |
 | ✅ | Master roadmap ([`roadmap-v1.md`](./roadmap-v1.md)) with per-lecture **Goal · Topics · Build · Release Gate** |
-| ✅ | **5 verification appendices** (re-numbering · 24-session FDE coverage · stack · progress tracker `45/45` · structural design) |
+| ✅ | **5 verification appendices** (re-numbering · 24-session FDE coverage · stack · progress tracker `46/46` · structural design) |
 | ✅ | **35/35** source lectures/days + **24/24** FDE sessions + **Cloudflare Code Mode** mapped — **0 duplicates** |
-| ✅ | **All 45 lectures' notes, consolidated `Lecture_NN_Complete_Notes.md`, `index.md`, `code/` &amp; `Assignment/task.md` written** — indexed in [`index v1.md`](./index%20v1.md) |
+| ✅ | **All 46 lectures' notes, consolidated `Lecture_NN_Complete_Notes.md`, `index.md`, `code/` &amp; `Assignment/task.md` written** — indexed in [`index v1.md`](./index%20v1.md) |
 | 🔜 | Your own hands-on rebuilds and measured benchmarks landing in each `code/` folder as you progress |
 | 🔜 | The **capstone** system, with a metrics table and an incident/limitations statement |
 
