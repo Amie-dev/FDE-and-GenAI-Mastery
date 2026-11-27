@@ -26,7 +26,7 @@ Phase 7 · Connectors, Code Mode & Proactive Workflows · 🟠 Advanced · **Est
 3. **A3 (Chapter 03):** Trace what happens when a network timeout occurs *after* `POST /refunds` commits, and how `IdempotencyStore` prevents a double refund.
 4. **A4 (Chapter 04):** How do scoped OAuth credentials and value-based HITL thresholds (`> $50`) protect legacy backends?
 5. **A5 (Chapter 05):** Why is a typed Playwright MCP tool faster, cheaper, and safer than an unconstrained vision-based browser agent?
-6. **A6 (Chapter 06):** When is Visual Computer-Use justified, and what three guardrails must surround it?
+6. **A6 (Chapter 06):** When is Visual Computer-Use justified, what three guardrails must surround it, and why does an **All-in-One Sandbox (`agent-infra/sandbox`)** unify Browser + Shell + VNC + MCP in one container?
 7. **A7 (Chapter 07):** Why must CI connector tests verify both **idempotency replay** AND **`409 Conflict` payload mismatch**?
 
 ---

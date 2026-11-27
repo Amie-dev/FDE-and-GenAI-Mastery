@@ -50,6 +50,8 @@ flowchart TD
 | **Stateless vs. Durable** | API pods handle HTTP/SSE; queue-backed worker pods run agent loops | [04](./04_Stateless_API_Services_vs_Durable_Worker_State.md) |
 | **KEDA `ScaledObject`** | Scales pods on queue depth (`ceil(depth / listLength)`), not CPU | [05](./05_Kubernetes_Pods_Queues_and_KEDA_Autoscaling.md) |
 | **gVisor / MicroVM** | Isolates untrusted LLM code from the host Linux kernel | [06](./06_Safe_Code_Execution_and_Sandbox_Isolation.md) |
+| **Managed Sandbox Matrix** | E2B, Daytona, Modal, Cloudflare Sandbox GA vs. Docker AI Sandboxes & `agent-infra/sandbox` | [03](./03_Managed_vs_Self_Hosted_Agent_Runtimes.md) |
+| **Sandbox Hibernation** | Snapshot/restore, sleep-to-wake persistence, and live preview URLs during HITL pauses | [06](./06_Safe_Code_Execution_and_Sandbox_Isolation.md) |
 | **OOM & `SIGTERM`** | Pod `limits` + graceful shutdown + queue visibility timeouts | [07](./07_Resource_Limits_OOM_Protection_and_Crash_Recovery.md) |
 
 ---

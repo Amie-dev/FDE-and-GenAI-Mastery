@@ -37,10 +37,27 @@ By the end of this chapter you should be able to:
 
 ---
 
-## 03.2 Key takeaways
+## 03.2 Managed vs. Self-Hosted Sandbox Platforms
+
+Beyond general agent orchestration, production teams must pick a **code-execution sandbox platform** ([Mastra Sandbox Guide](https://mastra.ai/articles/best-ai-agent-sandbox-platforms) · [LangChain Sandbox Guide](https://www.langchain.com/blog/how-to-choose-the-right-sandbox-for-your-agent)):
+
+| Platform | Deployment Model | Isolation | Key Strengths |
+| :--- | :--- | :--- | :--- |
+| **E2B** | Managed Cloud | Firecracker MicroVM | ~150 ms snapshot resume, Python/JS code-interpreter SDKs |
+| **Daytona** | Managed / Self-Hosted | Container / VM | <200 ms stateful coding workspaces, native Git/LSP workflows |
+| **Modal Sandboxes** | Managed Serverless | gVisor / Serverless Container | Seamless GPU attachment, batch evals, Python-native SDK |
+| **Cloudflare Sandbox (GA)** | Managed Edge | Durable Object + Linux Container | Persistent disk, sleep/wake, preview URLs, Worker egress control |
+| **Docker AI Sandboxes** | Local / Hybrid Dev | MicroVM + Private Dockerd | Safe `docker compose` inside agent workspace + host credential proxy |
+| **`agent-infra/sandbox` (AIO)** | Self-Hosted Container / K8s Pod | Container / gVisor Pod | Unified Browser (CDP/VNC) + Shell + Filesystem + Jupyter over MCP |
+| **K8s `gVisor` / `Kata`** | Self-Hosted VPC | User-space kernel / MicroVM | Full VPC residency, `NetworkPolicy`, and KEDA autoscaling |
+
+---
+
+## 03.3 Key takeaways
 
 1. **Default to Managed Runtimes** during early FDE delivery unless compliance, VPC residency, or custom kernel sandboxing demands Kubernetes.
 2. **When Kubernetes is required**, decouple stateless APIs from queue-backed worker pods (Chapter 04) and autoscale with KEDA (Chapter 05).
+3. **Never build your own microVM scheduler** unless VPC compliance forces it — managed sandboxes (E2B, Modal, Daytona, Cloudflare Sandbox GA) eliminate months of kernel/networking maintenance.
 
 ---
 

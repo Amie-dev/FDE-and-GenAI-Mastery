@@ -75,6 +75,7 @@ Chapter notes live in [`notes/`](./notes) — see the **[chapter index](./index.
 | 07 | [Human-in-the-Loop & the 3-Tier Tool Authorization Matrix](./notes/07_Human_in_the_Loop_and_Tool_Authorization_Tiers.md) |
 | 08 | [RBAC, the Defensive Wrapper & Platform Guardrails](./notes/08_RBAC_Defensive_Wrapper_and_Platform_Guardrails.md) |
 | 09 | [Enterprise Agent Patterns, Failure Modes & the 25 Cardinal Principles](./notes/09_Enterprise_Agent_Patterns_Failure_Modes_and_the_25_Principles.md) |
+| 10 | [Modern Agent Sandbox Architectures & Platform Selection](./notes/10_Agent_Sandbox_Architectures_and_Platform_Selection.md) |
 
 ## 🔗 Source references
 

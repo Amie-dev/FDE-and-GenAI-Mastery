@@ -52,11 +52,23 @@ spec:
 
 ---
 
-## 06.2 Key takeaways
+## 06.2 Stateful Sandbox Lifecycle: Snapshots, Hibernation & Preview URLs
+
+Modern production sandboxes are not just one-shot `exec()` runners — they manage **long-lived, stateful sessions** across multi-turn agent conversations:
+
+1. **Snapshots & Image Caching:** Pre-bake dependencies (`node_modules`, Python venvs, repo clones) into a snapshot/manifest so new sessions boot in **150–200 ms** instead of running `npm install` on every turn.
+2. **Hibernation / Sleep-to-Wake:** Idle sandboxes (e.g., waiting 10 minutes on a human HITL approval in `AG-UI`) **hibernate memory/disk** to stop compute billing, then wake cleanly with filesystem state intact when the user clicks Approve.
+3. **Live Preview URLs:** Platforms like **Cloudflare Sandbox (GA)** and **E2B** expose authenticated ephemeral preview URLs for dev servers running inside the sandbox — ideal for `MCP Apps` or coding agents showing live UI previews.
+4. **Per-Tenant Network Egress:** Enforce default-deny egress (`NetworkPolicy` in K8s or outbound handlers in Cloudflare/E2B) blocking `169.254.169.254` and cross-tenant internal IPs.
+
+---
+
+## 06.3 Key takeaways
 
 1. **Never run untrusted LLM-generated code in a default privileged container.**
 2. **Use `runtimeClassName: gvisor` (or Kata/Firecracker)** + `runAsNonRoot: true` + `readOnlyRootFilesystem: true` + `capabilities.drop: ["ALL"]`.
 3. **Block egress to cloud metadata IPs and internal services** via Kubernetes `NetworkPolicy`.
+4. **Use snapshots and sleep-to-wake hibernation** so long-running HITL agent sessions stay fast without burning idle compute.
 
 ---
 

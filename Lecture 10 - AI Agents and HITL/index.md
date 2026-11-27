@@ -20,9 +20,10 @@
 | 07 | **Human-in-the-Loop & the 3-Tier Tool Authorization Matrix** | Not every action deserves the same autonomy: the **3-tier matrix** (read-only · scoped mutate · critical), the classification decision tree, synchronous vs **asynchronous durable HITL**, the pause/resume state machine, the resumption webhook's five correctness requirements and the **two layers of idempotency**. | [07_Human_in_the_Loop_and_Tool_Authorization_Tiers.md](./notes/07_Human_in_the_Loop_and_Tool_Authorization_Tiers.md) |
 | 08 | **RBAC, the Defensive Wrapper & Platform Guardrails** | **The model is not part of the authorization path.** RBAC, object-level checks and ABAC; blast radius; why a jailbreak is not an authorization bypass; the **defensive wrapper** with a 0–100 risk score and an output gate; wrapper vs guardrail vs firewall; and the SIEM/SOC audit trail. | [08_RBAC_Defensive_Wrapper_and_Platform_Guardrails.md](./notes/08_RBAC_Defensive_Wrapper_and_Platform_Guardrails.md) |
 | 09 | **Enterprise Agent Patterns, Failure Modes & the 25 Cardinal Principles** | Pure workflow vs pure agent vs the **hybrid golden pattern**; the four enterprise topologies; four failure classes; **"the application is the kernel"**; the production-readiness maturity model; and the 25 principles that tie the whole lecture together. | [09_Enterprise_Agent_Patterns_Failure_Modes_and_the_25_Principles.md](./notes/09_Enterprise_Agent_Patterns_Failure_Modes_and_the_25_Principles.md) |
+| 10 | **Modern Agent Sandbox Architectures & Platform Selection** | *Agent-in-Sandbox* vs. *Sandbox-as-a-Tool*; **Docker AI Sandboxes** (microVMs + private Dockerd); **OpenAI Agents SDK** `SandboxSession` abstraction; and the platform selection matrix (Dynamic Workers, Cloudflare Sandbox, E2B, Modal, Daytona, AIO Sandbox). | [10_Agent_Sandbox_Architectures_and_Platform_Selection.md](./notes/10_Agent_Sandbox_Architectures_and_Platform_Selection.md) |
 | — | **Lecture 09 — Complete Notes** | Consolidated revision layer: executive summary, master diagram, cheat sheet, seven decision tables, **20 misconceptions**, glossary and **20 self-check questions**. | [Lecture_09_Complete_Notes.md](./notes/Lecture_09_Complete_Notes.md) |
 
-**Chapter count: 9** (within the 5–10 limit for this lecture).
+**Chapter count: 10** (within the 5–10 limit for this lecture).
 
 ---
 

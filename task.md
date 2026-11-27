@@ -33,7 +33,13 @@
 - [ ] **Lecture 45** (`Old L31`) — Add OWASP Agentic & MCP Top 10, Malicious Skills Scanning & AI BOM
 
 ### Part 3 — Final Repository Sync
-- [ ] **Sync** — Update root `README.md`, `index.md`, and `roadmap-v1.md` progress bars & links
+- [x] **Sync** — Update root `README.md`, `index v1.md`, and `roadmap-v1.md` progress bars & links
+
+### Part 4 — AI Agent Sandbox Ecosystem Upgrades (Missing Platforms & Patterns)
+- [x] **Sandbox Upgrade A (Lecture 10)** — Add *Agent-in-Sandbox* vs. *Sandbox-as-a-Tool* architecture, Docker AI Sandboxes (microVMs), OpenAI Agents SDK Sandbox abstraction, and Platform Selection Matrix (E2B, Modal, Daytona, Cloudflare, Docker)
+- [x] **Sandbox Upgrade B (Lecture 30)** — Add All-in-One Browser + Shell + VNC + MCP Sandbox (`agent-infra/sandbox`) for Computer-Use & Hybrid Automation
+- [x] **Sandbox Upgrade C (Lecture 31)** — Add Cloudflare Sandbox SDK (GA) (`@cloudflare/sandbox` Linux containers + OpenAI Agents tutorial) vs. Dynamic Workers (V8 Isolates) decision guide
+- [x] **Sandbox Upgrade D (Lecture 37)** — Expand Managed vs. Self-Hosted Sandbox Platforms (E2B, Daytona, Modal, Cloudflare Sandbox GA, Docker AI Sandboxes, `agent-infra/sandbox`, snapshots/hibernation & preview URLs)
 
 ---
 
@@ -468,6 +474,86 @@ After completing the new and upgraded lectures, synchronize the root repository 
 1. Update root README.md to reflect all 45 lectures across the Build -> Connect -> Ship phases and updated folder links.
 2. Update root index.md with every lecture's new number, chapters, consolidated notes, code, and assignment status.
 3. Update roadmap-v1.md Appendix D progress tracker checkboxes and completion percentage bar.
+```
+
+</details>
+
+---
+
+## 📦 Part 4 — Prompts for AI Agent Sandbox Ecosystem Upgrades
+
+> **Context:** The repo currently covers workspace `safePath` jails + 4 isolation tiers (L10), `python3 -I` sub-process sandboxing (L26), Cloudflare Dynamic Workers V8 isolates (L31), and K8s `gVisor`/`Firecracker`/`Kata` (L37). The prompts below add the missing modern **AI Agent Sandbox platforms, SDKs, and selection patterns**.
+
+<details>
+<summary><b>Sandbox Upgrade A — Lecture 10 (Agent Sandbox Patterns, Docker AI Sandboxes, OpenAI Sandboxes & Selection Matrix)</b></summary>
+
+```text
+Upgrade "Lecture 10 - AI Agents and HITL" with modern Agent Sandbox architectures using these references:
+- https://www.langchain.com/blog/how-to-choose-the-right-sandbox-for-your-agent
+- https://docs.docker.com/ai/sandboxes/
+- https://developers.openai.com/api/docs/guides/agents/sandboxes
+- https://mastra.ai/articles/best-ai-agent-sandbox-platforms
+
+1. Add a new chapter note in Lecture 10 - AI Agents and HITL/notes/ (or expand Ch. 05) covering:
+   - Two core agent sandbox topologies: "Agent-in-Sandbox" (harness runs inside) vs. "Sandbox-as-a-Tool" (external orchestrator calls sandbox APIs)
+   - Docker AI Sandboxes: microVM-per-workspace isolation, private Docker daemon, host credential proxy, and local/hybrid coding agent workflows
+   - OpenAI Agents SDK Sandbox abstraction (Workspace, Container, Manifest snapshots, provider adapters)
+   - Platform selection matrix (E2B, Modal, Daytona, Cloudflare Sandbox, Docker AI Sandboxes, gVisor/Firecracker) across boot time, persistence/snapshots, network egress, and cost
+2. Update notes/Lecture_09_Complete_Notes.md (sync to Lecture_10_Complete_Notes.md if applicable), index.md, README.md, and code/ with a SandboxProvider interface demo.
+```
+
+</details>
+
+<details>
+<summary><b>Sandbox Upgrade B — Lecture 30 (All-in-One Browser + Shell + VNC + MCP Sandbox: agent-infra/sandbox)</b></summary>
+
+```text
+Upgrade "Lecture 30 - Enterprise APIs OpenAPI-to-MCP and Computer-Use" with All-in-One (AIO) Agent Sandboxes:
+- Reference: https://github.com/agent-infra/sandbox
+
+1. Expand the Computer-Use Fallback chapter (or add a dedicated chapter note) in Lecture 30/notes/ covering:
+   - Unified AIO Sandbox architecture: combining Browser (CDP/Playwright) + Shell/Terminal + Filesystem + Jupyter + VS Code + VNC in one isolated container
+   - Exposing unified Browser + Shell + File tools over MCP / REST so agents seamlessly mix API calls, bash scripts, and UI clicks in one shared workspace
+2. Update notes/Lecture_30_Complete_Notes.md, index.md, README.md, and Assignment/task.md.
+```
+
+</details>
+
+<details>
+<summary><b>Sandbox Upgrade C — Lecture 31 (Cloudflare Sandbox SDK GA vs. Dynamic Workers & OpenAI Agents Integration)</b></summary>
+
+```text
+Upgrade "Lecture 31 - Cloudflare Code Mode MCP" with Cloudflare Sandbox SDK (GA) & Dynamic Workers comparison:
+- References:
+  - https://blog.cloudflare.com/sandbox-ga/
+  - https://blog.cloudflare.com/dynamic-workers/
+  - https://developers.cloudflare.com/agents/tools/sandbox/
+  - https://developers.cloudflare.com/sandbox/sdk/tutorials/openai-agents/
+
+1. Expand Chapter 05 (or add Chapter 09) in Lecture 31/notes/ covering:
+   - Cloudflare Sandbox SDK (GA) architecture: Durable Objects + full Linux containers (@cloudflare/sandbox) with persistent filesystem, exec(), background processes, git, preview URLs, and sleep/wake lifecycle
+   - Decision matrix: Dynamic Workers (V8 isolates, ~2-5ms boot, JS/TS only, zero-egress RPC proxy) vs. Cloudflare Sandbox SDK (full Linux OS, Python/bash/binaries, longer sessions)
+   - Wiring @cloudflare/sandbox as a tool/workspace backend for OpenAI Agents SDK
+2. Update notes/Lecture_31_Complete_Notes.md, index.md, README.md, and code/Basic Code/ with a @cloudflare/sandbox example.
+```
+
+</details>
+
+<details>
+<summary><b>Sandbox Upgrade D — Lecture 37 (Production Sandbox Platform Matrix & Snapshot/Hibernation Lifecycle)</b></summary>
+
+```text
+Upgrade "Lecture 37 - Agent UIs K8s and KEDA Scaling" with the full Managed vs. Self-Hosted Sandbox Platform landscape:
+- References:
+  - https://mastra.ai/articles/best-ai-agent-sandbox-platforms
+  - https://www.langchain.com/blog/how-to-choose-the-right-sandbox-for-your-agent
+  - https://github.com/agent-infra/sandbox
+  - https://blog.cloudflare.com/sandbox-ga/
+
+1. Expand Chapter 03 & Chapter 06 in Lecture 37/notes/ covering:
+   - Production comparison of managed sandbox platforms (E2B, Modal, Daytona, Cloudflare Sandbox GA) vs. self-hosted (Docker AI Sandboxes, K8s gVisor/Kata/Firecracker, agent-infra/sandbox AIO pods)
+   - Stateful sandbox lifecycle: snapshot/restore, hibernation/sleep-to-wake, live preview URLs, and per-tenant network egress policies
+2. Update notes/Lecture_37_Complete_Notes.md, index.md, README.md, and Assignment/task.md.
 ```
 
 </details>

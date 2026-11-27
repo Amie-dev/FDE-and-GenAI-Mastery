@@ -53,7 +53,8 @@ flowchart TD
 | **Code-First Execution** | LLM writes TS loops/filters instead of $N$ sequential JSON calls | [02](./02_Code_First_Agents_vs_JSON_Tool_Calling.md) |
 | **`codeMcpServer()`** | Wraps an existing `McpServer` into 1 `code` tool + `codemode.*` | [03](./03_Single_Code_Tool_Pattern_codeMcpServer.md) |
 | **`openApiMcpServer()`** | Exposes 2,500+ OpenAPI routes in `~1,000` tokens via `search()` + `execute()` | [04](./04_Search_and_Execute_Pattern_openApiMcpServer.md) |
-| **Dynamic Workers** | V8 isolates (`~2–5ms` boot) with `globalOutbound: null` | [05](./05_Dynamic_Workers_and_Sandbox_Isolation.md) |
+| **Dynamic Workers** | V8 isolates (`~2–5ms` boot) with `globalOutbound: null` for JS/TS Code Mode | [05](./05_Dynamic_Workers_and_Sandbox_Isolation.md) |
+| **Cloudflare Sandbox SDK (GA)** | Durable Objects + full Linux containers (`@cloudflare/sandbox`) for bash/Python/git & OpenAI Agents | [05](./05_Dynamic_Workers_and_Sandbox_Isolation.md) |
 | **OAuth 2.1 Delegation** | Per-user scoped tokens enforced by the Host Worker `request` proxy | [06](./06_OAuth_2_1_and_Scoped_Delegated_Execution.md) |
 | **`createMcpHandler`** | Serves Code Mode MCP servers on Cloudflare Workers (`worker_loaders`) | [07](./07_Serving_with_Cloudflare_Workers_and_Agents_SDK.md) |
 

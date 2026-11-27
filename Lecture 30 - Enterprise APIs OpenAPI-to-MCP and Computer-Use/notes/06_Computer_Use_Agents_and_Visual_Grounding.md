@@ -40,11 +40,39 @@ Because the VLM reads the screenshot pixels, it sees that text! **Domain-locking
 
 ---
 
-## 06.2 Key takeaways
+## 06.2 All-in-One (AIO) Multimodal Agent Sandboxes (`agent-infra/sandbox`)
+
+In real enterprise automation, an agent rarely uses *only* a browser or *only* a shell. For example, a legacy workflow might require:
+1. Downloading a CSV report via **Browser (Playwright / Computer-Use)** from an internal portal,
+2. Transforming it with a **Python / bash script** in the shell, and
+3. Uploading the cleaned file or inspecting a chart in **VS Code / Jupyter / VNC**.
+
+If the browser runs in one container and the shell runs in another, files and auth cookies are stranded across boundaries. **[AIO Sandbox (`agent-infra/sandbox`)](https://github.com/agent-infra/sandbox)** solves this by packaging **Browser (CDP/Playwright) + Shell/Terminal + Filesystem + Jupyter + VS Code Server + VNC** inside **one isolated container**, exposed through **unified MCP & REST APIs**:
+
+```mermaid
+flowchart LR
+    Agent["🤖 Agent Host"] -->|"Unified MCP / REST"| AIO["📦 AIO Sandbox Container (agent-infra/sandbox)"]
+    subgraph AIO
+        direction TB
+        BR["🌐 Headless/VNC Browser (CDP + Playwright)"] <-->|"Shared /workspace"| SH["💻 Shell / Bash & Jupyter"]
+        SH <-->|"Shared /workspace"| FS["📁 Filesystem & VS Code Server"]
+    end
+    VNC["👁️ Human HITL / VNC Viewer"] -.->|"Inspects / Approves"| BR
+```
+
+### Why AIO Sandboxes Matter for Computer-Use
+- **One Shared Workspace:** Files downloaded by the browser land immediately in `/workspace`, ready for `bash` or `python3` tools without S3/volume-sync glue.
+- **Built-in VNC Observability:** Humans can watch or take over the live browser session via VNC when a Computer-Use agent hits a login, 2FA, or high-risk submit screen.
+- **Single Isolation Boundary:** All browser processes, shell scripts, and temp files live inside one ephemeral container/pod (`--network` policy + resource limits) and are destroyed when the session ends.
+
+---
+
+## 06.3 Key takeaways
 
 1. **Computer-Use is the last resort** when neither APIs nor deterministic Playwright DOM selectors work.
 2. **Treat all on-screen text as untrusted data** (indirect prompt injection risk).
 3. **Always run Computer-Use in an isolated VM/container** with step caps and pre-submit HITL gates.
+4. **Use an All-in-One (AIO) Sandbox (`agent-infra/sandbox`)** when workflows combine **Browser + Shell + Filesystem + VNC** over a unified MCP interface.
 
 ---
 

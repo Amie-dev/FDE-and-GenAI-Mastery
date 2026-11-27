@@ -55,6 +55,7 @@ flowchart TD
 | **Approval-Bound Mutation** | Pausing high-value actions (`> $50`) for HITL sign-off | [04](./04_Approval_Bound_Actions_and_Connector_Governance.md) |
 | **Playwright Fallback** | Deterministic, domain-locked browser automation wrapped as an MCP tool | [05](./05_Browser_Automation_Fallback_Playwright.md) |
 | **Computer-Use** | Screenshot-to-coordinate VLM loop for Canvas/Citrix, sandboxed + HITL | [06](./06_Computer_Use_Agents_and_Visual_Grounding.md) |
+| **AIO Sandbox (`agent-infra/sandbox`)** | Unified Browser (CDP/VNC) + Shell + Filesystem + Jupyter over MCP | [06](./06_Computer_Use_Agents_and_Visual_Grounding.md) |
 
 ---
 

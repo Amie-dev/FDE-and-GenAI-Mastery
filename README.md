@@ -481,24 +481,21 @@ This repository was assembled by reading, comparing and **de-duplicating** two i
 | 2 | **No topic missed** | All **35** source lectures/days and all **235** source note files are mapped to a target lecture |
 | 3 | **No topic duplicated** | When both sources teach the same subject it appears **once**, with both listed as depth tiers (e.g. *"FDE L10 = internals, GAC D04 = vendor landscape"*) |
 
-**Result: 35 source lectures/days → 31 merged lectures.**
+**Result: 35 source lectures/days + 24 FDE sessions + Code Mode → 45 lectures across 11 phases (Build → Connect → Ship).**
 
 ---
 
 ## ✅ Verification Appendices
 
-Six artefacts inside **[`roadmap.md`](./roadmap.md)** exist purely so you can *verify* the claims above rather than trust them.
+Five verification appendices inside **[`roadmap-v1.md`](./roadmap-v1.md)** prove completeness and track progress:
 
 | Appendix | What it proves | Link |
 | :--- | :--- | :--- |
-| **A — De-duplication Map** | How each source lecture merged or split, so nothing is taught twice | [📄](./roadmap.md#-appendix-a--de-duplication-map) |
-| **B — Coverage Checklist** | **19/19** FDE lectures + **16/16** cohort days mapped ✅ | [📄](./roadmap.md#-appendix-b--full-source-coverage-checklist) |
-| **C — Tech Stack, Prerequisites &amp; Study Plan** | What tooling you need, what you must already know, and a 32-week schedule | [📄](./roadmap.md#-appendix-c--tech-stack-prerequisites--study-plan) |
-| **D — Progress Tracker** | Tick-off table for all 32 lectures + the capstone | [📄](./roadmap.md#-appendix-d--progress-tracker) |
-| **E — Structural Learning Design** | The prerequisite → objective → unlocks chain, plus the capability ladder (which phase maps to which job title) | [📄](./roadmap.md#-appendix-e--structural-learning-design) |
-| **F — Source Chapter Coverage Ledger** | **Every chapter file of every source lecture**, mapped to its target lecture | [📄](./roadmap.md#-appendix-f--source-chapter-coverage-ledger) |
-
-> 🔎 **How coverage was verified:** every `##` heading was extracted from all 235 source note files (**2,689 headings**), reduced to **1,470** distinct terms, and machine-checked against `roadmap.md`. The genuine gaps that surfaced — sycophancy, calibrated refusal engineering, `tool_choice` policies, OpenAPI/JSON-Schema tool contracts, Manhattan distance, DiskANN, BM25/lexical retrieval, temporal memory, data locality, dataset contamination, approval fingerprints and ~30 more — were added to the lecture topic lists. The re-run leaves only spelling and inflection variants unmatched.
+| **A — Re-Numbering &amp; De-duplication Map** | How each source lecture &amp; session (Old L01–L32 + S01–S24 + Code Mode) mapped to L01–L45 | [📄](./roadmap-v1.md#-appendix-a--re-numbering--de-duplication-map) |
+| **B — 24-Session FDE Coverage Checklist** | **24/24** FDE sessions mapped ✅ | [📄](./roadmap-v1.md#-appendix-b--24-session-fde-coverage-checklist) |
+| **C — Tech Stack, Prerequisites &amp; Study Plan** | Expanded production stack, prerequisites, and study sequence | [📄](./roadmap-v1.md#-appendix-c--tech-stack-prerequisites--study-plan) |
+| **D — Progress Tracker** | Tick-off table for all **45 lectures** + the capstone (**45/45 · 100%**) | [📄](./roadmap-v1.md#-appendix-d--progress-tracker) |
+| **E — Structural Learning Design** | The prerequisite → objective → unlocks chain and career capability ladder | [📄](./roadmap-v1.md#-appendix-e--structural-learning-design) |
 
 ---
 
@@ -523,10 +520,10 @@ Six artefacts inside **[`roadmap.md`](./roadmap.md)** exist purely so you can *v
 ### 1 · Reading the roadmap (no setup required)
 
 ```text
-1. Open  roadmap.md                              → the master map: 32 lectures · 10 phases
-2. Open  roadmap.md → "Lecture NN — …"           → goal · topics · build · source · gate
-3. Open  Lecture NN - <Title>/README.md          → that lecture's workspace stub
-4. Open  Forward-Deployed-Engineer/ or gen-ai-cohort/  → the source notes listed under "Source"
+1. Open  roadmap-v1.md                           → the master map: 45 lectures · 11 phases (Build → Connect → Ship)
+2. Open  roadmap-v1.md → "Lecture NN — …"        → goal · topics · build · release gate
+3. Open  Lecture NN - <Title>/README.md          → that lecture's workspace
+4. Open  index v1.md                             → chapter-by-chapter index across all 45 lectures
 ```
 
 ### 2 · Working a lecture (the reading contract)
@@ -558,27 +555,27 @@ RECORD → tick Appendix D and write down the number you measured
 ```text
 FDE-and-GenAI-Mastery/
 ├── README.md                     # ← you are here (orientation, navigation, verification)
-├── index.md                      # 📚 chapter index — every written lecture's chapters + notes links
-├── roadmap.md                    # ⭐ THE MASTER MAP
-│   ├── Design rules · How to use · 32 lectures at a glance · Phase graph
-│   ├── Detailed breakdown        # 32 lecture cards: Goal · Topics · Build · Source · Gate
+├── index v1.md                   # 📚 chapter index — all 45 lectures' chapters + notes links
+├── roadmap-v1.md                 # ⭐ THE MASTER MAP (45 lectures · 11 phases · Build → Connect → Ship)
+│   ├── Macro Delivery Phases · Phase Graph · Career Capability Ladder
+│   ├── Detailed breakdown        # 45 lecture cards: Goal · Topics · Build · Release Gate
 │   ├── Capstone brief
-│   └── Appendices A → F          # de-duplication · coverage · stack · tracker · sequence · ledger
+│   └── Appendices A → E          # re-numbering · 24-session coverage · stack · tracker · sequence
 │
 ├── Lecture 01 - Introduction to FDE and AI History/
 │   ├── README.md                 # objectives · phase · level · source mapping · checklist
-│   ├── index.md                  # chapter index (filled by prompt.md → Block 6)
-│   ├── prompt.md                 # generation prompt — git-ignored
-│   ├── .gitignore                # ignores prompt.md
-│   ├── notes/                    # your own chapter notes
-│   ├── code/                     # your rebuilt codebase (Basic Code · Production Code)
+│   ├── index.md                  # chapter index
+│   ├── notes/                    # chapter notes + Lecture_NN_Complete_Notes.md
+│   ├── code/                     # Basic Code · Production Code
 │   └── Assignment/
-│       └── task.md               # the lecture assignment (filled by prompt.md → Block 5)
+│       └── task.md               # chapter-wise questions, build tasks & completion gate
 ├── Lecture 02 - LLM Foundations/
-├── Lecture 03 - Attention and Decoding/
 ├── …
-├── Lecture 31 - Security and Guardrails/
-└── Lecture 32 - LangChain LangGraph LangSmith/
+├── Lecture 24 - Enterprise Data Discovery and Apache Ossie/
+├── …
+├── Lecture 33 - Multimodal AI/
+├── …
+└── Lecture 45 - Security and Guardrails/
 
 Forward-Deployed-Engineer/        # source repository 1  (19 lectures · 152 chapter notes)
 gen-ai-cohort/                    # source repository 2  (16 days · 83 note files)
@@ -586,7 +583,7 @@ gen-ai-cohort/                    # source repository 2  (16 days · 83 note fil
 
 > 🛠️ **Every lecture ships a `prompt.md`** — the generation prompt for that lecture. Open it, change only the **chapter number** in Block 1, and run the blocks in order: chapters → complete notes → basic code → production code → assignment → index. `prompt.md` is **git-ignored** (it is your personal working file), and the generated output lands in `notes/`, `code/`, `index.md` and `Assignment/task.md`.
 
-> 📌 The two source repositories sit **beside** this folder — they are the *inputs*, never edited here. All 32 lecture folders are your **workspaces**.
+> 📌 The two source repositories sit **beside** this folder — they are the *inputs*, never edited here. All 45 lecture folders are your **workspaces**.
 
 ---
 
@@ -596,8 +593,8 @@ Every lecture in this repository follows the same four-part contract, so you can
 
 | # | Convention | What it means |
 | :---: | :--- | :--- |
-| 1 | **One lecture = one workspace** | `Lecture NN - <Title>/` with `README.md` + `notes/` + `code/`. |
-| 2 | **The roadmap is the single source of truth** | Topics, build task and gate live in `roadmap.md`; the workspace stub links to it and never restates it — so nothing is duplicated. |
+| 1 | **One lecture = one workspace** | `Lecture NN - <Title>/` with `README.md` + `notes/` + `code/` + `Assignment/task.md`. |
+| 2 | **The roadmap is the single source of truth** | Topics, build task and gate live in `roadmap-v1.md`; the workspace stub links to it and never restates it — so nothing is duplicated. |
 | 3 | **Notes are yours, not a copy** | You write your own chapter notes from the source files. Copying the source defeats the purpose. |
 | 4 | **Claims are measured** | Any number you quote — latency, cost, recall@k, first-pass validity — must come from a command you can re-run. |
 
@@ -607,30 +604,13 @@ Every lecture in this repository follows the same four-part contract, so you can
 
 | Status | Item |
 | :---: | :--- |
-| ✅ | All **32 lectures** defined across **10 phases**, ordered basic → advanced |
-| ✅ | **32 workspace folders** scaffolded with `README.md` + `notes/` + `code/` |
-| ✅ | Master roadmap with per-lecture **Goal · Topics · Build · Source · Gate** |
-| ✅ | **6 verification appendices** (de-duplication · coverage · stack · tracker · sequence · ledger) |
-| ✅ | **35/35** source lectures/days and **235** source note files mapped — **0 duplicates** |
-| ✅ | **Lectures 01–10 notes written** — 8 + 8 + 9 + 9 + 9 + 8 + 9 + 8 + 9 + 9 chapters with consolidated notes, a [chapter index](./index.md) and an assignment each · *(10 of 31 lectures)* |
-| ✅ | **Lecture 02 code built** — [Basic Code](./Lecture%2002%20-%20LLM%20Foundations/code/Basic%20Code/) with the real `tiktoken` tokenizer and a 10-chapter implementation guide |
-| ✅ | **Lecture 03 code built** — [Basic Code](./Lecture%2003%20-%20Attention%20and%20Decoding/code/Basic%20Code/) with 15 attention, block, logits, decoding and position endpoints and an 11-chapter implementation guide |
-| ✅ | **Lecture 04 code built** — [Basic Code](./Lecture%2004%20-%20LLM%20APIs%20and%20Multi-SDK/code/Basic%20Code/) calling a **real** provider: 3 endpoints, one `Provider` interface across 5 providers, a context-budget guard, retry with backoff + jitter, a cost/slop/telemetry ledger per call and a 10-chapter implementation guide |
-| ✅ | **Lecture 05 code built** — [Basic Code](./Lecture%2005%20-%20Prompt%20Engineering/code/Basic%20Code/) as a **prompt-pattern lab**: 7 endpoints, four patterns built from one assembler, delimiters with escaping, an enforceable output contract, input/output/tool guardrails, and a prompt registry with a golden set, six metrics and a regression gate — plus a 10-chapter implementation guide |
-| ✅ | **Lecture 06 code built** — [Basic Code](./Lecture%2006%20-%20Chatbots%20and%20Context/code/Basic%20Code/) as a **stateless chatbot microservice**: 9 endpoints, a session store the model lacks, a **derived** token budget, a seven-layer context manager (anchor · summary · recall · token-budgeted window), durable user memory with erasure, SSE streaming with TTFT/ITL and cancellation, and grounded refusal with a deterministic citation verifier — runnable with **no API key** — plus a 14-chapter implementation guide |
-| ✅ | **Lecture 07 code built** — [Basic Code](./Lecture%2007%20-%20AI%20Streaming/code/Basic%20Code/) as a **streaming microservice + browser client**: 9 endpoints across **3 transports** (buffered · raw `text/plain` · SSE), a coalescing **stream pump** with real backpressure, one generation loop with two consumers, the **four granularities** with a streaming `TextDecoder` and a leftover-buffer frame parser, a **fragmentation torture test** (10 cases), **dual-write history** that keeps interrupted turns, cancellation that propagates upstream, TTFT/ITL/TPS/`charsPerFrame` metrics with the client−server **TTFT gap** on screen, and **graceful shutdown** — runnable with **no API key** — plus a 14-chapter implementation guide |
-| ✅ | **Lecture 08 code built** — [Basic Code](./Lecture%2008%20-%20Tool%20Calling/code/Basic%20Code/) as a **tool-calling runtime**: 12 source files, **8 endpoints**, a **6-tool registry** with three permission tiers (`read` · `write` · `critical`), one Zod schema driving both the wire contract and runtime validation, the **5-step wire protocol**, the **ReAct loop** with five brakes and a causal trace, `executeSafely` as the single error boundary, a **TTL cache** for information tools, a fixture-based **routing eval** with four metrics and a confusion matrix, a **Tier 3 approval gate** bound to the exact arguments and executed exactly once, and a per-request **token ledger** — runnable with **no API key** — plus a 10-chapter implementation guide and a scripted offline walkthrough |
-| ✅ | **Lecture 09 code built** — [Basic Code](./Lecture%2009%20-%20AI%20Agents%20and%20HITL/code/Basic%20Code/) as a **sandboxed agent runtime**: 15 source files, **9 endpoints**, a **7-tool registry** across the **three authorization tiers** (`read` · `write` · `critical`), a **3-role** RBAC layer with **object-level + ABAC** checks, the **`safePath`** sandbox (lexical *and* canonical containment, encoded-separator rejection, sensitive-name deny-list, five quotas), a **durable HITL pause/resume** with **two-layer idempotency** (a derived key plus a stored result, so a replayed webhook returns 409 instead of refunding twice), the **four brakes** with six named termination conditions and a causal **trace + per-hop token ledger**, a **defensive wrapper** with a 0–100 risk score and an output gate, and a **security audit log** — runnable with **no API key** — plus a 10-chapter implementation guide and a scripted offline walkthrough |
-| ✅ | **Lecture 10 code built** — [Basic Code](./Lecture%2010%20-%20Structured%20Outputs/code/Basic%20Code/) as a **structured output enforcement runtime**: 8 source files, schema-driven request/response validation, the enforcement ladder (prompt → decoder → validation), repair loops with fallback ladder, first-pass validity tracking and issue distribution metrics, and a 9-chapter implementation guide |
-| ✅ | **Lecture 12 code built** — [Basic Code](./Lecture%2012%20-%20Vector%20Embeddings/code/Basic%20Code/) as a **vector similarity microservice**: 10 source files across `config/` · `controllers/` · `routes/` · `services/` · `types/` · `middleware/`, covering the 4 similarity measures (cosine, Euclidean, Manhattan, dot product), a 24-sentence corpus with paraphrase/unrelated groupings, nearest-neighbour search via cosine similarity, and `king − man + woman ≈ queen` vector arithmetic — runnable with **no API key** — plus a 9-chapter implementation guide |
-| ✅ | **Lecture 11 code built** — [Basic Code](./Lecture%2011%20-%20Agent%20SDK%20from%20Scratch/code/Basic%20Code/) as an **Agent SDK runtime**: 9 source files, `POST /chat` + `GET /health`, fluent `AgentBuilder`, `ToolRegistry` with `toolMap`, `MessageHistory` with interceptors, `HarnessPipeline` 5-stage ReAct loop (`INITIAL → THINK → TOOL_REQUEST → ANALYSE → OUTPUT`), `BasicLLMEngine` stub, example `WeatherTool` + `CalculatorTool`, and a 9-chapter implementation guide |
-| ✅ | **Lecture 14 code built** — [Basic Code](./Lecture%2014%20-%20Vector%20Search%20and%20Storage/code/Basic%20Code/) as a **brute-force KNN vector search API**: `POST /vectors` (store ID + vector + metadata) and `GET /search` (cosine-similarity top-K, O(N×D), 100% recall) across `config/` · `controllers/` · `routes/` · `services/` · `types/`, plus an 8-chapter implementation guide (00 → 07) and assignment with practice questions and hands-on tasks |
-| ✅ | **Lecture 15 code built** — [Basic Code](./Lecture%2015%20-%20Vector%20Databases%20and%20ANN/code/Basic%20Code/) as a **vector search API**: `POST /api/vectors` (store id + vector + payload), `POST /api/search` (cosine similarity top-K with optional metadata filter), `GET /api/vectors/count` across `config/` · `controllers/` · `routes/` · `services/` · `types/`, plus a 6-chapter implementation guide (00 → 05) and assignment with practice questions and completion gate |
-| ✅ | **Lecture 16 code built** — [Basic Code](./Lecture%2016%20-%20RAG/code/Basic%20Code/) as a **minimum RAG server**: `POST /api/ingest` (document → chunks → embed → upsert with content-addressed id), `POST /api/query` (embed question → tenant-filtered retrieval → grounded generation with `[n]` citations + refusal), `GET /api/health` across `config/` · `controllers/` · `router/` · `services/` · `types/`, plus a 10-chapter implementation guide (00 → 09) and assignment with practice questions and completion gate |
-| ✅ | **Lecture 22 notes written** — 9 chapters with consolidated notes, a chapter index and an assignment task.md |
-| ✅ | **Lecture 25 notes written** — 8 chapters with consolidated notes, a chapter index and an assignment task.md |
-| 🔜 | Your own chapter notes landing in each `notes/` folder as you progress |
-| 🔜 | Your rebuilt codebases landing in each `code/` folder as you progress |
+| ✅ | All **45 lectures** defined across **11 phases** (`Build: L01–L23` · `Connect: L24–L32` · `Ship: L33–L45`), ordered basic → advanced |
+| ✅ | **45 workspace folders** complete with `README.md` + `notes/` + `code/` + `Assignment/task.md` |
+| ✅ | Master roadmap ([`roadmap-v1.md`](./roadmap-v1.md)) with per-lecture **Goal · Topics · Build · Release Gate** |
+| ✅ | **5 verification appendices** (re-numbering · 24-session FDE coverage · stack · progress tracker `45/45` · structural design) |
+| ✅ | **35/35** source lectures/days + **24/24** FDE sessions + **Cloudflare Code Mode** mapped — **0 duplicates** |
+| ✅ | **All 45 lectures' notes, consolidated `Lecture_NN_Complete_Notes.md`, `index.md`, `code/` &amp; `Assignment/task.md` written** — indexed in [`index v1.md`](./index%20v1.md) |
+| 🔜 | Your own hands-on rebuilds and measured benchmarks landing in each `code/` folder as you progress |
 | 🔜 | The **capstone** system, with a metrics table and an incident/limitations statement |
 
 > 🟢 This repository is a **living workspace** — it is meant to be filled in lecture by lecture.
@@ -641,9 +621,9 @@ Every lecture in this repository follows the same four-part contract, so you can
 
 1. **Read the [Conventions](#-conventions) table** and the [reading contract](#2--working-a-lecture-the-reading-contract).
 2. **Keep the four-part contract:** workspace stub → your notes → your code → measured numbers.
-3. **Update the roadmap first:** if you add a topic, add it to `roadmap.md` (and Appendix A if it changes a mapping) **before** writing notes — never fork the source of truth.
+3. **Update the roadmap first:** if you add a topic, add it to `roadmap-v1.md` (and Appendix A if it changes a mapping) **before** writing notes — never fork the source of truth.
 4. **Prove your numbers:** any metric you quote should be reproducible from a command in your codebase.
-5. **Encode links correctly:** paths contain spaces, so use `%20` (e.g. `./Lecture%2012%20-%20Vector%20Embeddings/`).
+5. **Encode links correctly:** paths contain spaces, so use `%20` (e.g. `./Lecture%2015%20-%20Vector%20Embeddings/`).
 
 Pull requests that improve depth, fix a wrong claim, or add a missing failure mode are especially welcome. 🎉
 
@@ -663,7 +643,7 @@ This repository is an **educational curriculum**. Lecture content, notes and dia
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Aminul-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/aminul-dev/)
 [![Twitter](https://img.shields.io/badge/Twitter-@AminulIsla65775-000000?style=for-the-badge&logo=x)](https://x.com/AminulIsla65775)
 
-**[📑 Master Roadmap](./roadmap.md)** · **[📖 Curriculum Navigation](#-curriculum-navigation)** · **[🚀 Quick Start](#-quick-start)** · **[✅ Verification](#-verification-appendices)**
+**[📑 Master Roadmap v1](./roadmap-v1.md)** · **[📚 Chapter Index](./index%20v1.md)** · **[📖 Curriculum Navigation](#-curriculum-navigation)** · **[🚀 Quick Start](#-quick-start)** · **[✅ Verification](#-verification-appendices)**
 
 *Built for Forward Deployed Engineers who measure what they ship.*
 

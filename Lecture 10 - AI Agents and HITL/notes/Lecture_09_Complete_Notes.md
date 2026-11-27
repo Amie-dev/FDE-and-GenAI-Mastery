@@ -65,6 +65,7 @@ flowchart LR
 | 07 | HITL & the 3-Tier Authorization Matrix | Tiers; durable pause/resume; idempotency; eight responses |
 | 08 | RBAC, Defensive Wrapper & Platform Guardrails | The model is outside the auth path; blast radius; SIEM/SOC |
 | 09 | Enterprise Patterns & the 25 Principles | Hybrid pattern; four topologies; the 25 laws; the kernel thesis |
+| 10 | Modern Agent Sandbox Architectures & Platform Selection | *Agent-in-Sandbox* vs. *Sandbox-as-a-Tool*; Docker AI Sandboxes; OpenAI Agents SDK Sandboxes; E2B/Modal/Daytona/Cloudflare selection matrix |
 
 ---
 

@@ -17,7 +17,7 @@ Phase 7 · Connectors, Code Mode & Proactive Workflows · 🟠 Advanced · **7 c
 | 03 | **Idempotency Keys & Safe Retries on Mutations** | Preventing double refunds, `Idempotency-Key` replay caching, and `409 Conflict` mismatch checks | [03_Idempotency_Keys_and_Safe_Retries_on_Mutations.md](./notes/03_Idempotency_Keys_and_Safe_Retries_on_Mutations.md) |
 | 04 | **Approval-Bound Actions & Connector Governance** | Scoped OAuth credentials, HITL dollar thresholds (`> $50`), rate limits, and audit logs | [04_Approval_Bound_Actions_and_Connector_Governance.md](./notes/04_Approval_Bound_Actions_and_Connector_Governance.md) |
 | 05 | **Browser Automation Fallback (Playwright)** | Wrapping legacy UI-only ERP portals as typed, domain-locked, idempotent Playwright MCP tools | [05_Browser_Automation_Fallback_Playwright.md](./notes/05_Browser_Automation_Fallback_Playwright.md) |
-| 06 | **Computer-Use Agents & Visual Grounding** | Screenshot-to-coordinate loops for Canvas/Citrix, screen-text injection defence, and HITL pauses | [06_Computer_Use_Agents_and_Visual_Grounding.md](./notes/06_Computer_Use_Agents_and_Visual_Grounding.md) |
+| 06 | **Computer-Use Agents, Visual Grounding & AIO Sandboxes** | Screenshot-to-coordinate loops for Canvas/Citrix, screen-text injection defence, HITL pauses, and **All-in-One (`agent-infra/sandbox`)** Browser + Shell + VNC + MCP workspaces | [06_Computer_Use_Agents_and_Visual_Grounding.md](./notes/06_Computer_Use_Agents_and_Visual_Grounding.md) |
 | 07 | **Production Connector Testing & Contract Evals** | Offline CI testing for OpenAPI compilation, idempotency replay, `409` conflicts, and Playwright mocks | [07_Production_Connector_Testing_and_Contract_Evals.md](./notes/07_Production_Connector_Testing_and_Contract_Evals.md) |
 
 ---
