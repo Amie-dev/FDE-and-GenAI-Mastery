@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { A2AClientRegistry } from "./a2a.js";
+import { SubagentRuntime } from "./subagents.js";
 import { runPlanActVerify } from "./orchestrator.js";
 import { ProactiveTriggerGate } from "./triggers.js";
 import type { PlanStep } from "./types.js";
@@ -93,6 +94,38 @@ describe("Lecture 14 Release Gate", () => {
     assert.equal(syn.overallVerdict, "REJECT");
     assert.equal(syn.results[1].state, "failed");
     assert.ok(syn.warnings.length >= 1);
+  });
+
+  it("Gate 6: SubagentRuntime enforces context quarantine, recursion guard & worktree isolation", () => {
+    const rt = new SubagentRuntime();
+    rt.defineSubagent({
+      typeName: "research",
+      description: "Read-only codebase explorer",
+      model: "flash",
+      enableWriteTools: false,
+      allowNestedSubagents: false,
+      defaultWorkspace: "inherit",
+    });
+    rt.defineSubagent({
+      typeName: "writer",
+      description: "Parallel code editor",
+      model: "pro",
+      enableWriteTools: true,
+      allowNestedSubagents: false,
+      defaultWorkspace: "share",
+    });
+
+    const res = rt.invokeSubagent({ typeName: "research", prompt: "Find auth refresh logic" });
+    assert.ok(res.parentContextTokensAdded < res.internalTokensUsed / 10);
+
+    assert.throws(
+      () => rt.invokeSubagent({ typeName: "research", prompt: "nested", callerIsSubagent: true }),
+      /Recursion blocked/
+    );
+    assert.throws(
+      () => rt.invokeSubagent({ typeName: "writer", prompt: "edit", workspace: "inherit", isParallelWrite: true }),
+      /must use "share" or "branch"/
+    );
   });
 });
 

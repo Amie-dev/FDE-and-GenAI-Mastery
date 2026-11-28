@@ -2,7 +2,7 @@
 ## Loop Engineering (`Plan-Act-Verify`, Stuck Detection) & A2A Protocol
 
 > **Phase:** 3 · Agency, Graphs & Loop Engineering · **Level:** 🟠 Advanced
-> **Scope:** Master revision guide consolidating all seven chapters of Lecture 14.
+> **Scope:** Master revision guide consolidating all eight chapters of Lecture 14.
 > **Thesis:** Production agent loops replace fragile, unbounded ReAct chat cycles with **Plan-Act-Verify (PAV)** state machines, **4D budgets & code-enforced tool permissions**, **`$0` pre-flight proactive triggers**, **$\le 4$-step stuck detection**, **bounded adaptive topologies**, and **opaque A2A parallel fan-out/fan-in synthesis**.
 
 ---
@@ -28,6 +28,7 @@
 | **05** | Static vs. Adaptive Graphs | Static DAGs vs. runtime fan-out, 3 multi-agent topologies, stopping fork bombs | [05_Static_vs_Adaptive_Agent_Graph_Topologies.md](./05_Static_vs_Adaptive_Agent_Graph_Topologies.md) |
 | **06** | The A2A Protocol | MCP vs. A2A, Agent Cards (`agent.json`), stateful task lifecycle, trace/cost metadata | [06_The_A2A_Agent_to_Agent_Protocol.md](./06_The_A2A_Agent_to_Agent_Protocol.md) |
 | **07** | Parallel Delegation & Fan-In | `Promise.allSettled`, `required` vs. `best_effort`, veto precedence, ledger rollup | [07_Parallel_Delegation_and_Fan_In_Synthesis.md](./07_Parallel_Delegation_and_Fan_In_Synthesis.md) |
+| **08** | Subagent Architectures | Context quarantine, DeepAgents, Claude Code `.claude/agents/*.md`, Antigravity SDK (`share`/`branch`, reactive wakeup), Subagents vs. A2A | [08_Subagent_Architectures_Context_Isolation_and_Delegation.md](./08_Subagent_Architectures_Context_Isolation_and_Delegation.md) |
 
 ---
 
@@ -122,6 +123,15 @@ Sequential A2A calls multiply latency ($\sum t_i$); parallel fan-out cuts wall-c
 - **Deterministic Conflict Reconciliation:** Compute the final verdict in code *before* LLM prose synthesis: (1) if any `required` branch fails $\rightarrow$ Escalate/Pivot; (2) **Veto Precedence** — any `REJECT`/`BLOCKER` from security/compliance overrides `APPROVE`; (3) roll up $\text{TotalRunCost} = C_{\text{coord}} + \sum C_{\text{peer},i}$ into the parent Budget Ledger.
 
 > 📖 **Need depth?** Read [Chapter 07 — Parallel Delegation & Fan-In Synthesis](./07_Parallel_Delegation_and_Fan_In_Synthesis.md)
+
+### 3.8 Chapter 08 — Subagent Architectures: Context Isolation, Specialization & Delegation
+
+**Subagents** solve **context rot** via **Context Quarantine**: instead of running 15 noisy grep/file searches in the parent's history, the parent delegates exploration to an isolated child agent (often on a fast/cheap model like `flash`/`haiku`) and receives **only a concise summary** back (~98% parent context savings).
+
+- **Three Production Patterns:** **LangChain DeepAgents** (`task` tool, `general-purpose` vs. custom `SubAgent`, compiled `StateGraph`), **Claude Code** (`.claude/agents/*.md`, `Explore`/`Plan`, `isolation: worktree`, `background: true`, no nested spawning), and **Antigravity SDK** (`define_subagent`, `invoke_subagent`, `send_message`, `Workspace: inherit | share | branch`, reactive wakeup).
+- **Subagents vs. A2A:** Use **Subagents** inside one harness/repo; use **A2A** across separate deployed services/orgs.
+
+> 📖 **Need depth?** Read [Chapter 08 — Subagent Architectures: Context Isolation, Specialization & Delegation](./08_Subagent_Architectures_Context_Isolation_and_Delegation.md)
 
 ---
 

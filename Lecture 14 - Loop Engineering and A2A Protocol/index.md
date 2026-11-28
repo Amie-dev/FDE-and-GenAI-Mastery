@@ -1,7 +1,7 @@
 # Lecture 14 — Chapter Index
 
 **Advanced Loop Engineering, Adaptive Topologies & A2A Protocol**
-Phase 3 · Agency, Graphs & Loop Engineering · 🟠 Advanced · **7 chapters**
+Phase 3 · Agency, Graphs & Loop Engineering · 🟠 Advanced · **8 chapters**
 
 > Source of truth for topics, goal, build task and gate: **[../roadmap-v1.md](../roadmap-v1.md)** → *"Lecture 14"*.
 > Source mapping: `FDE S05 & S06`.
@@ -19,6 +19,7 @@ Phase 3 · Agency, Graphs & Loop Engineering · 🟠 Advanced · **7 chapters**
 | 05 | **Static vs. Adaptive Agent Graph Topologies** | Compile-time DAGs vs. runtime fan-out/fan-in, Supervisor/Hierarchical/P2P topologies, `maxFanOut` & `maxDepth` caps | [05_Static_vs_Adaptive_Agent_Graph_Topologies.md](./notes/05_Static_vs_Adaptive_Agent_Graph_Topologies.md) |
 | 06 | **The A2A (Agent-to-Agent) Protocol** | MCP vs. A2A, Agent Cards (`/.well-known/agent.json`), capability discovery, stateful task lifecycle, opaque peer execution | [06_The_A2A_Agent_to_Agent_Protocol.md](./notes/06_The_A2A_Agent_to_Agent_Protocol.md) |
 | 07 | **Parallel Delegation & Fan-In Synthesis** | `Promise.allSettled` fan-out, per-branch timeouts, `required` vs. `best_effort`, veto precedence reconciliation, cost roll-up | [07_Parallel_Delegation_and_Fan_In_Synthesis.md](./notes/07_Parallel_Delegation_and_Fan_In_Synthesis.md) |
+| 08 | **Subagent Architectures: Context Isolation & Delegation** | Context quarantine, **LangChain DeepAgents**, **Claude Code** `.claude/agents/*.md`, **Antigravity SDK** (`inherit`/`share`/`branch`, reactive wakeup), Subagents vs. A2A | [08_Subagent_Architectures_Context_Isolation_and_Delegation.md](./notes/08_Subagent_Architectures_Context_Isolation_and_Delegation.md) |
 
 ---
 
@@ -49,6 +50,7 @@ flowchart LR
     C4 --> C5["05 Adaptive Graphs"]
     C5 --> C6["06 A2A Protocol"]
     C6 --> C7["07 Parallel Fan-In"]
-    C7 --> N["Complete Notes"]
+    C7 --> C8["08 Subagents"]
+    C8 --> N["Complete Notes"]
 ```
 

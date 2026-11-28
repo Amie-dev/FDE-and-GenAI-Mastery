@@ -263,7 +263,7 @@ flowchart BT
 ### Lecture 14 — Advanced Loop Engineering, Adaptive Topologies & A2A Protocol
 * **Status:** `🆕 NEW (Covers S05 & S06)` · **Level:** 🟠 Advanced · **Workspace:** [📂 Lecture 14](./Lecture%2014%20-%20Loop%20Engineering%20and%20A2A%20Protocol/)
 * **Goal:** Engineer resilient bounded loops with stuck detection, proactive triggers, adaptive graph topologies, and Agent-to-Agent (A2A) delegation.
-* **Topics Unlocked:** **Plan-Act-Verify** loops; bounded goal loops; **heartbeat**, schedule, and event triggers; tool permission boundaries & budget caps; **stuck detection**, **retry**, **pivot**, and **escalation**; static vs. **adaptive graphs**; **A2A (Agent-to-Agent)** discovery and parallel delegation.
+* **Topics Unlocked:** **Plan-Act-Verify** loops; bounded goal loops; **heartbeat**, schedule, and event triggers; tool permission boundaries & budget caps; **stuck detection**, **retry**, **pivot**, and **escalation**; static vs. **adaptive graphs**; **A2A (Agent-to-Agent)** discovery and parallel delegation; **Subagent architectures** (context quarantine, LangChain DeepAgents, Claude Code `.claude/agents/*.md`, Antigravity SDK `inherit`/`share`/`branch` & reactive wakeup).
 * **What You Build:** A Plan-Act-Verify orchestrator with loop stuck-detection that pivots strategies or delegates sub-tasks to a peer agent via A2A.
 * **Release Gate:** Inject an infinite tool-failure loop; system detects stuck state within 3 iterations, pivots or escalates, and respects hard token budgets.
 

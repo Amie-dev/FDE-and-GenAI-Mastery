@@ -29,6 +29,7 @@ Write one markdown file per chapter inside `notes/`, followed by `notes/Lecture_
 | **05** | **Static vs. Adaptive Agent Graph Topologies** | When fixed DAGs break and how to spawn dynamic subgraphs at runtime. |
 | **06** | **The A2A (Agent-to-Agent) Protocol** | Agent Cards, capability discovery, task states, streaming artifacts, and peer delegation. |
 | **07** | **Parallel Delegation & Fan-In Synthesis** | Coordinating multiple specialized peer agents and reconciling conflicting outputs. |
+| **08** | **Subagent Architectures: Context Isolation & Delegation** | Context quarantine, DeepAgents, Claude Code sub-agents, Antigravity SDK (`share`/`branch`, reactive wakeup), and Subagents vs. A2A. |
 
 ---
 

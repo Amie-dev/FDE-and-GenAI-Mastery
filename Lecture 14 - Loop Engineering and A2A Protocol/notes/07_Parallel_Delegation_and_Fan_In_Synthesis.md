@@ -157,4 +157,4 @@ If `TotalRunCost` approaches `maxCostUsd`, the coordinator blocks any second-rou
 
 ---
 
-**Next:** [Lecture 14 — Complete Notes (Master Consolidation)](./Lecture_14_Complete_Notes.md)
+**Next:** [Chapter 08 — Subagent Architectures: Context Isolation, Specialization & Delegation](./08_Subagent_Architectures_Context_Isolation_and_Delegation.md)

@@ -23,7 +23,7 @@
 | 📚 | [Lecture 11 — Structured Outputs](./Lecture%2011%20-%20Structured%20Outputs/index.md) | 9 | ✅ | ✅ | ✅ |
 | 📚 | [Lecture 12 — Agent SDK from Scratch](./Lecture%2012%20-%20Agent%20SDK%20from%20Scratch/index.md) | 8 | ✅ | ✅ | ✅ |
 | 📚 | [Lecture 13 — LangChain LangGraph LangSmith](./Lecture%2013%20-%20LangChain%20LangGraph%20LangSmith/index.md) | 16 | ✅ | ✅ | ✅ |
-| 📚 | [Lecture 14 — Loop Engineering and A2A Protocol](./Lecture%2014%20-%20Loop%20Engineering%20and%20A2A%20Protocol/index.md) | 7 | ✅ | ✅ | ✅ |
+| 📚 | [Lecture 14 — Loop Engineering and A2A Protocol](./Lecture%2014%20-%20Loop%20Engineering%20and%20A2A%20Protocol/index.md) | 8 | ✅ | ✅ | ✅ |
 | 📚 | [Lecture 15 — Vector Embeddings](./Lecture%2015%20-%20Vector%20Embeddings/index.md) | 7 | — | ✅ | ✅ |
 | 📚 | [Lecture 16 — Semantic Search Project](./Lecture%2016%20-%20Semantic%20Search%20Project/index.md) | 6 | ✅ | ✅ | — |
 | 📚 | [Lecture 17 — Vector Search and Storage](./Lecture%2017%20-%20Vector%20Search%20and%20Storage/index.md) | 8 | ✅ | ✅ | ✅ |
